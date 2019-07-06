@@ -1,8 +1,8 @@
 module.exports = {
-  title: `파도는 멈추지 않고`,
+  title: `파도는 멈추지 않고,`,
   description: `Dowha Kim's blog containing various articles. `,
   author: `Dowha`,
-  introduction: `A Communication Specialist working in LGBTI rights field.`,
+  introduction: `A Communication Officer working in LGBTI rights field.`,
   siteUrl: `https://dowha.netlify.com/`, // Your blog site url
   social: {
     twitter: `Dowha_Kim`, // Your Twitter account
