@@ -18,6 +18,9 @@ body.dark {
     a {
       color: $dark-link-color;
     }
+    a:hover {
+      color: $dark-link-hover-color;
+    }
   }
 
   .category-container {

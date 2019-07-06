@@ -17,6 +17,9 @@ body.light {
     a {
       color: $light-link-color;
     }
+    a:hover {
+      color: $light-link-hover-color;
+    }
   }
 
   .category-container {
