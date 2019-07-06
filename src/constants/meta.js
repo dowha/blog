@@ -1,1 +1,1 @@
-export const HOME_TITLE = '파도는 멈추지 않고,'
+export const HOME_TITLE = 'Waves never stop lapping,'
