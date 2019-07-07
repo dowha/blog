@@ -73,3 +73,13 @@ body.light {
     }
   }
 }
+
+// markdown
+.task-list-item {
+  list-style: none;
+}
+
+.task-list-item input {
+  margin-left: -20px;
+  margin-right: 10px;
+}
