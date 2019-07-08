@@ -16,6 +16,7 @@ category: blog
 
 - [x] 도메인 연결
 - [x] Google analytics 연동
+- [x] Google Search Console 사이트맵 제출
 
 ---
 
@@ -35,6 +36,7 @@ category: blog
 - [ ] 메인 페이지 게시물 목록 날짜 추가
 - [ ] 소셜미디어 공유 메타데이터 설정
 - [ ] .gitignore 설정 확인(/public 등)
+- [ ] Netlify redirect 설정
 - [ ] 페이지(contact 등) 추가
 - [ ] 게시물 아카이브 페이지(movie-list, book-list 등) 추가
 - [ ] 게시물 해시태그 추가 후 블로그 제목 옆에 드롭다운 메뉴로 추가
