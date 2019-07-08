@@ -32,6 +32,7 @@ category: blog
 
 - [ ] 페이지(contact 등) 추가
 - [ ] 게시물 아카이브 페이지(movie-list, book-list 등) 추가
+- [ ] 게시물 해시태그 추가 후 블로그 제목 옆에 드롭다운 메뉴로 추가
 - [ ] Buy Me a Coffee 버튼 bio 부분으로 이동
 - [ ] 메인 페이지 게시물 목록에 이미지 썸네일 추가
 - [ ] 게시물 하단 이전 URL 링크 추가
