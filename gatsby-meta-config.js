@@ -3,7 +3,7 @@ module.exports = {
   description: `Dowha Kim's blog containing various articles. `,
   author: `Dowha`,
   introduction: `A Communication Officer working in LGBTI rights field.`,
-  siteUrl: `https://dowha.netlify.com/`, // Your blog site url
+  siteUrl: `https://dowha.kim`, // Your blog site url
   social: {
     twitter: `Dowha_Kim`, // Your Twitter account
     github: `dowha`, // Your GitHub account
@@ -25,5 +25,5 @@ module.exports = {
   share: {
     facebookAppId: '', // Add facebookAppId for using facebook share feature v3.2
   },
-  ga: '', // Add your google analytics tranking ID
+  ga: 'UA-130940579-1', // Add your google analytics tranking ID
 }

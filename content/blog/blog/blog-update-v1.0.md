@@ -1,25 +1,31 @@
 ---
-title: Blog Update (ver.0.1)
-date: 2019-07-07 23:07:03
+title: Blog Update (ver.1.0)
+date: 2019-07-08 22:07:08
 category: blog
 ---
 
-## ver.0.1
+## ver.1.0
 
-블로그 기본적인 세팅을 끝마쳤다. [gatsby-starter-bee](https://github.com/JaeYeopHan/gatsby-starter-bee)를 기반으로 간단한 스타일 변경을 했고, 몇몇 글들을 기존 워드프레스 블로그에서 이전시켰다. Disqus를 이용해 댓글도 달 수 있고, 현재 netlify를 통해서 배포되고 있다.
+오늘부로 **'파도는 멈추지 않고,'** 라는 이름의 Gatsbyjs 기반 정적블로그를 정식으로 오픈한다. 기존에 사용하고 있던 https://dowha.kim 도메인에 연결을 했고, 구글애널리스틱
+
+---
+
+#### Done List
+
+- [x] 도메인 연결
+- [x] Google analytics 연동
 
 ---
 
 #### To-Do List
 
-- [ ] 도메인 연결
-- [ ] Google analytics 연동
 - [ ] 파비콘 흰 배경으로 변경
 - [ ] 제목 포맷 변경 및 통일
 - [ ] 리뷰 게시물 하단부 포맷 통일
 - [ ] 다크모드 게시물 목록 hover 흰색 그림자 제거
 - [ ] 느리게 로딩되는 프로필이미지 border-radius 설정 확인
 - [ ] 카테고리 클릭 시 내려가는 스크롤 조정
+- [ ] 메인페이지 title 변경 후 고정
 - [ ] 블로그 콘텐츠 Contentful로 이전 및 연동
 
 * [ ] bio - social media 부분에 링크드인 추가
