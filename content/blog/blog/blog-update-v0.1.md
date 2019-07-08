@@ -36,7 +36,7 @@ category: blog
 - [ ] 메인 페이지 게시물 목록에 이미지 썸네일 추가
 - [ ] 게시물 하단 이전 URL 링크 추가
 - [ ] 구글 애드센스 추가
-- [ ] 게시물 제목 CSS work-break 설정
+- [ ] 게시물 제목 CSS work-break, 영문 text-transform: capitalize 설정
 - [ ] 한글 URL 해결책 검색 및 적용
 - [ ] 상단 바이오와 하단 바이오 분리
 - [ ] 영어/한국어 언어 버튼 추가 및 페이지에 적용 (i18n 플러그인)
