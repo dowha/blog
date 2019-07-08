@@ -4,6 +4,10 @@ date: 2019-1-27 16:21:13
 lang: 'en'
 ---
 
+### **[👈 돌아가기](https://dowha.kim)**
+
+---
+
 # Dowha Kim
 
 ![dowha-kim-profile](../assets/dowha-kim.jpg)
@@ -14,4 +18,5 @@ lang: 'en'
 
 삶의 목표는 성실하고 정갈하며 평안한 삶인데 그렇게 살기가 쉽지는 않습니다. 소란한 일상 속에서 ‘내 것’이 무엇인지 계속해 찾고 있습니다.
 
+**[포트폴리오 보기](https://bit.ly/dowha-portfolio)**
 **[연락하기](mailto:dowha.kim@outlook.com)**
