@@ -1,0 +1,4 @@
+# These rules will change if you change your site’s custom domains or HTTPS settings
+
+# Redirect default Netlify subdomain to primary domain
+https://dowha-blog.netlify.com/* https://blog.dowha.kim/:splat 301!
