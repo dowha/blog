@@ -1,10 +1,9 @@
 ---
 title: 'about'
 date: 2019-1-27 16:21:13
-lang: 'en'
 ---
 
-#### **[👈 돌아가기(Back to Blog Page)](https://dowha.kim)**
+#### **[👈 돌아가기(Back to Blog Page)](https://blog.dowha.kim)**
 
 ---
 
