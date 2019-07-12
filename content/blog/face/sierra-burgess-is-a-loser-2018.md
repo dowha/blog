@@ -1,5 +1,5 @@
 ---
-title: 시에라 연애 대작전 (Sierra Burgess Is a Loser, ㄴ2018)
+title: 시에라 연애 대작전 (Sierra Burgess Is a Loser,  2018)
 date: 2018-09-21T13:13:24+00:00
 category: 마주한다
 url: /912
