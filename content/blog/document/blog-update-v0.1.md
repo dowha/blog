@@ -1,12 +1,12 @@
 ---
-title: Blog Update (ver.0.1)
+title: 블로그 업데이트 (ver.0.1)
 date: 2019-07-07 23:07:03
 category: 기록한다
 ---
 
 ## ver.0.1
 
-블로그 기본적인 세팅을 끝마쳤다. [gatsby-starter-bee](https://github.com/JaeYeopHan/gatsby-starter-bee)를 기반으로 간단한 스타일 변경을 했고, 몇몇 글들을 기존 워드프레스 블로그에서 이전시켰다. Disqus를 이용해 댓글도 달 수 있고, 현재 netlify를 통해서 배포되고 있다.
+블로그 기본적인 세팅을 끝마쳤다. [gatsby-starter-bee](https://github.com/JaeYeopHan/gatsby-starter-bee)를 기반으로 간단한 스타일 변경을 했고, 몇몇 글들을 기존 워드프레스 블로그에서 이전시켰다. Disqus를 이용해 댓글도 달 수 있고, 현재 Netlify를 통해서 배포되고 있다.
 
 ---
 
