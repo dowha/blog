@@ -1,7 +1,7 @@
 ---
 title: '🎬 스파이더맨: 홈커밍 Spider-Man: Homecoming (2017)'
 date: 2019-03-09T15:22:00+00:00
-category: face
+category: 마주한다
 url: /14170
 ---
 

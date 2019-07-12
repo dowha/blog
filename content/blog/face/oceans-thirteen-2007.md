@@ -1,7 +1,7 @@
 ---
 title: '🎬  오션스 13 Ocean’s Thirteen (2007)'
 date: 2018-07-01T17:54:43+00:00
-category: face
+category: 마주한다
 url: /821
 ---
 

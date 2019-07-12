@@ -1,7 +1,7 @@
 ---
 title: 🎬 덩케르크 Dunkirk (2017)
 date: 2017-07-26T08:09:09+00:00
-category: face
+category: 마주한다
 url: /21
 ---
 

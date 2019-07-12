@@ -1,7 +1,7 @@
 ---
 title: 🎬 고스트버스터즈 Ghostbusters (2016)
 date: 2018-05-07T12:13:56+00:00
-category: face
+category: 마주한다
 url: /743
 ---
 

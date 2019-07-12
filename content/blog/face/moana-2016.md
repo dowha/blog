@@ -1,7 +1,7 @@
 ---
 title: 🎬 모아나 Moana (2016)
 date: 2018-08-23T04:48:43+00:00
-category: face
+category: 마주한다
 url: /880
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Blog Update (ver.1.1)
 date: 2019-07-11 20:07:02
-category: document
+category: 기록한다
 ---
 
 ## ver.1.1

@@ -1,7 +1,7 @@
 ---
 title: '📖 언어공부 Polyglot: How I Learn Languages (2017)'
 date: 2017-09-11T15:57:31+00:00
-category: face
+category: 마주한다
 url: /560
 ---
 

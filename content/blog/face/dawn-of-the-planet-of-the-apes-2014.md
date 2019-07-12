@@ -1,7 +1,7 @@
 ---
 title: '🎬 혹성탈출: 반격의 서막 Dawn of the Planet of the Apes (2014)'
 date: 2017-08-23T16:27:34+00:00
-category: face
+category: 마주한다
 url: /175
 ---
 

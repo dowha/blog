@@ -1,7 +1,7 @@
 ---
 title: '🎬 미니멀리즘: 비우는 사람들의 이야기 Minimalism: A Documentary About the Important Things (2015)'
 date: 2018-04-22T14:33:11+00:00
-category: face
+category: 마주한다
 url: /720
 ---
 

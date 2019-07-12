@@ -1,7 +1,7 @@
 ---
 title: '🎬 스타워즈: 라스트 제다이 Star Wars: The Last Jedi (2017)'
 date: 2017-12-30T17:09:28+00:00
-category: face
+category: 마주한다
 url: /659
 ---
 

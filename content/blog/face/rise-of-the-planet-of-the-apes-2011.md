@@ -1,7 +1,7 @@
 ---
 title: '🎬 혹성탈출: 진화의 시작 Rise of the Planet of the Apes (2011)'
 date: 2017-08-21T18:14:28+00:00
-category: face
+category: 마주한다
 url: /160
 ---
 

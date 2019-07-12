@@ -1,7 +1,7 @@
 ---
 title: 🎬 플로리다 프로젝트 The Florida Project (2017)
 date: 2018-03-19T09:50:23+00:00
-category: face
+category: 마주한다
 url: /679
 ---
 

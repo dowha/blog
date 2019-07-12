@@ -1,7 +1,7 @@
 ---
 title: 🎬 오션스8 Ocean’s 8 (2018)
 date: 2018-06-24T12:25:50+00:00
-category: face
+category: 마주한다
 url: /807
 ---
 

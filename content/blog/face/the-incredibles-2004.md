@@ -1,7 +1,7 @@
 ---
 title: 🎬 인크레더블 The Incredibles (2004)
 date: 2018-07-30T15:02:12+00:00
-category: face
+category: 마주한다
 url: /847
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: 🎬 더 랍스터 The Lobster (2015)
 date: 2018-07-26T14:39:10+00:00
-category: face
+category: 마주한다
 url: /841
 ---
 

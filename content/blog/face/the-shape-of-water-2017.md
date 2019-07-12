@@ -1,7 +1,7 @@
 ---
 title: '🎬 셰이프 오브 워터: 사랑의 모양 The Shape of Water (2017)'
 date: 2018-03-19T14:54:34+00:00
-category: face
+category: 마주한다
 url: /687
 ---
 

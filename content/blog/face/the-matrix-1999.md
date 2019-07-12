@@ -1,7 +1,7 @@
 ---
 title: 🎬 매트릭스 The Matrix (1999)
 date: 2018-09-02T15:25:52+00:00
-category: face
+category: 마주한다
 url: /885
 ---
 

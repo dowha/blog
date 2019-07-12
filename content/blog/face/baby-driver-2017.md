@@ -1,7 +1,7 @@
 ---
 title: 🎬 베이비 드라이버 Baby Driver (2017)
 date: 2017-09-25T12:46:55+00:00
-category: face
+category: 마주한다
 url: /610
 ---
 

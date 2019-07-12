@@ -1,7 +1,7 @@
 ---
 title: 🎬 오션스 일레븐 Ocean’s Eleven (2001)
 date: 2018-06-30T19:22:43+00:00
-category: face
+category: 마주한다
 url: /812
 ---
 

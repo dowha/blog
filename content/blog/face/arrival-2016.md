@@ -1,7 +1,7 @@
 ---
 title: 🎬 컨택트 Arrival (2016)
 date: 2019-03-10T08:33:28+00:00
-category: face
+category: 마주한다
 url: /14174
 ---
 
