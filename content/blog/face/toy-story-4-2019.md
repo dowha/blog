@@ -12,4 +12,4 @@ category: 마주한다
 
 ---
 
-토이 스토리 4 Toy Story 4 (2019) | 조시 쿨리 Josh Cooley | @SF Cinema Terminal21
+_토이 스토리 4 (Toy Story 4, 2019) | 조시 쿨리 Josh Cooley | @SF Cinema Terminal21_

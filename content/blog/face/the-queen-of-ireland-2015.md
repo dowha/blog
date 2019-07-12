@@ -9,4 +9,4 @@ url: /922
 
 ---
 
-아일랜드의 여왕 The Queen of Ireland (2015) | 코너 호건 Conor Horgan | @씨네큐브 광화문점
+_아일랜드의 여왕 (The Queen of Ireland, 2015) | 코너 호건 Conor Horgan | @씨네큐브 광화문점_

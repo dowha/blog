@@ -13,4 +13,4 @@ url: /743
 
 ---
 
-고스트버스터즈 Ghostbusters (2016) | 폴 페이그 Paul Feig | Youtube Movies
+_고스트버스터즈 (Ghostbusters, 2016) | 폴 페이그 Paul Feig | Youtube Movies_

@@ -9,4 +9,4 @@ url: /837
 
 ---
 
-상사에 대처하는 로맨틱한 자세 Set It Up (2018) | 클레어 스캔론 Claire Scanlon | VIA Netflix
+_상사에 대처하는 로맨틱한 자세 (Set It Up, 2018) | 클레어 스캔론 Claire Scanlon | VIA Netflix_

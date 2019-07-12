@@ -9,4 +9,4 @@ url: /720
 
 ---
 
-미니멀리즘: 비우는 사람들의 이야기 Minimalism: A Documentary About the Important Things (2015) | 맷 디아벨라 Matt DAvella | VIA Netflix
+_미니멀리즘: 비우는 사람들의 이야기 (Minimalism: A Documentary About the Important Things, 2015) | 맷 디아벨라 Matt DAvella | VIA Netflix_

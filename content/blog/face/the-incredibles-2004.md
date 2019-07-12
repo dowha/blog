@@ -9,4 +9,4 @@ url: /847
 
 ---
 
-인크레더블 The Incredibles (2004) | 브래드 버드 Brad Bird | VIA Netflix
+_인크레더블 (The Incredibles, 2004) | 브래드 버드 Brad Bird | VIA Netflix_

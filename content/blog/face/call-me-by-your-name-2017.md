@@ -9,4 +9,4 @@ url: /695
 
 ---
 
-콜 미 바이 유어 네임 Call Me by Your Name (2017) | 루카 구아다니노 Luca Guadagnino | @상상마당
+콜 미 바이 유어 네임 (Call Me by Your Name, 2017) | 루카 구아다니노 Luca Guadagnino | @상상마당

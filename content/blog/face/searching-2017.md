@@ -9,4 +9,4 @@ url: /903
 
 ---
 
-서치 Searching (2017) | 아니쉬 차간티 Aneesh Chaganty | @CGV신촌아트레온
+_서치 (Searching, 2017) | 아니쉬 차간티 Aneesh Chaganty | @CGV신촌아트레온_

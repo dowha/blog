@@ -9,4 +9,4 @@ url: /610
 
 ---
 
-베이비 드라이버 Baby Driver (2017) | 에드가 라이트 Edgar Wright | @롯데시네마합정
+_베이비 드라이버 (Baby Driver, 2017) | 에드가 라이트 Edgar Wright | @롯데시네마합정_

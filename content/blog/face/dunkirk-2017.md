@@ -10,4 +10,4 @@ url: /21
 
 ---
 
-덩케르크 Dunkirk (2017) | 크리스토퍼 놀란 Christopher Nolan | @CGV왕십리 아이맥스관
+_덩케르크 (Dunkirk, 2017) | 크리스토퍼 놀란 Christopher Nolan | @CGV왕십리 아이맥스관_

@@ -9,4 +9,4 @@ url: /880
 
 ---
 
-모아나 Moana (2016) | 론 클레멘츠 Ron Clements, 존 머스커 John Musker | VIA Netflix
+_모아나 (Moana, 2016) | 론 클레멘츠 Ron Clements, 존 머스커 John Musker | VIA Netflix_

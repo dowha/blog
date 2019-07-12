@@ -9,4 +9,4 @@ url: /679
 
 ---
 
-플로리다 프로젝트 The Florida Project (2017) | 션 베이커 Sean Baker | @CGV신촌아트레온
+_플로리다 프로젝트 (The Florida Project, 2017) | 션 베이커 Sean Baker | @CGV신촌아트레온_
