@@ -6,7 +6,7 @@ import { shareToTwitter, shareToFacebook } from '../../utils/share'
 import './index.scss'
 
 export const SocialShare = ({ title, author }) => {
-  const text = `"${title}" | ${author}`
+  const text = `${author}의 "${title}"를 공유합니다.`
 
   const onClickTwitterIcon = e => {
     e.preventDefault()
