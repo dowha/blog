@@ -1,5 +1,5 @@
 ---
-title: 🎬 아일랜드의 여왕 The Queen of Ireland (2015)
+title: 아일랜드의 여왕 (The Queen of Ireland, 2015)
 date: 2018-10-12T14:46:13+00:00
 category: 마주한다
 url: /922

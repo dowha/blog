@@ -1,5 +1,5 @@
 ---
-title: 🎬 콜 미 바이 유어 네임 Call Me by Your Name (2017)
+title: 콜 미 바이 유어 네임 (Call Me by Your Name, 2017)
 date: 2018-03-24T13:00:24+00:00
 category: 마주한다
 url: /695

@@ -1,5 +1,5 @@
 ---
-title: 🎬 서치 Searching (2017)
+title: 서치 (Searching, 2017)
 date: 2018-09-16T17:00:52+00:00
 category: 마주한다
 url: /903

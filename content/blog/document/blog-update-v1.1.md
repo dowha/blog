@@ -1,5 +1,5 @@
 ---
-title: Blog Update (ver.1.1)
+title: B블로그 업데이트 (ver.1.1)
 date: 2019-07-11 20:07:02
 category: 기록한다
 ---

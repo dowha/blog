@@ -1,5 +1,5 @@
 ---
-title: '📖 mori in progress: 까마귀의 모음 1집 (2017)'
+title: 'mori in progress: 까마귀의 모음 1집 (2017)'
 date: 2017-09-19T16:00:29+00:00
 category: 마주한다
 url: /549

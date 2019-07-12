@@ -1,5 +1,5 @@
 ---
-title: 🎬 내가 사랑했던 모든 남자들에게 To All The Boys I’ve Loved Before (2018)
+title: 내가 사랑했던 모든 남자들에게 (To All The Boys I’ve Loved Before, 2018)
 date: 2018-09-21T10:06:55+00:00
 category: 마주한다
 url: /907
