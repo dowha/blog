@@ -9,7 +9,9 @@ export const shareToFacebook = (href, text) => {
 
 export const shareToTwitter = (href, text) => {
   window.open(
-    `https://twitter.com/share?url=${encodeURI(encodeURI(href))}&text=${text}`,
+    `https://twitter.com/share?url=${encodeURI(
+      encodeURI(href)
+    )}&text=${text} @dowha_kim`,
     'sharer',
     'toolbar=0,status=0,width=626,height=436'
   )
