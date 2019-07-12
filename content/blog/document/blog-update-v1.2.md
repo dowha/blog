@@ -1,7 +1,7 @@
 ---
 title: 블로그 업데이트 (ver.1.2)
 date: 2019-07-12 22:07:90
-category: document
+category: 기록한다
 ---
 
 ## ver.1.2
@@ -26,11 +26,13 @@ category: document
 - [ ] 없는 페이지 Netlify redirect 설정(reviews.dowha.kim/\* 등)
 - [ ] 소셜미디어 공유 메타데이터 설정
 - [ ] .gitignore 설정 확인(/public 등)
+- [ ] 모바일 hover 효과 끄기
 
 ##### 메인페이지
 
 - [ ] title 변경 후 고정
 - [ ] 영어/한국어 언어 버튼 추가 및 페이지에 적용(i18n 플러그인)
+- [ ] 링크 타겟 정리 및 재설정
 
 ##### 블로그 페이지
 
