@@ -9,4 +9,4 @@ Ted Chiang의 원작 *<Story of Your Life>*를 워낙 재밌게 읽어서 영화
 
 ---
 
-컨택트 Arrival (2016) |&nbsp;드니 빌뇌브 Denis Villeneuve&nbsp;| VIA [Netflix](http://netflix.com){: target="\_blank"}
+컨택트 Arrival (2016) | 드니 빌뇌브 Denis Villeneuve | VIA Netflix

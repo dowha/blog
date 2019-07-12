@@ -9,4 +9,4 @@ url: /907
 
 ---
 
-내가 사랑했던 모든 남자들에게 To All The Boys I've Loved Before (2018) | 수잔 존슨 Susan Johnson | VIA [Netflix](http://netflix.com){: target="\_blank"}
+내가 사랑했던 모든 남자들에게 To All The Boys I've Loved Before (2018) | 수잔 존슨 Susan Johnson | VIA Netflix

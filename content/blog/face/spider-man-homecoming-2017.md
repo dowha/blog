@@ -9,4 +9,4 @@ url: /14170
 
 ---
 
-스파이더맨: 홈커밍 Spider-Man: Homecoming (2017) | 존 왓츠 Jon Watts | VIA [Netflix](http://netflix.com){: target="\_blank"}
+스파이더맨: 홈커밍 Spider-Man: Homecoming (2017) | 존 왓츠 Jon Watts | VIA Netflix
