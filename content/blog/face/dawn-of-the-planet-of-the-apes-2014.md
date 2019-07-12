@@ -13,8 +13,8 @@ _<혹성탈출 Planet of the Apes>_&nbsp;리부트 3부작 중 두 번째 편으
 
 할리우드 블록버스터로서의 충분한 재미와 이런 생각거리를 던져주는 *반격의 서막*이었지만 그럼에도 너무나 인간다운 유인원들을 보며 그렇다면 이 영화가 인간과 인간이 대립하는 다른 영화들과 다를 건 또 무언가 하는 생각이 자꾸 드는 건 어쩔 수 없었다.
 
-<p style="text-align:right">
-  <em>혹성탈출: 반격의 서막 Dawn of the Planet of the Apes (2014) | 맷 리브스 Matt Reeves | VIA <a rel="noreferrer noopener" href="https://www.youtube.com/channel/UClgRkhTL3_hImCAmdLfDE4g" target="_blank">YouTube Movies</a></em>
-</p>
+---
+
+혹성탈출: 반격의 서막 Dawn of the Planet of the Apes (2014) | 맷 리브스 Matt Reeves | VIA [Youtube Movies](https://www.youtube.com/channel/UClgRkhTL3_hImCAmdLfDE4g){: target="\_blank"}
 
 [1]: https://dowha.kim/160

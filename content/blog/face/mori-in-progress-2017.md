@@ -21,13 +21,9 @@ url: /549
 
 아니면 같이 여행을 떠나는 기분으로 이 책을 읽어도 좋겠다. &#8216;베를린으로 간다&#8217;는 첫 문장에 몸을 같이 실어 3D 지도와 좁은 이코노미석을 떠올려도 보고, 같이 짜증도 내보고, 웃어도 보면 출국부터 귀국까지 한 달간 글쓴이가 보낸 시간에 몸담을 수 있을 것이다.
 
-마지막에 B-side란 이름 아래 붙어있는 소설을 어떻게 읽으면 좋겠냐고 글쓴이가 개인적으로 물어보기도 했는데 그냥 이 책에 실려있는 순서대로, 제일 마지막에 읽는 것이 좋겠다는 생각을 했다. 밀크커피나, 약을 파는 남자나, 포스터 같은 것들에서 방금 읽었던 베를린에서의 한 달과 글쓴이의 목소리 같은 게 어렴풋이 떠오르는 것이 재밌기도 해서 소설을 읽기에 더 좋았다.**  
-** 
+마지막에 B-side란 이름 아래 붙어있는 소설을 어떻게 읽으면 좋겠냐고 글쓴이가 개인적으로 물어보기도 했는데 그냥 이 책에 실려있는 순서대로, 제일 마지막에 읽는 것이 좋겠다는 생각을 했다. 밀크커피나, 약을 파는 남자나, 포스터 같은 것들에서 방금 읽었던 베를린에서의 한 달과 글쓴이의 목소리 같은 게 어렴풋이 떠오르는 것이 재밌기도 해서 소설을 읽기에 더 좋았다.\*\*  
+\*\*
 
-<p style="text-align:right">
-  <em>&nbsp;mori in progress: 까마귀의 모음 1집 (2017) | <a href="https://moriiapt.wordpress.com" target="_blank" rel="noreferrer noopener">임유청</a></em>
-</p>
+---
 
-<div class="wp-block-button aligncenter is-style-outline">
-  <a class="wp-block-button__link has-background has-gray-background-color" href="https://moriiapt.wordpress.com/2017/09/22/판매를-시작합니다/" target="_blank" rel="noopener noreferrer">구매 링크<br /></a>
-</div>
+mori in progress: 까마귀의 모음 1집 (2017) | [임유청](https://moriiapt.wordpress.com){: target="\_blank"} | [구매 링크](https://moriiapt.wordpress.com/2017/09/22/판매를-시작합니다/){: target="\_blank"}

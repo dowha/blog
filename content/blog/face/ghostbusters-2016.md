@@ -11,6 +11,6 @@ url: /743
 
 이번 영화에선 아마 네 명의 매력적인 캐릭터들을 고루 보여주느라 어쩔 수 없이 개성 있는 가젯들은 많이 보여주지 못했던 것 같은데 개인적으로 2편에서는 가젯들이 이번엔 좀 더 다양하게 많이 나왔으면 더 좋겠고 그럴 것 같다.
 
-<p style="text-align:right">
-  <em>고스트버스터즈 Ghostbusters (2016) | 폴 페이그 Paul Feig | VIA <a rel="noreferrer noopener" href="https://www.youtube.com/channel/UClgRkhTL3_hImCAmdLfDE4g" target="_blank">YouTube Movies</a><br /></em>
-</p>
+---
+
+고스트버스터즈 Ghostbusters (2016) | 폴 페이그 Paul Feig | VIA [Youtube Movies](https://www.youtube.com/channel/UClgRkhTL3_hImCAmdLfDE4g){: target="\_blank"}

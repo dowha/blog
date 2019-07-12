@@ -7,6 +7,6 @@ url: /919
 
 2018년 이 순간을 살고있는 여러 닉네임들의 이야기 조각.
 
-<p style="text-align:right">
-  <em>알려지지 않은 예술가의 눈물과 자이툰 파스타 (2018) | 박상영</em><em>&nbsp;| 문학동네 | VIA&nbsp;<a href="http://ridibooks.com" target="_blank" rel="noreferrer noopener">RIDIBOOKS</a></em>
-</p>
+---
+
+알려지지 않은 예술가의 눈물과 자이툰 파스타 (2018) | 박상영 | 문학동네 | VIA [RIDIBOOKS](http://ridibooks.com){: target="\_blank"}

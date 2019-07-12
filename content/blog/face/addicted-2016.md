@@ -15,6 +15,4 @@ tags:
 
 세상에 이런 사랑이 있을까. 비현실적이지만 그래서 더 절절하기도 하다.
 
-<p style="text-align:right">
-  <em>상은 你丫上瘾了? (2016) | 차이지단 柴鸡蛋 | 십자열쇠연맹 옮김 | 비원 | VIA <a rel="noreferrer noopener" href="https://ridibooks.com/" target="_blank">RIDIBOOKS</a></em>
-</p>
+상은 你丫上瘾了? (2016) | 차이지단 柴鸡蛋 | 십자열쇠연맹 옮김 | 비원 | VIA [RIDIBOOKS](http://ridibooks.com){: target="\_blank"}

@@ -11,6 +11,6 @@ url: /160
 
 리부트 시리즈의 첫 편인 이 영화는 빠른 속도로 진행되며 사람들이 쉽게 따라갈 수 있게 만들어 오락 영화로도 충분한 것 같지만, 뒤의 시리즈로 갈수록 좀 더 철학적인 고민을 하게 된다고 하니 더욱 기대하면서 다음 편들도 볼 수 있을 것 같다. 아, 뒤의 내용을 대충 알고 있으니 영화를 보면서 &#8216;기침을 할 때 팔뚝으로 막는 에티켓은 기본 아닙니까!!!&#8217;하는 생각이 계속 들었다. 우리 모두 기침이나 재채기로 바이러스를 전파하지 않는 문명인이 됩시다.
 
-<p style="text-align:right">
-  <em>혹성탈출: 진화의 시작 Rise of the Planet of the Apes (2011) | 루퍼트 와이어트 Rupert Wyatt | VIA <a rel="noreferrer noopener" href="https://www.youtube.com/channel/UClgRkhTL3_hImCAmdLfDE4g" target="_blank">YouTube Movies</a></em>
-</p>
+---
+
+혹성탈출: 진화의 시작 Rise of the Planet of the Apes (2011) | 루퍼트 와이어트 Rupert Wyatt | VIA [Youtube Movies](https://www.youtube.com/channel/UClgRkhTL3_hImCAmdLfDE4g){: target="\_blank"}

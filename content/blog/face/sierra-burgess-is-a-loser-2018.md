@@ -1,5 +1,5 @@
 ---
-title: 시에라 연애 대작전 (Sierra Burgess Is a Loser, 2018)
+title: 시에라 연애 대작전 (Sierra Burgess Is a Loser, ㄴ2018)
 date: 2018-09-21T13:13:24+00:00
 category: 마주한다
 url: /912
@@ -9,8 +9,8 @@ url: /912
 
 아, 노아 센티아노(Noah Centineo) 배우는 두 편의 영화로 완전히 로맨틱코미디 영화계의 샛별을 넘어 스타로 등극한 것 같다.
 
-<p style="text-align:right">
-  <em>시에라 연애 대작전 Sierra Burgess Is a Loser (2018) | 이안 사무엘스 Ian Samuels |&nbsp;VIA&nbsp;<a href="http://netflix.com" target="_blank" rel="noreferrer noopener">Netflix</a></em>
-</p>
+---
+
+시에라 연애 대작전 Sierra Burgess Is a Loser (2018) | 이안 사무엘스 Ian Samuels | VIA [Netflix](http://netflix.com){: target="\_blank"}
 
 [1]: https://dowha.kim/907

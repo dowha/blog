@@ -10,7 +10,6 @@ category: 마주한다
 
 사람마다 시리즈 속에서 다른 캐릭터를 좋아할 텐데 늘 '우디'와 '버즈'에겐 정이 별로 가지 않았던 나는 새로운 성격과 모습으로 나온 '보 핍'이 참 경쾌하고 좋았다. 처음으로 이 시리즈에서 제일 좋아하는 캐릭터로 꼽을 수 있을 것 같다. 눈물을 흘리진 않았지만, 감동도 있었고 중간중간 정말 많이 웃으면서 본 영화였다.
 
-<p style="text-align:right">
-  <em><em>토이 스토리 4 Toy Story 4 (2019) | 조시 쿨리
-Josh Cooley</em><em>&nbsp;|&nbsp;</em>@SF Cinema Terminal21</em>
-</p>
+---
+
+토이 스토리 4 Toy Story 4 (2019) | 조시 쿨리 Josh Cooley | @SF Cinema Terminal21
