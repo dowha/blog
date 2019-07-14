@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import AdSense from 'react-adsense'
 import { graphql } from 'gatsby'
 
 import * as Elements from '../components/elements'
@@ -37,6 +38,14 @@ export default ({ data, pageContext, location }) => {
         <SponsorButton sponsorId={sponsor.buyMeACoffeeId} />
       )}
       <Elements.Hr />
+      <AdSense.Google
+        client="ca-pub-7292810486004926"
+        slot="7806394673"
+        style={{ display: 'block' }}
+        format="auto"
+        responsive="true"
+        layoutKey="-gw-1+2a-9x+5c"
+      />
       <Bio />
       <PostNavigator pageContext={pageContext} />
       {!!disqusShortName && (
@@ -47,18 +56,7 @@ export default ({ data, pageContext, location }) => {
           slug={pageContext.slug}
         />
       )}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-              <script>
-                (adsbygoogle = window.adsbygoogle || []).push({
-                  google_ad_client: "ca-pub-9493475755258000",
-                  enable_page_level_ads: true
-                });
-              </script>`,
-        }}
-      />
-      `{!!utterances && <Utterences repo={utterances} />}
+      {!!utterances && <Utterences repo={utterances} />}
     </Layout>
   )
 }
