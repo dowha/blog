@@ -33,19 +33,19 @@ export default ({ data, pageContext, location }) => {
       <Head title={post.frontmatter.title} description={post.excerpt} />
       <PostTitle title={post.frontmatter.title} />
       <PostContainer html={post.html} />
+      <AdSense.Google
+        client="ca-pub-9493475755258000"
+        slot="5764482574"
+        style={{ display: 'block' }}
+        layout="in-article"
+        format="fluid"
+      />
       <SocialShare title={post.frontmatter.title} author={author} />
       {!!sponsor.buyMeACoffeeId && (
         <SponsorButton sponsorId={sponsor.buyMeACoffeeId} />
       )}
       <Elements.Hr />
-      <AdSense.Google
-        client="ca-pub-9493475755258000"
-        slot="5764482574"
-        style={{ display: 'block' }}
-        format="auto"
-        responsive="true"
-        layoutKey="-gw-1+2a-9x+5c"
-      />
+
       <Bio />
       <PostNavigator pageContext={pageContext} />
       {!!disqusShortName && (
