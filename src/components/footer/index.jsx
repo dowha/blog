@@ -9,5 +9,4 @@ export const Footer = () => (
       Gatsby-starter-bee
     </a>
   </footer>
-  <div dangerouslySetInnerHTML={createMarkup()} />
 )
