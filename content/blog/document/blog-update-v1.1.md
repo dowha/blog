@@ -6,7 +6,7 @@ category: 기록한다
 
 ## ver.1.1
 
-블로그 페이지를 blog.dowha.kim 서브도메인으로 분리해서 연결하고 메인 페이지를 따로 구축했다. 그리고 Netlify에서 제공하는 기본 주소들은 gatsby-plugin-netlify 플러그인을 설치해서 만든 \_redirects 파일을 통해 dowha.kim 도메인으로만 연결되도록 설정했다.
+블로그 페이지를 blog.dowha.kim 서브도메인으로 분리해서 연결하고 메인 페이지를 따로 구축했다. 그리고 Netlify에서 제공하는 기본 주소들은 `gatsby-plugin-netlify` 플러그인을 설치해서 만든 \_redirects 파일을 통해 dowha.kim 도메인으로만 연결되도록 설정했다.
 
 ---
 
