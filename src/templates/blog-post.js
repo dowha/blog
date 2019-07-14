@@ -40,7 +40,8 @@ export default ({ data, pageContext, location }) => {
       <AdSense.Google
         client="ca-pub-9493475755258000"
         slot="5764482574"
-        style={{ display: 'block' }}
+        style={{ display: 'block'
+        ;min-width:400px;max-width:970px;width:100%;height:90px" }}
         layout="in-article"
         format="auto"
         responsive="true"
