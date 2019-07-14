@@ -42,7 +42,9 @@ export default ({ data, pageContext, location }) => {
         slot="5764482574"
         style={{ display: 'block' }}
         layout="in-article"
-        format="fluid"
+        format="auto"
+        responsive="true"
+        layoutKey="-gw-1+2a-9x+5c"
       />
       <Elements.Hr />
 
