@@ -39,8 +39,8 @@ export default ({ data, pageContext, location }) => {
       )}
       <Elements.Hr />
       <AdSense.Google
-        client="ca-pub-7292810486004926"
-        slot="7806394673"
+        client="ca-pub-9493475755258000"
+        slot="5764482574"
         style={{ display: 'block' }}
         format="auto"
         responsive="true"
