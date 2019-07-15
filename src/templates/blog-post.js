@@ -44,7 +44,6 @@ export default ({ data, pageContext, location }) => {
         layout="in-article"
         format="auto"
         responsive="true"
-        layoutKey="-gw-1+2a-9x+5c"
       />
       <Elements.Hr />
 
