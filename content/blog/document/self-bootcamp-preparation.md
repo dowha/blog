@@ -26,6 +26,8 @@ category: 기록한다
 
 ##### 앞으로의 계획
 
-- [ ] HTML
-- [ ] CSS
-- [ ] Javascript
+- [ ] [도서] Do it! HTML+CSS 훑기 - 7/25 월
+- [ ] [도서] JavaScript: The Definitive Guide 서문, 1장, 2장 읽기 - 7/26 화
+- [ ] [도서] JavaScript: The Definitive Guide의 3장과 4장 읽기 - 7/27 수
+- [ ] [도서] JavaScript: The Definitive Guide의 5장 읽기 - 7/28 목
+- [ ] [아티클] [JavaScript Objects in Detail](http://javascriptissexy.com/javascript-objects-in-detail/) 읽기 - 7/29 금
