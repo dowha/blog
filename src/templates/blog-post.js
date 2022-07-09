@@ -34,17 +34,6 @@ export default ({ data, pageContext, location }) => {
       <PostTitle title={post.frontmatter.title} />
       <PostContainer html={post.html} />
       <SocialShare title={post.frontmatter.title} author={author} />
-      {!!sponsor.buyMeACoffeeId && (
-        <SponsorButton sponsorId={sponsor.buyMeACoffeeId} />
-      )}
-      <AdSense.Google
-        client="ca-pub-9493475755258000"
-        slot="5764482574"
-        style={{ display: 'block' }}
-        layout="in-article"
-        format="auto"
-        responsive="true"
-      />
       <Elements.Hr />
 
       <Bio />
@@ -72,9 +61,6 @@ export const pageQuery = graphql`
         comment {
           disqusShortName
           utterances
-        }
-        sponsor {
-          buyMeACoffeeId
         }
       }
     }
