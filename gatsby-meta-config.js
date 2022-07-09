@@ -8,7 +8,7 @@ module.exports = {
     twitter: `Dowha_Kim`, // Your Twitter account
     github: `dowha`, // Your GitHub account
     medium: ``, // Your Medium account
-    facebook: `kimdowha`, // Your Facebook account
+    facebook: ``, // Your Facebook account
   },
   icon: `content/assets/dowha-blog.png`, // Add your favicon
   keywords: [`blog`],
