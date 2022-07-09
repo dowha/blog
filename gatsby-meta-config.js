@@ -2,7 +2,7 @@ module.exports = {
   title: `파도는 멈추지 않고,`,
   description: `Dowha Kim's blog containing various articles. `,
   author: `Dowha`,
-  introduction: `A conntent marketer of JANDI(Toss Lab, Inc.).`,
+  introduction: `다능인(Multipotentialite)이고 싶은 제너럴리스트`,
   siteUrl: `https://blog.dowha.kim`, // Your blog site url
   social: {
     twitter: `Dowha_Kim`, // Your Twitter account
