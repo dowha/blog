@@ -15,7 +15,7 @@ url: /13748
 
 고민만 하고 있다간 아무것도 되지 않을 것 같아 일단 한번 도전해보려 한다. 매일 아침 평소보다 일찍 일어나 오전 7시 30분부터 8시 30분까지 한 시간을 개발 공부에 쓸 것이다. 부디 지치지 않고 즐겁게 해나갈 수 있으면 좋겠다. 그리고 이 개인적인 노력이 활기찬 삶을 사는 것은 물론이고 지금 직장의 업무에도 긍정적인 영향을 미칠 수 있길 바란다.
 
-덧붙이자면, 1~2년 전쯤 내가 개발을 하면 잘할 것이라고 말해준 웹 기획자 친구 J의 말, 어설프지만 15년 넘게 개인 홈페이지를 운영하며 야매(?)로 html/css를 만져서 문제를 해결해온 사실, 친구들과 같이 진행했던 <a href="http://mike-project.com/mwindex1516/" target="_blank" rel="noreferrer noopener" aria-label="프로젝트 (opens in a new tab)">프로젝트</a>의 즐거움, 일단 도전해보면 좋을 거 같다고 말해준 친구 P의 응원 같은 것들이 이 시작에 큰 도움이 됐다. 즐겁게 공부하고 그 과정을 아래와 같이 기록으로 남길 것이다.
+덧붙이자면, 1~2년 전쯤 내가 개발을 하면 잘할 것이라고 말해준 웹 기획자 친구 J의 말, 어설프지만 15년 넘게 개인 홈페이지를 운영하며 야매(?)로 html/css를 만져서 문제를 해결해온 사실, 친구들과 같이 진행했던 [프로젝트](https://snpo.kr/bbs/board.php?bo_table=meetshare_prj&wr_id=88)의 즐거움, 일단 도전해보면 좋을 거 같다고 말해준 친구 P의 응원 같은 것들이 이 시작에 큰 도움이 됐다. 즐겁게 공부하고 그 과정을 아래와 같이 기록으로 남길 것이다.
 
 오늘 하루, 내가 개발과 관련해 배우거나 한 일에 대해 회고하는 **TIL(Today I Learned)** 게시물은 <a rel="noreferrer noopener" aria-label="초코몽키 (opens in a new tab)" href="https://wayhome25.github.io" target="_blank">초코몽키</a>님의 '<a rel="noreferrer noopener" aria-label="6개월간의 TIL 회고 (꾸준히 하면 좋은 일이 생긴다) (opens in a new tab)" href="https://wayhome25.github.io/til/2017/08/14/TIL-for-6-months/" target="_blank">6개월간의 TIL 회고 (꾸준히 하면 좋은 일이 생긴다)</a>' 글에서 많은 영감을 받았고 작성 포맷도 빌려왔다. 누군가의 꾸준함이 기록과 만난 결과물을 보면 항상 고무(inspiring)된다.
 
