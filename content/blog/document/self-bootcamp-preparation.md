@@ -19,12 +19,14 @@ category: 기록한다
 - [x] 개발 서적 스캔(PDF)
 - [x] 아이패드 거치대 구매
 - [x] 공부 기록을 위한 블로그 업데이트 
-- [x] 성냥 님의 '생존형 개발자 성냥의 불친절한 코딩 이야기' - <a href="https://pod.link/1538459608/episode/777f9af6908b4ad5a518deb28ec19340" target="_blank">'32회. 자바스크립트의 역사와 ECMAScript 2022(ES13) 엿보기, 그리고 서로 닮아가는 언어들에 대해 1'</a> 듣기
+- [x] 성냥 님의 ['생존형 개발자 성냥의 불친절한 코딩 이야기'](https://pod.link/1538459608/) - '자바스크립트의 역사와 ECMAScript 2022(ES13) 엿보기, 그리고 서로 닮아가는 언어들에 대해'</a> 1~5편 듣기
 - [x] 서버와 웹서버 개념 검색하고 읽기
-- [x] 자바스크립트 동작 원리 검색하고 읽기
-    - [x] toy-crane 님의 <a href="https://blog.toycrane.xyz/%EC%A7%84%EC%A7%9C-%EC%89%BD%EA%B2%8C-%EC%95%8C%EC%95%84%EB%B3%B4%EB%8A%94-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%AC-c7fbdc44cc97" target="_blank">'진짜! 쉽게 알아보는 자바스크립트 동작 원리'</a>
-    - [x] namezin 님의 <a href="https://velog.io/@namezin/javascript-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%AC" target="_blank">'javascript 동작 원리'</a>
-- [x] 임성묵 님의 '자바스크립트는 왜 프로토타입을 선택했을까' 읽기
+- [x] 자바스크립트 동작 원리 검색하고 알아보기
+    - [x] toy-crane 님의 ['진짜! 쉽게 알아보는 자바스크립트 동작 원리'](https://blog.toycrane.xyz/%EC%A7%84%EC%A7%9C-%EC%89%BD%EA%B2%8C-%EC%95%8C%EC%95%84%EB%B3%B4%EB%8A%94-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%AC-c7fbdc44cc97)
+    - [x] namezin 님의 ['javascript 동작 원리'](https://velog.io/@namezin/javascript-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%A)
+    - [ ] JSConf EU의 ['어쨌든 이벤트 루프는 무엇입니까?'](https://youtu.be/8aGhZQkoFbQ)
+    - [ ] JSUnconf의 ['JavaScript로 함수형 프로그래밍 배우기'](https://youtu.be/e-5obm1G_FY)
+- [ ] 임성묵 님의 ['자바스크립트는 왜 프로토타입을 선택했을까'](https://medium.com/@limsungmook/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%8A%94-%EC%99%9C-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85%EC%9D%84-%EC%84%A0%ED%83%9D%ED%96%88%EC%9D%84%EA%B9%8C-997f985adb42) 읽기
 
 ##### 앞으로의 계획
 
@@ -34,7 +36,7 @@ category: 기록한다
 - [ ] <JavaScript: The Definitive Guide> 서문, 1장, 2장 읽기 - 7/26 화
 - [ ] <JavaScript: The Definitive Guide>의 3장과 4장 읽기 - 7/27 수
 - [ ] <JavaScript: The Definitive Guide>의 5장 읽기 - 7/28 목
-- [ ] [아티클] <a href="http://javascriptissexy.com/javascript-objects-in-detail/" target="_blank">'JavaScript Objects in Detail'</a> 읽기 - 7/29 금
+- [ ] [아티클] ['JavaScript Objects in Detail'](http://javascriptissexy.com/javascript-objects-in-detail/) 읽기 - 7/29 금
 
 ##### 준비하는데 참고하고 도움이 된 것들
 
