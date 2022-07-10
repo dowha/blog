@@ -14,15 +14,11 @@ category: 기록한다
 
 ---
 
-##### 마음의 준비
+##### 준비의 준비
 
 - [x] 개발 서적 스캔(PDF)
 - [x] 아이패드 거치대 구매
 - [x] 공부 기록을 위한 블로그 업데이트 
-
-##### 준비하는데 도움이 된 것들
-
-- [ ] ?
 
 ##### 앞으로의 계획
 
@@ -31,3 +27,43 @@ category: 기록한다
 - [ ] [도서] JavaScript: The Definitive Guide의 3장과 4장 읽기 - 7/27 수
 - [ ] [도서] JavaScript: The Definitive Guide의 5장 읽기 - 7/28 목
 - [ ] [아티클] <a href="http://javascriptissexy.com/javascript-objects-in-detail/" target="_blank">JavaScript Objects in Detail</a> 읽기 - 7/29 금
+
+##### 준비하는데 참고하고 도움이 된 것들
+
+- daun 님의 '모든 것이 되는 법' 정리 - <a href="https://community.applepie.pro/t/topic/21" target="_blank">'여러가지 일을 할 수 있다는 건 애매한 게 아니다'</a>
+- 기계인간 님의 <a href="https://johngrib.github.io/wiki/my-study-method/" target="_blank">'나의 공부 방법'</a>
+    - **책으로 공부하기**
+    - 블로그, 웹 문서 등은 공부하는 기분만 들고 유튜브로는 학습에 성공한 적이 없음
+    - 읽고 있는 책의 모든 챕터를 체크 리스트 형태로 만들고 체크하기
+- Sigrid Jin 님의 <a href="https://brunch.co.kr/@jypthemiracle/14" target="_blank">[번역] 개발 배우기가 정말 어려운 이유</a>
+    - '혼돈의 카오스', 이 단계는 모두에게 고통을 준다
+    - 진정으로 개발자로 커리어를 만들어 갈 준비가 된 사람은 혼돈의 카오스 단계에서 살아남는 것이 인생의 새로운 반환점이 됨
+    - 학습해야 할 내용은 일주일이나 한 달 안에 끝낼 수 있는 것이 아니고 한 학기 수업을 듣는다고 배울 수 있는 것도 아님
+    - 끈기와 올바른 방향을 계속 가지고 갔을 때 비로소 세상에 내놓을 만한 몇 안되는 프로덕트를 만들 수 있을 것이고, 그 즈음 되면 '이제 정말 시작했다'고 말할 수 있을 것
+    - 단계별 살아남는 법
+        - 1단계: 1) 다양한 콘텐츠로 시작하고, 2) 잘 맞다고 생각하는 콘텐츠 하나에 집중해 처음부터 끝까지 듣고, 3) 스스로 만드는 연습하기 
+        - 2단계: 1) 다른 사람과 함께하고, 2) 다른 사람의 코드를 읽고, 3) 작은 것으로 시작하고 계속해서 만들어보기
+- 송요창 님의 <a href="https://medium.com/@totuworld/%EB%AC%B4%EB%A9%B4%ED%97%88-%EB%B9%84%EC%A0%84%EA%B3%B5%EC%97%90-it%EA%B8%B0%EC%97%85-%EB%8B%A4%EB%8B%88%EB%8A%94-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8-%EC%9D%B4%EC%95%BC%EA%B8%B0-d060931a88b1" target="_blank">'무면허 비전공에 IT기업 다니는 프로그래머 이야기'</a>
+    - 비전공, 알고리즘, 코딩테스트 등에 눌려서 스스로 작아지지말고 당당하게 시작하라
+- 운체조교 님의 <a href="https://okky.kr/article/1261756" target="_blank"> '기술력을 갖고 싶다면: 코딩을 겁나 하세요.'</a>
+    - “겁나 코딩을 많이 해야” 기술력을 쌓을 수 있음
+    - 꼭 저수준의 프로그래밍을 해봐야 함
+- 조은 님의 <a href="https://euncho.medium.com/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%ED%95%99%EC%8A%B5-%EB%A1%9C%EB%93%9C%EB%A7%B5-91c3bc11dec0" target="_blank">'프론트엔드 학습 로드맵 - 2022년에 프론트엔드 배우기'</a>
+    - Jira 나 Asana 사용해보기
+    - Git과 GitHub를 미리 학습해두기
+    - React & Next 튜토리얼 따라하기
+    - 자바스크립트 기본 모던 JavaScript 튜토리얼을 통해 공부하기
+        - 중요 내용: 1) 자바스크립트 기본, 2) 코드 품질, 3) 객체: 기본, 4) 자료구조와 자료형, 5) 함수 심화학습, 6) 에러 핸들링, 7) 프라미스와 async, await, 8) 모듈
+    -  Next 커머스 데모 UI 따라하기
+    - 모던 JavaScript 튜토리얼 파트 2 읽고 이해하기
+- 성냥 님의 '생존형 개발자 성냥의 불친절한 코딩 이야기'
+    - <a href="https://pod.link/1538459608/episode/777f9af6908b4ad5a518deb28ec19340" target="_blank">32회. 자바스크립트의 역사와 ECMAScript 2022(ES13) 엿보기, 그리고 서로 닮아가는 언어들에 대해 1</a>
+    - <a href="https://pod.link/1538459608/episode/688c70ddced6d2e8f2dfff4fa687c9c4" target="_blank">40회. (청취자 사연) 범람하는 코딩 부트캠프의 참여와 선택에 대해… 일단결론부터편</a>
+- 박찬성 님의 <a href="http://ch.yes24.com/Article/View/51139" target="_blank">'사이드 프로젝트를 통한 성장'</a>
+    - 사이드 프로젝트 라이프 사이클
+        - 1) 아이디어 기획, 2) 핵심 기능 프로토타이핑, 3) 세부 구현, 4) 정리 및 브레인스토밍, 5) 홍보 및 1번으로 돌아가기
+    - '지속성'은 매우 중요
+    - 완성된 결과물로 '가능한 무언가'에 중점을 두는 것이 현실적인 목표를 세우기 좋음
+- zwoo 님의 <a href="https://yozm.wishket.com/magazine/detail/1535/" target="_blank">개발자가 블로그를 운영하면 좋은 점</a>
+    - TIL을 쓸 때 여러 의문을 제기해보기
+        공부하면서 생기는 호기심을 모두 쏟아내 보기
