@@ -56,7 +56,7 @@ category: 기록한다
 #### 준비하는데 참고하고 도움이 된 것들
 
 - daun 님의 <모든 것이 되는 법> 정리 - <a href="https://community.applepie.pro/t/topic/21" target="_blank">'여러가지 일을 할 수 있다는 건 애매한 게 아니다'</a>
-- 놀부 님의 [자바스크립트 제대로 배우기](https://nolboo.kim/blog/2014/03/13/how-to-learn-javascript-properly/)
+- 놀부 님의 ['[번역] 자바스크립트 제대로 배우기'](https://nolboo.kim/blog/2014/03/13/how-to-learn-javascript-properly/)
 - 기계인간 님의 <a href="https://johngrib.github.io/wiki/my-study-method/" target="_blank">'나의 공부 방법'</a>
     - 책으로 공부하기
     - 블로그, 웹 문서 등은 공부하는 기분만 들고 유튜브로는 학습에 성공한 적이 없음
