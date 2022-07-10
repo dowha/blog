@@ -26,13 +26,15 @@ category: 기록한다
     - [x] namezin 님의 ['javascript 동작 원리'](https://velog.io/@namezin/javascript-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%A)
     - [ ] JSConf EU의 ['어쨌든 이벤트 루프는 무엇입니까?'](https://youtu.be/8aGhZQkoFbQ)
     - [ ] JSUnconf의 ['JavaScript로 함수형 프로그래밍 배우기'](https://youtu.be/e-5obm1G_FY)
+    - [ ] Lydia Hallie 님의 ['JavaScript Visualized Series'](https://dev.to/lydiahallie/series/3341)
 - [ ] 임성묵 님의 ['자바스크립트는 왜 프로토타입을 선택했을까'](https://medium.com/@limsungmook/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%8A%94-%EC%99%9C-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85%EC%9D%84-%EC%84%A0%ED%83%9D%ED%96%88%EC%9D%84%EA%B9%8C-997f985adb42) 읽기
 
 ##### 앞으로의 계획
 
 - [ ] <Do it! HTML+CSS> 훑기
 - [ ] ['React 튜토리얼'](https://ko.reactjs.org/tutorial/tutorial.html) 따라하기
-- [ ] ['Next 튜토리얼'](https://nextjs.org/learn/foundations/about-nextjs) 따라하기 
+- [ ] ['Next 튜토리얼'](https://nextjs.org/learn/foundations/about-nextjs) 따라하기
+- [ ] <Do it! 지옥에서 온 문서 관리자 깃&깃허브 입문> 읽기
 - [ ] <JavaScript: The Definitive Guide> 서문, 1장, 2장 읽기 - 7/26 화
 - [ ] <JavaScript: The Definitive Guide>의 3장과 4장 읽기 - 7/27 수
 - [ ] <JavaScript: The Definitive Guide>의 5장 읽기 - 7/28 목
