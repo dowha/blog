@@ -18,7 +18,9 @@ category: 기록한다
 
 - [x] 개발 서적 스캔(PDF)
 - [x] 아이패드 거치대 구매
-- [x] 공부 기록을 위한 블로그 업데이트 
+- [x] 공부 기록을 위한 블로그 업데이트
+    - [x] 구글 애드센스, buymecoffee 배너 삭제하기
+- [x] 터미널(iTerm2) 및 Visual Studio Code 세팅 및 플러그인 설치
 
 #### 준비의 준비
 
@@ -46,6 +48,7 @@ category: 기록한다
 - [ ] ['Next 튜토리얼'](https://nextjs.org/learn/foundations/about-nextjs) 따라하기
 - [ ] <Do it! 지옥에서 온 문서 관리자 깃&깃허브 입문> 읽기
 - [ ] <JavaScript: The Definitive Guide> 서문, 1장, 2장 읽기 - 7/26 화
+- [ ] Codecademy의 자바스크립트 트랙 중 ['Introduction to JavaScript'](https://www.codecademy.com/learn/introduction-to-javascript) 섹션 공부
 - [ ] <JavaScript: The Definitive Guide>의 3장과 4장 읽기 - 7/27 수
 - [ ] <JavaScript: The Definitive Guide>의 5장 읽기 - 7/28 목
 - [ ] ['JavaScript Objects in Detail'](http://javascriptissexy.com/javascript-objects-in-detail/) 읽기 - 7/29 금
@@ -53,6 +56,7 @@ category: 기록한다
 #### 준비하는데 참고하고 도움이 된 것들
 
 - daun 님의 <모든 것이 되는 법> 정리 - <a href="https://community.applepie.pro/t/topic/21" target="_blank">'여러가지 일을 할 수 있다는 건 애매한 게 아니다'</a>
+- 놀부 님의 [자바스크립트 제대로 배우기](https://nolboo.kim/blog/2014/03/13/how-to-learn-javascript-properly/)
 - 기계인간 님의 <a href="https://johngrib.github.io/wiki/my-study-method/" target="_blank">'나의 공부 방법'</a>
     - 책으로 공부하기
     - 블로그, 웹 문서 등은 공부하는 기분만 들고 유튜브로는 학습에 성공한 적이 없음
