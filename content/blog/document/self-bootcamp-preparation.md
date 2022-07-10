@@ -14,13 +14,13 @@ category: 기록한다
 
 ---
 
-### 준비의 준비의 준비
+#### 준비의 준비의 준비
 
 - [x] 개발 서적 스캔(PDF)
 - [x] 아이패드 거치대 구매
 - [x] 공부 기록을 위한 블로그 업데이트 
 
-### 준비의 준비
+#### 준비의 준비
 
 - [ ] 프로그래밍 언어 작동 원리 알아보기
     - [ ] Frame of Essence의 ['How do computers read code?'](https://youtu.be/QXjU9qTsYCc)
@@ -39,7 +39,7 @@ category: 기록한다
     - [ ] 파트1. 코어 자바스크립트 - 소개 - [1.1 자바스크립트란?](https://ko.javascript.info/intro)
     - [ ] 파트1. 코어 자바스크립트 - 소개 - [1.2 매뉴얼과 명세서](https://ko.javascript.info/manuals-specifications)
 
-### 앞으로의 계획
+#### 앞으로의 계획
 
 - [ ] <Do it! HTML+CSS> 훑기
 - [ ] ['React 튜토리얼'](https://ko.reactjs.org/tutorial/tutorial.html) 따라하기
@@ -50,7 +50,7 @@ category: 기록한다
 - [ ] <JavaScript: The Definitive Guide>의 5장 읽기 - 7/28 목
 - [ ] ['JavaScript Objects in Detail'](http://javascriptissexy.com/javascript-objects-in-detail/) 읽기 - 7/29 금
 
-### 준비하는데 참고하고 도움이 된 것들
+#### 준비하는데 참고하고 도움이 된 것들
 
 - daun 님의 <모든 것이 되는 법> 정리 - <a href="https://community.applepie.pro/t/topic/21" target="_blank">'여러가지 일을 할 수 있다는 건 애매한 게 아니다'</a>
 - 기계인간 님의 <a href="https://johngrib.github.io/wiki/my-study-method/" target="_blank">'나의 공부 방법'</a>
