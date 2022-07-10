@@ -38,7 +38,7 @@ category: 기록한다
 - [ ] <JavaScript: The Definitive Guide> 서문, 1장, 2장 읽기 - 7/26 화
 - [ ] <JavaScript: The Definitive Guide>의 3장과 4장 읽기 - 7/27 수
 - [ ] <JavaScript: The Definitive Guide>의 5장 읽기 - 7/28 목
-- [ ] [아티클] ['JavaScript Objects in Detail'](http://javascriptissexy.com/javascript-objects-in-detail/) 읽기 - 7/29 금
+- [ ] ['JavaScript Objects in Detail'](http://javascriptissexy.com/javascript-objects-in-detail/) 읽기 - 7/29 금
 
 ##### 준비하는데 참고하고 도움이 된 것들
 
