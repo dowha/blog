@@ -28,6 +28,9 @@ category: 기록한다
     - [ ] Frame of Essence의 ['How do computers read code?'](https://youtu.be/QXjU9qTsYCc)
     - [ ] Codecademy의 [What is a programming language?](https://youtu.be/EGQh5SZctaE)
 - [x] 성냥 님의 ['생존형 개발자 성냥의 불친절한 코딩 이야기'](https://pod.link/1538459608/) - '자바스크립트의 역사와 ECMAScript 2022(ES13) 엿보기, 그리고 서로 닮아가는 언어들에 대해'</a> 1~5편 듣기
+- [ ] mdn web docs 읽기
+    - [ ] ['How the web works'](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works) 읽기
+    - [ ] ['Introducing the CSS Cascade'](https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade)
 - [x] 서버와 웹서버 개념 검색하고 읽기
 - [ ] 자바스크립트 동작 원리 검색하고 알아보기
     - [x] toy-crane 님의 ['진짜! 쉽게 알아보는 자바스크립트 동작 원리'](https://blog.toycrane.xyz/%EC%A7%84%EC%A7%9C-%EC%89%BD%EA%B2%8C-%EC%95%8C%EC%95%84%EB%B3%B4%EB%8A%94-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%AC-c7fbdc44cc97)
@@ -55,7 +58,7 @@ category: 기록한다
 
 #### 준비하는데 참고하고 도움이 된 것들
 
-- daun 님의 <모든 것이 되는 법> 정리 - <a href="https://community.applepie.pro/t/topic/21" target="_blank">'여러가지 일을 할 수 있다는 건 애매한 게 아니다'</a>
+- daun 님의 <모든 것이 되는 법> 정리 - [여러가지 일을 할 수 있다는 건 애매한 게 아니다'](https://community.applepie.pro/t/topic/21)
 - 놀부 님의 ['[번역] 자바스크립트 제대로 배우기'](https://nolboo.kim/blog/2014/03/13/how-to-learn-javascript-properly/)
 - 기계인간 님의 <a href="https://johngrib.github.io/wiki/my-study-method/" target="_blank">'나의 공부 방법'</a>
     - 책으로 공부하기
@@ -82,12 +85,12 @@ category: 기록한다
         - 중요 내용: 1) 자바스크립트 기본, 2) 코드 품질, 3) 객체: 기본, 4) 자료구조와 자료형, 5) 함수 심화학습, 6) 에러 핸들링, 7) 프라미스와 async, await, 8) 모듈
     -  Next 커머스 데모 UI 따라하기
     - 모던 JavaScript 튜토리얼 파트 2 읽고 이해하기
-- 성냥 님의 '생존형 개발자 성냥의 불친절한 코딩 이야기' - <a href="https://pod.link/1538459608/episode/688c70ddced6d2e8f2dfff4fa687c9c4" target="_blank">
-40회. (청취자 사연) 범람하는 코딩 부트캠프의 참여와 선택에 대해… 일단결론부터편'</a>
-- 박찬성 님의 <a href="http://ch.yes24.com/Article/View/51139" target="_blank">'사이드 프로젝트를 통한 성장'</a>
+- Cristian Crețu 님의 ['Learning Web Development in 2021'](https://cretu.dev/writing/learn-web)
+- 성냥 님의 '생존형 개발자 성냥의 불친절한 코딩 이야기' - ['(청취자 사연) 범람하는 코딩 부트캠프의 참여와 선택에 대해… 일단결론부터편'](https://pod.link/1538459608/episode/688c70ddced6d2e8f2dfff4fa687c9c4)
+- 박찬성 님의 ['사이드 프로젝트를 통한 성장'](http://ch.yes24.com/Article/View/51139)
     - 사이드 프로젝트 라이프 사이클: 1) 아이디어 기획, 2) 핵심 기능 프로토타이핑, 3) 세부 구현, 4) 정리 및 브레인스토밍, 5) 홍보 및 1번으로 돌아가기
     - '지속성'은 매우 중요
     - 완성된 결과물로 '가능한 무언가'에 중점을 두는 것이 현실적인 목표를 세우기 좋음
-- zwoo 님의 <a href="https://yozm.wishket.com/magazine/detail/1535/" target="_blank">'개발자가 블로그를 운영하면 좋은 점'</a>
+- zwoo 님의 ['개발자가 블로그를 운영하면 좋은 점'](https://yozm.wishket.com/magazine/detail/1535/)
     - TIL을 쓸 때 여러 의문을 제기해보기
         공부하면서 생기는 호기심을 모두 쏟아내 보기
