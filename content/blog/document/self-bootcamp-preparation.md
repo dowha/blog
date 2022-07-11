@@ -60,11 +60,11 @@ category: 기록한다
 
 - daun 님의 <모든 것이 되는 법> 정리 - [여러가지 일을 할 수 있다는 건 애매한 게 아니다'](https://community.applepie.pro/t/topic/21)
 - 놀부 님의 ['[번역] 자바스크립트 제대로 배우기'](https://nolboo.kim/blog/2014/03/13/how-to-learn-javascript-properly/)
-- 기계인간 님의 <a href="https://johngrib.github.io/wiki/my-study-method/" target="_blank">'나의 공부 방법'</a>
+- 기계인간 님의 ['나의 공부 방법'](https://johngrib.github.io/wiki/my-study-method/)
     - 책으로 공부하기
     - 블로그, 웹 문서 등은 공부하는 기분만 들고 유튜브로는 학습에 성공한 적이 없음
     - 읽고 있는 책의 모든 챕터를 체크 리스트 형태로 만들고 체크하기
-- Sigrid Jin 님의 <a href="https://brunch.co.kr/@jypthemiracle/14" target="_blank">'[번역] 개발 배우기가 정말 어려운 이유'</a>
+- Sigrid Jin 님의 ['[번역] 개발 배우기가 정말 어려운 이유'](https://brunch.co.kr/@jypthemiracle/14)
     - '혼돈의 카오스', 이 단계는 모두에게 고통을 준다
     - 진정으로 개발자로 커리어를 만들어 갈 준비가 된 사람은 혼돈의 카오스 단계에서 살아남는 것이 인생의 새로운 반환점이 됨
     - 학습해야 할 내용은 일주일이나 한 달 안에 끝낼 수 있는 것이 아니고 한 학기 수업을 듣는다고 배울 수 있는 것도 아님
@@ -72,12 +72,12 @@ category: 기록한다
     - 단계별 살아남는 법
         - 1단계: 1) 다양한 콘텐츠로 시작하고, 2) 잘 맞다고 생각하는 콘텐츠 하나에 집중해 처음부터 끝까지 듣고, 3) 스스로 만드는 연습하기 
         - 2단계: 1) 다른 사람과 함께하고, 2) 다른 사람의 코드를 읽고, 3) 작은 것으로 시작하고 계속해서 만들어보기
-- 송요창 님의 <a href="https://medium.com/@totuworld/%EB%AC%B4%EB%A9%B4%ED%97%88-%EB%B9%84%EC%A0%84%EA%B3%B5%EC%97%90-it%EA%B8%B0%EC%97%85-%EB%8B%A4%EB%8B%88%EB%8A%94-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8-%EC%9D%B4%EC%95%BC%EA%B8%B0-d060931a88b1" target="_blank">'무면허 비전공에 IT기업 다니는 프로그래머 이야기'</a>
+- 송요창 님의 ['무면허 비전공에 IT기업 다니는 프로그래머 이야기'](https://medium.com/@totuworld/%EB%AC%B4%EB%A9%B4%ED%97%88-%EB%B9%84%EC%A0%84%EA%B3%B5%EC%97%90-it%EA%B8%B0%EC%97%85-%EB%8B%A4%EB%8B%88%EB%8A%94-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8-%EC%9D%B4%EC%95%BC%EA%B8%B0-d060931a88b1)
     - 비전공, 알고리즘, 코딩테스트 등에 눌려서 스스로 작아지지말고 당당하게 시작하라
-- 운체조교 님의 <a href="https://okky.kr/article/1261756" target="_blank"> '기술력을 갖고 싶다면: 코딩을 겁나 하세요.'</a>
+- 운체조교 님의 ['기술력을 갖고 싶다면: 코딩을 겁나 하세요.'](https://okky.kr/article/1261756)
     - “겁나 코딩을 많이 해야” 기술력을 쌓을 수 있음
     - 꼭 저수준의 프로그래밍을 해봐야 함
-- 조은 님의 <a href="https://euncho.medium.com/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%ED%95%99%EC%8A%B5-%EB%A1%9C%EB%93%9C%EB%A7%B5-91c3bc11dec0" target="_blank">'프론트엔드 학습 로드맵 - 2022년에 프론트엔드 배우기'</a>
+- 조은 님의 ['프론트엔드 학습 로드맵 - 2022년에 프론트엔드 배우기'](https://euncho.medium.com/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%ED%95%99%EC%8A%B5-%EB%A1%9C%EB%93%9C%EB%A7%B5-91c3bc11dec0)
     - Jira 나 Asana 사용해보기
     - Git과 GitHub를 미리 학습해두기
     - React & Next 튜토리얼 따라하기
