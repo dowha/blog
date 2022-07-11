@@ -17,12 +17,12 @@ url: /13748
 
 덧붙이자면, 1~2년 전쯤 내가 개발을 하면 잘할 것이라고 말해준 웹 기획자 친구 J의 말, 어설프지만 15년 넘게 개인 홈페이지를 운영하며 야매(?)로 html/css를 만져서 문제를 해결해온 사실, 친구들과 같이 진행했던 [프로젝트](https://snpo.kr/bbs/board.php?bo_table=meetshare_prj&wr_id=88)의 즐거움, 일단 도전해보면 좋을 거 같다고 말해준 친구 P의 응원 같은 것들이 이 시작에 큰 도움이 됐다. 즐겁게 공부하고 그 과정을 아래와 같이 기록으로 남길 것이다.
 
-오늘 하루, 내가 개발과 관련해 배우거나 한 일에 대해 회고하는 **TIL(Today I Learned)** 게시물은 <a rel="noreferrer noopener" aria-label="초코몽키 (opens in a new tab)" href="https://wayhome25.github.io" target="_blank">초코몽키</a>님의 '<a rel="noreferrer noopener" aria-label="6개월간의 TIL 회고 (꾸준히 하면 좋은 일이 생긴다) (opens in a new tab)" href="https://wayhome25.github.io/til/2017/08/14/TIL-for-6-months/" target="_blank">6개월간의 TIL 회고 (꾸준히 하면 좋은 일이 생긴다)</a>' 글에서 많은 영감을 받았고 작성 포맷도 빌려왔다. 누군가의 꾸준함이 기록과 만난 결과물을 보면 항상 고무(inspiring)된다.
+오늘 하루, 내가 개발과 관련해 배우거나 한 일에 대해 회고하는 **TIL(Today I Learned)** 게시물은 초코몽키 님의 ['6개월간의 TIL 회고 (꾸준히 하면 좋은 일이 생긴다)'](https://wayhome25.github.io/til/2017/08/14/TIL-for-6-months/) 글에서 많은 영감을 받았고 작성 포맷도 빌려왔다. 누군가의 꾸준함이 기록과 만난 결과물을 보면 항상 고무(inspiring)된다.
 
 #### **오늘 한 일**
 
 - 텍스트 에디터 아톰(Atom)을 설치한 뒤, 테마를 설정하고 유용한 패키지들을 설치했다.
   - 관련 블로그 게시물 및 유튜브 영상도 봤다.
-- 생활코딩 <a rel="noreferrer noopener" aria-label="소개 (opens in a new tab)" href="https://youtu.be/1ttLx9MbrCI" target="_blank">소개</a>, <a rel="noreferrer noopener" aria-label="오리엔테이션 (opens in a new tab)" href="https://youtu.be/JuD76a1wQwo" target="_blank">오리엔테이션</a> 영상을 시청했다.
-- 개발 블로그 및 <a rel="noreferrer noopener" aria-label=" (opens in a new tab)" href="https://www.notion.so/dowhakim/Helpful-Articles-ac365956b3a3482a8e9663adc7203964" target="_blank">도움 되는 글</a>들을 읽고 북마크에 정리했다.
+- 생활코딩 [소개](https://youtu.be/1ttLx9MbrCI), [오리엔테이션](https://youtu.be/JuD76a1wQwo) 영상을 시청했다.
+- 개발 블로그 및 도움 되는 글들을 읽고 북마크에 정리했다.
 - 개발 공부 시작과 TIL에 대한 첫 블로그 글을 작성했다.
