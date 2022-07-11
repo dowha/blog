@@ -88,6 +88,8 @@ category: 도전한다
     -  Next 커머스 데모 UI 따라하기
     - 모던 JavaScript 튜토리얼 파트 2 읽고 이해하기
 - Cristian Crețu 님의 ['Learning Web Development in 2021'](https://cretu.dev/writing/learn-web)
+    - need to learn some Data Structures and Algorithms which will be building blocks of programming career
+    - in terms of frameworks, the keyword is application
 - 성냥 님의 '생존형 개발자 성냥의 불친절한 코딩 이야기' - ['(청취자 사연) 범람하는 코딩 부트캠프의 참여와 선택에 대해… 일단결론부터편'](https://pod.link/1538459608/episode/688c70ddced6d2e8f2dfff4fa687c9c4)
 - 박찬성 님의 ['사이드 프로젝트를 통한 성장'](http://ch.yes24.com/Article/View/51139)
     - 사이드 프로젝트 라이프 사이클: 1) 아이디어 기획, 2) 핵심 기능 프로토타이핑, 3) 세부 구현, 4) 정리 및 브레인스토밍, 5) 홍보 및 1번으로 돌아가기
