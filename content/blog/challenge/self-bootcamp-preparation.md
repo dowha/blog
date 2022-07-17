@@ -24,21 +24,28 @@ category: 도전한다
 
 #### 준비의 준비
 
-- [ ] 프로그래밍 언어 작동 원리 알아보기
+- [ ] 궁금한 기본 원리들 검색하고 읽기 
+    - [x] 서버와 웹서버 개념
+    - [ ] LaBhong 님의 ['CPU와 어셈블리 언어, 기계어, 어셈블러, 컴파일러, 링커의 상관관계'](https://psyhm.tistory.com/1)
     - [ ] Frame of Essence의 ['How do computers read code?'](https://youtu.be/QXjU9qTsYCc)
     - [ ] Codecademy의 [What is a programming language?](https://youtu.be/EGQh5SZctaE)
-- [x] 성냥 님의 ['생존형 개발자 성냥의 불친절한 코딩 이야기'](https://pod.link/1538459608/) - '자바스크립트의 역사와 ECMAScript 2022(ES13) 엿보기, 그리고 서로 닮아가는 언어들에 대해'</a> 1~5편 듣기
-- [ ] mdn web docs 읽기
-    - [ ] ['How the web works'](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works) 읽기
-    - [ ] ['Introducing the CSS Cascade'](https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade)
-- [x] 서버와 웹서버 개념 검색하고 읽기
+    - [ ] 재그지그 님의 ['프론트엔드 개발자라면 알고 있어야 할 브라우저의 동작 과정'](https://wormwlrm.github.io/2021/03/27/How-browsers-work.html)
+    - [ ] AWS 한국 블로그의 ['웹 브라우저에 URL을 입력하면 어떤 일이 생기나요?'](https://aws.amazon.com/ko/blogs/korea/what-happens-when-you-type-a-url-into-your-browser/)
+    - [ ] 찬미니즘 님의 ['Node.js - npm install, 이제는 알고 쓰자'](https://c17an.netlify.app/blog/node.js/npm-install-%EC%A0%95%EB%A6%AC/article/)
 - [ ] 자바스크립트 동작 원리 검색하고 알아보기
     - [x] toy-crane 님의 ['진짜! 쉽게 알아보는 자바스크립트 동작 원리'](https://blog.toycrane.xyz/%EC%A7%84%EC%A7%9C-%EC%89%BD%EA%B2%8C-%EC%95%8C%EC%95%84%EB%B3%B4%EB%8A%94-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%AC-c7fbdc44cc97)
     - [x] namezin 님의 ['javascript 동작 원리'](https://velog.io/@namezin/javascript-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%A)
     - [ ] JSConf EU의 ['어쨌든 이벤트 루프는 무엇입니까?'](https://youtu.be/8aGhZQkoFbQ)
     - [ ] JSUnconf의 ['JavaScript로 함수형 프로그래밍 배우기'](https://youtu.be/e-5obm1G_FY)
     - [ ] Lydia Hallie 님의 ['JavaScript Visualized Series'](https://dev.to/lydiahallie/series/3341)
-- [ ] 임성묵 님의 ['자바스크립트는 왜 프로토타입을 선택했을까'](https://medium.com/@limsungmook/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%8A%94-%EC%99%9C-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85%EC%9D%84-%EC%84%A0%ED%83%9D%ED%96%88%EC%9D%84%EA%B9%8C-997f985adb42) 읽기
+    - [ ] 임성묵 님의 ['자바스크립트는 왜 프로토타입을 선택했을까'](https://medium.com/@limsungmook/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%8A%94-%EC%99%9C-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85%EC%9D%84-%EC%84%A0%ED%83%9D%ED%96%88%EC%9D%84%EA%B9%8C-997f985adb42) 읽기
+    - [ ] 재그지그 님의 ['프론트엔드 개발자에게도 알고리즘 공부가 중요할까?'](https://wormwlrm.github.io/2022/05/28/Should-a-front-end-developer-learn-the-algorithm.html)
+    - [ ] 우아한형제들 블로그의 ['만들어 가며 알아보는 React: React는 왜 성공했나'](https://techblog.woowahan.com/8311/)
+    - [ ] 김용균 님의 ['아주 조그마한 컴파일러 만들기'](https://edykim.com/ko/) 
+- [ ] mdn web docs 읽기
+    - [ ] ['How the web works'](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works) 읽기
+    - [ ] ['Introducing the CSS Cascade'](https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade)
+- [x] 성냥 님의 ['생존형 개발자 성냥의 불친절한 코딩 이야기'](https://pod.link/1538459608/) - '자바스크립트의 역사와 ECMAScript 2022(ES13) 엿보기, 그리고 서로 닮아가는 언어들에 대해'</a> 1~5편 듣기
 - [ ] 생활코딩의 [Javascript 언어소개(오리엔테이션)](https://opentutorials.org/course/743/4650) 보고 읽기
 - [ ] 모던 Javscript 튜토리얼 읽기
     - [ ] 파트1. 코어 자바스크립트 - 소개 - [1.1 자바스크립트란?](https://ko.javascript.info/intro)
@@ -98,3 +105,4 @@ category: 도전한다
 - zwoo 님의 ['개발자가 블로그를 운영하면 좋은 점'](https://yozm.wishket.com/magazine/detail/1535/)
     - TIL을 쓸 때 여러 의문을 제기해보기
         공부하면서 생기는 호기심을 모두 쏟아내 보기
+- Zubin Pratap 님의 ['Coding Interview Prep for Big Tech (FAANG) – And How I Became A Google Engineer'](https://www.freecodecamp.org/news/coding-interview-prep-for-big-tech/)
