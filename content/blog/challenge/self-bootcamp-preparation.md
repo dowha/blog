@@ -105,4 +105,6 @@ category: 도전한다
 - zwoo 님의 ['개발자가 블로그를 운영하면 좋은 점'](https://yozm.wishket.com/magazine/detail/1535/)
     - TIL을 쓸 때 여러 의문을 제기해보기
         공부하면서 생기는 호기심을 모두 쏟아내 보기
-- Zubin Pratap 님의 ['Coding Interview Prep for Big Tech (FAANG) – And How I Became A Google Engineer'](https://www.freecodecamp.org/news/coding-interview-prep-for-big-tech/)
+- freeCodeCamp의 Zubin Pratap 님
+    - ['From Lawyer to Engineer at Google – How to Switch Careers and Learn New Skills'](https://www.freecodecamp.org/news/from-lawyer-to-google-engineer/) 
+    - ['Coding Interview Prep for Big Tech (FAANG) – And How I Became A Google Engineer'](https://www.freecodecamp.org/news/coding-interview-prep-for-big-tech/)
