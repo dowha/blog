@@ -28,7 +28,8 @@ category: 도전한다
     - [x] 서버와 웹서버 개념
     - [ ] LaBhong 님의 ['CPU와 어셈블리 언어, 기계어, 어셈블러, 컴파일러, 링커의 상관관계'](https://psyhm.tistory.com/1)
     - [ ] Frame of Essence의 ['How do computers read code?'](https://youtu.be/QXjU9qTsYCc)
-    - [ ] Codecademy의 [What is a programming language?](https://youtu.be/EGQh5SZctaE)
+    - [ ] Codecademy의 ['What is a programming language?'](https://youtu.be/EGQh5SZctaE)
+    - [ ] freeCodeCamp의 ['Computer Coding – Computer Program Definition and Code Meaning'](https://www.freecodecamp.org/news/computer-coding-computer-program-definition-and-code-meaning/)
     - [ ] 재그지그 님의 ['프론트엔드 개발자라면 알고 있어야 할 브라우저의 동작 과정'](https://wormwlrm.github.io/2021/03/27/How-browsers-work.html)
     - [ ] AWS 한국 블로그의 ['웹 브라우저에 URL을 입력하면 어떤 일이 생기나요?'](https://aws.amazon.com/ko/blogs/korea/what-happens-when-you-type-a-url-into-your-browser/)
     - [ ] 찬미니즘 님의 ['Node.js - npm install, 이제는 알고 쓰자'](https://c17an.netlify.app/blog/node.js/npm-install-%EC%A0%95%EB%A6%AC/article/)
@@ -106,5 +107,7 @@ category: 도전한다
     - TIL을 쓸 때 여러 의문을 제기해보기
         공부하면서 생기는 호기심을 모두 쏟아내 보기
 - freeCodeCamp의 Zubin Pratap 님
-    - ['From Lawyer to Engineer at Google – How to Switch Careers and Learn New Skills'](https://www.freecodecamp.org/news/from-lawyer-to-google-engineer/) 
+    - ['From Lawyer to Engineer at Google – How to Switch Careers and Learn New Skills'](https://www.freecodecamp.org/news/from-lawyer-to-google-engineer/)
+        - "I tried to teach myself to code THREE times. In 2014, in 2015 and in 2017.  And all three times I quit because I tried to jump too high, set myself up for failure (...) Faced with the choice of being defeated or learning to code, I chose to try again – to learn to code.  I was 37. In 2020 COVID hit, and just as it was getting very serious, I signed my contract to be an an engineer at Google. I had just turned 39."
+    - ['Ep. 53: Zubin Pratap - From Lawyer to Developer'](https://freecodecamp.libsyn.com/53-zubin-pratap-from-lawyer-to-developer)
     - ['Coding Interview Prep for Big Tech (FAANG) – And How I Became A Google Engineer'](https://www.freecodecamp.org/news/coding-interview-prep-for-big-tech/)
