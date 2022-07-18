@@ -52,7 +52,11 @@ category: 도전한다
     - [ ] Evans 님 블로그
         - [ ] ['V8 엔진은 어떻게 내 코드를 실행하는 걸까?'](https://evan-moon.github.io/2019/06/28/v8-analysis/)
         - [ ] ['프론트엔드와 백엔드가 소통하는 엔드포인트, RESTful API'](https://evan-moon.github.io/2020/04/07/about-restful-api/)
+        - [ ] ['기존의 사고 방식을 깨부수는 함수형 사고'](https://evan-moon.github.io/2019/12/15/about-functional-thinking/)
+        - [ ] ['Git 뉴비를 위한 기초 사용법 - 시작하기'](https://evan-moon.github.io/2019/07/25/git-tutorial/)
+        - [ ] ['Git 뉴비를 위한 기초 사용법 - 버전 관리'](https://evan-moon.github.io/2019/07/28/git-tutorial-advanced/)
     - [ ] dev.tinkerbell 님의 ['*주니어* 프론트엔드 개발자가 정리한 REST API'](https://velog.io/@dev-tinkerbell/%EC%A3%BC%EB%8B%88%EC%96%B4-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-REST-API)
+    - [ ] 재그지그 님의 ['프론트엔드 개발자에게도 알고리즘 공부가 중요할까?'](https://wormwlrm.github.io/2022/05/28/Should-a-front-end-developer-learn-the-algorithm.html)
 - [ ] 자바스크립트 동작 원리 검색하고 알아보기
     - [x] toy-crane 님의 ['진짜! 쉽게 알아보는 자바스크립트 동작 원리'](https://blog.toycrane.xyz/%EC%A7%84%EC%A7%9C-%EC%89%BD%EA%B2%8C-%EC%95%8C%EC%95%84%EB%B3%B4%EB%8A%94-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%AC-c7fbdc44cc97)
     - [x] namezin 님의 ['javascript 동작 원리'](https://velog.io/@namezin/javascript-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%A)
@@ -60,7 +64,9 @@ category: 도전한다
     - [ ] JSUnconf의 ['JavaScript로 함수형 프로그래밍 배우기'](https://youtu.be/e-5obm1G_FY)
     - [ ] Lydia Hallie 님의 ['JavaScript Visualized Series'](https://dev.to/lydiahallie/series/3341)
     - [ ] 임성묵 님의 ['자바스크립트는 왜 프로토타입을 선택했을까'](https://medium.com/@limsungmook/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%8A%94-%EC%99%9C-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85%EC%9D%84-%EC%84%A0%ED%83%9D%ED%96%88%EC%9D%84%EA%B9%8C-997f985adb42) 읽기
-    - [ ] 재그지그 님의 ['프론트엔드 개발자에게도 알고리즘 공부가 중요할까?'](https://wormwlrm.github.io/2022/05/28/Should-a-front-end-developer-learn-the-algorithm.html)
+    - [ ] Evans 님
+        - [ ] ['[JS 프로토타입] 자바스크립트의 프로토타입 훑어보기'](https://evan-moon.github.io/2019/10/23/js-prototype/)
+        - [ ] ['JavaScript의 let과 const, 그리고 TDZ'](https://evan-moon.github.io/2019/06/18/javascript-let-const/)
     - [ ] 우아한형제들 블로그의 ['만들어 가며 알아보는 React: React는 왜 성공했나'](https://techblog.woowahan.com/8311/)
     - [ ] 김용균 님의 ['아주 조그마한 컴파일러 만들기'](https://edykim.com/ko/) 
 - [ ] mdn web docs 읽기
@@ -126,7 +132,9 @@ category: 도전한다
 - zwoo 님의 ['개발자가 블로그를 운영하면 좋은 점'](https://yozm.wishket.com/magazine/detail/1535/)
     - TIL을 쓸 때 여러 의문을 제기해보기
         공부하면서 생기는 호기심을 모두 쏟아내 보기
-- Evans 님의 ['개발자는 수학을 잘해야할까?'](https://evan-moon.github.io/2019/07/17/programmer-with-math/)
+- Evans 님
+    - ['방향성이 명확한 노력으로 나만의 색깔을 가진 사람이 되기'](https://evan-moon.github.io/2021/09/10/developer-direction-of-effort/)
+    - ['개발자는 수학을 잘해야할까?'](https://evan-moon.github.io/2019/07/17/programmer-with-math/)
 - freeCodeCamp의 Zubin Pratap 님
     - ['From Lawyer to Engineer at Google – How to Switch Careers and Learn New Skills'](https://www.freecodecamp.org/news/from-lawyer-to-google-engineer/)
         - "I tried to teach myself to code THREE times. In 2014, in 2015 and in 2017.  And all three times I quit because I tried to jump too high, set myself up for failure (...) Faced with the choice of being defeated or learning to code, I chose to try again – to learn to code.  I was 37. In 2020 COVID hit, and just as it was getting very serious, I signed my contract to be an an engineer at Google. I had just turned 39."
