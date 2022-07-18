@@ -30,9 +30,29 @@ category: 도전한다
     - [ ] Frame of Essence의 ['How do computers read code?'](https://youtu.be/QXjU9qTsYCc)
     - [ ] Codecademy의 ['What is a programming language?'](https://youtu.be/EGQh5SZctaE)
     - [ ] freeCodeCamp의 ['Computer Coding – Computer Program Definition and Code Meaning'](https://www.freecodecamp.org/news/computer-coding-computer-program-definition-and-code-meaning/)
+    - [ ] Fireship의 #100SecondsOfCode
+        - [ ] ['HTML in 100 Seconds'](https://youtu.be/ok-plXXHlWw)
+        - [ ] ['CSS in 100 Seconds'](https://youtu.be/OEV8gMkCHXQ)
+        - [ ] ['JavaScript in 100 Seconds'](https://youtu.be/DHjqpvDnNGE)
+        - [ ] ['Git Explained in 100 Seconds'](https://youtu.be/hwP7WQkmECE)
+        - [ ] ['What is THIS in JavaScript? in 100 seconds'](https://youtu.be/YOlr79NaAtQ)
+        - [ ] ['React in 100 Seconds'](https://youtu.be/Tn6-PIqc4UM)
+    - [ ] 얄팍한 코딩사전
+        - [ ] ['혼공얄코 1~4강. 개발자들이 하는 일'](https://youtu.be/IFSgZ4nelcM)
+        - [ ] ['혼공얄코 5~7강. 서버와 클라우드'](https://youtu.be/OVD_PvRBX7A)
+        - [ ] ['혼공얄코 8~13강. 웹에서 일어나는 일'](https://youtu.be/y-W0TlC0pJk)
+        - [ ] ['웹개발 필수개념! DOM이 뭔가요? (+ Web API)'](https://youtu.be/mFawNZz_Uu0)
+        - [ ] ['정적 웹은 뭐고 동적 웹은 뭔가요?'](https://youtu.be/C06xRvXIAUk)
+        - [ ] ['자바스크립트에 세미콜론을 써야 하나요? (Feat: ASI)'](https://youtu.be/hJjYvVOEO7s)
+        - [ ] ['REST API가 뭔가요?'](https://youtu.be/iOueE9AXDQQ)
+    - [ ] 캡틴판교 님의 ['프런트엔드 개발 가이드'](https://joshua1988.github.io/vue-camp/front-dev.html#%E1%84%8B%E1%85%B0%E1%86%B8-%E1%84%80%E1%85%A2%E1%84%87%E1%85%A1%E1%86%AF%E1%84%8C%E1%85%A1-%E1%84%8B%E1%85%A7%E1%86%A8%E1%84%92%E1%85%A1%E1%86%AF%E1%84%8B%E1%85%B4-%E1%84%87%E1%85%A7%E1%86%AB%E1%84%92%E1%85%AA)
     - [ ] 재그지그 님의 ['프론트엔드 개발자라면 알고 있어야 할 브라우저의 동작 과정'](https://wormwlrm.github.io/2021/03/27/How-browsers-work.html)
     - [ ] AWS 한국 블로그의 ['웹 브라우저에 URL을 입력하면 어떤 일이 생기나요?'](https://aws.amazon.com/ko/blogs/korea/what-happens-when-you-type-a-url-into-your-browser/)
     - [ ] 찬미니즘 님의 ['Node.js - npm install, 이제는 알고 쓰자'](https://c17an.netlify.app/blog/node.js/npm-install-%EC%A0%95%EB%A6%AC/article/)
+    - [ ] Evans 님 블로그
+        - [ ] ['V8 엔진은 어떻게 내 코드를 실행하는 걸까?'](https://evan-moon.github.io/2019/06/28/v8-analysis/)
+        - [ ] ['프론트엔드와 백엔드가 소통하는 엔드포인트, RESTful API'](https://evan-moon.github.io/2020/04/07/about-restful-api/)
+    - [ ] dev.tinkerbell 님의 ['*주니어* 프론트엔드 개발자가 정리한 REST API'](https://velog.io/@dev-tinkerbell/%EC%A3%BC%EB%8B%88%EC%96%B4-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-REST-API)
 - [ ] 자바스크립트 동작 원리 검색하고 알아보기
     - [x] toy-crane 님의 ['진짜! 쉽게 알아보는 자바스크립트 동작 원리'](https://blog.toycrane.xyz/%EC%A7%84%EC%A7%9C-%EC%89%BD%EA%B2%8C-%EC%95%8C%EC%95%84%EB%B3%B4%EB%8A%94-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%AC-c7fbdc44cc97)
     - [x] namezin 님의 ['javascript 동작 원리'](https://velog.io/@namezin/javascript-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%A)
@@ -106,8 +126,8 @@ category: 도전한다
 - zwoo 님의 ['개발자가 블로그를 운영하면 좋은 점'](https://yozm.wishket.com/magazine/detail/1535/)
     - TIL을 쓸 때 여러 의문을 제기해보기
         공부하면서 생기는 호기심을 모두 쏟아내 보기
+- Evans 님의 ['개발자는 수학을 잘해야할까?'](https://evan-moon.github.io/2019/07/17/programmer-with-math/)
 - freeCodeCamp의 Zubin Pratap 님
     - ['From Lawyer to Engineer at Google – How to Switch Careers and Learn New Skills'](https://www.freecodecamp.org/news/from-lawyer-to-google-engineer/)
         - "I tried to teach myself to code THREE times. In 2014, in 2015 and in 2017.  And all three times I quit because I tried to jump too high, set myself up for failure (...) Faced with the choice of being defeated or learning to code, I chose to try again – to learn to code.  I was 37. In 2020 COVID hit, and just as it was getting very serious, I signed my contract to be an an engineer at Google. I had just turned 39."
-    - ['Ep. 53: Zubin Pratap - From Lawyer to Developer'](https://freecodecamp.libsyn.com/53-zubin-pratap-from-lawyer-to-developer)
     - ['Coding Interview Prep for Big Tech (FAANG) – And How I Became A Google Engineer'](https://www.freecodecamp.org/news/coding-interview-prep-for-big-tech/)
