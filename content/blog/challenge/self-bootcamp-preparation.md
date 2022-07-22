@@ -55,7 +55,7 @@ category: 도전한다
         - [ ] ['기존의 사고 방식을 깨부수는 함수형 사고'](https://evan-moon.github.io/2019/12/15/about-functional-thinking/)
         - [ ] ['Git 뉴비를 위한 기초 사용법 - 시작하기'](https://evan-moon.github.io/2019/07/25/git-tutorial/)
         - [ ] ['Git 뉴비를 위한 기초 사용법 - 버전 관리'](https://evan-moon.github.io/2019/07/28/git-tutorial-advanced/)
-    - [ ] dev.tinkerbell 님의 ['*주니어* 프론트엔드 개발자가 정리한 REST API'](https://velog.io/@dev-tinkerbell/%EC%A3%BC%EB%8B%88%EC%96%B4-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-REST-API)
+    - [ ] dev.tinkerbell 님의 ['주니어 프론트엔드 개발자가 정리한 REST API'](https://velog.io/@dev-tinkerbell/%EC%A3%BC%EB%8B%88%EC%96%B4-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-REST-API)
     - [ ] 재그지그 님의 ['프론트엔드 개발자에게도 알고리즘 공부가 중요할까?'](https://wormwlrm.github.io/2022/05/28/Should-a-front-end-developer-learn-the-algorithm.html)
 - [ ] 자바스크립트 동작 원리 검색하고 알아보기
     - [x] toy-crane 님의 ['진짜! 쉽게 알아보는 자바스크립트 동작 원리'](https://blog.toycrane.xyz/%EC%A7%84%EC%A7%9C-%EC%89%BD%EA%B2%8C-%EC%95%8C%EC%95%84%EB%B3%B4%EB%8A%94-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%AC-c7fbdc44cc97)
