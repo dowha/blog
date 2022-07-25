@@ -59,18 +59,20 @@ category: 도전한다
     - [x] 재그지그 님의 ['프론트엔드 개발자에게도 알고리즘 공부가 중요할까?'](https://wormwlrm.github.io/2022/05/28/Should-a-front-end-developer-learn-the-algorithm.html)
     - [x] 최강훈 님의 ['의사코드(Pseudo-code) 작성법'](https://42kchoi.tistory.com/114)
     - [x] 쨜리 님의 ['수도코드(pseudocode) 작성하는 방법'](https://seagull-dev.tistory.com/9)
-- [ ] 자바스크립트 동작 원리 검색하고 알아보기
+- [x] 자바스크립트 동작 원리 검색하고 알아보기
     - [x] toy-crane 님의 ['진짜! 쉽게 알아보는 자바스크립트 동작 원리'](https://blog.toycrane.xyz/%EC%A7%84%EC%A7%9C-%EC%89%BD%EA%B2%8C-%EC%95%8C%EC%95%84%EB%B3%B4%EB%8A%94-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%AC-c7fbdc44cc97)
     - [x] namezin 님의 ['javascript 동작 원리'](https://velog.io/@namezin/javascript-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%A)
-    - [ ] JSConf EU의 ['어쨌든 이벤트 루프는 무엇입니까?'](https://youtu.be/8aGhZQkoFbQ)
-    - [ ] JSUnconf의 ['JavaScript로 함수형 프로그래밍 배우기'](https://youtu.be/e-5obm1G_FY)
-    - [ ] Lydia Hallie 님의 ['JavaScript Visualized Series'](https://dev.to/lydiahallie/series/3341)
-    - [ ] 임성묵 님의 ['자바스크립트는 왜 프로토타입을 선택했을까'](https://medium.com/@limsungmook/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%8A%94-%EC%99%9C-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85%EC%9D%84-%EC%84%A0%ED%83%9D%ED%96%88%EC%9D%84%EA%B9%8C-997f985adb42) 읽기
-    - [ ] Evans 님
-        - [ ] ['[JS 프로토타입] 자바스크립트의 프로토타입 훑어보기'](https://evan-moon.github.io/2019/10/23/js-prototype/)
-        - [ ] ['JavaScript의 let과 const, 그리고 TDZ'](https://evan-moon.github.io/2019/06/18/javascript-let-const/)
-    - [ ] 우아한형제들 블로그의 ['만들어 가며 알아보는 React: React는 왜 성공했나'](https://techblog.woowahan.com/8311/)
-    - [ ] 김용균 님의 ['아주 조그마한 컴파일러 만들기'](https://edykim.com/ko/) 
+    - [x] JSConf EU의 ['어쨌든 이벤트 루프는 무엇입니까?'](https://youtu.be/8aGhZQkoFbQ)
+    - [x] JSUnconf의 ['JavaScript로 함수형 프로그래밍 배우기'](https://youtu.be/e-5obm1G_FY)
+    - [x] Lydia Hallie 님의 'JavaScript Visualized Series'
+        - [x] ['JavaScript Visualized: Event Loop'](https://dev.to/lydiahallie/javascript-visualized-event-loop-3dif)
+        - [x] ['JavaScript Visualized: Hoisting'](https://dev.to/lydiahallie/javascript-visualized-hoisting-478h)
+    - [x] 임성묵 님의 ['자바스크립트는 왜 프로토타입을 선택했을까'](https://medium.com/@limsungmook/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%8A%94-%EC%99%9C-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85%EC%9D%84-%EC%84%A0%ED%83%9D%ED%96%88%EC%9D%84%EA%B9%8C-997f985adb42) 읽기
+    - [x] Evans 님
+        - [x] ['[JS 프로토타입] 자바스크립트의 프로토타입 훑어보기'](https://evan-moon.github.io/2019/10/23/js-prototype/)
+        - [x] ['JavaScript의 let과 const, 그리고 TDZ'](https://evan-moon.github.io/2019/06/18/javascript-let-const/)
+    - [x] 우아한형제들 블로그의 ['만들어 가며 알아보는 React: React는 왜 성공했나'](https://techblog.woowahan.com/8311/)
+    - [x] 김용균 님의 ['아주 조그마한 컴파일러 만들기'](https://edykim.com/ko/post/the-super-tiny-compiler/) 
 - [ ] mdn web docs 읽기
     - [ ] ['How the web works'](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works) 읽기
     - [ ] ['Introducing the CSS Cascade'](https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade)
