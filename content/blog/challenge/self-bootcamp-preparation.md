@@ -24,7 +24,7 @@ category: 도전한다
 
 #### 준비의 준비
 
-- [ ] 궁금한 기본 원리들 검색하고 읽기 
+- [x] 궁금한 기본 원리들 검색하고 읽기 
     - [x] 서버와 웹서버 개념
     - [x] LaBhong 님의 ['CPU와 어셈블리 언어, 기계어, 어셈블러, 컴파일러, 링커의 상관관계'](https://psyhm.tistory.com/1)
     - [x] Frame of Essence의 ['How do computers read code?'](https://youtu.be/QXjU9qTsYCc)
