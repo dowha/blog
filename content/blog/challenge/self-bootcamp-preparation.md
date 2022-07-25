@@ -26,9 +26,9 @@ category: 도전한다
 
 - [ ] 궁금한 기본 원리들 검색하고 읽기 
     - [x] 서버와 웹서버 개념
-    - [ ] LaBhong 님의 ['CPU와 어셈블리 언어, 기계어, 어셈블러, 컴파일러, 링커의 상관관계'](https://psyhm.tistory.com/1)
-    - [ ] Frame of Essence의 ['How do computers read code?'](https://youtu.be/QXjU9qTsYCc)
-    - [ ] Codecademy의 ['What is a programming language?'](https://youtu.be/EGQh5SZctaE)
+    - [x] LaBhong 님의 ['CPU와 어셈블리 언어, 기계어, 어셈블러, 컴파일러, 링커의 상관관계'](https://psyhm.tistory.com/1)
+    - [x] Frame of Essence의 ['How do computers read code?'](https://youtu.be/QXjU9qTsYCc)
+    - [x] Codecademy의 ['What is a programming language?'](https://youtu.be/EGQh5SZctaE)
     - [ ] freeCodeCamp의 ['Computer Coding – Computer Program Definition and Code Meaning'](https://www.freecodecamp.org/news/computer-coding-computer-program-definition-and-code-meaning/)
     - [ ] Fireship의 #100SecondsOfCode
         - [ ] ['HTML in 100 Seconds'](https://youtu.be/ok-plXXHlWw)
@@ -57,6 +57,8 @@ category: 도전한다
         - [ ] ['Git 뉴비를 위한 기초 사용법 - 버전 관리'](https://evan-moon.github.io/2019/07/28/git-tutorial-advanced/)
     - [ ] dev.tinkerbell 님의 ['주니어 프론트엔드 개발자가 정리한 REST API'](https://velog.io/@dev-tinkerbell/%EC%A3%BC%EB%8B%88%EC%96%B4-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-REST-API)
     - [ ] 재그지그 님의 ['프론트엔드 개발자에게도 알고리즘 공부가 중요할까?'](https://wormwlrm.github.io/2022/05/28/Should-a-front-end-developer-learn-the-algorithm.html)
+    - [x] 최강훈 님의 ['의사코드(Pseudo-code) 작성법'](https://42kchoi.tistory.com/114)
+    - [x] 쨜리 님의 ['수도코드(pseudocode) 작성하는 방법'](https://seagull-dev.tistory.com/9)
 - [ ] 자바스크립트 동작 원리 검색하고 알아보기
     - [x] toy-crane 님의 ['진짜! 쉽게 알아보는 자바스크립트 동작 원리'](https://blog.toycrane.xyz/%EC%A7%84%EC%A7%9C-%EC%89%BD%EA%B2%8C-%EC%95%8C%EC%95%84%EB%B3%B4%EB%8A%94-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%AC-c7fbdc44cc97)
     - [x] namezin 님의 ['javascript 동작 원리'](https://velog.io/@namezin/javascript-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%A)
