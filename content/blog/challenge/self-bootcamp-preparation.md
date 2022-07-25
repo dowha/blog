@@ -73,14 +73,14 @@ category: 도전한다
         - [x] ['JavaScript의 let과 const, 그리고 TDZ'](https://evan-moon.github.io/2019/06/18/javascript-let-const/)
     - [x] 우아한형제들 블로그의 ['만들어 가며 알아보는 React: React는 왜 성공했나'](https://techblog.woowahan.com/8311/)
     - [x] 김용균 님의 ['아주 조그마한 컴파일러 만들기'](https://edykim.com/ko/post/the-super-tiny-compiler/) 
-- [ ] mdn web docs 읽기
-    - [ ] ['How the web works'](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works) 읽기
-    - [ ] ['Introducing the CSS Cascade'](https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade)
+- [x] mdn web docs 읽기
+    - [x] ['How the web works'](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works) 읽기
+    - [x] ['Introducing the CSS Cascade'](https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade)
 - [x] 성냥 님의 ['생존형 개발자 성냥의 불친절한 코딩 이야기'](https://pod.link/1538459608/) - '자바스크립트의 역사와 ECMAScript 2022(ES13) 엿보기, 그리고 서로 닮아가는 언어들에 대해'</a> 1~5편 듣기
-- [ ] 생활코딩의 [Javascript 언어소개(오리엔테이션)](https://opentutorials.org/course/743/4650) 보고 읽기
-- [ ] 모던 Javscript 튜토리얼 읽기
-    - [ ] 파트1. 코어 자바스크립트 - 소개 - [1.1 자바스크립트란?](https://ko.javascript.info/intro)
-    - [ ] 파트1. 코어 자바스크립트 - 소개 - [1.2 매뉴얼과 명세서](https://ko.javascript.info/manuals-specifications)
+- [x] 생활코딩의 [Javascript 언어소개(오리엔테이션)](https://opentutorials.org/course/743/4650) 보고 읽기
+- [x] 모던 Javscript 튜토리얼 읽기
+    - [x] 파트1. 코어 자바스크립트 - 소개 - [1.1 자바스크립트란?](https://ko.javascript.info/intro)
+    - [x] 파트1. 코어 자바스크립트 - 소개 - [1.2 매뉴얼과 명세서](https://ko.javascript.info/manuals-specifications)
 
 #### 앞으로의 계획
 
@@ -143,3 +143,6 @@ category: 도전한다
     - ['From Lawyer to Engineer at Google – How to Switch Careers and Learn New Skills'](https://www.freecodecamp.org/news/from-lawyer-to-google-engineer/)
         - "I tried to teach myself to code THREE times. In 2014, in 2015 and in 2017.  And all three times I quit because I tried to jump too high, set myself up for failure (...) Faced with the choice of being defeated or learning to code, I chose to try again – to learn to code.  I was 37. In 2020 COVID hit, and just as it was getting very serious, I signed my contract to be an an engineer at Google. I had just turned 39."
     - ['Coding Interview Prep for Big Tech (FAANG) – And How I Became A Google Engineer'](https://www.freecodecamp.org/news/coding-interview-prep-for-big-tech/)
+- kwanwooi 님의 ['공개적으로 학습하라!'](https://velog.io/@kwanwooi/%EA%B3%B5%EA%B0%9C%EC%A0%81%EC%9C%BC%EB%A1%9C-%ED%95%99%EC%8A%B5%ED%95%98%EB%9D%BC)
+    - "무엇을 하던 간에, 여러분이 학습할 때 '이런게 있었으면...' 했던 것을 만들어 보세요. 결과를 '박수'나 리트윗, 스타, 좋아요와 같은 것들로 판단하지 마세요."
+    - "꼭 해야할 일은 여러분이 한 일, 해결한 문제에 대해 문서화를 하는 일"
