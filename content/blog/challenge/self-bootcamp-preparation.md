@@ -37,10 +37,10 @@ category: 도전한다
         - [x] ['What is THIS in JavaScript? in 100 seconds'](https://youtu.be/YOlr79NaAtQ)
         - [x] ['Git Explained in 100 Seconds'](https://youtu.be/hwP7WQkmECE)
         - [x] ['React in 100 Seconds'](https://youtu.be/Tn6-PIqc4UM)
-    - [ ] 얄팍한 코딩사전
+    - [x] 얄팍한 코딩사전
         - [x] ['혼공얄코 1~4강. 개발자들이 하는 일'](https://youtu.be/IFSgZ4nelcM)
         - [x] ['혼공얄코 5~7강. 서버와 클라우드'](https://youtu.be/OVD_PvRBX7A)
-        - [ ] ['혼공얄코 8~13강. 웹에서 일어나는 일'](https://youtu.be/y-W0TlC0pJk)
+        - [x] ['혼공얄코 8~13강. 웹에서 일어나는 일'](https://youtu.be/y-W0TlC0pJk)
         - [x] ['웹개발 필수개념! DOM이 뭔가요? (+ Web API)'](https://youtu.be/mFawNZz_Uu0)
         - [x] ['정적 웹은 뭐고 동적 웹은 뭔가요?'](https://youtu.be/C06xRvXIAUk)
         - [x] ['자바스크립트에 세미콜론을 써야 하나요? (Feat: ASI)'](https://youtu.be/hJjYvVOEO7s)
@@ -49,7 +49,7 @@ category: 도전한다
     - [x] 재그지그 님의 ['프론트엔드 개발자라면 알고 있어야 할 브라우저의 동작 과정'](https://wormwlrm.github.io/2021/03/27/How-browsers-work.html)
     - [x] AWS 한국 블로그의 ['웹 브라우저에 URL을 입력하면 어떤 일이 생기나요?'](https://aws.amazon.com/ko/blogs/korea/what-happens-when-you-type-a-url-into-your-browser/)
     - [x] 찬미니즘 님의 ['Node.js - npm install, 이제는 알고 쓰자'](https://c17an.netlify.app/blog/node.js/npm-install-%EC%A0%95%EB%A6%AC/article/)
-    - [ ] Evans 님 블로그
+    - [x] Evans 님 블로그
         - [x] ['V8 엔진은 어떻게 내 코드를 실행하는 걸까?'](https://evan-moon.github.io/2019/06/28/v8-analysis/)
         - [x] ['프론트엔드와 백엔드가 소통하는 엔드포인트, RESTful API'](https://evan-moon.github.io/2020/04/07/about-restful-api/)
         - [x] ['기존의 사고 방식을 깨부수는 함수형 사고'](https://evan-moon.github.io/2019/12/15/about-functional-thinking/)
