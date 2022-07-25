@@ -29,9 +29,9 @@ category: 도전한다
     - [x] LaBhong 님의 ['CPU와 어셈블리 언어, 기계어, 어셈블러, 컴파일러, 링커의 상관관계'](https://psyhm.tistory.com/1)
     - [x] Frame of Essence의 ['How do computers read code?'](https://youtu.be/QXjU9qTsYCc)
     - [x] Codecademy의 ['What is a programming language?'](https://youtu.be/EGQh5SZctaE)
-    - [ ] freeCodeCamp의 ['Computer Coding – Computer Program Definition and Code Meaning'](https://www.freecodecamp.org/news/computer-coding-computer-program-definition-and-code-meaning/)
+    - [x] freeCodeCamp의 ['Computer Coding – Computer Program Definition and Code Meaning'](https://www.freecodecamp.org/news/computer-coding-computer-program-definition-and-code-meaning/)
     - [ ] Fireship의 #100SecondsOfCode
-        - [ ] ['HTML in 100 Seconds'](https://youtu.be/ok-plXXHlWw)
+        - [x] ['HTML in 100 Seconds'](https://youtu.be/ok-plXXHlWw)
         - [ ] ['CSS in 100 Seconds'](https://youtu.be/OEV8gMkCHXQ)
         - [ ] ['JavaScript in 100 Seconds'](https://youtu.be/DHjqpvDnNGE)
         - [ ] ['Git Explained in 100 Seconds'](https://youtu.be/hwP7WQkmECE)
