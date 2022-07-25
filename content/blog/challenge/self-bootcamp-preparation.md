@@ -56,7 +56,7 @@ category: 도전한다
         - [x] ['Git 뉴비를 위한 기초 사용법 - 시작하기'](https://evan-moon.github.io/2019/07/25/git-tutorial/)
         - [x] ['Git 뉴비를 위한 기초 사용법 - 버전 관리'](https://evan-moon.github.io/2019/07/28/git-tutorial-advanced/)
     - [x] dev.tinkerbell 님의 ['주니어 프론트엔드 개발자가 정리한 REST API'](https://velog.io/@dev-tinkerbell/%EC%A3%BC%EB%8B%88%EC%96%B4-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-REST-API)
-    - [ ] 재그지그 님의 ['프론트엔드 개발자에게도 알고리즘 공부가 중요할까?'](https://wormwlrm.github.io/2022/05/28/Should-a-front-end-developer-learn-the-algorithm.html)
+    - [x] 재그지그 님의 ['프론트엔드 개발자에게도 알고리즘 공부가 중요할까?'](https://wormwlrm.github.io/2022/05/28/Should-a-front-end-developer-learn-the-algorithm.html)
     - [x] 최강훈 님의 ['의사코드(Pseudo-code) 작성법'](https://42kchoi.tistory.com/114)
     - [x] 쨜리 님의 ['수도코드(pseudocode) 작성하는 방법'](https://seagull-dev.tistory.com/9)
 - [ ] 자바스크립트 동작 원리 검색하고 알아보기
