@@ -86,7 +86,7 @@ category: 도전한다
 
 - [x] [<Do it! HTML+CSS+자바스크립트 웹 표준의 정석>](http://www.easyspub.co.kr/20_Menu/BookView/421/PUB) HTML, CSS 부분 훑기 - 7/26 (화)
 - [ ] React [튜토리얼](https://ko.reactjs.org/tutorial/tutorial.html) 따라하기 - 7/27 (수)
-- [ ] Next [튜토리얼](https://nextjs.org/learn/foundations/about-nextjs) 따라하기
+- [ ] Next [튜토리얼](https://nextjs.org/learn/foundations/about-nextjs) 따라하기 - 7/27 (수)
 - [ ] <JavaScript: The Definitive Guide> 서문, 1장, 2장 읽기 - 7/27 (수)
 - [ ] Codecademy의 자바스크립트 트랙 중 ['Introduction to JavaScript'](https://www.codecademy.com/learn/introduction-to-javascript) 섹션 공부 - 7/27 (수)
 - [ ] <JavaScript: The Definitive Guide>의 3장과 4장 읽기 - 7/28 (목)
