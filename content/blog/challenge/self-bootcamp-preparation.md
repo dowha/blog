@@ -84,7 +84,7 @@ category: 도전한다
 
 #### 앞으로의 계획
 
-- [x] <Do it! HTML+CSS> 훑기
+- [x] [<Do it! HTML+CSS+자바스크립트 웹 표준의 정석>](http://www.easyspub.co.kr/20_Menu/BookView/421/PUB) HTML, CSS 부분 훑기
 - [ ] w3schools의 ['HTML Tutorial'](https://www.w3schools.com/html/default.asp)
 - [ ] w3schools의 ['CSS Tutorial'](https://www.w3schools.com/css/default.asp)
 - [ ] React [튜토리얼](https://ko.reactjs.org/tutorial/tutorial.html) 따라하기
