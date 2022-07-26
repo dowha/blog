@@ -90,11 +90,11 @@ category: 도전한다
 - [ ] React [튜토리얼](https://ko.reactjs.org/tutorial/tutorial.html) 따라하기
 - [ ] Next [튜토리얼](https://nextjs.org/learn/foundations/about-nextjs) 따라하기
 - [ ] <Do it! 지옥에서 온 문서 관리자 깃&깃허브 입문> 읽기
-- [ ] <JavaScript: The Definitive Guide> 서문, 1장, 2장 읽기 - 7/26 화
+- [ ] <JavaScript: The Definitive Guide> 서문, 1장, 2장 읽기 
 - [ ] Codecademy의 자바스크립트 트랙 중 ['Introduction to JavaScript'](https://www.codecademy.com/learn/introduction-to-javascript) 섹션 공부
-- [ ] <JavaScript: The Definitive Guide>의 3장과 4장 읽기 - 7/27 수
-- [ ] <JavaScript: The Definitive Guide>의 5장 읽기 - 7/28 목
-- [ ] ['JavaScript Objects in Detail'](http://javascriptissexy.com/javascript-objects-in-detail/) 읽기 - 7/29 금
+- [ ] <JavaScript: The Definitive Guide>의 3장과 4장 읽기
+- [ ] <JavaScript: The Definitive Guide>의 5장 읽기
+- [ ] ['JavaScript Objects in Detail'](http://javascriptissexy.com/javascript-objects-in-detail/) 읽기
 
 #### 준비하는데 참고하고 도움이 된 것들
 
