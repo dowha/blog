@@ -137,7 +137,7 @@ category: 도전한다
                     - flex wrap: 플렉스 컨테이너의 너비보다 많은 플렉스 항목이 있을 경우 줄을 바꿀지 여부 지정
                     - 주 축에서 줄 바꿈이 생겨 여러 줄로 표시할 때 align-content 속성 사용, 한 줄일때는 align-items 속성
                 - CSS 그리드 레이아웃: 수평과 수직 어느 방향이든 배치할 수 있음
-                    - 소스를 최대한 간다하게 유지하면서 대부분의 기기에 대응할 수 있는 기법
+                    - 소스를 최대한 간단하게 유지하면서 대부분의 기기에 대응할 수 있는 기법
                     - display: grid, inline-grid
                     - grid-template-columns 속성과 grid-template-rows 속성을 이용해 칼럼과 줄의 크기와 개수 지정
                     - 그리드 레이아웃에서는 상대적인 크기를 지정할 수 있도록 fr(fraction) 단위를 사용
