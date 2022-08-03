@@ -84,15 +84,15 @@ category: 도전한다
 
 #### 앞으로의 계획
 
-- [x] [<Do it! HTML+CSS+자바스크립트 웹 표준의 정석>](http://www.easyspub.co.kr/20_Menu/BookView/421/PUB) HTML, CSS 부분 훑기 - 7/26 (화)
-- [ ] MDN [JavaScript 재입문하기 (JS ​튜토리얼)](https://developer.mozilla.org/ko/docs/Web/JavaScript/A_re-introduction_to_JavaScript) - 7/27 (수)
-- [ ] React [튜토리얼](https://ko.reactjs.org/tutorial/tutorial.html) 따라하기 - 7/27 (수)
-- [ ] Next [튜토리얼](https://nextjs.org/learn/foundations/about-nextjs) 따라하기 - 7/27 (수)
-- [ ] <JavaScript: The Definitive Guide> 서문, 1장, 2장 읽기 - 7/27 (수)
-- [ ] Codecademy의 자바스크립트 트랙 중 ['Introduction to JavaScript'](https://www.codecademy.com/learn/introduction-to-javascript) 섹션 공부 - 7/27 (수)
-- [ ] <JavaScript: The Definitive Guide>의 3장과 4장 읽기 - 7/28 (목)
-- [ ] <JavaScript: The Definitive Guide>의 5장 읽기 - 7/28 (목)
-- [ ] ['JavaScript Objects in Detail'](http://javascriptissexy.com/javascript-objects-in-detail/) 읽기 - 7/28 (목)
+- [x] [<Do it! HTML+CSS+자바스크립트 웹 표준의 정석>](http://www.easyspub.co.kr/20_Menu/BookView/421/PUB) HTML, CSS 부분 훑기
+- [ ] MDN [JavaScript 재입문하기 (JS ​튜토리얼)](https://developer.mozilla.org/ko/docs/Web/JavaScript/A_re-introduction_to_JavaScript)
+- [ ] React [튜토리얼](https://ko.reactjs.org/tutorial/tutorial.html) 따라하기 
+- [ ] Next [튜토리얼](https://nextjs.org/learn/foundations/about-nextjs) 따라하기
+- [ ] <JavaScript: The Definitive Guide> 서문, 1장, 2장 읽기
+- [ ] Codecademy의 자바스크립트 트랙 중 ['Introduction to JavaScript'](https://www.codecademy.com/learn/introduction-to-javascript) 섹션 공부
+- [ ] <JavaScript: The Definitive Guide>의 3장과 4장 읽기
+- [ ] <JavaScript: The Definitive Guide>의 5장 읽기
+- [ ] ['JavaScript Objects in Detail'](http://javascriptissexy.com/javascript-objects-in-detail/) 읽기
 
 #### 킵
 - [ ] w3schools의 ['HTML Tutorial'](https://www.w3schools.com/html/default.asp)
