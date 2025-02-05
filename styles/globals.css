@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ✅ 글로벌 스타일 적용 */
+@layer base {
+    body {
+      @apply w-full p-6 sm:p-10 md:p-14 text-sm leading-6 sm:text-[15px] sm:leading-7 md:text-base md:leading-7 
+             text-gray-700 antialiased bg-[#FCFCFC];
+    }
+  
+    main {
+      @apply max-w-2xl mx-auto relative;
+    }
+  
+  
+
+  /* ✅ 링크 스타일 */
+  a {
+    @apply break-words decoration-gray-400 hover:decoration-gray-600;
+  }
+
+  /* ✅ 제목 스타일 */
+  h1 {
+    @apply font-semibold text-gray-800 text-2xl mb-7;
+  }
+
+  /* ✅ 본문 스타일 */
+  p {
+    @apply mt-7 text-gray-600;
+  }
+}
+
+html, body {
+    @apply h-full;
+  }
+  
+
+/* ✅ Pretendard 폰트 적용 */
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* ✅ Tailwind의 font-sans를 사용하면서 Pretendard 적용 */
+body {
+  font-family: 'Pretendard', sans-serif;
+}
