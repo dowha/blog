@@ -20,9 +20,7 @@ export default function RecordsPage({ records }: Props) {
         <div key={record.title} className="mt-4">
           <h2 className="text-lg font-semibold">{record.title}</h2>
           <p className="text-neutral-700">{record.content}</p>
-          <span className="text-sm text-neutral-400">
-            {new Date(record.created_at).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit" })}
-          </span>
+<br /> <br />
         </div>
       ))}
     </main>
