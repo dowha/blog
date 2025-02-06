@@ -6,7 +6,7 @@
 @layer base {
   body {
     @apply w-full p-6 sm:p-10 md:p-14 text-sm leading-6 sm:text-[15px] sm:leading-7 md:text-base md:leading-7 
-    text-[#050005] antialiased bg-[#FCFCFC];
+    text-gray-600 antialiased bg-[#FCFCFC];
   }
 
   main {
@@ -18,18 +18,31 @@
   }
 
   /* ✅ 링크 스타일 */
-  a {
-    @apply break-words decoration-gray-400 hover:decoration-gray-600;
+  main a {
+    @apply break-words underline underline-offset-4 decoration-gray-200 hover:text-[#0a85d1];
   }
 
   /* ✅ 제목 스타일 */
   h1 {
-    @apply font-semibold text-[#050005] text-xl mb-7;
+    @apply font-semibold text-gray-800 text-xl mb-7;
+  }
+
+  h2 {
+    @apply font-semibold text-gray-600;
+  }
+
+main ul {
+    list-style-type: disc;
+    padding-left: 20px;
+  }
+
+  main li {
+    margin-bottom: 4px;
   }
 
   /* ✅ 본문 스타일 */
   p {
-    @apply mt-7 text-[#050005];
+    @apply mt-7 text-gray-600;
   }
 }
 

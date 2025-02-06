@@ -19,7 +19,7 @@ export default function WritingPage({ posts }: Props) {
       <h1 className="text-xl font-bold">Writing</h1>
       {posts.map((post) => (
         <div key={post.slug} className="mt-2">
-          <Link href={`/post/${post.slug}`} className="hover:underline">
+          <Link href={`/post/${post.slug}`}>
             {post.title}
           </Link>
           <span className="text-sm text-gray-500 ml-2">
