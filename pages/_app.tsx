@@ -1,16 +1,26 @@
-import "@/styles/globals.css"; // TailwindCSS 스타일 적용
+import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import Layout from "@/components/Layout";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+
+  // 기본 타이틀
+  let pageTitle = "Dowha's Blog";
+
+  // 경로에 따라 타이틀 설정
+  if (router.pathname === "/writing") pageTitle = "Writing | Dowha's Blog";
+  else if (router.pathname === "/records") pageTitle = "Records | Dowha's Blog";
+  else if (router.pathname === "/") pageTitle = "Home | Dowha's Blog";
+
   return (
     <>
       <Head>
-        <title>{"Dowha's Blog"}</title> {/* 개별 페이지 타이틀 관리 */}
+        <title>{pageTitle}</title>
       </Head>
       <Layout>
-        <div className="fixed sm:hidden h-6 sm:h-10 md:h-14 w-full top-0 left-0 z-30 pointer-events-none content-fade-out"></div>
         <Component {...pageProps} />
       </Layout>
     </>

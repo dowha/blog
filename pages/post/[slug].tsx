@@ -2,6 +2,7 @@ import { supabase } from '@/supabase'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { GetStaticProps, GetStaticPaths } from 'next'
+import Head from "next/head";
 
 type Post = {
   title: string
@@ -13,6 +14,11 @@ export default function PostPage({ post }: { post: Post | null }) {
   if (!post) return <p>Post not found.</p>
 
   return (
+    <>
+          <Head>
+        <title>{post.title} | {"Dowha's Blog"}</title>
+        <meta name="description" content={post.content.slice(0, 150)} />
+      </Head>
     <article className="w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
       <h1 className="text-xl font-bold">{post.title}</h1>
       <p className="text-sm text-gray-500 mb-4">
@@ -27,6 +33,7 @@ export default function PostPage({ post }: { post: Post | null }) {
       </p>
       <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
     </article>
+    </>
   )
 }
 
