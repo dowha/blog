@@ -15,7 +15,7 @@ type Props = {
 
 export default function WritingPage({ posts }: Props) {
   return (
-    <main className="p-6">
+    <article className="pl-0 pt-6 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
       <h3 className="text-xl font-bold">Writing</h3>
       {posts.map((post) => (
         <div key={post.slug} className="mt-4">
@@ -27,7 +27,7 @@ export default function WritingPage({ posts }: Props) {
           </span>
         </div>
       ))}
-    </main>
+    </article>
   );
 }
 

@@ -7,7 +7,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>My App</title> {/* 개별 페이지 타이틀 관리 */}
+        <title>{"Dowha's Blog"}</title> {/* 개별 페이지 타이틀 관리 */}
       </Head>
       <Layout>
         {/* 여기로 이동 */}

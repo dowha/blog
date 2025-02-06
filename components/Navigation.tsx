@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from 'next/link'
 
 export function Navigation() {
   return (
@@ -20,8 +20,8 @@ export function Navigation() {
               records
             </Link>
           </li>
-          <div className="relative hidden md:block py-4 my-4">
-            <div className="absolute left-0 w-16 border-t border-neutral-200"></div>
+          <div className="relative hidden md:flex justify-end py-4 my-4">
+            <div className="absolute right-0 w-16 border-t border-neutral-200"></div>
           </div>
           <li className="md:text-right">
             <a
@@ -54,4 +54,3 @@ export function Navigation() {
     </nav>
   )
 }
-
