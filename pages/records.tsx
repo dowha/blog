@@ -15,10 +15,9 @@ type Props = {
 export default function RecordsPage({ records }: Props) {
   return (
     <article className="pl-0 pt-6 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
-      <h3 className="text-xl font-bold">Records</h3>
+      <h1 className="text-xl font-bold">Records</h1>
       {records.map((record) => (
-        <div key={record.title} className="mt-4">
-          <h2 className="text-lg font-semibold">{record.title}</h2>
+        <div key={record.title} className="mt-4 border-b border-dashed border-gray-300 pb-2">          <h2 className="text-lg font-semibold">{record.title}</h2>
           <p className="text-neutral-700">{record.content}</p>
           <br /> <br />
         </div>

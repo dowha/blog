@@ -14,15 +14,19 @@ export default function PostPage({ post }: { post: Post | null }) {
 
   return (
     <article className="pl-0 pt-6 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
-        <h3 className="text-xl font-bold">{post.title}</h3>
-        <p className="text-sm text-neutral-400 mb-4">
-          {new Date(post.created_at).toDateString()}
-        </p>
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-          {post.content}
-        </ReactMarkdown>
-      </article>
-
+      <h1 className="text-xl font-bold">{post.title}</h1>
+      <p className="text-sm text-neutral-400 mb-4">
+        {new Date(post.created_at)
+          .toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+          })
+          .replace(/\. /g, '/')
+          .replace(/\.$/, '')}
+      </p>
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
+    </article>
   )
 }
 

@@ -15,8 +15,8 @@ type Props = {
 
 export default function WritingPage({ posts }: Props) {
   return (
-    <article className="pl-0 pt-6 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
-      <h3 className="text-xl font-bold">Writing</h3>
+    <article className="w-full pl-0 pt-6 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
+      <h1 className="text-xl font-bold">Writing</h1>
       {posts.map((post) => (
         <div key={post.slug} className="mt-4">
           <Link href={`/post/${post.slug}`} className="text-neutral-950 hover:underline">
