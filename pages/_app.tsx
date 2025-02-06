@@ -6,16 +6,14 @@ import Head from "next/head";
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-    <Head>
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#ffffff" />
-  </Head>
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+      <Head>
+        <title>My App</title> {/* 개별 페이지 타이틀 관리 */}
+      </Head>
+      <Layout>
+        {/* 여기로 이동 */}
+        <div className="fixed sm:hidden h-6 sm:h-10 md:h-14 w-full top-0 left-0 z-30 pointer-events-none content-fade-out"></div>
+        <Component {...pageProps} />
+      </Layout>
     </>
   );
 }

@@ -1,11 +1,12 @@
-import { Navigation } from "@/components/Navigation";
-import type React from "react";
+import { Navigation } from "@/components/Navigation"
+import type React from "react"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex">
+    <div className="flex flex-col md:flex-row">
       <Navigation />
-      <main className="flex-1 ml-48 p-6">{children}</main>
+      <main className="flex-1 max-w-2xl p-6 md:p-0">{children}</main>
     </div>
-  );
+  )
 }
+
