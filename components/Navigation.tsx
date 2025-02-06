@@ -1,25 +1,32 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 export function Navigation() {
+  const router = useRouter();
+  const currentPath = router.pathname;
+
   return (
     <nav className="w-full p-6 text-gray-500 md:w-64 md:mr-6 mb-6 md:mb-0">
       <div className="space-y-2">
         <ul className="lowercase flex flex-wrap gap-4 md:block md:gap-0 md:space-y-2 md:text-right md:sticky md:top-6">
-          <li>
-            <Link href="/" className="hover:text-[#0a85d1]">
-              home
-            </Link>
-          </li>
-          <li>
-            <Link href="/writing" className="hover:text-[#0a85d1]">
-              writing
-            </Link>
-          </li>
-          <li>
-            <Link href="/records" className="hover:text-[#0a85d1]">
-              records
-            </Link>
-          </li>
+          {[
+            { name: 'home', path: '/' },
+            { name: 'writing', path: '/writing', related: '/post/' }, // 📌 related 추가
+            { name: 'records', path: '/records' },
+          ].map((item) => (
+            <li key={item.path}>
+              <Link
+                href={item.path}
+                className={`hover:text-[#0a85d1] ${
+                  currentPath === item.path || (item.related && currentPath.startsWith(item.related))
+                    ? 'font-semibold text-gray-800'
+                    : ''
+                }`}
+              >
+                {item.name}
+              </Link>
+            </li>
+          ))}
           <div className="relative hidden md:flex justify-end py-4 my-4">
             <div className="absolute right-0 w-16 border-t border-neutral-200"></div>
           </div>
@@ -43,7 +50,7 @@ export function Navigation() {
                 strokeLinejoin="round"
                 className="ml-1 h-4 w-4"
               >
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 1 1 2-2h6" />
                 <polyline points="15 3 21 3 21 9" />
                 <line x1="10" y1="14" x2="21" y2="3" />
               </svg>
@@ -52,5 +59,5 @@ export function Navigation() {
         </ul>
       </div>
     </nav>
-  )
+  );
 }
