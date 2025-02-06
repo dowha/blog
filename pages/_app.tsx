@@ -10,7 +10,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <title>{"Dowha's Blog"}</title> {/* 개별 페이지 타이틀 관리 */}
       </Head>
       <Layout>
-        {/* 여기로 이동 */}
         <div className="fixed sm:hidden h-6 sm:h-10 md:h-14 w-full top-0 left-0 z-30 pointer-events-none content-fade-out"></div>
         <Component {...pageProps} />
       </Layout>

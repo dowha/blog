@@ -18,11 +18,11 @@ export default function WritingPage({ posts }: Props) {
     <article className="w-full pl-0 pt-6 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
       <h1 className="text-xl font-bold">Writing</h1>
       {posts.map((post) => (
-        <div key={post.slug} className="mt-4">
-          <Link href={`/post/${post.slug}`} className="text-neutral-950 hover:underline">
+        <div key={post.slug} className="mt-2">
+          <Link href={`/post/${post.slug}`} className="hover:underline">
             {post.title}
           </Link>
-          <span className="text-sm text-neutral-400 ml-2">
+          <span className="text-sm text-gray-500 ml-2">
             {new Date(post.created_at).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit" })}
           </span>
         </div>

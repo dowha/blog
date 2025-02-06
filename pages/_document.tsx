@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
+import Footer from "@/components/footer";
 
 export default function Document() {
   return (
@@ -10,9 +11,11 @@ export default function Document() {
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" content="#ffffff" />
       </Head>
-      <body className="flex min-h-screen">
+      <body className="flex min-h-screen antialiased">
         <Main />
         <NextScript />
+        <Footer />
+
       </body>
     </Html>
   );

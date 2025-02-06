@@ -13,9 +13,9 @@ export default function PostPage({ post }: { post: Post | null }) {
   if (!post) return <p>Post not found.</p>
 
   return (
-    <article className="pl-0 pt-6 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
+    <article className="w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
       <h1 className="text-xl font-bold">{post.title}</h1>
-      <p className="text-sm text-neutral-400 mb-4">
+      <p className="text-sm text-gray-500 mb-4">
         {new Date(post.created_at)
           .toLocaleDateString('ko-KR', {
             year: 'numeric',

@@ -2,21 +2,21 @@ import Link from 'next/link'
 
 export function Navigation() {
   return (
-    <nav className="w-full p-6 md:w-64 md:mr-6 mb-6 md:mb-0">
+    <nav className="w-full p-6 text-gray-500 md:w-64 md:mr-6 mb-6 md:mb-0">
       <div className="space-y-2">
         <ul className="lowercase flex flex-wrap gap-4 md:block md:gap-0 md:space-y-2 md:text-right md:sticky md:top-6">
           <li>
-            <Link href="/" className="hover:text-neutral-950">
+            <Link href="/" className="hover:text-[#0a85d1]">
               home
             </Link>
           </li>
           <li>
-            <Link href="/writing" className="hover:text-neutral-950">
+            <Link href="/writing" className="hover:text-[#0a85d1]">
               writing
             </Link>
           </li>
           <li>
-            <Link href="/records" className="hover:text-neutral-950">
+            <Link href="/records" className="hover:text-[#0a85d1]">
               records
             </Link>
           </li>
@@ -26,7 +26,7 @@ export function Navigation() {
           <li className="md:text-right">
             <a
               href="https://dowha.kim"
-              className="group inline-flex items-center hover:text-neutral-950"
+              className="group inline-flex items-center hover:text-[#0a85d1]"
               target="_blank"
               rel="noopener noreferrer"
             >
