@@ -1,5 +1,7 @@
 import { supabase } from '@/supabase'
 import { GetStaticProps } from 'next'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 // ✅ 정확한 타입 정의
 type Record = {
@@ -22,7 +24,9 @@ export default function RecordsPage({ records }: Props) {
         <div key={record.title} className="mt-14 pb-2">
           {' '}
           <h2 className="text-md font-semibold">{record.title}</h2>
-          <p>{record.content}</p>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {record.content}
+          </ReactMarkdown>
           <div className="relative hidden md:flex justify-center py-4 my-4">
             <div className="mx-auto text-gray-500">*</div>
           </div>
