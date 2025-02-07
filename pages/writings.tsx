@@ -55,7 +55,7 @@ export default function WritingPage({ posts }: Props) {
                       <span>{post.title}</span>
                     </a>
                   ) : (
-                    <Link href={`/post/${post.slug}`} className="flex items-center">
+                    <Link href={`/posts/${post.slug}`} className="flex items-center">
                       {post.title}
                     </Link>
                   )}
