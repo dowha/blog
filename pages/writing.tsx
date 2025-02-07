@@ -44,10 +44,11 @@ export default function WritingPage({ posts }: Props) {
                       {post.source_name && (
                         <div className="relative group">
                           <span className="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full cursor-help">
-                            아웃링크: {post.source_name}
+                                               {post.source_name.charAt(0)}
                           </span>
                           <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:flex items-center justify-center bg-gray-800 text-white text-xs rounded py-1 px-2 w-max max-w-xs">
-                            {post.source_name.charAt(0)}
+
+                                                        아웃링크: {post.source_name}
                           </div>
                         </div>
                       )}
