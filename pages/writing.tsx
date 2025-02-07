@@ -1,7 +1,6 @@
 import { supabase } from "@/supabase";
 import Link from "next/link";
 import { GetStaticProps } from "next";
-import { FiExternalLink } from "react-icons/fi"; // 외부 링크 아이콘 추가
 
 // ✅ 정확한 타입 정의
 type Post = {
