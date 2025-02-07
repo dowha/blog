@@ -16,7 +16,7 @@ type Props = {
 
 export default function RecordsPage({ records }: Props) {
   return (
-    <article className="w-full pl-0 pt-6 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
+    <article className="w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
       <h1 className="text-xl font-bold">Records</h1>
       <p className="mt-4">한 해의 기록들. </p>
 
