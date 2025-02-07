@@ -1,12 +1,15 @@
 import { supabase } from "@/supabase";
 import Link from "next/link";
 import { GetStaticProps } from "next";
+import { FiExternalLink } from "react-icons/fi"; // 외부 링크 아이콘 추가
 
 // ✅ 정확한 타입 정의
 type Post = {
   title: string;
   slug: string;
   created_at: string;
+  is_external: boolean;
+  external_url?: string;
 };
 
 type Props = {
@@ -19,9 +22,21 @@ export default function WritingPage({ posts }: Props) {
       <h1 className="text-xl font-bold">Writing</h1>
       {posts.map((post) => (
         <div key={post.slug} className="mt-2">
-          <Link href={`/post/${post.slug}`}>
-            {post.title}
-          </Link>
+          {post.is_external && post.external_url ? (
+            <a
+              href={post.external_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-1 text-blue-600 hover:underline"
+            >
+              <span>{post.title}</span>
+              <FiExternalLink className="inline-block" />
+            </a>
+          ) : (
+            <Link href={`/post/${post.slug}`}>
+              {post.title}
+            </Link>
+          )}
           <span className="text-sm text-gray-500 ml-2">
             {new Date(post.created_at).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit" })}
           </span>
@@ -35,7 +50,7 @@ export default function WritingPage({ posts }: Props) {
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const { data: posts, error } = await supabase
     .from("posts")
-    .select("title, created_at, slug")
+    .select("title, created_at, slug, is_external, external_url") // is_external 및 external_url 추가
     .eq("status", "public")
     .order("created_at", { ascending: false });
 
