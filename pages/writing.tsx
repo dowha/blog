@@ -28,7 +28,7 @@ export default function WritingPage({ posts }: Props) {
               rel="noopener noreferrer"
               className="flex items-center space-x-1"
             >
-              <span>{post.title}     <svg
+              <span className="flex items-center">{post.title}     <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
