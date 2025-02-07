@@ -20,38 +20,40 @@ export default function WritingPage({ posts }: Props) {
     <article className="w-full pl-0 pt-6 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
       <h1 className="text-xl font-bold">Writing</h1>
       {posts.map((post) => (
-        <div key={post.slug} className="mt-2">
+        <div key={post.slug} className="flex items-center justify-between mt-2">
           {post.is_external && post.external_url ? (
             <a
               href={post.external_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-between w-full"
+              className="flex items-center space-x-1"
             >
-               <span className="flex items-center space-x-1">{post.title}     <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="ml-1 h-4 w-4"
-              >
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                <polyline points="15 3 21 3 21 9" />
-                <line x1="10" y1="14" x2="21" y2="3" />
-              </svg></span>
-            
+              <span className="flex items-center">
+                {post.title}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="ml-1 h-4 w-4"
+                >
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+              </span>
             </a>
           ) : (
-            <Link href={`/post/${post.slug}`}>
+            <Link href={`/post/${post.slug}`} className="flex items-center">
               {post.title}
             </Link>
           )}
-          <span className="whitespace-nowrap text-sm text-gray-500 ml-2">
+          <span className="text-sm text-gray-500 whitespace-nowrap">
             {new Date(post.created_at).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit" })}
           </span>
         </div>
