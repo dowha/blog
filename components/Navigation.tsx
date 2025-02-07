@@ -11,7 +11,7 @@ export function Navigation() {
         <ul className="lowercase flex flex-wrap gap-4 md:block md:gap-0 md:space-y-2 md:text-right md:sticky md:top-6">
           {[
             { name: 'home', path: '/' },
-            { name: 'writing', path: '/writing', related: '/post/' }, // 📌 related 추가
+            { name: 'writings', path: '/writings', related: '/posts/' }, // 📌 related 추가
             { name: 'records', path: '/records' },
           ].map((item) => (
             <li key={item.path}>
