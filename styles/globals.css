@@ -46,6 +46,18 @@ main ul {
   }
 }
 
+blockquote {
+  border-left: 4px solid #ccc;
+  margin: 1em 0em 0em 1em;
+  padding: 0.5em 1em;
+  color: #666;
+}
+
+blockquote p {
+  margin: 0; /* 기본 여백 제거 */
+}
+
+
 html,
 body {
   @apply h-full;
