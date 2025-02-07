@@ -26,9 +26,9 @@ export default function WritingPage({ posts }: Props) {
               href={post.external_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-1"
+              className="inline-flex items-center space-x-1"
             >
-              <span className="flex items-center">
+              <span className="inline-flex items-end">
                 {post.title}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +40,7 @@ export default function WritingPage({ posts }: Props) {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="ml-1 h-4 w-4"
+                  className="ml-1 h-4 w-4 self-end"
                 >
                   <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                   <polyline points="15 3 21 3 21 9" />
