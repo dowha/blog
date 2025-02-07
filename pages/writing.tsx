@@ -32,11 +32,11 @@ export default function WritingPage({ posts }: Props) {
               {/* ✅ source_name이 있을 경우 툴팁 추가 */}
               {post.source_name && (
                 <div className="relative group">
-                  <span className="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full cursor-help">
+<span className="bg-gray-100 text-gray-600 text-[10px] px-2 py-0.5 rounded-md cursor-help">
                     {post.source_name}
                   </span>
                   <div className="absolute bottom-full mb-1 hidden group-hover:flex items-center justify-center bg-gray-800 text-white text-xs rounded py-1 px-2 w-max max-w-xs">
-                    외부 출처: {post.source_name}
+                    JANDI BLOG
                   </div>
                 </div>
               )}
