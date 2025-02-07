@@ -9,6 +9,7 @@ type Post = {
   created_at: string;
   is_external: boolean;
   external_url?: string;
+  source_name?: string; // ✅ source_name 추가
 };
 
 type Props = {
@@ -26,9 +27,20 @@ export default function WritingPage({ posts }: Props) {
               href={post.external_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center"
+              className="inline-flex items-center space-x-2"
             >
-              {post.title}
+              {/* ✅ source_name이 있을 경우 툴팁 추가 */}
+              {post.source_name && (
+                <div className="relative group">
+                  <span className="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full cursor-help">
+                    {post.source_name}
+                  </span>
+                  <div className="absolute bottom-full mb-1 hidden group-hover:flex items-center justify-center bg-gray-800 text-white text-xs rounded py-1 px-2 w-max max-w-xs">
+                    외부 출처: {post.source_name}
+                  </div>
+                </div>
+              )}
+              <span>{post.title}</span>
             </a>
           ) : (
             <Link href={`/post/${post.slug}`} className="flex items-center">
@@ -44,11 +56,11 @@ export default function WritingPage({ posts }: Props) {
   );
 }
 
-// ✅ 타입을 명확히 지정하여 `getStaticProps` 수정
+// ✅ `source_name`을 포함하여 데이터 가져오기
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const { data: posts, error } = await supabase
     .from("posts")
-    .select("title, created_at, slug, is_external, external_url") // is_external 및 external_url 추가
+    .select("title, created_at, slug, is_external, external_url, source_name") // ✅ source_name 추가
     .eq("status", "public")
     .order("created_at", { ascending: false });
 
