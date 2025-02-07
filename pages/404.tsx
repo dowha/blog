@@ -3,7 +3,7 @@ import Link from 'next/link'
 export default function Custom404() {
   return (
     <article className="w-full pl-0 pt-6 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
-      <h1 className="text-xl font-bold">404</h1>
+      <h1 className="text-xl font-bold">404 Not Found</h1>
       <div className="mt-6 w-full mx-auto aspect-video">
         <iframe
           className="w-full h-full rounded-lg shadow-lg"
