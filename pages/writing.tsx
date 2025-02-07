@@ -26,9 +26,9 @@ export default function WritingPage({ posts }: Props) {
               href={post.external_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-1"
+              className="flex items-center justify-between w-full"
             >
-               <span className="inline-flex items-center">{post.title}     <svg
+               <span className="flex items-center space-x-1">{post.title}     <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
@@ -51,7 +51,7 @@ export default function WritingPage({ posts }: Props) {
               {post.title}
             </Link>
           )}
-          <span className="text-sm text-gray-500 ml-2">
+          <span className="whitespace-nowrap text-sm text-gray-500 ml-2">
             {new Date(post.created_at).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit" })}
           </span>
         </div>
