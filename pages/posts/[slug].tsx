@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import Head from "next/head";
+import Copyright from "@/components/Copyright";
 
 type Post = {
   title: string
@@ -32,6 +33,7 @@ export default function PostPage({ post }: { post: Post | null }) {
           .replace(/\.$/, '')}
       </p>
       <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
+      <Copyright />
     </article>
     </>
   )
