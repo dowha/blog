@@ -53,7 +53,7 @@ export default function WritingPage({ posts }: Props) {
               {post.title}
             </Link>
           )}
-          <span className="text-sm text-gray-500 whitespace-nowrap">
+          <span className="text-sm text-gray-500 font-mono whitespace-nowrap">
             {new Date(post.created_at).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit" })}
           </span>
         </div>
