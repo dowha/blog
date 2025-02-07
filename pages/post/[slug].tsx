@@ -43,6 +43,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     .from('posts')
     .select('slug')
     .eq('status', 'public')
+    .eq('is_external', false) // 추가됨
 
   const paths =
     posts?.map((post) => ({
@@ -63,6 +64,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     .select('*')
     .eq('slug', params.slug)
     .eq('status', 'public')
+    .eq('is_external', false) // 추가됨
     .single()
 
   if (!post) {
