@@ -19,7 +19,7 @@ export default function PostPage({ post }: { post: Post | null }) {
         <title>{post.title} | {"Dowha's Blog"}</title>
         <meta name="description" content={post.content.slice(0, 150)} />
       </Head>
-    <article className="w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
+    <article className="w-full pl-0 pt-6 pb-16 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
       <h1 className="text-xl font-bold">{post.title}</h1>
       <p className="text-sm text-gray-500 font-mono mb-4">
         {new Date(post.created_at)
