@@ -30,7 +30,7 @@ export default function WritingPage({ posts }: Props) {
         .sort(([a], [b]) => parseInt(b) - parseInt(a)) // 최신 연도 우선 정렬
         .map(([year, posts]) => (
           <section key={year} className="mt-6">
-            <h2 className="text-lg font-semibold text-gray-700">{year}</h2>
+            <h2 className="font-semibold text-gray-700">{year}</h2>
             <div className="mt-2 space-y-2">
               {posts.map((post) => (
                 <div key={post.slug} className="flex items-center justify-between">
@@ -48,7 +48,7 @@ export default function WritingPage({ posts }: Props) {
                           </span>
                           <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:flex items-center justify-center bg-gray-800 text-white text-xs rounded py-1 px-2 w-max max-w-xs">
 
-                                                        아웃링크: {post.source_name}
+                                                        원문 링크: {post.source_name}
                           </div>
                         </div>
                       )}
