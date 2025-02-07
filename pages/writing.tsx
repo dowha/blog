@@ -33,10 +33,10 @@ export default function WritingPage({ posts }: Props) {
               {post.source_name && (
                 <div className="relative group">
 <span className="bg-gray-100 text-gray-600 text-[10px] px-2 py-0.5 rounded-md cursor-help">
-                    {post.source_name}
+                    {post.source_name.charAt(0)}
                   </span>
                   <div className="absolute bottom-full mb-1 hidden group-hover:flex items-center justify-center bg-gray-800 text-white text-xs rounded py-1 px-2 w-max max-w-xs">
-                    JANDI BLOG
+                    아웃링크: {post.source_name}
                   </div>
                 </div>
               )}
