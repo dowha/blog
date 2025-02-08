@@ -75,8 +75,8 @@ export default function PostPage({ post }: { post: Post | null }) {
             공유
           </button>
         </div>
-        <Copyright />
       </article>
+      <Copyright />
     </>
   )
 }

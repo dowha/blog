@@ -57,20 +57,21 @@ export default function SeriesDetailPage({ series, posts }: Props) {
                 <Link
                   href={`/posts/${post.slug}`}
                   className="flex items-center hover:underline hover:text-[theme_color]"
-                >
+                ><h3>
                   {/* 인덱스 번호를 (1), (2) 형식으로 표기 */}({index + 1}
-                  )&nbsp;{post.title}
+                  )&nbsp;{post.title}</h3>
                 </Link>
-                <span className="text-sm text-gray-500 font-mono whitespace-nowrap">
+                <div className="py-0.5 sm:py-0">
+                <span className="text-xs sm:text-sm text-gray-500 font-mono whitespace-nowrap">
                   {new Date(post.created_at)
                     .toLocaleDateString('ko-KR', {
-                      year: 'numeric',
+                      year: '2-digit',
                       month: '2-digit',
                       day: '2-digit',
                     })
                     .replace(/\. /g, '/')
                     .replace(/\.$/, '')}
-                </span>
+                </span></div>
               </div>
             ))
           ) : (

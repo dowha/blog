@@ -33,7 +33,7 @@ export default function SeriesPage({ series }: Props) {
             ></span>
 
             {/* 시리즈 이름 */}
-            <span className="pl-2 pr-4 relative z-10">{item.series_name}</span>
+            <h2 className="pl-2 pr-4 relative z-10">{item.series_name}</h2>
 
             {/* 오른쪽 화살표 (기본적으로 숨겨져 있다가 hover 시 표시) */}
             <span className="absolute right-4 opacity-0 group-hover:opacity-100 transition duration-300">

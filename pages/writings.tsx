@@ -45,10 +45,14 @@ export default function WritingPage() {
     setOffset(newOffset)
   }
 
+  const currentYear = new Date().getFullYear() // 올해 연도 가져오기
+
   const groupedPosts = visiblePosts.reduce((acc, post) => {
     const year = new Date(post.created_at).getFullYear()
+
     if (!acc[year]) acc[year] = []
     acc[year].push(post)
+
     return acc
   }, {} as Record<number, Post[]>)
 
@@ -59,12 +63,14 @@ export default function WritingPage() {
         .sort(([a], [b]) => parseInt(b) - parseInt(a)) // 최신 연도 우선 정렬
         .map(([year, posts]) => (
           <section key={year} className="mt-6">
-            <h2 className="font-semibold text-gray-700">{year}</h2>
+            <h2 className="font-semibold font-mono text-gray-600">
+              {Number(year) === currentYear ? '' : year}
+            </h2>
             <div className="mt-2 space-y-2">
               {posts.map((post) => (
                 <div
                   key={post.slug}
-                  className="flex items-center justify-between"
+                  className="flex items-start justify-between"
                 >
                   {post.is_external && post.external_url ? (
                     <a
@@ -75,7 +81,7 @@ export default function WritingPage() {
                     >
                       {post.source_name && (
                         <div className="relative group">
-                          <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-md cursor-help">
+                          <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-md cursor-help">
                             {post.source_name.charAt(0)}
                           </span>
                           <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 hidden group-hover:flex items-center justify-center bg-gray-800 text-white text-xs rounded py-1 px-2 w-max max-w-xs">
@@ -83,22 +89,24 @@ export default function WritingPage() {
                           </div>
                         </div>
                       )}
-                      <span>{post.title}</span>
+                      <h3>{post.title}</h3>
                     </a>
                   ) : (
                     <Link
                       href={`/posts/${post.slug}`}
                       className="flex items-center"
                     >
-                      {post.title}
+                      <h3>{post.title}</h3>
                     </Link>
                   )}
-                  <span className="text-sm text-gray-500 font-mono whitespace-nowrap">
-                    {new Date(post.created_at).toLocaleDateString('en-US', {
-                      month: '2-digit',
-                      day: '2-digit',
-                    })}
-                  </span>
+                  <div className="py-0.5 sm:py-0">
+                    <span className="text-xs sm:text-sm text-gray-500 font-mono whitespace-nowrap">
+                      {new Date(post.created_at).toLocaleDateString('en-US', {
+                        month: '2-digit',
+                        day: '2-digit',
+                      })}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>

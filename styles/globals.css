@@ -40,6 +40,15 @@
     @apply font-semibold text-gray-600; /* h2 스타일 설정 */
   }
 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    word-break: keep-all;
+  }
+
   /* ✅ 리스트 스타일 */
   main ul {
     @apply list-disc pl-5; /* 불릿 스타일을 동그라미로 설정하고 들여쓰기 추가 */
@@ -80,7 +89,7 @@ blockquote blockquote {
 }
 
 blockquote blockquote p {
-  color: #444;  
+  color: #444;
 }
 
 /* ✅ 중첩된 인용구 앞에 `—`(대시) 추가 */
