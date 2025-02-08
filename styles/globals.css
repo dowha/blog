@@ -59,13 +59,37 @@
     border-left: 4px solid #ccc; /* 왼쪽에 회색 줄 추가 */
     margin: 1em 0 0 1em; /* 기본 여백 설정 */
     padding: 0.5em 1em; /* 내부 여백 설정 */
-    color: #666; /* 회색 텍스트 */
+
     font-family: 'Gowun Dodum', serif; /* ✅ 폰트로 Gowun Dodum 적용 */
+    font-style: italic;
   }
 
   blockquote p {
     margin: 0; /* 기본 여백 제거 */
+    color: #666; /* 회색 텍스트 */
   }
+}
+
+blockquote blockquote {
+  border-left: 0px;
+  margin: 0em 0 0 0.5em; /* 기본 여백 설정 */
+  padding-left: 1em;
+  color: #444;
+  font-style: normal;
+  position: relative; /* ✅ 가상 요소 배치용 */
+}
+
+blockquote blockquote p {
+  color: #444;  
+}
+
+/* ✅ 중첩된 인용구 앞에 `—`(대시) 추가 */
+blockquote blockquote::before {
+  content: '—'; /* ✅ 대시 추가 */
+  position: absolute;
+  left: -0.3em; /* ✅ 왼쪽 위치 조정 */
+  color: #444; /* ✅ 회색 대시 */
+  font-size: 1em; /* ✅ 크기 조정 */
 }
 
 /* ✅ Tailwind 유틸리티 */
