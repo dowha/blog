@@ -39,7 +39,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
           <div
             className="flex items-start py-2 px-3 rounded-lg"
             style={{
-              backgroundColor: `${series.theme_color}4D`
+              backgroundColor: `${series.theme_color}4D`,
             }}
           >
             <span className="mr-2">💬</span> {/* 이모지 아이콘 */}

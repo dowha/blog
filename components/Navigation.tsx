@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 export function Navigation() {
-  const router = useRouter();
-  const currentPath = router.pathname;
+  const router = useRouter()
+  const currentPath = router.pathname
 
   return (
     <nav className="w-full p-6 text-gray-500 md:w-64 md:mr-6 mb-6 md:mb-0">
@@ -19,7 +19,8 @@ export function Navigation() {
               <Link
                 href={item.path}
                 className={`hover:text-[#0a85d1] ${
-                  currentPath === item.path || (item.related && currentPath.startsWith(item.related))
+                  currentPath === item.path ||
+                  (item.related && currentPath.startsWith(item.related))
                     ? 'font-semibold text-gray-800'
                     : ''
                 }`}
@@ -60,5 +61,5 @@ export function Navigation() {
         </ul>
       </div>
     </nav>
-  );
+  )
 }

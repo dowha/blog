@@ -14,7 +14,13 @@ type Props = {
   records: Record[]
 }
 
-function Collapse({ title, children }: { title: string; children: React.ReactNode }) {
+function Collapse({
+  title,
+  children,
+}: {
+  title: string
+  children: React.ReactNode
+}) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -25,7 +31,9 @@ function Collapse({ title, children }: { title: string; children: React.ReactNod
       >
         <h2>{title}</h2>
         <svg
-          className={`h-4 w-4 transform transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          className={`h-4 w-4 transform transition-transform duration-200 ${
+            open ? 'rotate-180' : ''
+          }`}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -38,7 +46,7 @@ function Collapse({ title, children }: { title: string; children: React.ReactNod
       </button>
       {open && <div className="py-2 pl-2 pr-4">{children}</div>}
     </div>
-  );
+  )
 }
 
 export default function RecordsPage({ records }: Props) {

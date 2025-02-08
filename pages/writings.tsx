@@ -1,54 +1,56 @@
-import { supabase } from "@/supabase";
-import Link from "next/link";
-import { useState, useEffect } from "react";
+import { supabase } from '@/supabase'
+import Link from 'next/link'
+import { useState, useEffect } from 'react'
 
 type Post = {
-  title: string;
-  slug: string;
-  created_at: string;
-  is_external: boolean;
-  external_url?: string;
-  source_name?: string;
-};
+  title: string
+  slug: string
+  created_at: string
+  is_external: boolean
+  external_url?: string
+  source_name?: string
+}
 
 export default function WritingPage() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [visiblePosts, setVisiblePosts] = useState<Post[]>([]);
-  const [offset, setOffset] = useState(0);
-  const LIMIT = 10;
+  const [posts, setPosts] = useState<Post[]>([])
+  const [visiblePosts, setVisiblePosts] = useState<Post[]>([])
+  const [offset, setOffset] = useState(0)
+  const LIMIT = 10
 
   useEffect(() => {
     async function fetchPosts() {
       const { data, error } = await supabase
-        .from("posts")
-        .select("title, created_at, slug, is_external, external_url, source_name")
-        .eq("status", "public")
-        .order("created_at", { ascending: false });
+        .from('posts')
+        .select(
+          'title, created_at, slug, is_external, external_url, source_name'
+        )
+        .eq('status', 'public')
+        .order('created_at', { ascending: false })
 
       if (error) {
-        console.error("Error fetching posts:", error);
-        return;
+        console.error('Error fetching posts:', error)
+        return
       }
 
-      setPosts(data);
-      setVisiblePosts(data.slice(0, LIMIT));
+      setPosts(data)
+      setVisiblePosts(data.slice(0, LIMIT))
     }
 
-    fetchPosts();
-  }, []);
+    fetchPosts()
+  }, [])
 
   const loadMorePosts = () => {
-    const newOffset = offset + LIMIT;
-    setVisiblePosts(posts.slice(0, newOffset + LIMIT));
-    setOffset(newOffset);
-  };
+    const newOffset = offset + LIMIT
+    setVisiblePosts(posts.slice(0, newOffset + LIMIT))
+    setOffset(newOffset)
+  }
 
   const groupedPosts = visiblePosts.reduce((acc, post) => {
-    const year = new Date(post.created_at).getFullYear();
-    if (!acc[year]) acc[year] = [];
-    acc[year].push(post);
-    return acc;
-  }, {} as Record<number, Post[]>);
+    const year = new Date(post.created_at).getFullYear()
+    if (!acc[year]) acc[year] = []
+    acc[year].push(post)
+    return acc
+  }, {} as Record<number, Post[]>)
 
   return (
     <article className="w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
@@ -60,7 +62,10 @@ export default function WritingPage() {
             <h2 className="font-semibold text-gray-700">{year}</h2>
             <div className="mt-2 space-y-2">
               {posts.map((post) => (
-                <div key={post.slug} className="flex items-center justify-between">
+                <div
+                  key={post.slug}
+                  className="flex items-center justify-between"
+                >
                   {post.is_external && post.external_url ? (
                     <a
                       href={post.external_url}
@@ -81,12 +86,18 @@ export default function WritingPage() {
                       <span>{post.title}</span>
                     </a>
                   ) : (
-                    <Link href={`/posts/${post.slug}`} className="flex items-center">
+                    <Link
+                      href={`/posts/${post.slug}`}
+                      className="flex items-center"
+                    >
                       {post.title}
                     </Link>
                   )}
                   <span className="text-sm text-gray-500 font-mono whitespace-nowrap">
-                    {new Date(post.created_at).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit" })}
+                    {new Date(post.created_at).toLocaleDateString('en-US', {
+                      month: '2-digit',
+                      day: '2-digit',
+                    })}
                   </span>
                 </div>
               ))}
@@ -104,5 +115,5 @@ export default function WritingPage() {
         </button>
       )}
     </article>
-  );
+  )
 }
