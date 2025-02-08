@@ -37,7 +37,7 @@ export default function SeriesPage({ series }: Props) {
 
             {/* 오른쪽 화살표 (기본적으로 숨겨져 있다가 hover 시 표시) */}
             <span className="absolute right-4 opacity-0 group-hover:opacity-100 transition duration-300">
-                →
+              →
             </span>
           </Link>
         ))}

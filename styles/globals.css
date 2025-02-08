@@ -60,7 +60,7 @@
     margin: 1em 0 0 1em; /* 기본 여백 설정 */
     padding: 0.5em 1em; /* 내부 여백 설정 */
     color: #666; /* 회색 텍스트 */
-    font-family: 'Gowun Dodum', sans-serif; /* ✅ 폰트로 Wanted Sans 적용 */
+    font-family: 'Gowun Dodum', serif; /* ✅ 폰트로 Gowun Dodum 적용 */
   }
 
   blockquote p {
