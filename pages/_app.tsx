@@ -11,7 +11,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   let pageTitle = "Dowha's Blog";
 
   // 경로에 따라 타이틀 설정
-  if (router.pathname === "/writing") pageTitle = "Writing | Dowha's Blog";
+  if (router.pathname === "/writings") pageTitle = "Writings | Dowha's Blog";
   else if (router.pathname === "/records") pageTitle = "Records | Dowha's Blog";
   else if (router.pathname === "/series") pageTitle = "Series | Dowha's Blog";
 
