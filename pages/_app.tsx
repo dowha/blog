@@ -19,6 +19,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>{pageTitle}</title>
+        <meta name="description" content={"이것저것 쓰고 싶은 글들을 씁니다."} />
       </Head>
       <Layout>
         <Component {...pageProps} />
