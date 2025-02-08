@@ -1,3 +1,4 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
 @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 
 @tailwind base;
@@ -11,7 +12,7 @@
     @apply w-full h-full p-6 sm:p-10 md:p-14 text-sm leading-6 sm:text-[15px] sm:leading-7 md:text-base md:leading-7 
     text-gray-600 antialiased bg-[#FCFCFC];
 
-    font-family: 'Pretendard', sans-serif; /* ✅ 기본 폰트로 Wanted Sans 적용 */
+    font-family: 'Pretendard Variable', sans-serif; /* ✅ 기본 폰트로 Wanted Sans 적용 */
   }
 
   /* 메인 컨텐츠 영역 스타일 */
@@ -65,25 +66,6 @@
   blockquote p {
     margin: 0; /* 기본 여백 제거 */
   }
-}
-
-/* ✅ Pretendard 폰트 적용 */
-@font-face {
-  font-family: 'Pretendard';
-  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
-    format('woff');
-  font-weight: 400;
-  font-style: normal;
-  /* 기본 폰트 Pretendard Regular */
-}
-
-@font-face {
-  font-family: 'Pretendard';
-  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff')
-    format('woff');
-  font-weight: 600;
-  font-style: normal;
-  /* 강조된 폰트 Pretendard SemiBold */
 }
 
 /* ✅ Tailwind 유틸리티 */
