@@ -23,7 +23,7 @@ function Collapse({ title, children }: { title: string; children: React.ReactNod
         onClick={() => setOpen(!open)}
         className="w-full text-left pl-2 pr-4 py-2 focus:outline-none flex items-center justify-between"
       >
-        <h2 className="font-bold">{title}</h2>
+        <h2>{title}</h2>
         <svg
           className={`h-4 w-4 transform transition-transform duration-200 ${open ? "rotate-180" : ""}`}
           fill="currentColor"
@@ -48,7 +48,7 @@ export default function RecordsPage({ records }: Props) {
       <p className="mt-4">한 해의 기록들.</p>
 
       {records.map((record) => (
-        <div key={record.title} className="mt-7 pb-2">
+        <div key={record.title} className="mt-6 pb-2">
           <Collapse title={record.title}>
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {record.content}
