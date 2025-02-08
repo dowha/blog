@@ -51,7 +51,7 @@ export default function WritingPage() {
   }, {} as Record<number, Post[]>);
 
   return (
-    <article className="w-full pl-0 pt-6 pb-16 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
+    <article className="w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
       <h1 className="text-xl font-bold">Writing</h1>
       {Object.entries(groupedPosts)
         .sort(([a], [b]) => parseInt(b) - parseInt(a)) // 최신 연도 우선 정렬
