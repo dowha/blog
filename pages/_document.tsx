@@ -5,11 +5,7 @@ export default function Document() {
   return (
     <Html lang="ko">
       <Head>
-        {/* Viewport 설정 (iPhone의 notch 대응) */}
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, viewport-fit=cover"
-        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         {/* Safari에서 상태 바 색상 설정 */}
         <meta name="theme-color" content="#FCFCFC" />
         {/* PWA 설정 (전체 화면 표시) */}
