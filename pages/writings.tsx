@@ -58,7 +58,18 @@ export default function WritingPage() {
 
   return (
     <article className="w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
-      <h1 className="text-xl font-bold">Writing</h1>
+      <h1 className="text-xl font-bold">
+        Writing{' '}
+        <a
+          href="/api/rss"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[10px] opacity-70 tracking-tight scale-90 align-top text-gray-500 font-normal hover:text-orange-500"
+        >
+          (RSS)
+        </a>
+      </h1>
+
       {Object.entries(groupedPosts)
         .sort(([a], [b]) => parseInt(b) - parseInt(a)) // 최신 연도 우선 정렬
         .map(([year, posts]) => (
@@ -112,7 +123,6 @@ export default function WritingPage() {
             </div>
           </section>
         ))}
-
       {/* 더 보기 버튼 */}
       {visiblePosts.length < posts.length && (
         <button
