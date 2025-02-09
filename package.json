@@ -5,16 +5,20 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.48.1",
     "next": "15.1.6",
+    "next-sitemap": "^4.2.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^9.0.3",
-    "remark-gfm": "^4.0.0"
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.0",
+    "rss": "^1.2.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
