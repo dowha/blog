@@ -26,6 +26,31 @@
   }
 
   /* ✅ 링크 스타일 */
+  a {
+    @apply break-words decoration-gray-200 hover:text-[#0a85d1];
+    /* 긴 단어가 자동 줄바꿈됨, 밑줄 스타일 설정, 호버 시 색상 변경 */
+  }
+
+nav a[target='_blank'] {
+    display: inline;
+    position: relative;
+    padding-right: 2px;
+  }
+
+  /* target="_blank"가 있는 링크에만 아이콘 표시 */
+ nav a[target='_blank']:after {
+    content: '↗';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    position: relative;
+    top: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
   main a {
     @apply break-words underline underline-offset-4 decoration-gray-200 hover:text-[#0a85d1];
     /* 긴 단어가 자동 줄바꿈됨, 밑줄 스타일 설정, 호버 시 색상 변경 */

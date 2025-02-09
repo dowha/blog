@@ -10,6 +10,7 @@ type SeriesRecord = {
   theme_color: string
   description: string
   status: string
+  emoji: string
 }
 
 type Post = {
@@ -42,7 +43,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
               backgroundColor: `${series.theme_color}4D`,
             }}
           >
-            <span className="mr-2">💬</span> {/* 이모지 아이콘 */}
+            <span className="mr-2">{series.emoji}</span> {/* 이모지 아이콘 */}
             <div className="leading-relaxed text-keepall">{series.description}</div>
           </div>
         )}
