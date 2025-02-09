@@ -6,6 +6,7 @@ type SeriesRecord = {
   series_name: string
   slug: string
   theme_color: string // 추가된 컬럼
+  emoji: string // 추가된 컬럼
 }
 
 type Props = {
@@ -16,7 +17,10 @@ export default function SeriesPage({ series }: Props) {
   return (
     <article className="w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
       <h1 className="text-xl font-bold">Series</h1>
-      <p className="mt-4 text-keepall">특별히 묶은 글들.</p>
+      <p className="mt-4 text-keepall">
+        특별히 엮어둔 글 목록입니다. 의도적으로 한 주제 아래 쓴 글들도, 쓰고 보니 우연히
+        묶인 글들도 있습니다. 부디 재밌게 읽어주세요.
+      </p>
       <div className="mt-6 border-t border-gray-300">
         {series.map((item) => (
           <Link
@@ -33,7 +37,7 @@ export default function SeriesPage({ series }: Props) {
             ></span>
 
             {/* 시리즈 이름 */}
-            <h2 className="pl-2 pr-4 relative z-10">{item.series_name}</h2>
+            <h2 className="pl-2 pr-4 relative z-10">{item.emoji} {item.series_name}</h2>
 
             {/* 오른쪽 화살표 (기본적으로 숨겨져 있다가 hover 시 표시) */}
             <span className="absolute right-4 opacity-0 group-hover:opacity-100 transition duration-300">
@@ -49,7 +53,7 @@ export default function SeriesPage({ series }: Props) {
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const { data: series, error } = await supabase
     .from('series')
-    .select('series_name, slug, theme_color') // 새로운 컬럼 포함
+    .select('series_name, slug, theme_color, emoji') // 새로운 컬럼 포함
     .eq('status', 'public')
 
   if (error || !series) {

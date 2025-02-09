@@ -19,13 +19,13 @@ export default function Custom404() {
       <p className="mt-4">
         길을 잃으셨군요. 하지만 걱정 마세요. 저도 가끔 길을 잃곤 합니다.
         <br />
-        좌측(모바일에서는 상단)의 메뉴를 통해 길을 찾아주세요.
+        좌측(모바일에서는 상단)의 메뉴를 통해 바른 길을 찾아주세요.
       </p>
       <button
         onClick={() => router.push('/')}
         className="text-xs mt-6 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-md"
       >
-        포기 말기
+        처음으로
       </button>
     </article>
   )
