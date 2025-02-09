@@ -77,7 +77,7 @@ export default function WritingPage() {
                       href={post.external_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center space-x-2"
+                      className="inline-flex items-start space-x-2"
                     >
                       {post.source_name && (
                         <div className="relative group">
@@ -99,7 +99,7 @@ export default function WritingPage() {
                       <h3>{post.title}</h3>
                     </Link>
                   )}
-                  <div className="py-0.5 sm:py-0">
+                  <div className="pl-1 py-0.5 sm:py-0">
                     <span className="text-xs sm:text-sm text-gray-500 font-mono whitespace-nowrap">
                       {new Date(post.created_at).toLocaleDateString('en-US', {
                         month: '2-digit',
