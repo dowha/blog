@@ -18,14 +18,16 @@ type Props = {
 function Collapse({
   title,
   children,
+  isLast,
 }: {
   title: string
   children: React.ReactNode
+  isLast: boolean
 }) {
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="border-t border-b border-gray-300">
+    <div className={`border-t border-gray-300 ${isLast ? 'border-b' : ''}`}>
       <button
         onClick={() => setOpen(!open)}
         className="w-full text-left pl-2 pr-4 py-2 focus:outline-none flex items-center justify-between"
@@ -59,9 +61,9 @@ export default function RecordsPage({ records }: Props) {
         목록과 그에 대한 짧은 메모입니다.
       </p>
 
-      {records.map((record) => (
-        <div key={record.title} className="mt-6 pb-2">
-          <Collapse title={record.title}>
+      {records.map((record, index) => (
+        <div key={record.title} className={index === 0 ? 'mt-6' : ''}>
+          <Collapse title={record.title} isLast={index === records.length - 1}>
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeRaw]}
