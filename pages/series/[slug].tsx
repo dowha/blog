@@ -43,7 +43,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
             }}
           >
             <span className="mr-2">💬</span> {/* 이모지 아이콘 */}
-            <div className="leading-relaxed">{series.description}</div>
+            <div className="leading-relaxed text-keepall">{series.description}</div>
           </div>
         )}
 
@@ -52,16 +52,16 @@ export default function SeriesDetailPage({ series, posts }: Props) {
             posts.map((post, index) => (
               <div
                 key={post.slug}
-                className="flex items-center justify-between"
+                className="flex items-start justify-between"
               >
                 <Link
                   href={`/posts/${post.slug}`}
-                  className="flex items-center hover:underline hover:text-[theme_color]"
+                  className="flex items-start hover:underline hover:text-[theme_color]"
                 ><h3>
                   {/* 인덱스 번호를 (1), (2) 형식으로 표기 */}({index + 1}
                   )&nbsp;{post.title}</h3>
                 </Link>
-                <div className="py-0.5 sm:py-0">
+                <div className="pl-1 py-0.5 sm:py-0">
                 <span className="text-xs sm:text-sm text-gray-500 font-mono whitespace-nowrap">
                   {new Date(post.created_at)
                     .toLocaleDateString('ko-KR', {

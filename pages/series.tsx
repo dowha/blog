@@ -16,7 +16,7 @@ export default function SeriesPage({ series }: Props) {
   return (
     <article className="w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
       <h1 className="text-xl font-bold">Series</h1>
-      <p className="mt-4">특별히 묶은 글들.</p>
+      <p className="mt-4 text-keepall">특별히 묶은 글들.</p>
       <div className="mt-6 border-t border-gray-300">
         {series.map((item) => (
           <Link
