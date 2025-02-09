@@ -1,7 +1,28 @@
 import { useRouter } from 'next/router'
+import { supabase } from '@/supabase'
 
 export default function Custom404() {
   const router = useRouter()
+  const handleLuckyClick = async () => {
+    try {
+      const { data: posts, error } = await supabase
+        .from('posts')
+        .select('slug')
+        .eq('status', 'public')
+        .eq('is_external', false)
+
+      if (error) throw error
+      if (!posts || posts.length === 0) {
+        alert('게시물이 없습니다.')
+        return
+      }
+
+      const randomPost = posts[Math.floor(Math.random() * posts.length)]
+      window.location.href = `/posts/${randomPost.slug}`
+    } catch (err) {
+      console.error('랜덤 포스트 이동 실패:', err)
+    }
+  }
 
   return (
     <article className="w-full pl-0 pt-6 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
@@ -21,12 +42,20 @@ export default function Custom404() {
         <br />
         좌측(모바일에서는 상단)의 메뉴를 통해 바른 길을 찾아주세요.
       </p>
-      <button
-        onClick={() => router.push('/')}
-        className="text-xs mt-6 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-md"
-      >
-        처음으로
-      </button>
+      <div className="mt-6 flex items-center gap-2">
+        <button
+          onClick={() => router.push('/')}
+          className="flex items-center gap-1 text-xs px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-md"
+        >
+          🏠 처음으로
+        </button>
+        <button
+          onClick={handleLuckyClick}
+          className="flex items-center gap-1 text-xs px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-md"
+        >
+          🍀 I Feel Lucky!
+        </button>
+      </div>
     </article>
   )
 }

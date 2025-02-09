@@ -44,35 +44,37 @@ export default function SeriesDetailPage({ series, posts }: Props) {
             }}
           >
             <span className="mr-2">{series.emoji}</span> {/* 이모지 아이콘 */}
-            <div className="leading-relaxed text-keepall">{series.description}</div>
+            <div className="leading-relaxed text-keepall">
+              {series.description}
+            </div>
           </div>
         )}
 
         <div className="mt-6 space-y-2">
           {posts.length > 0 ? (
             posts.map((post, index) => (
-              <div
-                key={post.slug}
-                className="flex items-start justify-between"
-              >
+              <div key={post.slug} className="flex items-start justify-between">
                 <Link
                   href={`/posts/${post.slug}`}
                   className="flex items-start hover:underline hover:text-[theme_color]"
-                ><h3>
-                  {/* 인덱스 번호를 (1), (2) 형식으로 표기 */}({index + 1}
-                  )&nbsp;{post.title}</h3>
+                >
+                  <h3>
+                    (<span className="font-mono">{index + 1}</span>
+                    )&nbsp;{post.title}
+                  </h3>
                 </Link>
                 <div className="pl-1 py-0.5 sm:py-0">
-                <span className="text-xs sm:text-sm text-gray-500 font-mono whitespace-nowrap">
-                  {new Date(post.created_at)
-                    .toLocaleDateString('ko-KR', {
-                      year: '2-digit',
-                      month: '2-digit',
-                      day: '2-digit',
-                    })
-                    .replace(/\. /g, '/')
-                    .replace(/\.$/, '')}
-                </span></div>
+                  <span className="text-xs sm:text-sm text-gray-500 font-mono whitespace-nowrap">
+                    {new Date(post.created_at)
+                      .toLocaleDateString('ko-KR', {
+                        year: '2-digit',
+                        month: '2-digit',
+                        day: '2-digit',
+                      })
+                      .replace(/\. /g, '/')
+                      .replace(/\.$/, '')}
+                  </span>
+                </div>
               </div>
             ))
           ) : (

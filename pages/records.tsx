@@ -2,6 +2,7 @@ import { supabase } from '@/supabase'
 import { GetStaticProps } from 'next'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw' // ✅ HTML 지원을 위해 추가
 import { useState } from 'react'
 
 type Record = {
@@ -61,7 +62,10 @@ export default function RecordsPage({ records }: Props) {
       {records.map((record) => (
         <div key={record.title} className="mt-6 pb-2">
           <Collapse title={record.title}>
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw]}
+            >
               {record.content}
             </ReactMarkdown>
           </Collapse>
