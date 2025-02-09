@@ -1,6 +1,8 @@
 import { Html, Head, Main, NextScript } from 'next/document'
 import Footer from '@/components/Footer'
 
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
+
 export default function Document() {
   return (
     <Html lang="ko">
@@ -35,6 +37,14 @@ export default function Document() {
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </Head>
       <body className="flex min-h-dvh antialiased">
+      <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
         <Main />
         <NextScript />
         <Footer />
