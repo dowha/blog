@@ -134,11 +134,15 @@
     @apply mt-6 text-gray-600; /* 문단 위쪽 여백 추가 */
   }
 
+  p strong {
+    @apply font-semibold;
+  }
+
   .series p {
     @apply mt-0;
   }
 
-  .records h3, 
+  .records h3,
   .sinble-post h2,
   .single-post h3 {
     @apply mt-6;
