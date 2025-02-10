@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw' // ✅ HTML 지원을 위해 추가
 import { useState } from 'react'
-import Seo from '@/components/SEO'
+import Seo from '@/components/Seo'
 
 type Record = {
   title: string
