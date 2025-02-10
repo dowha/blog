@@ -1,3 +1,4 @@
+/* ✅ 글로벌 스타일 */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
 @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 
@@ -5,20 +6,18 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ✅ 글로벌 스타일 */
+/* ✅ 기본 스타일 지정 */
 @layer base {
-  /* 전체 페이지의 기본 스타일 */
-
-  /* ✅ 스크롤바 스타일 추가 */
+  /* ✅ 전체 스크롤바 스타일 */
   * {
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 29, 58, 0.18) transparent;
   }
 
-  /* Webkit 브라우저 (Chrome, Edge, Safari) */
+  /* ✅ Webkit(Chrome, Edge, Safari) 스크롤바 스타일 */
   *::-webkit-scrollbar {
-    width: 6px; /* 세로 스크롤바 너비 */
-    height: 6px; /* 가로 스크롤바 높이 */
+    width: 6px;
+    height: 6px;
   }
 
   *::-webkit-scrollbar-thumb {
@@ -30,66 +29,56 @@
     background: transparent;
   }
 
+  /* ✅ 바디 스타일 */
   body {
     @apply w-full h-full sm:p-10 md:p-14 text-sm leading-6 sm:text-[15px] sm:leading-7 md:text-base md:leading-7 
     text-gray-600 antialiased bg-[#FCFCFC];
 
-    font-family: 'Pretendard Variable', sans-serif; /* ✅ 기본 폰트로 Wanted Sans 적용 */
+    font-family: 'Pretendard Variable', sans-serif;
   }
 
-  /* 메인 컨텐츠 영역 스타일 */
+  /* ✅ 메인 컨텐츠 스타일 */
   main {
     @apply max-w-2xl mx-auto relative; /* 최대 너비 2xl, 가운데 정렬 */
   }
 
   /* ✅ 텍스트 드래그 시 배경색 지정 */
   ::selection {
-    background-color: #e6f3ff; /* 연한 파란색 */
+    background-color: #e6f3ff;
   }
 
   /* ✅ 링크 스타일 */
   a {
     @apply break-words decoration-gray-200 hover:text-[#0a85d1];
-    /* 긴 단어가 자동 줄바꿈됨, 밑줄 스타일 설정, 호버 시 색상 변경 */
   }
 
-  nav a[target='_blank'] {
-    display: inline;
-    position: relative;
-    padding-right: 2px;
-  }
-
-  /* target="_blank"가 있는 링크에만 아이콘 표시 */
-  nav a[target='_blank']:after,
-  .copyright a[target='_blank']:after,
-  .single-post a[target='_blank']:after {
+  /* ✅ 새 창에서 열리는 링크에 아이콘 추가 */
+  nav a[target='_blank'],
+  .copyright a[target='_blank'],
+  .single-post a[target='_blank'] {
     @apply text-gray-300 hover:text-[#0a85d1];
 
     content: '↗';
     display: inline-block;
-    width: 1em; /* ✅ 폰트 크기의 1배 */
+    width: 1em;
     height: 1em;
     position: relative;
-    top: 0.1em; /* ✅ 상대적 위치 조정 */
+    top: 0.1em;
     font-family: 'Pretendard Variable', sans-serif;
   }
 
+  /* ✅ 본문 내 링크 스타일 */
   main a {
     @apply break-words underline underline-offset-4 decoration-gray-200 hover:text-[#0a85d1];
-    /* 긴 단어가 자동 줄바꿈됨, 밑줄 스타일 설정, 호버 시 색상 변경 */
   }
 
   /* ✅ 제목 스타일 */
   h1 {
-    @apply text-gray-800 text-xl mb-7; /* 제목 강조, 글씨 크기 조정 */
-  }
-
-  .single-post h1 {
-    @apply mb-0;
+    @apply text-gray-800 text-xl mb-7;
   }
 
   h2 {
-    @apply text-gray-600; /* h2 스타일 설정 */
+    @apply text-gray-600;
   }
 
   h1,
@@ -102,6 +91,7 @@
     word-break: keep-all;
   }
 
+  /* ✅ 제목 내 링크 스타일 */
   h2 a,
   h3 a,
   h4 a,
@@ -115,64 +105,73 @@
     @apply hover:text-gray-800;
   }
 
-  .post-list h3, .series h3 {
-    @apply font-normal;
+  /* ✅ 본문 스타일 */
+  p {
+    @apply mt-6 text-gray-600;
   }
 
   /* ✅ 리스트 스타일 */
-  main ul {
-    @apply list-disc pl-5; /* 불릿 스타일을 동그라미로 설정하고 들여쓰기 추가 */
+  ul {
+    @apply list-disc pl-5;
   }
 
-  main li {
-    @apply mb-1; /* 리스트 아이템 간 간격 추가 */
+  ol {
+    @apply list-decimal pl-5;
   }
 
-  /* ✅ 본문 스타일 */
-  p {
-    @apply mt-6 text-gray-600; /* 문단 위쪽 여백 추가 */
+  li {
+    @apply mb-1;
   }
 
-  series p {
+  /* ✅ .series 관련 스타일 */
+  .series p {
     @apply mt-0;
   }
 
-  /* ✅ 인용구 스타일 */
-  blockquote {
-    border-left: 4px solid #ccc; /* 왼쪽에 회색 줄 추가 */
-    margin: 1em 0 0 1em; /* 기본 여백 설정 */
-    padding: 0.5em 1em; /* 내부 여백 설정 */
+  /* ✅ .single-post 관련 스타일 */
+  .single-post h1 {
+    @apply mb-0;
+  }
 
-    font-family: 'Gowun Dodum', serif; /* ✅ 폰트로 Gowun Dodum 적용 */
+  .single-post blockquote {
+    border-left: 4px solid #ccc;
+    margin: 1em 0 0 1em;
+    padding: 0.5em 1em;
+    font-family: 'Gowun Dodum', serif;
     font-style: italic;
   }
 
-  blockquote p {
-    margin: 0; /* 기본 여백 제거 */
-    color: #666; /* 회색 텍스트 */
+  .single-post blockquote p {
+    margin: 0;
+    color: #666;
   }
-}
 
-blockquote blockquote {
-  border-left: 0px;
-  margin: 0em 0 0 0.5em; /* 기본 여백 설정 */
-  padding-left: 1em;
-  color: #444;
-  font-style: normal;
-  position: relative; /* ✅ 가상 요소 배치용 */
-}
+  /* ✅ 중첩된 인용구 스타일 */
+  .single-post blockquote blockquote {
+    border-left: 0px;
+    margin: 0em 0 0 0.5em;
+    padding-left: 1em;
+    color: #444;
+    font-style: normal;
+    position: relative;
+  }
 
-blockquote blockquote p {
-  color: #444;
-}
+  .single-post blockquote blockquote p {
+    color: #444;
+  }
 
-/* ✅ 중첩된 인용구 앞에 `—`(대시) 추가 */
-blockquote blockquote::before {
-  content: '—'; /* ✅ 대시 추가 */
-  position: absolute;
-  left: -0.3em; /* ✅ 왼쪽 위치 조정 */
-  color: #444; /* ✅ 회색 대시 */
-  font-size: 1em; /* ✅ 크기 조정 */
+  /* ✅ 중첩된 인용구 앞에 `—`(대시) 추가 */
+  .single-post blockquote blockquote::before {
+    content: '—';
+    position: absolute;
+    left: -0.3em;
+    color: #444;
+    font-size: 1em;
+  }
+
+  .single-post img {
+    @apply w-full rounded-lg mt-4;
+  }
 }
 
 /* ✅ Tailwind 유틸리티 */
