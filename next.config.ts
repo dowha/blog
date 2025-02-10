@@ -7,6 +7,11 @@ const nextConfig = {
         destination: "/api/rss",
         permanent: true, // 301 리디렉트 (영구 이동)
       },
+      {
+        source: "/posts",
+        destination: "/writings",
+        permanent: true, // 301 리디렉트 (영구 이동)
+      }
     ];
   },
 };
