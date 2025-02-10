@@ -6,7 +6,7 @@ type SeoProps = {
   description?: string
   image?: string
   url?: string
-  type?: "website" | "article"  // ✅ 타입을 직접 지정할 수 있도록 추가
+  type?: "website" | "article"
 }
 
 export default function Seo({
@@ -14,16 +14,20 @@ export default function Seo({
   description = "이것저것 쓰고 싶은 글을 씁니다.",
   image = "https://blog.dowha.kim/default-og-image.png",
   url,
-  type, // ✅ 수동 설정 가능
+  type,
 }: SeoProps) {
   const siteTitle = "Dowha's Blog"
   const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle
 
   const router = useRouter()
   const currentUrl = `https://dowha.kim${router.asPath}`
+  const is404 = router.pathname === "/404";
 
-  // ✅ 기본적으로 website, 특정 경로에서는 article로 자동 설정
   const ogType = type || (router.pathname.startsWith("/posts/") ? "article" : "website")
+
+  if (is404) {
+    return null;
+  }
 
   return (
     <Head>
@@ -35,7 +39,7 @@ export default function Seo({
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
       <meta property="og:url" content={url || currentUrl} />
-      <meta property="og:type" content={ogType} /> {/* ✅ 동적 설정 */}
+      <meta property="og:type" content={ogType} />
 
       {/* Twitter Card */}
       <meta name="twitter:title" content={fullTitle} />
@@ -43,5 +47,5 @@ export default function Seo({
       <meta name="twitter:image" content={image} />
       <meta name="twitter:card" content="summary_large_image" />
     </Head>
-  )
+  );
 }
