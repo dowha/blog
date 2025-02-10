@@ -1,10 +1,10 @@
 import { supabase } from '@/supabase'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Link from 'next/link'
-import Head from 'next/head'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw' 
+import rehypeRaw from 'rehype-raw'
+import Seo from '@/components/Seo'
 
 type SeriesRecord = {
   id: string
@@ -30,13 +30,10 @@ type Props = {
 export default function SeriesDetailPage({ series, posts }: Props) {
   return (
     <>
-      <Head>
-        <title>
-          {series.series_name} | {"Dowha's Blog"}
-        </title>
-        <meta name="description" content={series.description.slice(0, 150)} />
-      </Head>
-
+      <Seo
+        title={series.series_name}
+        description={series.description.slice(0, 150)}
+      />
       <article className="series w-full pl-0 pt-6 pb-16 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
         <h1 className="text-xl font-bold">{series.series_name}</h1>
         {series.description && (
@@ -48,10 +45,12 @@ export default function SeriesDetailPage({ series, posts }: Props) {
           >
             <span className="mr-2">{series.emoji}</span> {/* 이모지 아이콘 */}
             <div className="leading-relaxed text-keepall">
-                          <ReactMarkdown
-                            remarkPlugins={[remarkGfm]}
-                            rehypePlugins={[rehypeRaw]}
-                          >{series.description}</ReactMarkdown>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+              >
+                {series.description}
+              </ReactMarkdown>
             </div>
           </div>
         )}
@@ -66,7 +65,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
                 >
                   <h3>
                     <span className="font-mono">{index + 1}</span>
-                    {"."}&nbsp;{post.title}
+                    {'.'}&nbsp;{post.title}
                   </h3>
                 </Link>
                 <div className="pl-1 py-0.5 sm:py-0">

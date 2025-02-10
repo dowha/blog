@@ -30,7 +30,7 @@ export function Navigation() {
             </li>
           ))}
           <div className="relative hidden md:flex justify-end py-4 my-4">
-            <div className="absolute right-0 w-16 border-t border-neutral-200"></div>
+            <div className="absolute right-0 w-16 border-t border-gray-200"></div>
           </div>
           <li className="md:text-right">
             <a
