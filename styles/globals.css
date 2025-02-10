@@ -106,7 +106,12 @@
   h3 a,
   h4 a,
   h5 a,
-  h6 a {
+  h6 a,
+  button h2,
+  button h3,
+  button h4,
+  button h5,
+  button h6 {
     @apply hover:text-gray-800;
   }
 

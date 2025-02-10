@@ -2,6 +2,9 @@ import { supabase } from '@/supabase'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Link from 'next/link'
 import Head from 'next/head'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw' 
 
 type SeriesRecord = {
   id: string
@@ -45,7 +48,10 @@ export default function SeriesDetailPage({ series, posts }: Props) {
           >
             <span className="mr-2">{series.emoji}</span> {/* 이모지 아이콘 */}
             <div className="leading-relaxed text-keepall">
-              {series.description}
+                          <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            rehypePlugins={[rehypeRaw]}
+                          >{series.description}</ReactMarkdown>
             </div>
           </div>
         )}
