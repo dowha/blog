@@ -12,6 +12,14 @@ const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || ''
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
 
+  // 기본 타이틀
+  let pageTitle = "Dowha's Blog"
+
+  // 경로에 따라 타이틀 설정
+  if (router.pathname === '/writings') pageTitle = "Writings | Dowha's Blog"
+  else if (router.pathname === '/records') pageTitle = "Records | Dowha's Blog"
+  else if (router.pathname === '/series') pageTitle = "Series | Dowha's Blog"
+
   // 페이지 변경 시 GA4 페이지뷰 이벤트 전송
   useEffect(() => {
     const handleRouteChange = (url: string) => {
@@ -46,7 +54,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       />
 
       <Head>
-        <title>{"Dowha's Blog"}</title>
+        <title>{pageTitle}</title>
         <meta name="description" content="이것저것 쓰고 싶은 글들을 씁니다." />
       </Head>
 

@@ -115,7 +115,8 @@
     @apply hover:text-gray-800;
   }
 
-  .post-list h3, .series h3 {
+  .post-list h3,
+  .series h3 {
     @apply font-normal;
   }
 
@@ -133,7 +134,7 @@
     @apply mt-6 text-gray-600; /* 문단 위쪽 여백 추가 */
   }
 
-  series p {
+  .series p {
     @apply mt-0;
   }
 
