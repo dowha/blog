@@ -8,6 +8,28 @@
 /* ✅ 글로벌 스타일 */
 @layer base {
   /* 전체 페이지의 기본 스타일 */
+
+  /* ✅ 스크롤바 스타일 추가 */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 29, 58, 0.18) transparent;
+  }
+
+  /* Webkit 브라우저 (Chrome, Edge, Safari) */
+  *::-webkit-scrollbar {
+    width: 6px; /* 세로 스크롤바 너비 */
+    height: 6px; /* 가로 스크롤바 높이 */
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 29, 58, 0.18);
+    border-radius: 3px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
   body {
     @apply w-full h-full sm:p-10 md:p-14 text-sm leading-6 sm:text-[15px] sm:leading-7 md:text-base md:leading-7 
     text-gray-600 antialiased bg-[#FCFCFC];
@@ -61,16 +83,16 @@
   h1 {
     @apply font-semibold text-gray-800 text-xl mb-7; /* 제목 강조, 글씨 크기 조정 */
   }
-  
-  .post h1 {
+
+  .single-post h1 {
     @apply mb-0;
   }
   h2 {
     @apply font-semibold text-gray-600; /* h2 스타일 설정 */
   }
 
-  .post h3 {
-    @apply font-semibold
+  .single-post h3 {
+    @apply font-semibold;
   }
 
   h1,
