@@ -59,7 +59,7 @@ export default function WritingPage() {
   return (
     <article className="w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
       <h1 className="text-xl font-bold">
-        Writing{' '}
+        Writings{' '}
         <a
           href="/api/rss"
           target="_blank"

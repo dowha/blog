@@ -37,7 +37,6 @@ module.exports = {
         userAgent: 'PerplexityBot',
         allow: '/',
       },
-    ],
-    additionalSitemaps: ['https://blog.dowha.kim/sitemap.xml'],
+    ]
   },
 }

@@ -57,7 +57,7 @@ export default function PostPage({ post }: { post: Post | null }) {
         </title>
         <meta name="description" content={post.content.slice(0, 150)} />
       </Head>
-      <article className="post w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
+      <article className="single-post w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
         <h1 className="text-xl font-bold">{post.title}</h1>
         {post.series_name && post.series_slug && (
           <span className="text-sm text-gray-600 px-0 py-1 inline-block">

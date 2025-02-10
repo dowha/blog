@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // ✅ RSS 피드 생성
   const feed = new RSS({
-    title: "My Blog RSS Feed",
+    title: "Dowha's Blog RSS Feed",
     description: "Latest blog posts",
     site_url: "https://blog.dowha.kim",
     feed_url: "https://blog.dowha.kim/rss.xml",
