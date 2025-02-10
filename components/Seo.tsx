@@ -12,7 +12,7 @@ type SeoProps = {
 export default function Seo({
   title,
   description = "이것저것 쓰고 싶은 글을 씁니다.",
-  image = "https://dowha.kim/default-og-image.png",
+  image = "https://blog.dowha.kim/default-og-image.png",
   url,
   type, // ✅ 수동 설정 가능
 }: SeoProps) {
