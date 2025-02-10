@@ -98,8 +98,16 @@
   h4,
   h5,
   h6 {
-    @apply font-semibold hover:text-gray-800;
+    @apply font-semibold;
     word-break: keep-all;
+  }
+
+  h2 a,
+  h3 a,
+  h4 a,
+  h5 a,
+  h6 a {
+    @apply hover:text-gray-800;
   }
 
   .post-list h3 {
