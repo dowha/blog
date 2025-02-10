@@ -1,7 +1,6 @@
 import { Html, Head, Main, NextScript } from 'next/document'
-import Footer from '@/components/Footer'
 
-const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID
 
 export default function Document() {
   return (
@@ -20,7 +19,7 @@ export default function Document() {
           name="apple-mobile-web-app-status-bar-style"
           content="black-translucent"
         />
-
+        {/* Favicon */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link
           rel="icon"
@@ -35,9 +34,21 @@ export default function Document() {
           href="/favicon-16x16.png"
         />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="192x192"
+          href="/android-chrome-192x192.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="512x512"
+          href="/android-chrome-512x512.png"
+        />
       </Head>
       <body className="flex min-h-dvh antialiased">
-      <noscript>
+        <noscript>
           <iframe
             src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
             height="0"
@@ -47,7 +58,6 @@ export default function Document() {
         </noscript>
         <Main />
         <NextScript />
-        <Footer />
       </body>
     </Html>
   )

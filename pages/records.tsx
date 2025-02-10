@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw' // ✅ HTML 지원을 위해 추가
 import { useState } from 'react'
+import Seo from '@/components/Seo'
 
 type Record = {
   title: string
@@ -54,26 +55,35 @@ function Collapse({
 
 export default function RecordsPage({ records }: Props) {
   return (
-    <article className="w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
-      <h1 className="text-xl font-bold">Records</h1>
-      <p className="mt-4 text-keepall">
-        별도의 글로 쓰기에는 애매한 기록을 모아둡니다. 주로 한 해 동안의 어떤
-        목록과 그에 대한 짧은 소회를 담은 메모 따위입니다.
-      </p>
+    <>
+      <Seo
+        title="Records"
+        description="별도의 글로 쓰기에는 애매한 기록을 모아둡니다."
+      />
+      <article className="w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
+        <h1 className="text-xl font-bold">Records</h1>
+        <p className="mt-4 text-keepall">
+          별도의 글로 쓰기에는 애매한 기록을 모아둡니다. 주로 한 해 동안의 어떤
+          목록과 그에 대한 짧은 소회를 담은 메모 따위입니다.
+        </p>
 
-      {records.map((record, index) => (
-        <div key={record.title} className={index === 0 ? 'mt-6' : ''}>
-          <Collapse title={record.title} isLast={index === records.length - 1}>
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeRaw]}
+        {records.map((record, index) => (
+          <div key={record.title} className={index === 0 ? 'mt-6' : ''}>
+            <Collapse
+              title={record.title}
+              isLast={index === records.length - 1}
             >
-              {record.content}
-            </ReactMarkdown>
-          </Collapse>
-        </div>
-      ))}
-    </article>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+              >
+                {record.content}
+              </ReactMarkdown>
+            </Collapse>
+          </div>
+        ))}
+      </article>
+    </>
   )
 }
 

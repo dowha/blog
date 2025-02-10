@@ -3,8 +3,8 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw' // ✅ HTML 지원을 위해 추가
 import { GetStaticProps, GetStaticPaths } from 'next'
-import Head from 'next/head'
 import Copyright from '@/components/Copyright'
+import Seo from '@/components/Seo'
 
 type Post = {
   title: string
@@ -51,17 +51,17 @@ export default function PostPage({ post }: { post: Post | null }) {
 
   return (
     <>
-      <Head>
-        <title>
-          {post.title} | {"Dowha's Blog"}
-        </title>
-        <meta name="description" content={post.content.slice(0, 150)} />
-      </Head>
+      <Seo title={post.title} description={post.content.slice(0, 150)} />
       <article className="single-post w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
         <h1 className="text-xl font-bold">{post.title}</h1>
         {post.series_name && post.series_slug && (
           <span className="text-sm text-gray-600 px-0 py-1 inline-block">
-            from the <a href={`/series/${post.series_slug}`}>{"'"}{post.series_name}{"'"}</a>{' '}
+            from the{' '}
+            <a href={`/series/${post.series_slug}`}>
+              {"'"}
+              {post.series_name}
+              {"'"}
+            </a>{' '}
             series
           </span>
         )}
@@ -147,8 +147,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       series_name = series.series_name
       series_slug = series.slug // ✅ JavaScript에서 직접 필드명을 변경
     }
-
-    
   }
 
   return {
