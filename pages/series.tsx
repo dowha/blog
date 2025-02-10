@@ -18,7 +18,7 @@ export default function SeriesPage({ series }: Props) {
   return (
     <>
       <Seo title="Series" description="특별히 엮어둔 글 목록입니다."/>
-      <article className="w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
+      <article className="series-list w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
         <h1 className="text-xl font-bold">Series</h1>
         <p className="mt-4 text-keepall">
           특별히 엮어둔 글 목록입니다. 의도적으로 한 주제 아래 쓴 글들도, 쓰고

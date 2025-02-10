@@ -138,6 +138,12 @@
     @apply mt-0;
   }
 
+  .records h3, 
+  .sinble-post h2,
+  .single-post h3 {
+    @apply mt-6;
+  }
+
   /* ✅ 인용구 스타일 */
   blockquote {
     border-left: 4px solid #ccc; /* 왼쪽에 회색 줄 추가 */
