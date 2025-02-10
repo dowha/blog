@@ -144,7 +144,7 @@
     @apply mt-6;
   }
 
-  .records-contents > *:first-child {
+  .record-contents > *:first-child {
     @apply mt-0;
   }
 
