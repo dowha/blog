@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     title: "Dowha's Blog RSS Feed",
     description: "Latest blog posts",
     site_url: "https://blog.dowha.kim",
-    feed_url: "https://blog.dowha.kim/rss.xml",
+    feed_url: "https://blog.dowha.kim/api/rss",
     language: "ko", // ✅ 한국어 설정
   });
 
