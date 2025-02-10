@@ -64,12 +64,12 @@ export default function RecordsPage({ records }: Props) {
       {records.map((record, index) => (
         <div key={record.title} className={index === 0 ? 'mt-6' : ''}>
           <Collapse title={record.title} isLast={index === records.length - 1}>
-            <div className="bg-[#FFFFFF]"><ReactMarkdown
+            <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeRaw]}
             >
               {record.content}
-            </ReactMarkdown></div>
+            </ReactMarkdown>
           </Collapse>
         </div>
       ))}
