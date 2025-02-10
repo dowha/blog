@@ -20,7 +20,7 @@ export default function Seo({
   const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle
 
   const router = useRouter()
-  const currentUrl = `https://dowha.kim${router.asPath}`
+  const currentUrl = `https://blog.dowha.kim${router.asPath}`
   const is404 = router.pathname === "/404";
 
   const ogType = type || (router.pathname.startsWith("/posts/") ? "article" : "website")
