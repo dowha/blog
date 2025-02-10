@@ -65,8 +65,12 @@
   .post h1 {
     @apply mb-0;
   }
-  h2, h3 {
+  h2 {
     @apply font-semibold text-gray-600; /* h2 스타일 설정 */
+  }
+
+  .post h3 {
+    @apply font-semibold
   }
 
   h1,
