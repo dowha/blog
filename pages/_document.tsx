@@ -19,7 +19,6 @@ export default function Document() {
           name="apple-mobile-web-app-status-bar-style"
           content="black-translucent"
         />
-
         {/* Favicon */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link
