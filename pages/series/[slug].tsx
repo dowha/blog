@@ -65,8 +65,8 @@ export default function SeriesDetailPage({ series, posts }: Props) {
                   className="flex items-start hover:underline hover:text-[theme_color]"
                 >
                   <h3>
-                    (<span className="font-mono">{index + 1}</span>
-                    )&nbsp;{post.title}
+                    <span className="font-mono">{index + 1}</span>
+                    {"."}&nbsp;{post.title}
                   </h3>
                 </Link>
                 <div className="pl-1 py-0.5 sm:py-0">
