@@ -58,7 +58,7 @@ export default function RecordsPage({ records }: Props) {
       <h1 className="text-xl font-bold">Records</h1>
       <p className="mt-4 text-keepall">
         별도의 글로 쓰기에는 애매한 기록을 모아둡니다. 주로 한 해 동안의 어떤
-        목록과 그에 대한 짧은 메모입니다.
+        목록과 그에 대한 짧은 소회를 담은 메모 따위입니다.
       </p>
 
       {records.map((record, index) => (
