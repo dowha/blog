@@ -144,6 +144,10 @@
     @apply mt-6;
   }
 
+  .records-contents > *:first-child {
+    @apply mt-0;
+  }
+
   /* ✅ 인용구 스타일 */
   blockquote {
     border-left: 4px solid #ccc; /* 왼쪽에 회색 줄 추가 */

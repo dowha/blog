@@ -48,7 +48,7 @@ function Collapse({
           />
         </svg>
       </button>
-      {open && <div className="py-2 pl-2 pr-4">{children}</div>}
+      {open && <div className="series-contents py-2 pl-2 pr-4">{children}</div>}
     </div>
   )
 }
