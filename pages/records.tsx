@@ -1,12 +1,10 @@
 import { supabase } from '@/supabase'
 import { GetStaticProps } from 'next'
-import { useState } from 'react'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw' // ✅ HTML 지원을 위해 추가
-
+import rehypeRaw from 'rehype-raw'
 import Seo from '@/components/Seo'
 
 type Record = {
@@ -22,39 +20,35 @@ type Props = {
 
 function Collapse({
   title,
-  slug, // slug 추가
+  slug,
   children,
   isLast,
-  setOpenedTitle,
+  openedSlug,
+  setOpenedSlug,
 }: {
   title: string
   slug: string
   children: React.ReactNode
   isLast: boolean
-  setOpenedTitle: (title: string) => void
+  openedSlug: string | null
+  setOpenedSlug: (slug: string | null) => void
 }) {
-  const [open, setOpen] = useState(false)
   const router = useRouter()
+  const isOpen = openedSlug === slug
 
-  // URL 해시가 현재 slug와 일치하면 자동으로 열림
   useEffect(() => {
     if (window.location.hash === `#${slug}`) {
-      setOpen(true)
-      setOpenedTitle(title) // ✅ URL 해시가 있으면 title 설정
+      setOpenedSlug(slug)
     }
-  }, [slug, title, setOpenedTitle])
+  }, [slug, setOpenedSlug])
 
   const handleToggle = () => {
-    const newOpenState = !open
-    setOpen(newOpenState)
-
-    // 열리면 URL 해시를 설정하고, 닫히면 해시 제거
-    if (newOpenState) {
-      router.push(`#${slug}`, undefined, { shallow: true })
-      setOpenedTitle(title) // ✅ 열리면 해당 제목 설정
+    if (isOpen) {
+      setOpenedSlug(null)
+      router.push('', undefined, { shallow: true })
     } else {
-      router.push(``, undefined, { shallow: true })
-      setOpenedTitle('Records') // ✅ 닫히면 기본 제목으로 초기화
+      setOpenedSlug(slug)
+      router.push(`#${slug}`, undefined, { shallow: true })
     }
   }
 
@@ -67,7 +61,7 @@ function Collapse({
         <h2>{title}</h2>
         <svg
           className={`h-4 w-4 transform transition-transform duration-200 ${
-            open ? 'rotate-180' : ''
+            isOpen ? 'rotate-180' : ''
           }`}
           fill="currentColor"
           viewBox="0 0 20 20"
@@ -79,17 +73,19 @@ function Collapse({
           />
         </svg>
       </button>
-      {open && <div className="record-contents py-2 pl-2 pr-4">{children}</div>}
+      {isOpen && (
+        <div className="record-contents py-2 pl-2 pr-4">{children}</div>
+      )}
     </div>
   )
 }
 
 export default function RecordsPage({ records }: Props) {
-  const [openedTitle, setOpenedTitle] = useState('Records') // ✅ 상태 추가
+  const [openedSlug, setOpenedSlug] = useState<string | null>(null) // ✅ openedTitle 제거
 
   const handleCopy = async () => {
     try {
-      const shareUrl = `${window.location.origin}${window.location.pathname}?type=share` // ✅ router 제거, window.location 사용
+      const shareUrl = window.location.href // ✅ 현재 URL 복사
       await navigator.clipboard.writeText(shareUrl)
       alert('공유 링크가 복사되었습니다.')
     } catch (err) {
@@ -100,7 +96,7 @@ export default function RecordsPage({ records }: Props) {
   return (
     <>
       <Seo
-        title={openedTitle}
+        title="Records" // ✅ 필요하면 title 설정 가능
         description="별도의 글로 쓰기에는 애매한 기록을 모아둡니다."
       />
       <article className="records w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
@@ -114,9 +110,10 @@ export default function RecordsPage({ records }: Props) {
           <div key={record.slug} className={index === 0 ? 'mt-6' : ''}>
             <Collapse
               title={record.title}
-              slug={record.slug} // ✅ slug 추가
+              slug={record.slug}
               isLast={index === records.length - 1}
-              setOpenedTitle={setOpenedTitle}
+              openedSlug={openedSlug}
+              setOpenedSlug={setOpenedSlug}
             >
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
@@ -153,6 +150,6 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
   return {
     props: { records },
-    revalidate: 60, // 60초마다 ISR 적용
+    revalidate: 60,
   }
 }
