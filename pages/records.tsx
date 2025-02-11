@@ -87,6 +87,16 @@ function Collapse({
 export default function RecordsPage({ records }: Props) {
   const [openedTitle, setOpenedTitle] = useState('Records') // ✅ 상태 추가
 
+  const handleCopy = async () => {
+    try {
+      const shareUrl = `${window.location.origin}${window.location.pathname}?type=share` // ✅ router 제거, window.location 사용
+      await navigator.clipboard.writeText(shareUrl)
+      alert('공유 링크가 복사되었습니다.')
+    } catch (err) {
+      console.error('URL 복사 실패:', err)
+    }
+  }
+
   return (
     <>
       <Seo
@@ -114,6 +124,14 @@ export default function RecordsPage({ records }: Props) {
               >
                 {record.content}
               </ReactMarkdown>
+              <div className="mt-6 flex items-center gap-2">
+                <button
+                  onClick={handleCopy}
+                  className="flex items-center gap-1 text-xs px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-md"
+                >
+                  🔗 공유
+                </button>
+              </div>
             </Collapse>
           </div>
         ))}
