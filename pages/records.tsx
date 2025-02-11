@@ -53,7 +53,7 @@ function Collapse({
       router.push(`#${slug}`, undefined, { shallow: true })
       setOpenedTitle(title) // ✅ 열리면 해당 제목 설정
     } else {
-      router.push(`#`, undefined, { shallow: true })
+      router.push(``, undefined, { shallow: true })
       setOpenedTitle('Records') // ✅ 닫히면 기본 제목으로 초기화
     }
   }
