@@ -9,7 +9,7 @@ export default function Copyright() {
 
   return (
     <p className="copyright text-left text-xs text-gray-500 mt-0 pl-0 pb-2 mobile:pl-0 sm:pl-10 md:pl-14">
-      © 2017-{year} <a href="https://dowha.kim" target="_blank">Dowha Kim</a>. Non-commercial use only.
+      © 2017-{year} <a href="https://dowha.kim" target="_blank" rel="noopener">Dowha Kim</a>. Non-commercial use only.
     </p>
   );
 }

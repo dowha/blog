@@ -1,6 +1,6 @@
 import { supabase } from '@/supabase'
-import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import Seo from '@/components/Seo'
 
 type Post = {

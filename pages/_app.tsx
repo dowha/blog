@@ -1,9 +1,9 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
-import Layout from '@/components/Layout'
-import Script from 'next/script'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Layout from '@/components/Layout'
+import Script from 'next/script'
 
 // GTM ID 환경 변수
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || ''
