@@ -30,6 +30,10 @@
     background: transparent;
   }
 
+  strong {
+    @apply font-semibold;
+  }
+
   body {
     @apply w-full h-full sm:p-10 md:p-14 text-sm leading-6 sm:text-[15px] sm:leading-7 md:text-base md:leading-7 
     text-gray-600 antialiased bg-[#FCFCFC];
@@ -132,10 +136,6 @@
   /* ✅ 본문 스타일 */
   p {
     @apply mt-6 text-gray-600; /* 문단 위쪽 여백 추가 */
-  }
-
-  p strong {
-    @apply font-semibold;
   }
 
   .series p {
