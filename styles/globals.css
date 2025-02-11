@@ -67,7 +67,7 @@
   nav a[target='_blank']:after,
   .copyright a[target='_blank']:after,
   .single-post a[target='_blank']:after,
-  .recort-contents a[target='_blank']:after {
+  .record-contents a[target='_blank']:after {
     @apply text-gray-300 hover:text-[#0a85d1];
 
     content: '↗';
