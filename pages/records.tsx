@@ -36,12 +36,6 @@ function Collapse({
   const router = useRouter()
   const isOpen = openedSlug === slug
 
-  useEffect(() => {
-    if (window.location.hash === `#${slug}`) {
-      setOpenedSlug(slug)
-    }
-  }, [slug, setOpenedSlug])
-
   const handleToggle = () => {
     if (isOpen) {
       setOpenedSlug(null)
@@ -81,11 +75,22 @@ function Collapse({
 }
 
 export default function RecordsPage({ records }: Props) {
-  const [openedSlug, setOpenedSlug] = useState<string | null>(null) // ✅ openedTitle 제거
+  const router = useRouter()
+  const [openedSlug, setOpenedSlug] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash.replace('#', '') // ✅ 해시값 추출
+
+      if (hash) {
+        setOpenedSlug(hash) // ✅ 해시가 있으면 항상 실행됨 (쿼리 여부와 상관없이)
+      }
+    }
+  }, [router.asPath]) // ✅ URL 변경 시 실행
 
   const handleCopy = async () => {
     try {
-      const shareUrl = `${window.location.href}?type=share` // ✅ 현재 URL 복사
+      const shareUrl = `${window.location.origin}${window.location.pathname}#${openedSlug}?type=share` // ✅ 해시까지만 포함한 후 ?type=share 추가
       await navigator.clipboard.writeText(shareUrl)
       alert('공유 링크가 복사되었습니다.')
     } catch (err) {
@@ -95,15 +100,11 @@ export default function RecordsPage({ records }: Props) {
 
   return (
     <>
-      <Seo
-        title="Records" // ✅ 필요하면 title 설정 가능
-        description="별도의 글로 쓰기에는 애매한 기록을 모아둡니다."
-      />
+      <Seo title="Records" description="별도의 글로 쓰기에는 애매한 기록을 모아둡니다." />
       <article className="records w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
         <h1 className="text-xl font-bold">Records</h1>
         <p className="mt-4 text-keepall">
-          별도의 글로 쓰기에는 애매한 기록을 모아둡니다. 주로 한 해 동안의 어떤
-          목록과 그에 대한 짧은 소회를 담은 메모 따위입니다.
+          별도의 글로 쓰기에는 애매한 기록을 모아둡니다. 주로 한 해 동안의 어떤 목록과 그에 대한 짧은 소회를 담은 메모 따위입니다.
         </p>
 
         {records.map((record, index) => (
@@ -115,10 +116,7 @@ export default function RecordsPage({ records }: Props) {
               openedSlug={openedSlug}
               setOpenedSlug={setOpenedSlug}
             >
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeRaw]}
-              >
+              <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
                 {record.content}
               </ReactMarkdown>
               <div className="mt-6 flex items-center gap-2">
