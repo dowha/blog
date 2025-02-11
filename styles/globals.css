@@ -153,6 +153,10 @@
     @apply mt-0;
   }
 
+  .record-contents > *:last-child {
+    @apply mb-6;
+  }
+
   /* ✅ 인용구 스타일 */
   blockquote {
     border-left: 4px solid #ccc; /* 왼쪽에 회색 줄 추가 */
