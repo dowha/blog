@@ -25,11 +25,13 @@ function Collapse({
   slug, // slug 추가
   children,
   isLast,
+  setOpenedTitle,
 }: {
   title: string
   slug: string
   children: React.ReactNode
   isLast: boolean
+  setOpenedTitle: (title: string) => void
 }) {
   const [open, setOpen] = useState(false)
   const router = useRouter()
@@ -38,8 +40,9 @@ function Collapse({
   useEffect(() => {
     if (window.location.hash === `#${slug}`) {
       setOpen(true)
+      setOpenedTitle(title) // ✅ URL 해시가 있으면 title 설정
     }
-  }, [slug])
+  }, [slug, title, setOpenedTitle])
 
   const handleToggle = () => {
     const newOpenState = !open
@@ -48,8 +51,10 @@ function Collapse({
     // 열리면 URL 해시를 설정하고, 닫히면 해시 제거
     if (newOpenState) {
       router.push(`#${slug}`, undefined, { shallow: true })
+      setOpenedTitle(title) // ✅ 열리면 해당 제목 설정
     } else {
       router.push(`#`, undefined, { shallow: true })
+      setOpenedTitle('Records') // ✅ 닫히면 기본 제목으로 초기화
     }
   }
 
@@ -80,10 +85,12 @@ function Collapse({
 }
 
 export default function RecordsPage({ records }: Props) {
+  const [openedTitle, setOpenedTitle] = useState('Records') // ✅ 상태 추가
+
   return (
     <>
       <Seo
-        title="Records"
+        title={openedTitle}
         description="별도의 글로 쓰기에는 애매한 기록을 모아둡니다."
       />
       <article className="records w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
@@ -99,6 +106,7 @@ export default function RecordsPage({ records }: Props) {
               title={record.title}
               slug={record.slug} // ✅ slug 추가
               isLast={index === records.length - 1}
+              setOpenedTitle={setOpenedTitle}
             >
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
