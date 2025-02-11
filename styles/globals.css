@@ -66,7 +66,8 @@
   /* target="_blank"가 있는 링크에만 아이콘 표시 */
   nav a[target='_blank']:after,
   .copyright a[target='_blank']:after,
-  .single-post a[target='_blank']:after {
+  .single-post a[target='_blank']:after,
+  .recort-dontents a[target='_blank']:after {
     @apply text-gray-300 hover:text-[#0a85d1];
 
     content: '↗';
