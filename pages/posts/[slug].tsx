@@ -1,8 +1,8 @@
 import { supabase } from '@/supabase'
+import { GetStaticProps, GetStaticPaths } from 'next'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw' // ✅ HTML 지원을 위해 추가
-import { GetStaticProps, GetStaticPaths } from 'next'
 import Copyright from '@/components/Copyright'
 import Seo from '@/components/Seo'
 

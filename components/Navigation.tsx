@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 export function Navigation() {
   const router = useRouter()
@@ -37,7 +37,7 @@ export function Navigation() {
               href="https://dowha.kim"
               className="group inline-flex items-center hover:text-[#0a85d1]"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener"
             >
               about
             </a>

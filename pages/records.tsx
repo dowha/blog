@@ -1,15 +1,19 @@
 import { supabase } from '@/supabase'
 import { GetStaticProps } from 'next'
+import { useState } from 'react'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw' // ✅ HTML 지원을 위해 추가
-import { useState } from 'react'
+
 import Seo from '@/components/Seo'
 
 type Record = {
   title: string
   content: string
   created_at: string
+  slug: string
 }
 
 type Props = {
@@ -18,19 +22,41 @@ type Props = {
 
 function Collapse({
   title,
+  slug, // slug 추가
   children,
   isLast,
 }: {
   title: string
+  slug: string
   children: React.ReactNode
   isLast: boolean
 }) {
   const [open, setOpen] = useState(false)
+  const router = useRouter()
+
+  // URL 해시가 현재 slug와 일치하면 자동으로 열림
+  useEffect(() => {
+    if (window.location.hash === `#${slug}`) {
+      setOpen(true)
+    }
+  }, [slug])
+
+  const handleToggle = () => {
+    const newOpenState = !open
+    setOpen(newOpenState)
+
+    // 열리면 URL 해시를 설정하고, 닫히면 해시 제거
+    if (newOpenState) {
+      router.push(`#${slug}`, undefined, { shallow: true })
+    } else {
+      router.push(`#`, undefined, { shallow: true })
+    }
+  }
 
   return (
     <div className={`border-t border-gray-300 ${isLast ? 'border-b' : ''}`}>
       <button
-        onClick={() => setOpen(!open)}
+        onClick={handleToggle}
         className="w-full text-left pl-2 pr-4 py-2 focus:outline-none flex items-center justify-between"
       >
         <h2>{title}</h2>
@@ -68,9 +94,10 @@ export default function RecordsPage({ records }: Props) {
         </p>
 
         {records.map((record, index) => (
-          <div key={record.title} className={index === 0 ? 'mt-6' : ''}>
+          <div key={record.slug} className={index === 0 ? 'mt-6' : ''}>
             <Collapse
               title={record.title}
+              slug={record.slug} // ✅ slug 추가
               isLast={index === records.length - 1}
             >
               <ReactMarkdown
@@ -90,7 +117,7 @@ export default function RecordsPage({ records }: Props) {
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const { data: records, error } = await supabase
     .from('records')
-    .select('title, content, created_at')
+    .select('title, content, created_at, slug')
     .eq('status', 'public')
     .order('created_at', { ascending: false })
 
