@@ -1,5 +1,5 @@
 import { supabase } from '@/supabase'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Seo from '@/components/Seo'
 
@@ -12,48 +12,39 @@ type Post = {
   source_name?: string
 }
 
-export default function WritingPage() {
-  const [posts, setPosts] = useState<Post[]>([])
-  const [visiblePosts, setVisiblePosts] = useState<Post[]>([])
-  const [offset, setOffset] = useState(0)
+export async function getStaticProps() {
   const LIMIT = 10
+  const { data: posts, error } = await supabase
+    .from('posts')
+    .select('title, created_at, slug, is_external, external_url, source_name')
+    .eq('status', 'public')
+    .order('created_at', { ascending: false })
 
-  useEffect(() => {
-    async function fetchPosts() {
-      const { data, error } = await supabase
-        .from('posts')
-        .select(
-          'title, created_at, slug, is_external, external_url, source_name'
-        )
-        .eq('status', 'public')
-        .order('created_at', { ascending: false })
+  if (error) {
+    console.error('Error fetching posts:', error)
+    return { props: { initialPosts: [] }, revalidate: 60 }
+  }
 
-      if (error) {
-        console.error('Error fetching posts:', error)
-        return
-      }
+  return { props: { initialPosts: posts.slice(0, LIMIT), allPosts: posts }, revalidate: 60 }
+}
 
-      setPosts(data)
-      setVisiblePosts(data.slice(0, LIMIT))
-    }
-
-    fetchPosts()
-  }, [])
+export default function WritingPage({ initialPosts, allPosts }: { initialPosts: Post[], allPosts: Post[] }) {
+  const [posts, setPosts] = useState<Post[]>(initialPosts)
+  const [offset, setOffset] = useState(initialPosts.length)
+  const LIMIT = 10
 
   const loadMorePosts = () => {
     const newOffset = offset + LIMIT
-    setVisiblePosts(posts.slice(0, newOffset + LIMIT))
+    setPosts(allPosts.slice(0, newOffset))
     setOffset(newOffset)
   }
 
-  const currentYear = new Date().getFullYear() // 올해 연도 가져오기
+  const currentYear = new Date().getFullYear()
 
-  const groupedPosts = visiblePosts.reduce((acc, post) => {
+  const groupedPosts = posts.reduce((acc, post) => {
     const year = new Date(post.created_at).getFullYear()
-
     if (!acc[year]) acc[year] = []
     acc[year].push(post)
-
     return acc
   }, {} as Record<number, Post[]>)
 
@@ -74,7 +65,7 @@ export default function WritingPage() {
         </h1>
 
         {Object.entries(groupedPosts)
-          .sort(([a], [b]) => parseInt(b) - parseInt(a)) // 최신 연도 우선 정렬
+          .sort(([a], [b]) => parseInt(b) - parseInt(a))
           .map(([year, posts]) => (
             <section key={year} className="mt-6">
               <h2 className="font-semibold font-mono text-gray-600">
@@ -126,8 +117,9 @@ export default function WritingPage() {
               </div>
             </section>
           ))}
+
         {/* 더 보기 버튼 */}
-        {visiblePosts.length < posts.length && (
+        {offset < allPosts.length && (
           <button
             onClick={loadMorePosts}
             className="text-xs mt-6 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-md"

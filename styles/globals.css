@@ -194,6 +194,7 @@
     font-size: 1em; /* ✅ 크기 조정 */
   }
 }
+
 /* ✅ Tailwind 유틸리티 */
 @layer utilities {
   .text-balance {
