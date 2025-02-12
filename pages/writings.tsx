@@ -51,7 +51,7 @@ export default function WritingPage({ initialPosts, allPosts }: { initialPosts: 
   return (
     <>
       <Seo title="Writings" description="글 목록입니다." />
-      <article className="post-list w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
+      <article className="post-list page-container">
         <h1 className="text-xl font-bold">
           Writings{' '}
           <a
@@ -122,7 +122,7 @@ export default function WritingPage({ initialPosts, allPosts }: { initialPosts: 
         {offset < allPosts.length && (
           <button
             onClick={loadMorePosts}
-            className="text-xs mt-6 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-md"
+            className="default-button mt-6"
           >
             ➕ 더 보기
           </button>

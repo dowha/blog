@@ -34,7 +34,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
         title={series.series_name}
         description={series.description.slice(0, 150)}
       />
-      <article className="series w-full pl-0 pt-6 pb-16 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
+      <article className="series page-container">
         <h1 className="text-xl font-bold">{series.series_name}</h1>
         {series.description && (
           <div

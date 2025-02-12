@@ -100,7 +100,10 @@ export default function RecordsPage({ records }: Props) {
 
   const handleCopy = async () => {
     try {
-      const shareUrl = `${window.location.origin}${window.location.pathname}#${openedSlug}?type=share` // ✅ 해시까지만 포함한 후 ?type=share 추가
+      const shareUrl =
+        typeof window !== 'undefined'
+          ? `${window.location.origin}${router.asPath}?type=share`
+          : ''
       await navigator.clipboard.writeText(shareUrl)
       alert('공유 링크가 복사되었습니다.')
     } catch (err) {
@@ -114,7 +117,7 @@ export default function RecordsPage({ records }: Props) {
         title="Records"
         description="별도의 글로 쓰기에는 애매한 기록을 모아둡니다."
       />
-      <article className="records w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
+      <article className="records page-container">
         <h1 className="text-xl font-bold">Records</h1>
         <p className="mt-4 text-keepall">
           별도의 글로 쓰기에는 애매한 기록을 모아둡니다. 주로 한 해 동안의 어떤
@@ -136,14 +139,10 @@ export default function RecordsPage({ records }: Props) {
               >
                 {record.content}
               </ReactMarkdown>
-              <div className="mt-6 flex items-center gap-2">
-                <button
-                  onClick={handleCopy}
-                  className="flex items-center gap-1 text-xs px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-md"
-                >
-                  🔗 공유
-                </button>
-              </div>
+
+              <button onClick={handleCopy} className="default-button">
+                🔗 공유
+              </button>
             </Collapse>
           </div>
         ))}
