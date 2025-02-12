@@ -38,7 +38,7 @@ export default function Custom404() {
         <meta property="og:url" content="https://blog.dowha.kim/404" />
         <link rel="canonical" href="https://blog.dowha.kim/404" />
       </Head>
-      <article className="w-full pl-0 pt-6 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
+      <article className="page-container">
         <h1 className="text-xl font-bold">404 Not Found</h1>
         <div className="mt-6 w-full mx-auto aspect-video">
           <iframe
@@ -55,16 +55,16 @@ export default function Custom404() {
           <br />
           좌측(모바일에서는 상단)의 메뉴를 통해 바른 길을 찾아주세요.
         </p>
-        <div className="mt-6 flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => router.push('/')}
-            className="flex items-center gap-1 text-xs px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-md"
+            className="default-button"
           >
             🏠 처음으로
           </button>
           <button
             onClick={handleLuckyClick}
-            className="flex items-center gap-1 text-xs px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-md"
+            className="default-button"
           >
             🍀 I Feel Lucky!
           </button>

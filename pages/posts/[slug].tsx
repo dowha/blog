@@ -56,7 +56,7 @@ export default function PostPage({ post }: { post: Post | null }) {
   return (
     <>
       <Seo title={post.title} description={post.content.slice(0, 150)} />
-      <article className="single-post w-full pl-0 pt-6 pb-12 mobile:pt-0 mobile:pl-6 sm:pl-10 md:pl-14">
+      <article className="single-post page-container">
         <h1 className="text-xl font-bold">{post.title}</h1>
         {post.series_name && post.series_slug && (
           <span className="text-sm text-gray-600 px-0 py-1 inline-block">
@@ -84,16 +84,16 @@ export default function PostPage({ post }: { post: Post | null }) {
         </ReactMarkdown>
 
         {/* 공유 버튼 추가 */}
-        <div className="mt-6 flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <button
             onClick={handleCopy}
-            className="flex items-center gap-1 text-xs px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-md"
+            className="default-button"
           >
             🔗 공유
           </button>
           <button
             onClick={handleLuckyClick}
-            className="flex items-center gap-1 text-xs px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-md"
+            className="default-button"
           >
             🍀 I Feel Lucky!
           </button>
