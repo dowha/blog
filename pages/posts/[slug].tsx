@@ -21,7 +21,10 @@ export default function PostPage({ post }: { post: Post | null }) {
 
   const handleCopy = async () => {
     try {
-      const shareUrl = `${router.basePath}${router.asPath}?type=share`
+      const shareUrl =
+        typeof window !== 'undefined'
+          ? `${window.location.origin}${router.asPath}?type=share`
+          : ''
       await navigator.clipboard.writeText(shareUrl)
       alert('공유 링크가 복사되었습니다.')
     } catch (err) {
