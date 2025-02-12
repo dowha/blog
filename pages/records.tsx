@@ -100,7 +100,7 @@ export default function RecordsPage({ records }: Props) {
 
   const handleCopy = async () => {
     try {
-      const shareUrl = `${window.location.origin}${window.location.pathname}#${openedSlug}?type=share` // ✅ 해시까지만 포함한 후 ?type=share 추가
+      const shareUrl = `${router.basePath}${router.asPath}?type=share`
       await navigator.clipboard.writeText(shareUrl)
       alert('공유 링크가 복사되었습니다.')
     } catch (err) {

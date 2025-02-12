@@ -15,17 +15,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     const handleRouteChange = (url: string) => {
       window.dataLayer = window.dataLayer || []
-      window.dataLayer.push({
-        event: 'pageview',
-        page: url,
-      })
+      window.dataLayer.push({ event: 'pageview', page: url })
     }
-
+  
     router.events.on('routeChangeComplete', handleRouteChange)
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange)
-    }
-  }, [router.events])
+    return () => router.events.off('routeChangeComplete', handleRouteChange)
+  }, [router])
+  
 
   return (
     <>

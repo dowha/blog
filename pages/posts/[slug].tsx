@@ -5,6 +5,7 @@ import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw' // ✅ HTML 지원을 위해 추가
 import Copyright from '@/components/Copyright'
 import Seo from '@/components/Seo'
+import router from 'next/router'
 
 type Post = {
   title: string
@@ -20,7 +21,7 @@ export default function PostPage({ post }: { post: Post | null }) {
 
   const handleCopy = async () => {
     try {
-      const shareUrl = `${window.location.origin}${window.location.pathname}?type=share` // ✅ router 제거, window.location 사용
+      const shareUrl = `${router.basePath}${router.asPath}?type=share`
       await navigator.clipboard.writeText(shareUrl)
       alert('공유 링크가 복사되었습니다.')
     } catch (err) {
