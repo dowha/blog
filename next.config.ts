@@ -1,5 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
@@ -11,9 +12,22 @@ const nextConfig = {
         source: "/posts",
         destination: "/writings",
         permanent: true, // 301 리디렉트 (영구 이동)
-      }
+      },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        source: "/sitemap.xml",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "application/xml",
+          },
+        ],
+      },
     ];
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
