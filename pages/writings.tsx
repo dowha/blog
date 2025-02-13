@@ -2,6 +2,7 @@ import { supabase } from '@/supabase'
 import { useState } from 'react'
 import Link from 'next/link'
 import Seo from '@/components/Seo'
+import Image from 'next/image'
 
 type Post = {
   title: string
@@ -25,10 +26,19 @@ export async function getStaticProps() {
     return { props: { initialPosts: [] }, revalidate: 60 }
   }
 
-  return { props: { initialPosts: posts.slice(0, LIMIT), allPosts: posts }, revalidate: 60 }
+  return {
+    props: { initialPosts: posts.slice(0, LIMIT), allPosts: posts },
+    revalidate: 60,
+  }
 }
 
-export default function WritingPage({ initialPosts, allPosts }: { initialPosts: Post[], allPosts: Post[] }) {
+export default function WritingPage({
+  initialPosts,
+  allPosts,
+}: {
+  initialPosts: Post[]
+  allPosts: Post[]
+}) {
   const [posts, setPosts] = useState<Post[]>(initialPosts)
   const [offset, setOffset] = useState(initialPosts.length)
   const LIMIT = 10
@@ -53,14 +63,19 @@ export default function WritingPage({ initialPosts, allPosts }: { initialPosts: 
       <Seo title="Writings" description="글 목록입니다." />
       <article className="post-list page-container">
         <h1 className="text-xl font-bold">
-          Writings{' '}
+          Writings
           <a
             href="/api/rss"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[10px] opacity-70 tracking-tight scale-90 align-top text-gray-500 font-normal hover:text-orange-500"
           >
-            (RSS)
+            <Image
+              src="/rss.svg"
+              alt="RSS"
+              width={16}
+              height={16}
+              className="inline-block ml-1"
+            />
           </a>
         </h1>
 
@@ -120,10 +135,7 @@ export default function WritingPage({ initialPosts, allPosts }: { initialPosts: 
 
         {/* 더 보기 버튼 */}
         {offset < allPosts.length && (
-          <button
-            onClick={loadMorePosts}
-            className="default-button mt-6"
-          >
+          <button onClick={loadMorePosts} className="default-button">
             ➕ 더 보기
           </button>
         )}
