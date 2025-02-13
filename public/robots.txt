@@ -1,9 +1,0 @@
-# *
-User-agent: *
-Allow: /
-
-# Host
-Host: https://blog.dowha.kim
-
-# Sitemaps
-Sitemap: https://blog.dowha.kim/sitemap.xml # Index sitemap
