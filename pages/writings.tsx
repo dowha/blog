@@ -6,6 +6,7 @@ import Image from 'next/image'
 
 type Post = {
   title: string
+  subtitle: string
   slug: string
   created_at: string
   is_external: boolean
@@ -17,7 +18,9 @@ export async function getStaticProps() {
   const LIMIT = 10
   const { data: posts, error } = await supabase
     .from('posts')
-    .select('title, created_at, slug, is_external, external_url, source_name')
+    .select(
+      'title, subtitle, created_at, slug, is_external, external_url, source_name'
+    )
     .eq('status', 'public')
     .order('created_at', { ascending: false })
 
@@ -64,11 +67,7 @@ export default function WritingPage({
       <article className="post-list page-container">
         <h1 className="text-xl font-bold">
           Writings
-          <a
-            href="/api/rss"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href="/api/rss" target="_blank" rel="noopener noreferrer">
             <Image
               src="/rss.svg"
               alt="RSS"
@@ -116,7 +115,12 @@ export default function WritingPage({
                         href={`/posts/${post.slug}`}
                         className="flex items-center"
                       >
-                        <h3>{post.title}</h3>
+                        <h3 className="full-title group">
+                          {post.title}
+                          {post.subtitle && (
+                            <span className="subtitle relative"> {post.subtitle}</span>
+                          )}
+                        </h3>
                       </Link>
                     )}
                     <div className="pl-1 py-0.5 sm:py-0">

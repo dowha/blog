@@ -9,6 +9,7 @@ import router from 'next/router'
 
 type Post = {
   title: string
+  subtitle: string
   content: string
   created_at: string
   series_name?: string
@@ -58,17 +59,8 @@ export default function PostPage({ post }: { post: Post | null }) {
       <Seo title={post.title} description={post.content.slice(0, 150)} />
       <article className="single-post page-container">
         <h1 className="text-xl font-bold">{post.title}</h1>
-        {post.series_name && post.series_slug && (
-          <span className="text-sm text-gray-600 px-0 py-1 inline-block">
-            from the{' '}
-            <a href={`/series/${post.series_slug}`}>
-              {"'"}
-              {post.series_name}
-              {"'"}
-            </a>{' '}
-            series
-          </span>
-        )}
+        {post.subtitle && <h2 className="subtitle mt-0">{post.subtitle}</h2>}
+       
         <p className="text-sm text-gray-500 font-mono mb-4">
           {new Date(post.created_at)
             .toLocaleDateString('ko-KR', {
@@ -82,7 +74,17 @@ export default function PostPage({ post }: { post: Post | null }) {
         <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
           {post.content}
         </ReactMarkdown>
-
+        {post.series_name && post.series_slug && (
+          <span className="text-sm mt-6 text-gray-600 px-0 py-1 inline-block">
+            from the{' '}
+            <a href={`/series/${post.series_slug}`}>
+              {"'"}
+              {post.series_name}
+              {"'"}
+            </a>{' '}
+            series
+          </span>
+        )}
         {/* 공유 버튼 추가 */}
         <div className="flex items-center gap-2">
           <button

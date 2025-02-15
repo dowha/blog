@@ -18,6 +18,7 @@ type SeriesRecord = {
 
 type Post = {
   title: string
+  subtitle: string
   slug: string
   created_at: string
 }
@@ -63,9 +64,12 @@ export default function SeriesDetailPage({ series, posts }: Props) {
                   href={`/posts/${post.slug}`}
                   className="flex items-start hover:underline hover:text-[theme_color]"
                 >
-                  <h3>
+                  <h3 className="full-title group">
                     <span className="font-mono">{index + 1}</span>
                     {'.'}&nbsp;{post.title}
+                    {post.subtitle && (
+                      <span className="subtitle relative"> {post.subtitle}</span>
+                    )}
                   </h3>
                 </Link>
                 <div className="pl-1 py-0.5 sm:py-0">
@@ -131,7 +135,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
   // 시리즈 id와 is_external이 false인 게시물만 가져옵니다.
   const { data: postsData, error: postsError } = await supabase
     .from('posts')
-    .select('title, slug, created_at')
+    .select('title, subtitle, slug, created_at')
     .eq('series_id', seriesData.id)
     .eq('is_external', false)
     .order('created_at', { ascending: true })
