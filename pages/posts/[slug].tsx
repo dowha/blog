@@ -95,7 +95,7 @@ export default function PostPage({ post }: { post: Post | null }) {
             onClick={handleLuckyClick}
             className="default-button"
           >
-            🍀 I Feel Lucky!
+            {"🍀 I'm Feeling Lucky!"}
           </button>
         </div>
       </article>

@@ -66,7 +66,7 @@ export default function Custom404() {
             onClick={handleLuckyClick}
             className="default-button"
           >
-            🍀 I Feel Lucky!
+            {"🍀 I'm Feeling Lucky!"}
           </button>
         </div>
       </article>
