@@ -67,7 +67,7 @@ export default function WritingPage({
       <article className="post-list page-container">
         <h1 className="text-xl font-bold">
           Writings
-          <a href="/api/rss" target="_blank" rel="noopener noreferrer">
+          <a href="/api/rss" target="_blank" rel="noopener">
             <Image
               src="/rss.svg"
               alt="RSS"
