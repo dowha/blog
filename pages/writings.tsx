@@ -95,7 +95,7 @@ export default function WritingPage({
                       <a
                         href={post.external_url}
                         target="_blank"
-                        rel="noopener noreferrer"
+                        rel="noopener"
                         className="inline-flex items-start space-x-2"
                       >
                         {post.source_name && (
