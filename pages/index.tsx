@@ -13,7 +13,7 @@ export default function Home() {
           <a
             href="https://letterbird.co/hello-7bc2f9f1"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener"
           >
             여기
           </a>
@@ -23,3 +23,4 @@ export default function Home() {
     </>
   )
 }
+
