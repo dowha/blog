@@ -62,6 +62,7 @@
 
   /* target="_blank" 링크에 아이콘 표시 */
   nav a[target='_blank']:after,
+  .index-contents a[target='_blank']:after,
   .copyright a[target='_blank']:after,
   .single-post a[target='_blank']:after,
   .record-contents a[target='_blank']:after {
