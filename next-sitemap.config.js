@@ -23,5 +23,8 @@ module.exports = {
       { userAgent: 'Claude', allow: '/' },
       { userAgent: 'PerplexityBot', allow: '/' },
     ],
+    additionalSitemaps: [
+      'https://blog.dowha.kim/api/rss' // ✅ RSS 사이트맵 추가
+    ],
   },
 };
