@@ -166,15 +166,11 @@
     @apply mb-6;
   }
 
-  .subtitle {
-    font-size: 0.95rem;
-  }
-
   .subtitle::before,
   .subtitle::after {
     content: '—\200B'; /* Zero-width space to reduce the gap */
     color: inherit;
-    font-size: 0.95em;
+    font-size: 1em;
   }
 
   .subtitle::before {
