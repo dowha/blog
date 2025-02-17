@@ -11,7 +11,7 @@ module.exports = {
       loc: path,
       changefreq: 'weekly',
       priority: path === '/' ? 1.0 : path.startsWith('/posts') ? 0.5 : 0.7, // ✅ 홈은 1.0, posts/*는 0.5, 그 외 0.7
-    };
+    }
   },
   robotsTxtOptions: {
     policies: [
@@ -24,7 +24,15 @@ module.exports = {
       { userAgent: 'PerplexityBot', allow: '/' },
     ],
     additionalSitemaps: [
-      'https://blog.dowha.kim/api/rss' // ✅ RSS 사이트맵 추가
+      'https://blog.dowha.kim/api/rss', // ✅ RSS 사이트맵 추가
     ],
+    transformRobotsTxt: async (_, robotsTxt) => {
+      const withoutHost = robotsTxt.replace(
+        `# Host\nHost: ${process.env.SITE_URL}\n\n`,
+        ''
+      )
+
+      return withoutHost
+    },
   },
-};
+}
