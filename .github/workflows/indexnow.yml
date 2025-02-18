@@ -27,8 +27,10 @@ jobs:
         env:
           INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
         run: |
-          python3 -c "
-import requests, xml.etree.ElementTree as ET, os
+          python3 <<EOF
+import requests
+import xml.etree.ElementTree as ET
+import os
 
 # 환경 변수 가져오기
 indexnow_key = os.environ.get('INDEXNOW_KEY')
@@ -78,4 +80,4 @@ try:
 except Exception as e:
     print(f'❌ Exception occurred: {e}')
     exit(1)
-          "
+EOF
