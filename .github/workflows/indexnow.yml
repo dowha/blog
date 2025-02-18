@@ -1,0 +1,68 @@
+name: 'IndexNow URL Submission'
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 매일 오전 2시에 실행
+  workflow_dispatch:  # 수동 실행 옵션 추가
+
+jobs:
+  submit-urls:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Fetch and submit URLs to IndexNow (Naver & Bing)
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+        run: |
+          import requests
+          import xml.etree.ElementTree as ET
+
+          # 사이트맵 URL
+          sitemap_url = 'https://blog.dowha.kim/sitemap.xml'
+          indexnow_key = "${{ secrets.INDEXNOW_KEY }}"
+          domain = 'blog.dowha.kim'
+
+          # IndexNow 엔드포인트
+          endpoints = [
+              'https://api.indexnow.org/indexnow',  # Bing
+              'https://searchadvisor.naver.com/indexnow'  # Naver
+          ]
+
+          # 사이트맵 가져오기
+          response = requests.get(sitemap_url)
+          if response.status_code == 200:
+              root = ET.fromstring(response.content)
+              namespace = {'ns': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+              urls = [url.text for url in root.findall('ns:url/ns:loc', namespaces=namespace)]
+
+              # IndexNow 요청 페이로드 생성
+              payload = {
+                  'host': domain,
+                  'key': indexnow_key,
+                  'keyLocation': f'https://{domain}/{indexnow_key}.txt',
+                  'urlList': urls
+              }
+
+              headers = {'Content-Type': 'application/json; charset=utf-8'}
+
+              # Bing & Naver에 URL 전송
+              for endpoint in endpoints:
+                  res = requests.post(endpoint, headers=headers, json=payload)
+                  if res.status_code == 200:
+                      print(f'✅ Successfully submitted URLs to {endpoint}')
+                  else:
+                      print(f'❌ Failed to submit to {endpoint}. Status Code: {res.status_code}, Response: {res.text}')
+          else:
+              print(f'❌ Failed to retrieve sitemap: {response.status_code}')
