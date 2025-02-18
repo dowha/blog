@@ -1,3 +1,29 @@
+--- 
+name: 'IndexNow URL Submission'
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 매일 오전 2시에 실행
+  workflow_dispatch:     # 수동 실행 옵션 추가
+
+jobs:
+  submit-urls:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install requests
+
       - name: Submit URLs to IndexNow (Naver & Bing)
         env:
           INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
