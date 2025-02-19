@@ -35,6 +35,10 @@ export async function getStaticProps() {
   }
 }
 
+const handleScrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
 export default function WritingPage({
   initialPosts,
   allPosts,
@@ -118,7 +122,10 @@ export default function WritingPage({
                         <h3 className="full-title group">
                           {post.title}
                           {post.subtitle && (
-                            <span className="subtitle relative"> {post.subtitle}</span>
+                            <span className="subtitle relative">
+                              {' '}
+                              {post.subtitle}
+                            </span>
                           )}
                         </h3>
                       </Link>
@@ -136,11 +143,14 @@ export default function WritingPage({
               </div>
             </section>
           ))}
-
-        {/* 더 보기 버튼 */}
-        {offset < allPosts.length && (
+        {/* 더 보기 버튼 or 위로 가기 버튼 */}
+        {offset < allPosts.length ? (
           <button onClick={loadMorePosts} className="default-button">
             ➕ 더 보기
+          </button>
+        ) : (
+          <button onClick={handleScrollToTop} className="default-button">
+            ⬆️ 처음으로
           </button>
         )}
       </article>
