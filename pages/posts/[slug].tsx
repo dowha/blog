@@ -54,6 +54,11 @@ export default function PostPage({ post }: { post: Post | null }) {
     }
   }
 
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+ 
+
   return (
     <>
       <Seo title={post.title} description={post.content.slice(0, 150)} />
@@ -87,11 +92,17 @@ export default function PostPage({ post }: { post: Post | null }) {
         )}
         {/* 공유 버튼 추가 */}
         <div className="flex items-center gap-2">
+        <button
+            onClick={handleScrollToTop}
+            className="default-button"
+          >
+            {"⬆️ 처음으로"}
+          </button>
           <button
             onClick={handleCopy}
             className="default-button"
           >
-            🔗 공유
+            🔗 공유하기
           </button>
           <button
             onClick={handleLuckyClick}
