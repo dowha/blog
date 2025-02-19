@@ -6,17 +6,26 @@ const nextConfig: NextConfig = {
       {
         source: "/feed",
         destination: "/api/rss",
-        permanent: true, // 301 리디렉트 (영구 이동)
+        permanent: true,
       },
       {
         source: "/posts",
         destination: "/writings",
-        permanent: true, // 301 리디렉트 (영구 이동)
+        permanent: true,
       },
     ];
   },
   async headers() {
     return [
+      {
+        source: "/api/rss",
+        headers: [
+          {
+            key: "Content-Type",
+            value: "application/rss+xml",
+          },
+        ],
+      },
       {
         source: "/sitemap.xml",
         headers: [
