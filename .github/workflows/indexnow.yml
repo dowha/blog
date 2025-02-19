@@ -3,8 +3,8 @@ name: 'IndexNow URL Submission'
 
 on:
   schedule:
-    - cron: '0 2 * * *'  # 매일 오전 2시에 실행
-  workflow_dispatch:     # 수동 실행 옵션 추가
+    - cron: '0 0 * * *'  # 매일 한국 시간 오전 9시(UTC 00:00)에 실행
+  workflow_dispatch:  # 수동 실행 가능
 
 jobs:
   submit-urls:
@@ -33,23 +33,21 @@ jobs:
           import xml.etree.ElementTree as ET
           import os
 
-          # 환경 변수 가져오기
           indexnow_key = os.environ.get('INDEXNOW_KEY')
           if not indexnow_key:
               raise ValueError('❌ ERROR: INDEXNOW_KEY is not set!')
 
-          # 사이트맵 URL 및 도메인 설정
           sitemap_url = 'https://blog.dowha.kim/sitemap.xml'
-          domain = 'blog.dowha.kim'
 
           # IndexNow 엔드포인트 리스트
-          endpoints = [
-              'https://api.indexnow.org/indexnow',  # Bing
-              'https://searchadvisor.naver.com/indexnow'  # Naver
-          ]
+          endpoints = {
+              "IndexNow": "https://api.indexnow.org/indexnow?url={url}&key=" + indexnow_key,
+              "Bing": "https://www.bing.com/indexnow?url={url}&key=" + indexnow_key,
+              "Naver": "https://searchadvisor.naver.com/indexnow?url={url}&key=" + indexnow_key
+          }
 
           try:
-              # 사이트맵 가져오기
+              # 최신 사이트맵 가져오기
               response = requests.get(sitemap_url)
               if response.status_code != 200:
                   print(f'❌ Failed to retrieve sitemap: {response.status_code}')
@@ -60,23 +58,17 @@ jobs:
               namespace = {'ns': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
               urls = [url.text for url in root.findall('ns:url/ns:loc', namespaces=namespace)]
 
-              # IndexNow API 요청 생성
-              payload = {
-                  'host': domain,
-                  'key': indexnow_key,
-                  'keyLocation': f'https://{domain}/{indexnow_key}.txt',
-                  'urlList': urls
-              }
+              # 최신 URL 몇 개만 선택 (예: 최근 5개)
+              latest_urls = urls[-5:]  # 최근 5개만 전송
 
-              headers = {'Content-Type': 'application/json; charset=utf-8'}
-
-              # 각 엔드포인트에 URL 전송
-              for endpoint in endpoints:
-                  res = requests.post(endpoint, headers=headers, json=payload)
-                  if res.status_code == 200:
-                      print(f'✅ Successfully submitted URLs to {endpoint}')
-                  else:
-                      print(f'❌ Failed to submit to {endpoint}. Status Code: {res.status_code}, Response: {res.text}')
+              for url in latest_urls:
+                  for name, endpoint in endpoints.items():
+                      full_url = endpoint.format(url=url)
+                      res = requests.get(full_url)
+                      if res.status_code == 200:
+                          print(f'✅ {name} 성공: {url}')
+                      else:
+                          print(f'❌ {name} 실패: {url}, 상태 코드: {res.status_code}, 응답: {res.text}')
 
           except Exception as e:
               print(f'❌ Exception occurred: {e}')
