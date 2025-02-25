@@ -6,13 +6,13 @@ type SeoProps = {
   description?: string
   image?: string
   url?: string
-  type?: "website" | "article"
+  type?: 'website' | 'article'
 }
 
 export default function Seo({
   title,
-  description = "이것저것 쓰고 싶은 글을 씁니다.",
-  image = "https://blog.dowha.kim/default-og-image.png",
+  description = '이것저것 쓰고 싶은 글을 씁니다.',
+  image = 'https://blog.dowha.kim/default-og-image.png',
   url,
   type,
 }: SeoProps) {
@@ -21,19 +21,20 @@ export default function Seo({
 
   const router = useRouter()
   const currentUrl = `https://blog.dowha.kim${router.asPath}`
-  const is404 = router.pathname === "/404";
+  const is404 = router.pathname === '/404'
 
-  const ogType = type || (router.pathname.startsWith("/posts/") ? "article" : "website")
+  const ogType =
+    type || (router.pathname.startsWith('/posts/') ? 'article' : 'website')
 
   if (is404) {
-    return null;
+    return null
   }
 
   return (
     <Head>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
-
+      <link rel="canonical" href={url || currentUrl} />
       {/* Open Graph */}
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
@@ -47,5 +48,5 @@ export default function Seo({
       <meta name="twitter:image" content={image} />
       <meta name="twitter:card" content="summary_large_image" />
     </Head>
-  );
+  )
 }
