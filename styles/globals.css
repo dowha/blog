@@ -144,6 +144,10 @@
     @apply mb-1;
   }
 
+  main ol {
+    list-style-type: decimal;
+  }
+
   /* ✅ 본문 스타일 */
   p {
     @apply mt-6 text-gray-600;
