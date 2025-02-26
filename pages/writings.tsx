@@ -65,9 +65,11 @@ export default function WritingPage({
     return acc
   }, {} as Record<number, Post[]>)
 
+  const descriptionText = `글 목록입니다.`
+
   return (
     <>
-      <Seo title="Writings" description="글 목록입니다." />
+      <Seo title="Writings" description={descriptionText} />
       <article className="post-list page-container">
         <h1 className="text-xl font-bold">
           Writings

@@ -110,19 +110,14 @@ export default function RecordsPage({ records }: Props) {
       console.error('URL 복사 실패:', err)
     }
   }
-
+  const descriptionText = ` 별도의 글로 쓰기에는 애매한 기록을 모아둡니다. 주로 개인적인 어떤
+          목록과 그에 대한 짧은 소회를 담은 메모 따위입니다.`
   return (
     <>
-      <Seo
-        title="Records"
-        description="별도의 글로 쓰기에는 애매한 기록을 모아둡니다."
-      />
+      <Seo title="Records" description="{descriptionText}" />
       <article className="records page-container">
         <h1 className="text-xl font-bold">Records</h1>
-        <p className="mt-4 text-keepall">
-          별도의 글로 쓰기에는 애매한 기록을 모아둡니다. 주로 개인적인 어떤
-          목록과 그에 대한 짧은 소회를 담은 메모 따위입니다.
-        </p>
+        <p className="mt-4 text-keepall">{descriptionText}</p>
 
         {records.map((record, index) => (
           <div key={record.slug} className={index === 0 ? 'mt-6' : ''}>

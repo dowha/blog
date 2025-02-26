@@ -11,7 +11,7 @@ type SeoProps = {
 
 export default function Seo({
   title,
-  description = '이것저것 쓰고 싶은 글을 씁니다.',
+  description = '김도화의 블로그입니다. 이것저것 쓰고 싶은 글을 씁니다.',
   image = 'https://blog.dowha.kim/default-og-image.png',
   url,
   type,
@@ -35,6 +35,7 @@ export default function Seo({
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       <link rel="canonical" href={url || currentUrl} />
+
       {/* Open Graph */}
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />

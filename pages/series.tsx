@@ -14,16 +14,15 @@ type Props = {
   series: SeriesRecord[]
 }
 
+const descriptionText = `특별히 엮어둔 글 목록입니다. 의도적으로 한 주제 아래 쓴 글들도, 쓰고 보니 우연히 묶인 글들도 있습니다. 부디 재밌게 읽어주세요.`
+
 export default function SeriesPage({ series }: Props) {
   return (
     <>
-      <Seo title="Series" description="특별히 엮어둔 글 목록입니다."/>
+      <Seo title="Series" description="{descriptionText}" />
       <article className="series-list page-container">
         <h1 className="text-xl font-bold">Series</h1>
-        <p className="mt-4 text-keepall">
-          특별히 엮어둔 글 목록입니다. 의도적으로 한 주제 아래 쓴 글들도, 쓰고
-          보니 우연히 묶인 글들도 있습니다. 부디 재밌게 읽어주세요.
-        </p>
+        <p className="mt-4 text-keepall">{descriptionText}</p>
         <div className="mt-6 border-t border-gray-300">
           {series.map((item) => (
             <Link
