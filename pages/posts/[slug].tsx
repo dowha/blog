@@ -28,21 +28,41 @@ function SeriesPosts({
 
   return (
     <div
-      className="bg-white p-4 rounded-lg mt-6 cursor-pointer"
+      className="p-4 rounded-lg mt-6 cursor-pointer"
       style={{
         backgroundColor: `${post.theme_color}4D`,
       }}
       onClick={() => setExpanded(!expanded)}
     >
-      <span className="text-md font-semibold">
-        <a href={`/series/${post.series_slug}`}>{post.series_name}</a></span><span>
-        {posts.length > 1 && (
-          <span className="text-sm font-mono">
-            ({posts.findIndex((p) => p.slug === post.slug) + 1}/{posts.length}
-            )
+      <div className="flex justify-between items-center">
+        {/* series name과 페이지 번호를 하나의 그룹으로 묶음 */}
+        <div className="flex items-center">
+          <span className="text-md font-semibold">
+            <a href={`/series/${post.series_slug}`}>{post.series_name}</a>
           </span>
-        )}
-      </span>
+          {posts.length > 1 && (
+            <span className="text-sm font-mono ml-2">
+              ({posts.findIndex((p) => p.slug === post.slug) + 1}/{posts.length}
+              )
+            </span>
+          )}
+        </div>
+        {/* svg 아이콘은 오른쪽 끝에 위치 */}
+        <svg
+          className={`h-4 w-4 transform transition-transform duration-200 ${
+            expanded ? 'rotate-180' : ''
+          }`}
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path
+            fillRule="evenodd"
+            d="M10 12a1 1 0 01-.707-.293l-5-5a1 1 0 111.414-1.414L10 9.586l4.293-4.293a1 1 0 111.414 1.414l-5 5A1 1 0 0110 12z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </div>
+
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeRaw]}
@@ -63,8 +83,8 @@ function SeriesPosts({
                 href={`/posts/${p.slug}`}
                 className={p.slug === post.slug ? 'font-semibold' : ''}
               >
-                <span className="font-mono">{index + 1}</span>{'.'}&nbsp;
-                {p.title}
+                <span className="font-mono">{index + 1}</span>
+                {'.'}&nbsp;{p.title}
               </a>
             </div>
           ))}

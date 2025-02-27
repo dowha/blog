@@ -39,12 +39,12 @@ export default function SeriesDetailPage({ series, posts }: Props) {
         <h1 className="text-xl font-bold">{series.series_name}</h1>
         {series.description && (
           <div
-            className="flex items-start py-2 px-3 rounded-lg"
+            className="flex items-center py-2 px-3 rounded-lg"
             style={{
               backgroundColor: `${series.theme_color}4D`,
             }}
           >
-            <span className="mr-2">{series.emoji}</span> {/* 이모지 아이콘 */}
+            <span className="mr-1 self-start">{series.emoji}</span> {/* 이모지 아이콘 */}
             <div className="leading-relaxed text-keepall">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
