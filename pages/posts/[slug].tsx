@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { supabase } from '@/supabase'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import ReactMarkdown from 'react-markdown'
@@ -106,11 +106,52 @@ export default function PostPage({
     series_name?: string
     series_slug?: string
     slug: string
+    id: string // ✅ UUID 타입
     description?: string
     theme_color: string
   }
   posts: { title: string; slug: string }[]
 }) {
+  const [claps, setClaps] = useState(0)
+
+  useEffect(() => {
+    if (!post?.id) return
+
+    async function fetchClaps() {
+      if (!post?.id) {
+        return
+      }
+
+      const { count, error } = await supabase
+        .from('post_likes')
+        .select('*', { count: 'exact' }) // ✅ 정확한 COUNT 조회
+        .eq('post_id', post.id)
+
+      if (error) {
+        return
+      }
+
+      setClaps(count ?? 0)
+    }
+
+    fetchClaps() // ✅ 무한 루프 방지
+  }, [post.id]) // ✅ post.id가 변경될 때 실행
+
+  async function handleClap() {
+    if (!post?.id) return
+
+    const { error } = await supabase
+      .from('post_likes')
+      .insert([{ post_id: post.id }]) // ✅ Supabase가 직접 제한 관리
+
+    if (error) {
+      alert('박수를 너무 빠르게 눌렀습니다. 잠시 후 다시 시도하세요.')
+      return
+    }
+
+    setClaps((prev) => prev + 1)
+  }
+
   if (!post) return <p>Post not found.</p>
 
   const handleCopy = async () => {
@@ -176,6 +217,9 @@ export default function PostPage({
         <div className="flex items-center gap-2 mt-4">
           <button onClick={handleScrollToTop} className="default-button">
             ⬆️ 처음으로
+          </button>
+          <button onClick={handleClap} className="default-button">
+            👏 응원하기({claps})
           </button>
           <button onClick={handleCopy} className="default-button">
             🔗 공유하기
