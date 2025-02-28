@@ -136,7 +136,8 @@ export default function RecordsPage({ records }: Props) {
               </ReactMarkdown>
 
               <button onClick={handleCopy} className="default-button">
-                🔗 공유하기
+                <span>🔗</span>
+                <span className="hidden sm:inline">공유하기</span>
               </button>
             </Collapse>
           </div>

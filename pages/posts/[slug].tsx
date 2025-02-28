@@ -145,7 +145,7 @@ export default function PostPage({
       .insert([{ post_id: post.id }]) // ✅ Supabase가 직접 제한 관리
 
     if (error) {
-      alert('박수를 너무 빠르게 눌렀습니다. 잠시 후 다시 시도하세요.')
+      alert('과분한 응원 감사합니다. 잠시 쉬었다가 응원해 주세요.')
       return
     }
 
@@ -216,16 +216,20 @@ export default function PostPage({
         )}
         <div className="flex items-center gap-2 mt-4">
           <button onClick={handleScrollToTop} className="default-button">
-            ⬆️ 처음으로
+            <span>⬆️</span>
+            <span className="hidden sm:inline">처음으로</span>
           </button>
           <button onClick={handleClap} className="default-button">
-            👏 응원하기({claps})
+            <span>👏</span>
+            <span className="hidden sm:inline">응원하기</span>({claps})
           </button>
           <button onClick={handleCopy} className="default-button">
-            🔗 공유하기
+            <span>🔗</span>
+            <span className="hidden sm:inline">공유하기</span>
           </button>
           <button onClick={handleLuckyClick} className="default-button">
-            {"🍀 I'm Feeling Lucky!"}
+            <span>🍀</span>
+            <span className="hidden sm:inline">발길 닿는 대로</span>
           </button>
         </div>
       </article>

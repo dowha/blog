@@ -29,12 +29,21 @@ export default function Custom404() {
     <>
       <Head>
         <title>404 Not Found | Dowha Blog</title>
-        <meta name="description" content="요청하신 페이지를 찾을 수 없습니다." />
+        <meta
+          name="description"
+          content="요청하신 페이지를 찾을 수 없습니다."
+        />
         <meta name="robots" content="noindex, nofollow" />
         <meta property="og:title" content="페이지를 찾을 수 없습니다" />
-        <meta property="og:description" content="요청하신 페이지가 존재하지 않습니다." />
+        <meta
+          property="og:description"
+          content="요청하신 페이지가 존재하지 않습니다."
+        />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://blog.dowha.kim/default-og-image.png" />
+        <meta
+          property="og:image"
+          content="https://blog.dowha.kim/default-og-image.png"
+        />
         <meta property="og:url" content="https://blog.dowha.kim/404" />
         <link rel="canonical" href="https://blog.dowha.kim/404" />
       </Head>
@@ -56,17 +65,12 @@ export default function Custom404() {
           좌측(모바일에서는 상단)의 메뉴를 통해 바른 길을 찾아주세요.
         </p>
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => router.push('/')}
-            className="default-button"
-          >
+          <button onClick={() => router.push('/')} className="default-button">
             🏠 처음으로
           </button>
-          <button
-            onClick={handleLuckyClick}
-            className="default-button"
-          >
-            {"🍀 I'm Feeling Lucky!"}
+          <button onClick={handleLuckyClick} className="default-button">
+            <span>🍀</span>
+            <span className="hidden sm:inline">발길 닿는 대로</span>
           </button>
         </div>
       </article>
