@@ -152,7 +152,8 @@ export default function WritingPage({
           </button>
         ) : (
           <button onClick={handleScrollToTop} className="default-button">
-            ⬆️ 처음으로
+            <span>⬆️</span>
+            <span className="hidden sm:inline">처음으로</span>
           </button>
         )}
       </article>
