@@ -21,6 +21,7 @@ function SeriesPosts({
     slug: string
     description?: string
     theme_color: string
+    updated_at: string
   }
   posts?: { title: string; slug: string }[]
 }) {
@@ -109,6 +110,7 @@ export default function PostPage({
     id: string // ✅ UUID 타입
     description?: string
     theme_color: string
+    updated_at: string
   }
   posts: { title: string; slug: string }[]
 }) {
@@ -205,7 +207,19 @@ export default function PostPage({
               month: '2-digit',
               day: '2-digit',
             })
-            .replace(/\s/g, '')}
+            .replace(/\s/g, '')}{' '}
+        {post.updated_at && (
+            <>
+              <span className="text-xs">{'🔄'}&thinsp;{'Last updated: '}
+              {new Date(post.updated_at)
+                .toLocaleDateString('ko-KR', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                })
+                .replace(/\s/g, '')}</span>
+            </>
+          )}
         </p>
         <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
           {post.content}
