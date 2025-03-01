@@ -205,8 +205,7 @@ export default function PostPage({
               month: '2-digit',
               day: '2-digit',
             })
-            .replace(/\. /g, '/')
-            .replace(/\.$/, '')}
+            .replace(/\s/g, '')}
         </p>
         <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
           {post.content}
