@@ -80,8 +80,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
                         month: '2-digit',
                         day: '2-digit',
                       })
-                      .replace(/\. /g, '/')
-                      .replace(/\.$/, '')}
+                      .replace(/\s/g, '')}
                   </span>
                 </div>
               </div>
