@@ -17,7 +17,7 @@ export default function Home() {
           >
             메일 폼
           </a>
-          을 통해서 메일 주세요.
+          을 통해서 연락해 주세요.
         </p>
       </article>
     </>
