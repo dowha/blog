@@ -29,9 +29,9 @@ export function Navigation() {
               </Link>
             </li>
           ))}
-          <div className="relative hidden md:flex justify-end py-4 my-4">
+          <li className="relative hidden md:flex justify-end py-4 my-4">
             <div className="absolute right-0 w-16 border-t border-gray-200"></div>
-          </div>
+          </li>
           <li className="md:text-right">
             <a
               href="https://dowha.kim"
