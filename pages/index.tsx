@@ -15,9 +15,9 @@ export default function Home() {
             target="_blank"
             rel="noopener"
           >
-            여기
+            메일 폼
           </a>
-          를 통해서 메일 주세요.
+          을 통해서 연락해 주세요.
         </p>
       </article>
     </>
