@@ -208,16 +208,18 @@ export default function PostPage({
               day: '2-digit',
             })
             .replace(/\s/g, '')}{' '}
-        {post.updated_at && (
+          {post.updated_at && (
             <>
-              <span className="text-xs">{'🔄'}&thinsp;{'Last updated: '}
-              {new Date(post.updated_at)
-                .toLocaleDateString('ko-KR', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                })
-                .replace(/\s/g, '')}</span>
+              <span className="text-xs">
+                {'🔄'}&thinsp;{'Last updated: '}
+                {new Date(post.updated_at)
+                  .toLocaleDateString('ko-KR', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                  })
+                  .replace(/\s/g, '')}
+              </span>
             </>
           )}
         </p>
@@ -232,17 +234,17 @@ export default function PostPage({
             <span>⬆️</span>
             <span className="hidden sm:inline">처음으로</span>
           </button>
-          <button onClick={handleClap} className="default-button">
-            <span>👏</span>
-            <span className="hidden sm:inline">응원하기</span>({claps})
+          <button onClick={handleLuckyClick} className="default-button">
+            <span>🍀</span>
+            <span className="hidden sm:inline">발길 닿는 대로</span>
           </button>
           <button onClick={handleCopy} className="default-button">
             <span>🔗</span>
             <span className="hidden sm:inline">공유하기</span>
           </button>
-          <button onClick={handleLuckyClick} className="default-button">
-            <span>🍀</span>
-            <span className="hidden sm:inline">발길 닿는 대로</span>
+          <button onClick={handleClap} className="default-button">
+            <span>👏</span>
+            <span className="hidden sm:inline">응원하기</span>({claps})
           </button>
         </div>
       </article>
