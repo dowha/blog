@@ -101,7 +101,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     .eq('status', 'public')
 
   if (error) {
-    console.error('Error fetching series slugs:', error)
+    console.error('시리즈 슬러그를 가져오는 중 오류 발생:', error)
     return { paths: [], fallback: 'blocking' }
   }
 
@@ -140,7 +140,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
     .order('created_at', { ascending: true })
 
   if (postsError) {
-    console.error('Error fetching series posts:', postsError)
+    console.error('시리즈 게시물을 가져오는 중 오류 발생:', postsError)
   }
 
   return {

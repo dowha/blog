@@ -9,20 +9,16 @@ type PostLike = {
 }
 
 async function fetchMostLikedPost() {
-  console.log('Fetching most liked post...')
-
   // 1. post_likes 테이블에서 post_id만 전부 가져오기
   const { data: allLikes, error: likesError } = await supabase
     .from('post_likes')
     .select('post_id')
 
   if (likesError) {
-    console.error('Error fetching post_likes:', likesError)
     return null
   }
 
   if (!allLikes || allLikes.length === 0) {
-    console.log('No liked posts found.')
     return null
   }
 
@@ -48,7 +44,6 @@ async function fetchMostLikedPost() {
   }
 
   if (!mostLikedPostId) {
-    console.log('No valid post ID found.')
     return null
   }
 
@@ -60,7 +55,6 @@ async function fetchMostLikedPost() {
     .single()
 
   if (postError) {
-    console.error('Error fetching post details:', postError)
     return null
   }
 
