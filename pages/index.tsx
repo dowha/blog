@@ -4,28 +4,38 @@ import { supabase } from '@/supabase'
 import Seo from "@/components/Seo";
 
 async function fetchMostLikedPost() {
-  // 1. 가장 좋아요를 많이 받은 post_id 찾기
+  console.log("Fetching most liked post...");
+
+  // 가장 좋아요를 많이 받은 post_id 찾기
   const { data: likesData, error: likesError } = await supabase
     .from("post_likes")
-    .select("post_id, count: post_id", { count: "exact" }) // post_id 별 개수 집계
-    .order("count", { ascending: false }) // 좋아요 개수 내림차순 정렬
+    .select("post_id, count", { count: "exact" }) // count 필드 추가
+    .order("count", { ascending: false })
     .limit(1);
+
+  console.log("Likes Data:", likesData);
 
   if (likesError) {
     console.error("Error fetching most liked post:", likesError);
     return;
   }
 
-  if (!likesData || likesData.length === 0) return;
+  if (!likesData || likesData.length === 0) {
+    console.log("No liked posts found.");
+    return;
+  }
 
   const mostLikedPostId = likesData[0].post_id;
+  console.log("Most liked post ID:", mostLikedPostId);
 
-  // 2. 해당 post_id의 posts 정보 가져오기
+  // 해당 post_id의 posts 정보 가져오기
   const { data: postData, error: postError } = await supabase
     .from("posts")
     .select("title, slug")
     .eq("id", mostLikedPostId)
     .single();
+
+  console.log("Post Data:", postData);
 
   if (postError) {
     console.error("Error fetching post details:", postError);
@@ -34,6 +44,7 @@ async function fetchMostLikedPost() {
 
   return postData;
 }
+
 
 export default function Home() {
   const [mostLikedPost, setMostLikedPost] = useState<{ title: string; slug: string } | null>(null);
