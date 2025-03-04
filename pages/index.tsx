@@ -7,26 +7,14 @@ export default function Home() {
   const [mostLikedPost, setMostLikedPost] = useState<{ title: string; slug: string } | null>(null);
 
   useEffect(() => {
-    async function fetchMostLikedPost() {
-      const { data, error } = await supabase
-        .from("post_likes")
-        .select("post_id, posts(title, slug)")
-        .eq("posts.status", "public") // 공개된 게시글만 조회
-        .group("post_id")
-        .order("count", { ascending: false })
-        .limit(1);
-
-      if (error) {
-        console.error("Error fetching most liked post:", error);
-        return;
-      }
-
-      if (data.length > 0) {
-        setMostLikedPost(data[0].posts);
+    async function getMostLikedPost() {
+      const post = await fetchMostLikedPost();
+      if (post) {
+        setMostLikedPost(post);
       }
     }
 
-    fetchMostLikedPost();
+    getMostLikedPost();
   }, []);
 
   return (
