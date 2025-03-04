@@ -3,18 +3,50 @@ import Link from "next/link";
 import { supabase } from '@/supabase'
 import Seo from "@/components/Seo";
 
+async function fetchMostLikedPost() {
+  // 1. 가장 좋아요를 많이 받은 post_id 찾기
+  const { data: likesData, error: likesError } = await supabase
+    .from("post_likes")
+    .select("post_id, count: post_id", { count: "exact" }) // post_id 별 개수 집계
+    .order("count", { ascending: false }) // 좋아요 개수 내림차순 정렬
+    .limit(1);
+
+  if (likesError) {
+    console.error("Error fetching most liked post:", likesError);
+    return;
+  }
+
+  if (!likesData || likesData.length === 0) return;
+
+  const mostLikedPostId = likesData[0].post_id;
+
+  // 2. 해당 post_id의 posts 정보 가져오기
+  const { data: postData, error: postError } = await supabase
+    .from("posts")
+    .select("title, slug")
+    .eq("id", mostLikedPostId)
+    .single();
+
+  if (postError) {
+    console.error("Error fetching post details:", postError);
+    return;
+  }
+
+  return postData;
+}
+
 export default function Home() {
   const [mostLikedPost, setMostLikedPost] = useState<{ title: string; slug: string } | null>(null);
 
   useEffect(() => {
     async function getMostLikedPost() {
-      const post = await fetchMostLikedPost();
+      const post = await fetchMostLikedPost(); // 여기에 fetchMostLikedPost 호출
       if (post) {
         setMostLikedPost(post);
       }
     }
 
-    getMostLikedPost();
+    getMostLikedPost(); // 페이지 로드 시 실행
   }, []);
 
   return (
