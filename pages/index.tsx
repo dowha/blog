@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { supabase } from '@/supabase'
 import Seo from "@/components/Seo";
 
 export default function Home() {
