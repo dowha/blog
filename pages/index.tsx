@@ -8,22 +8,17 @@ type PostLike = {
   post_id: string // Supabase에서 post_id가 uuid라면 string 타입으로 간주
 }
 
-async function fetchMostLikedPost() {
+async function fetchMostLikedPosts() {
   // 1. post_likes 테이블에서 post_id만 전부 가져오기
   const { data: allLikes, error: likesError } = await supabase
     .from('post_likes')
     .select('post_id')
 
-  if (likesError) {
-    return null
-  }
-
-  if (!allLikes || allLikes.length === 0) {
+  if (likesError || !allLikes || allLikes.length === 0) {
     return null
   }
 
   // 2. JS에서 post_id 개수 집계
-  // reduce 콜백의 매개변수 like에 PostLike 타입, acc에 Record<string, number> 타입 지정
   const postCountMap = allLikes.reduce(
     (acc: Record<string, number>, like: PostLike) => {
       acc[like.post_id] = (acc[like.post_id] || 0) + 1
@@ -32,18 +27,19 @@ async function fetchMostLikedPost() {
     {}
   )
 
-  let mostLikedPostId: string | null = null
+  let mostLikedPostIds: string[] = []
   let maxCount = 0
 
-  // 가장 많이 좋아요된 post_id 찾기
   for (const [id, count] of Object.entries(postCountMap)) {
     if (count > maxCount) {
-      mostLikedPostId = id
+      mostLikedPostIds = [id] // 새로운 최댓값이면 초기화
       maxCount = count
+    } else if (count === maxCount) {
+      mostLikedPostIds.push(id) // 같은 개수면 추가
     }
   }
 
-  if (!mostLikedPostId) {
+  if (mostLikedPostIds.length === 0) {
     return null
   }
 
@@ -51,31 +47,30 @@ async function fetchMostLikedPost() {
   const { data: postData, error: postError } = await supabase
     .from('posts')
     .select('title, slug')
-    .eq('id', mostLikedPostId)
-    .single()
+    .in('id', mostLikedPostIds) // 🔥 `.eq()` 대신 `.in()` 사용
+    .order('id', { ascending: true }) // 정렬 추가 (필요에 따라 변경 가능)
 
-  if (postError) {
+  if (postError || !postData || postData.length === 0) {
     return null
   }
 
-  return postData
+  return postData // 여러 개의 데이터를 반환하도록 수정
 }
 
 export default function Home() {
-  const [mostLikedPost, setMostLikedPost] = useState<{
-    title: string
-    slug: string
-  } | null>(null)
+  const [mostLikedPosts, setMostLikedPosts] = useState<
+    { title: string; slug: string }[] | null
+  >(null)
 
   useEffect(() => {
-    async function getMostLikedPost() {
-      const post = await fetchMostLikedPost()
-      if (post) {
-        setMostLikedPost(post)
+    async function getMostLikedPosts() {
+      const posts = await fetchMostLikedPosts()
+      if (posts) {
+        setMostLikedPosts(posts)
       }
     }
 
-    getMostLikedPost()
+    getMostLikedPosts()
   }, [])
 
   return (
@@ -99,18 +94,17 @@ export default function Home() {
         </p>
 
         {/* 가장 좋아요 많은 글 표시 */}
-        {mostLikedPost && (
+        {mostLikedPosts && mostLikedPosts.length > 0 && (
           <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
-            <p className="font-semibold mt-0">👏 가장 응원받은 글</p>
+            <p className="font-semibold mt-0"><span className="mr-1">👏</span>가장 응원받은 글</p>
             <ul>
-              <li>
-                <Link
-                  href={`/posts/${mostLikedPost.slug}`}
-                  className="block text-sm"
-                >
-                  {mostLikedPost.title}
-                </Link>
-              </li>
+              {mostLikedPosts.map((post) => (
+                <li key={post.slug}>
+                  <Link href={`/posts/${post.slug}`} className="block text-sm">
+                    {post.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         )}

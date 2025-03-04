@@ -149,7 +149,8 @@ export default function WritingPage({
         {/* 더 보기 버튼 or 위로 가기 버튼 */}
         {offset < allPosts.length ? (
           <button onClick={loadMorePosts} className="default-button">
-            ➕ 더 보기
+             <span>➕</span>
+             <span className="hidden sm:inline">더 보기</span>
           </button>
         ) : (
           <button onClick={handleScrollToTop} className="default-button">

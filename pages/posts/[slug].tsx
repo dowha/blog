@@ -242,10 +242,21 @@ export default function PostPage({
             <span>🔗</span>
             <span className="hidden sm:inline">공유하기</span>
           </button>
-          <button onClick={handleClap} className="default-button">
-            <span>👏</span>
-            <span className="hidden sm:inline">응원하기</span>({claps})
-          </button>
+          {claps > 0 ? (
+            <button
+              onClick={handleClap}
+              className="default-button"
+            >
+              <span>👏</span>
+              <span className="hidden sm:inline">응원하기</span>
+              <span>({claps})</span>
+            </button>
+          ) : (
+            <button onClick={handleClap} className="default-button">
+              <span>👏</span>
+              <span className="hidden sm:inline">첫 번째로 응원하기!</span>
+            </button>
+          )}
         </div>
       </article>
       <Copyright />

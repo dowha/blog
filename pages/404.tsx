@@ -66,7 +66,8 @@ export default function Custom404() {
         </p>
         <div className="flex items-center gap-2">
           <button onClick={() => router.push('/')} className="default-button">
-            🏠 처음으로
+            <span>🏠</span>
+            <span className="hidden sm:inline">처음으로</span>
           </button>
           <button onClick={handleLuckyClick} className="default-button">
             <span>🍀</span>
