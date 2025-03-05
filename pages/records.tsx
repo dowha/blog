@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import Seo from '@/components/Seo'
+import { CopyLinkButton } from '@/components/ActionButtons'
 
 type Record = {
   title: string
@@ -98,18 +99,6 @@ export default function RecordsPage({ records }: Props) {
     }
   }, [router.asPath]) // ✅ URL 변경 시 실행
 
-  const handleCopy = async () => {
-    try {
-      const shareUrl =
-        typeof window !== 'undefined'
-          ? `${window.location.origin}${router.asPath}?type=share`
-          : ''
-      await navigator.clipboard.writeText(shareUrl)
-      alert('공유 링크가 복사되었습니다.')
-    } catch (err) {
-      console.error('URL 복사 실패:', err)
-    }
-  }
   const descriptionText = ` 별도의 글로 쓰기에는 애매한 기록을 모아둡니다. 주로 개인적인 어떤
           목록과 그에 대한 짧은 소회를 담은 메모 따위입니다.`
   return (
@@ -134,11 +123,7 @@ export default function RecordsPage({ records }: Props) {
               >
                 {record.content}
               </ReactMarkdown>
-
-              <button onClick={handleCopy} className="default-button">
-                <span>🔗</span>
-                <span className="hidden sm:inline">공유하기</span>
-              </button>
+              <CopyLinkButton slug={record.slug} isRecordPage={true} />{' '}
             </Collapse>
           </div>
         ))}

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Seo from '@/components/Seo'
 import Image from 'next/image'
+import { LoadMoreButton } from '@/components/ActionButtons'
 
 type Post = {
   title: string
@@ -33,10 +34,6 @@ export async function getStaticProps() {
     props: { initialPosts: posts.slice(0, LIMIT), allPosts: posts },
     revalidate: 60,
   }
-}
-
-const handleScrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 export default function WritingPage({
@@ -134,11 +131,12 @@ export default function WritingPage({
                     )}
                     <div className="pl-1 py-0.5 sm:py-0">
                       <span className="text-xs sm:text-sm text-gray-500 font-mono whitespace-nowrap">
-                        {new Date(post.created_at).toLocaleDateString('ko-KR', {
-              month: '2-digit',
-              day: '2-digit',
-            })
-            .replace(/\s/g, '')}
+                        {new Date(post.created_at)
+                          .toLocaleDateString('ko-KR', {
+                            month: '2-digit',
+                            day: '2-digit',
+                          })
+                          .replace(/\s/g, '')}
                       </span>
                     </div>
                   </div>
@@ -147,17 +145,10 @@ export default function WritingPage({
             </section>
           ))}
         {/* 더 보기 버튼 or 위로 가기 버튼 */}
-        {offset < allPosts.length ? (
-          <button onClick={loadMorePosts} className="default-button">
-             <span>➕</span>
-             <span className="hidden sm:inline">더 보기</span>
-          </button>
-        ) : (
-          <button onClick={handleScrollToTop} className="default-button">
-            <span>⬆️</span>
-            <span className="hidden sm:inline">처음으로</span>
-          </button>
-        )}
+        <LoadMoreButton
+          loadMore={loadMorePosts}
+          hasMore={offset < allPosts.length}
+        />
       </article>
     </>
   )

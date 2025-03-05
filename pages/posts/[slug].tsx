@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { supabase } from '@/supabase'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import ReactMarkdown from 'react-markdown'
@@ -6,6 +6,12 @@ import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import Copyright from '@/components/Copyright'
 import Seo from '@/components/Seo'
+import {
+  ScrollToTopButton,
+  LuckyPostButton,
+  CopyLinkButton,
+  ClapButton,
+} from '@/components/ActionButtons'
 
 function SeriesPosts({
   post,
@@ -114,85 +120,7 @@ export default function PostPage({
   }
   posts: { title: string; slug: string }[]
 }) {
-  const [claps, setClaps] = useState(0)
-
-  useEffect(() => {
-    if (!post?.id) return
-
-    async function fetchClaps() {
-      if (!post?.id) {
-        return
-      }
-
-      const { count, error } = await supabase
-        .from('post_likes')
-        .select('*', { count: 'exact' }) // ✅ 정확한 COUNT 조회
-        .eq('post_id', post.id)
-
-      if (error) {
-        return
-      }
-
-      setClaps(count ?? 0)
-    }
-
-    fetchClaps() // ✅ 무한 루프 방지
-  }, [post.id]) // ✅ post.id가 변경될 때 실행
-
-  async function handleClap() {
-    if (!post?.id) return
-
-    const { error } = await supabase
-      .from('post_likes')
-      .insert([{ post_id: post.id }]) // ✅ Supabase가 직접 제한 관리
-
-    if (error) {
-      alert('과분한 응원 감사합니다. 잠시 쉬었다가 응원해 주세요.')
-      return
-    }
-
-    setClaps((prev) => prev + 1)
-  }
-
   if (!post) return <p>Post not found.</p>
-
-  const handleCopy = async () => {
-    try {
-      const shareUrl =
-        typeof window !== 'undefined'
-          ? `${window.location.origin}/posts/${post.slug}?type=share`
-          : ''
-      await navigator.clipboard.writeText(shareUrl)
-      alert('공유 링크가 복사되었습니다.')
-    } catch (err) {
-      console.error('URL 복사 실패:', err)
-    }
-  }
-
-  const handleLuckyClick = async () => {
-    try {
-      const { data: posts, error } = await supabase
-        .from('posts')
-        .select('slug')
-        .eq('status', 'public')
-        .eq('is_external', false)
-
-      if (error) throw error
-      if (!posts || posts.length === 0) {
-        alert('게시물이 없습니다.')
-        return
-      }
-
-      const randomPost = posts[Math.floor(Math.random() * posts.length)]
-      window.location.href = `/posts/${randomPost.slug}`
-    } catch (err) {
-      console.error('랜덤 포스트 이동 실패:', err)
-    }
-  }
-
-  const handleScrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
 
   return (
     <>
@@ -230,33 +158,10 @@ export default function PostPage({
           <SeriesPosts post={post} posts={posts || []} />
         )}
         <div className="flex items-center gap-2 mt-4">
-          <button onClick={handleScrollToTop} className="default-button">
-            <span>⬆️</span>
-            <span className="hidden sm:inline">처음으로</span>
-          </button>
-          <button onClick={handleLuckyClick} className="default-button">
-            <span>🍀</span>
-            <span className="hidden sm:inline">발길 닿는 대로</span>
-          </button>
-          <button onClick={handleCopy} className="default-button">
-            <span>🔗</span>
-            <span className="hidden sm:inline">공유하기</span>
-          </button>
-          {claps > 0 ? (
-            <button
-              onClick={handleClap}
-              className="default-button"
-            >
-              <span>👏</span>
-              <span className="hidden sm:inline">응원하기</span>
-              <span>({claps})</span>
-            </button>
-          ) : (
-            <button onClick={handleClap} className="default-button">
-              <span>👏</span>
-              <span className="hidden sm:inline">첫 번째로 응원하기!</span>
-            </button>
-          )}
+          <ScrollToTopButton />
+          <LuckyPostButton />
+          <CopyLinkButton slug={post.slug} />
+          <ClapButton postId={post.id} />
         </div>
       </article>
       <Copyright />
