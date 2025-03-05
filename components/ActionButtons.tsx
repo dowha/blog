@@ -56,7 +56,6 @@ export const LuckyPostButton = () => {
   return <Button onClick={handleLuckyClick} icon="🍀" label="발길 닿는 대로" />
 }
 
-// components/ActionButtons.tsx
 export const CopyLinkButton = ({
   slug,
   isRecordPage = false,
@@ -68,10 +67,13 @@ export const CopyLinkButton = ({
     try {
       const shareUrl =
         typeof window !== 'undefined'
-          ? `${window.location.origin}/records${
-              isRecordPage ? `#${slug}` : `/posts/${slug}?type=share`
+          ? `${window.location.origin}${
+              isRecordPage
+                ? `/records#${slug}?type=share`
+                : `/posts/${slug}?type=share`
             }`
           : ''
+
       await navigator.clipboard.writeText(shareUrl)
       alert('공유 링크가 복사되었습니다.')
     } catch (err) {
