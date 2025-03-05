@@ -123,7 +123,7 @@ export default function RecordsPage({ records }: Props) {
               >
                 {record.content}
               </ReactMarkdown>
-              <CopyLinkButton slug={record.slug} isRecordPage={true} />{' '}
+              <CopyLinkButton slug={record.slug} isRecordPage={true} />
             </Collapse>
           </div>
         ))}

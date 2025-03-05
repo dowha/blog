@@ -160,7 +160,7 @@ export default function PostPage({
         <div className="flex items-center gap-2 mt-4">
           <ScrollToTopButton />
           <LuckyPostButton />
-          <CopyLinkButton slug={post.slug} />
+          <CopyLinkButton slug={post.slug} isRecordPage={false} />
           <ClapButton postId={post.id} />
         </div>
       </article>
