@@ -84,9 +84,9 @@ export default function Home() {
           <br className="hidden md:block" />
           질문이나 피드백, 협업 제안 등은{' '}
           <a
-            href="https://letterbird.co/hello-7bc2f9f1"
+            href="https://letterbird.co/hello-dowha"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
           >
             메일 폼
           </a>
