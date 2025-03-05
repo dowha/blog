@@ -1,37 +1,14 @@
-import { useRouter } from 'next/router'
-import { supabase } from '@/supabase'
 import Head from 'next/head'
+import { HomeButton, LuckyPostButton } from '@/components/ActionButtons'
 
 export default function Custom404() {
-  const router = useRouter()
-  const handleLuckyClick = async () => {
-    try {
-      const { data: posts, error } = await supabase
-        .from('posts')
-        .select('slug')
-        .eq('status', 'public')
-        .eq('is_external', false)
-
-      if (error) throw error
-      if (!posts || posts.length === 0) {
-        alert('게시물이 없습니다.')
-        return
-      }
-
-      const randomPost = posts[Math.floor(Math.random() * posts.length)]
-      window.location.href = `/posts/${randomPost.slug}`
-    } catch (err) {
-      console.error('랜덤 포스트 이동 실패:', err)
-    }
-  }
-
   return (
     <>
       <Head>
         <title>404 Not Found | Dowha Blog</title>
         <meta
           name="description"
-          content="요청하신 페이지를 찾을 수 없습니다."
+          content={`요청하신 페이지를 찾을 수 없습니다.`}
         />
         <meta name="robots" content="noindex, nofollow" />
         <meta property="og:title" content="페이지를 찾을 수 없습니다" />
@@ -65,14 +42,8 @@ export default function Custom404() {
           좌측(모바일에서는 상단)의 메뉴를 통해 바른 길을 찾아주세요.
         </p>
         <div className="flex items-center gap-2">
-          <button onClick={() => router.push('/')} className="default-button">
-            <span>🏠</span>
-            <span className="hidden sm:inline">처음으로</span>
-          </button>
-          <button onClick={handleLuckyClick} className="default-button">
-            <span>🍀</span>
-            <span className="hidden sm:inline">발길 닿는 대로</span>
-          </button>
+          <HomeButton />
+          <LuckyPostButton />
         </div>
       </article>
     </>
