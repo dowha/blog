@@ -124,6 +124,7 @@ export const ClapButton = ({ postId }: { postId: string }) => {
       onClick={handleClap}
       icon="👏"
       label={claps > 0 ? `응원하기 (${claps})` : '첫 번째로 응원하기!'}
+      showNumberOnlyOnMobile={true} // 모바일에서는 숫자만 표시
     />
   )
 }
