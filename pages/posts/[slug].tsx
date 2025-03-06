@@ -104,6 +104,8 @@ function SeriesPosts({
 export default function PostPage({
   post,
   posts,
+  prevPost,
+  nextPost,
 }: {
   post: {
     title: string
@@ -119,6 +121,8 @@ export default function PostPage({
     updated_at: string
   }
   posts: { title: string; slug: string }[]
+  prevPost: { slug: string; title: string } | null
+  nextPost: { slug: string; title: string } | null
 }) {
   if (!post) return <p>Post not found.</p>
 
@@ -151,9 +155,49 @@ export default function PostPage({
             </>
           )}
         </p>
+        <div className="flex justify-between mt-8 text-sm">
+          {prevPost ? (
+            <a
+              href={`/posts/${prevPost.slug}`}
+              className="group hover:underline"
+            >
+              <span>←</span>
+              <span className="hidden sm:inline opacity-0 transition-opacity duration-300 ease-in group-hover:opacity-100">
+                {prevPost.title}
+              </span>
+            </a>
+          ) : (
+            <span className="group cursor-not-allowed">
+              <span className="text-gray-400">←</span>
+              <span className="hidden sm:inline opacity-0 transition-opacity duration-300 ease-in group-hover:opacity-100 text-gray-400">
+                이전 글 없음
+              </span>
+            </span>
+          )}
+          {nextPost ? (
+            <a
+              href={`/posts/${nextPost.slug}`}
+              className="group hover:underline"
+            >
+              <span className="hidden sm:inline opacity-0 transition-opacity duration-300 ease-in group-hover:opacity-100">
+                {nextPost.title}
+              </span>
+              <span>→</span>
+            </a>
+          ) : (
+            <span className="group cursor-not-allowed">
+              <span className="hidden sm:inline opacity-0 transition-opacity duration-300 ease-in group-hover:opacity-100 text-gray-400">
+                다음 글 없음
+              </span>
+              <span className="text-gray-400">→</span>
+            </span>
+          )}
+        </div>
+
         <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
           {post.content}
         </ReactMarkdown>
+
         {post.series_name && post.series_slug && (
           <SeriesPosts post={post} posts={posts || []} />
         )}
@@ -217,8 +261,32 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     posts = seriesPosts || []
   }
 
+  const { data: prevPostData } = await supabase
+    .from('posts')
+    .select('slug, title')
+    .eq('status', 'public')
+    .eq('is_external', false)
+    .lt('created_at', post.created_at)
+    .order('created_at', { ascending: false })
+    .limit(1)
+
+  // 다음 글 가져오기
+  const { data: nextPostData } = await supabase
+    .from('posts')
+    .select('slug, title')
+    .eq('status', 'public')
+    .eq('is_external', false)
+    .gt('created_at', post.created_at)
+    .order('created_at', { ascending: true })
+    .limit(1)
+
   return {
-    props: { post: { ...post, ...series }, posts },
+    props: {
+      post: { ...post, ...series },
+      posts,
+      prevPost: prevPostData && prevPostData[0] ? prevPostData[0] : null,
+      nextPost: nextPostData && nextPostData[0] ? nextPostData[0] : null,
+    },
     revalidate: 60,
   }
 }
