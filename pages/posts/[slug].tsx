@@ -199,7 +199,7 @@ export default function PostPage({
         </ReactMarkdown>
 
         {post.series_name && post.series_slug && (
-          <SeriesPosts post={post} posts={posts || []} />
+          <SeriesPosts post={post} posts={[...posts].reverse()} />
         )}
         <div className="flex items-center gap-2 mt-4">
           <ScrollToTopButton />
