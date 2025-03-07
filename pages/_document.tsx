@@ -46,6 +46,7 @@ export default function Document() {
           sizes="512x512"
           href="/android-chrome-512x512.png"
         />
+        <link rel="alternate" type="application/rss+xml" title="Dowha's Blog RSS Feed" href="/api/rss" />
       </Head>
       <body className="flex min-h-dvh antialiased">
         <noscript>
