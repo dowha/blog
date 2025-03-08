@@ -14,6 +14,8 @@ export function Navigation() {
             { name: 'series', path: '/series', related: '/series/' },
             { name: 'writings', path: '/writings', related: '/posts/' }, // 📌 related 추가
             { name: 'records', path: '/records' },
+            { name: 'books', path: '/books' },
+
           ].map((item) => (
             <li key={item.path}>
               <Link
