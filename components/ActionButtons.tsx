@@ -55,20 +55,23 @@ export const LuckyPostButton = () => {
 
   return <Button onClick={handleLuckyClick} icon="🍀" label="발길 닿는 대로" />
 }
-
 export const CopyLinkButton = ({
   slug,
   isRecordPage = false,
+  isBookPage = false,
 }: {
   slug: string
   isRecordPage?: boolean
+  isBookPage?: boolean
 }) => {
   const handleCopy = async () => {
     try {
       const shareUrl =
         typeof window !== 'undefined'
           ? `${window.location.origin}${
-              isRecordPage
+              isBookPage
+                ? `/books/${slug}?type=share`
+                : isRecordPage
                 ? `/records#${slug}?type=share`
                 : `/posts/${slug}?type=share`
             }`

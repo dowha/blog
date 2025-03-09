@@ -1,27 +1,60 @@
-import Link from "next/link"
 import Image from 'next/image'
 
-interface ReadingCardProps {
-  category: string
+interface Book {
+  id: string
   title: string
-  description: string
-  slug: string
-  thumbnail: string
+  author: string
+  publisher: string
+  publicationYear: number
+  genre: string
+  thumbnail?: string | null
 }
 
-export function ReadingCard({ category, title, description, slug, thumbnail }: ReadingCardProps) {
+interface BookCardProps {
+  book: Book
+  className?: string
+}
+export default function BookCard({ book, className }: BookCardProps) {
   return (
-    <div className="flex flex-col h-full">
-      <div className="border-t border-gray-200 pt-4 flex-grow">
-        <div className="uppercase text-xs font-semibold tracking-wide mb-2">{category}</div>
-        <h2 className="text-xl font-bold mb-2 line-clamp-2">{title}</h2>
-        <p className="text-gray-600 text-sm mb-4 h-12 line-clamp-2">{description}</p>
-      </div>
-      <Link href={`/books/${slug}`} className="block mt-auto">
-        <div className="rounded-lg overflow-hidden bg-gray-100 aspect-[16/9]">
-          <Image src={thumbnail} alt={title} className="w-full h-full object-cover" />
+    <div
+      className={`border border-border h-full p-4 hover:bg-gray-100 rounded-lg w-full bg-card ${
+        className || ''
+      }`}
+    >
+      <div className="flex gap-3">
+        {/* 썸네일 */}
+        <div className="h-24 w-16 flex-shrink-0 overflow-hidden rounded bg-gray-200 flex items-center justify-center">
+          {book.thumbnail ? (
+            <Image
+              src={book.thumbnail}
+              alt={`${book.title} 표지`}
+              width={64}
+              height={96}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <span className="text-xs text-gray-500"></span>
+          )}
         </div>
-      </Link>
+
+        {/* 책 정보 */}
+        <div className="flex flex-1 flex-col justify-between text-left">
+          <div>
+            <h3 className="leading-tight text-foreground text-base font-semibold truncate">
+              {book.title}
+            </h3>
+            <span className="mt-1 text-sm text-gray-500 block">
+              {book.author}
+            </span>
+            <span className="mt-0.5 text-sm text-gray-400 block">
+              {book.publisher}({book.publicationYear})
+            </span>
+            <span className="text-xs text-gray-600 inline-block mb-1">
+              #{book.genre}
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

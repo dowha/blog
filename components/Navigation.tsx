@@ -11,11 +11,10 @@ export function Navigation() {
         <ul className="lowercase flex flex-wrap gap-4 justify-center w-full md:block md:gap-0 md:space-y-2 md:text-right md:sticky md:top-6">
           {[
             { name: 'home', path: '/' },
-            { name: 'series', path: '/series', related: '/series/' },
             { name: 'writings', path: '/writings', related: '/posts/' }, // 📌 related 추가
+            { name: 'series', path: '/series', related: '/series/' },
+            { name: 'books', path: '/books', related: '/books/' },
             { name: 'records', path: '/records' },
-            { name: 'books', path: '/books' },
-
           ].map((item) => (
             <li key={item.path}>
               <Link

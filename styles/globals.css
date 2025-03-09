@@ -86,12 +86,16 @@
     @apply break-words underline underline-offset-4 decoration-gray-200 hover:text-[#0a85d1];
   }
 
+  a.no-underline {
+    text-decoration: none !important;
+  }
+
   /* ✅ 제목 스타일 */
   h1 {
     @apply text-gray-800 text-xl mb-7;
   }
 
-  .single-post h1 {
+  .single-post h1, .single-book h1 {
     @apply mb-0;
   }
 
@@ -133,6 +137,10 @@
   .post-list h3,
   .series h3 {
     @apply font-normal;
+  }
+
+  .book-list h3 {
+    @apply font-semibold;
   }
 
   /* ✅ 리스트 스타일 */
