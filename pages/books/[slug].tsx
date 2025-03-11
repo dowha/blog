@@ -85,8 +85,8 @@ export default function BookDetailPage({
           )}
         </div>
 
-        <div className="w-full h-64 bg-gray-100 flex items-center justify-center rounded-lg mt-6 mb-4 relative">
-          {book.thumbnail ? (
+        {book.thumbnail && (
+          <div className="w-full h-64 bg-gray-100 flex items-center justify-center rounded-lg mt-6 mb-4 relative">
             <Image
               src={book.thumbnail}
               alt={book.title}
@@ -94,10 +94,8 @@ export default function BookDetailPage({
               height={96}
               className="absolute w-16 h-24 sm:w-32 sm:h-48 object-cover"
             />
-          ) : (
-            <span className="text-sm text-gray-500">No Image</span>
-          )}
-        </div>
+          </div>
+        )}
 
         {book.content ? (
           <ReactMarkdown
@@ -107,7 +105,7 @@ export default function BookDetailPage({
             {book.content}
           </ReactMarkdown>
         ) : (
-          <p className="text-gray-500">이 책에 대한 상세 내용이 없습니다.</p>
+          <p className="text-gray-500">현재 읽고 있는 중</p>
         )}
         <p className="text-xs text-gray-500 px-1 py-0.5 inline-block">
           #{book.genre}
