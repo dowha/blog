@@ -42,7 +42,7 @@ export default function GenreFilter({
             }`}
             onClick={() => onChange(genre)}
           >
-            {genre === '전체' ? genre : `#${genre}`}{' '}
+            {genre === '전체' ? genre : `${genre}`}{' '}
             {/* "전체"에서는 # 없이 표시 */}
           </button>
         ))}
