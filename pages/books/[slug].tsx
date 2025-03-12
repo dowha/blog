@@ -105,7 +105,7 @@ export default function BookDetailPage({
             {book.content}
           </ReactMarkdown>
         ) : (
-          <p className="text-gray-500">현재 읽고 있는 중</p>
+          <p className="text-gray-500">현재 읽고 있는 중.</p>
         )}
         <p className="text-xs text-gray-500 px-1 py-0.5 inline-block">
           #{book.genre}
