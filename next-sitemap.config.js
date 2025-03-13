@@ -7,15 +7,20 @@ module.exports = {
   generateIndexSitemap: false, // 인덱스 파일 비활성화 → sitemap-0.xml 방지
   priority: 0.7, // 기본 우선순위 (기본값, 다른 페이지에 적용)
   transform: async (config, path) => {
+    if (path.includes('[slug]')) {
+      return null // null을 반환하면 사이트맵에서 제거됨
+    }
+
     return {
       loc: path,
       changefreq: 'weekly',
-      priority: path === '/' ? 1.0 : path.startsWith('/posts') ? 0.5 : 0.7, // ✅ 홈은 1.0, posts/*는 0.5, 그 외 0.7
-    };
+      priority: path === '/' ? 1.0 : path.startsWith('/posts') ? 0.5 : 0.7,
+    }
   },
   robotsTxtOptions: {
     policies: [
       { userAgent: '*', allow: '/' },
+      { userAgent: '*', disallow: ['/series/[slug]', '/posts/[slug]'] }, // 동적 경로 차단
       { userAgent: 'Googlebot', allow: '/' },
       { userAgent: 'OpenAI-GPT', allow: '/' },
       { userAgent: 'bingbot', allow: '/' },
@@ -24,7 +29,7 @@ module.exports = {
       { userAgent: 'PerplexityBot', allow: '/' },
     ],
     additionalSitemaps: [
-      'https://blog.dowha.kim/api/rss' // ✅ RSS 사이트맵 추가
+      'https://blog.dowha.kim/api/rss', // ✅ RSS 사이트맵 추가
     ],
   },
-};
+}
