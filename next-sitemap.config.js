@@ -19,11 +19,11 @@ module.exports = {
   },
   robotsTxtOptions: {
     policies: [
-      { userAgent: '*', allow: '/' },
       {
         userAgent: '*',
+        allow: '/',
         disallow: ['/series/[slug]', '/posts/[slug]', '/books/[slug]'],
-      }, // 동적 경로 차단
+      },
       { userAgent: 'Googlebot', allow: '/' },
       { userAgent: 'OpenAI-GPT', allow: '/' },
       { userAgent: 'bingbot', allow: '/' },
