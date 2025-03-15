@@ -1,15 +1,9 @@
 import { supabase } from '@/supabase'
 import { GetStaticProps, GetStaticPaths } from 'next'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw'
+import MarkdownContent from '@/components/MarkdownContent'
 import Seo from '@/components/Seo'
 import Copyright from '@/components/Copyright'
-import {
-  ScrollToTopButton,
-  CopyLinkButton,
-  ClapButton,
-} from '@/components/ActionButtons'
+import { ScrollToTopButton, CopyLinkButton } from '@/components/ActionButtons'
 import Image from 'next/image'
 
 interface Book {
@@ -98,12 +92,7 @@ export default function BookDetailPage({
         )}
 
         {book.content ? (
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw]}
-          >
-            {book.content}
-          </ReactMarkdown>
+          <MarkdownContent content={book.content} />
         ) : (
           <p className="text-gray-500">현재 읽고 있는 중.</p>
         )}
@@ -114,7 +103,6 @@ export default function BookDetailPage({
         <div className="flex items-center gap-2 mt-4">
           <ScrollToTopButton />
           <CopyLinkButton slug={book.slug} isBookPage />{' '}
-          <ClapButton postId={book.id} />
         </div>
       </article>
       <Copyright />

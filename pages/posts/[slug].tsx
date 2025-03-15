@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { supabase } from '@/supabase'
 import { GetStaticProps, GetStaticPaths } from 'next'
+import MarkdownContent from '@/components/MarkdownContent'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw'
 import Copyright from '@/components/Copyright'
 import Seo from '@/components/Seo'
 import {
@@ -72,7 +72,6 @@ function SeriesPosts({
 
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
-        rehypePlugins={[rehypeRaw]}
         components={{
           p: ({ ...props }) => <p {...props} className="text-sm mt-2" />,
         }}
@@ -194,9 +193,7 @@ export default function PostPage({
           )}
         </div>
 
-        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-          {post.content}
-        </ReactMarkdown>
+        <MarkdownContent content={post.content} />
 
         {post.series_name && post.series_slug && (
           <SeriesPosts post={post} posts={[...posts].reverse()} />

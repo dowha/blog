@@ -2,9 +2,7 @@ import { supabase } from '@/supabase'
 import { GetStaticProps } from 'next'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw'
+import MarkdownContent from '@/components/MarkdownContent'
 import Seo from '@/components/Seo'
 import { CopyLinkButton } from '@/components/ActionButtons'
 
@@ -117,12 +115,7 @@ export default function RecordsPage({ records }: Props) {
               openedSlug={openedSlug}
               setOpenedSlug={setOpenedSlug}
             >
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeRaw]}
-              >
-                {record.content}
-              </ReactMarkdown>
+              <MarkdownContent content={record.content} />
               <CopyLinkButton slug={record.slug} isRecordPage />
             </Collapse>
           </div>
