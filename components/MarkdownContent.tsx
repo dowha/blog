@@ -3,6 +3,7 @@ import ReactMarkdown, { Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import Image from 'next/image'
+import { ComponentProps } from 'react'
 
 // ① react-markdown이 사용하는 기본 Components를 확장
 interface ExtendedComponents extends Components {
@@ -96,15 +97,25 @@ const customComponents: ExtendedComponents = {
     </div>
   ),
 
-  code: ({ children }) => {
-    const isInline = typeof children === 'string'
-    return isInline ? (
-      <code className="bg-gray-200 text-red-600 px-1 py-0.5 rounded">
-        {children}
-      </code>
-    ) : (
-      <pre className="bg-gray-900 text-white text-sm p-4 rounded-lg overflow-auto">
-        <code>{children}</code>
+  code: ({ className, children, ...props }: ComponentProps<'code'>) => {
+    // ✅ 블록 코드인지 확인 (className이 있거나, 여러 줄이면 블록 코드)
+    const isBlock = className || String(children).includes('\n')
+
+    if (!isBlock) {
+      return (
+        <code className="bg-gray-100 text-[#0a85d1] px-1 py-0.5 rounded whitespace-nowrap">
+          {children}
+        </code>
+      )
+    }
+
+    return (
+      <pre className="bg-gray-900 text-white mt-6 text-sm p-4 rounded-lg overflow-auto">
+        <code className={className} {...props}>
+          {Array.isArray(children)
+            ? children.join('')
+            : String(children).trim()}
+        </code>
       </pre>
     )
   },
