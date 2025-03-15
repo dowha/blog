@@ -86,7 +86,7 @@ export default function Home() {
           <a
             href="https://letterbird.co/hello-dowha"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener"
           >
             메일 폼
           </a>
