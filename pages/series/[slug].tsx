@@ -3,7 +3,6 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw'
 import Seo from '@/components/Seo'
 
 type SeriesRecord = {
@@ -44,12 +43,10 @@ export default function SeriesDetailPage({ series, posts }: Props) {
               backgroundColor: `${series.theme_color}4D`,
             }}
           >
-            <span className="mr-1 self-start">{series.emoji}</span> {/* 이모지 아이콘 */}
+            <span className="mr-1 self-start">{series.emoji}</span>{' '}
+            {/* 이모지 아이콘 */}
             <div className="leading-relaxed text-keepall">
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                rehypePlugins={[rehypeRaw]}
-              >
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {series.description}
               </ReactMarkdown>
             </div>
@@ -68,7 +65,10 @@ export default function SeriesDetailPage({ series, posts }: Props) {
                     <span className="font-mono">{index + 1}</span>
                     {'.'}&nbsp;{post.title}
                     {post.subtitle && (
-                      <span className="subtitle relative"> {post.subtitle}</span>
+                      <span className="subtitle relative">
+                        {' '}
+                        {post.subtitle}
+                      </span>
                     )}
                   </h3>
                 </Link>
