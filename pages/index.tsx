@@ -9,7 +9,6 @@ type PostLike = {
 }
 
 async function fetchMostLikedPosts() {
-  // 1. post_likes 테이블에서 post_id만 전부 가져오기
   const { data: allLikes, error: likesError } = await supabase
     .from('post_likes')
     .select('post_id')
@@ -18,7 +17,6 @@ async function fetchMostLikedPosts() {
     return null
   }
 
-  // 2. JS에서 post_id 개수 집계
   const postCountMap = allLikes.reduce(
     (acc: Record<string, number>, like: PostLike) => {
       acc[like.post_id] = (acc[like.post_id] || 0) + 1
@@ -32,10 +30,10 @@ async function fetchMostLikedPosts() {
 
   for (const [id, count] of Object.entries(postCountMap)) {
     if (count > maxCount) {
-      mostLikedPostIds = [id] // 새로운 최댓값이면 초기화
+      mostLikedPostIds = [id]
       maxCount = count
     } else if (count === maxCount) {
-      mostLikedPostIds.push(id) // 같은 개수면 추가
+      mostLikedPostIds.push(id)
     }
   }
 
@@ -43,24 +41,42 @@ async function fetchMostLikedPosts() {
     return null
   }
 
-  // 3. 해당 post_id의 posts 정보 가져오기
   const { data: postData, error: postError } = await supabase
     .from('posts')
     .select('title, slug')
-    .in('id', mostLikedPostIds) // 🔥 `.eq()` 대신 `.in()` 사용
-    .order('id', { ascending: true }) // 정렬 추가 (필요에 따라 변경 가능)
+    .in('id', mostLikedPostIds)
+    .order('id', { ascending: true })
 
   if (postError || !postData || postData.length === 0) {
     return null
   }
 
-  return postData // 여러 개의 데이터를 반환하도록 수정
+  return postData
+}
+
+async function fetchCurrentlyReadingBook() {
+  const { data, error } = await supabase
+    .from('books')
+    .select('title, author, slug')
+    .order('created_at', { ascending: false })
+    .limit(1)
+
+  if (error || !data || data.length === 0) {
+    return null
+  }
+
+  return data[0]
 }
 
 export default function Home() {
   const [mostLikedPosts, setMostLikedPosts] = useState<
     { title: string; slug: string }[] | null
   >(null)
+  const [currentlyReading, setCurrentlyReading] = useState<{
+    title: string
+    author: string
+    slug: string
+  } | null>(null)
 
   useEffect(() => {
     async function getMostLikedPosts() {
@@ -69,8 +85,15 @@ export default function Home() {
         setMostLikedPosts(posts)
       }
     }
+    async function getCurrentlyReadingBook() {
+      const book = await fetchCurrentlyReadingBook()
+      if (book) {
+        setCurrentlyReading(book)
+      }
+    }
 
     getMostLikedPosts()
+    getCurrentlyReadingBook()
   }, [])
 
   return (
@@ -90,13 +113,14 @@ export default function Home() {
           >
             메일 폼
           </a>
-          을 통해서 연락해 주세요.
+          을 통해서 연락 주세요.
         </p>
 
-        {/* 가장 좋아요 많은 글 표시 */}
         {mostLikedPosts && mostLikedPosts.length > 0 && (
           <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
-            <p className="font-semibold mt-0"><span className="mr-1">👏</span>가장 응원받은 글</p>
+            <p className="font-semibold mt-0">
+              <span className="mr-1">👏</span>가장 응원받은 글
+            </p>
             <ul>
               {mostLikedPosts.map((post) => (
                 <li key={post.slug}>
@@ -105,6 +129,25 @@ export default function Home() {
                   </Link>
                 </li>
               ))}
+            </ul>
+          </div>
+        )}
+
+        {currentlyReading && (
+          <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
+            <p className="font-semibold mt-0">
+              <span className="mr-1">📖</span>현재 읽고 있는 책
+            </p>
+            <ul>
+              <li>
+                {' '}
+                <Link
+                  href={`/posts/${currentlyReading.slug}`}
+                  className="block text-sm"
+                >
+                  {'"'}{currentlyReading.title}{'"'}, {currentlyReading.author}
+                </Link>
+              </li>
             </ul>
           </div>
         )}
