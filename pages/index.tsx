@@ -142,7 +142,7 @@ export default function Home() {
               <li>
                 {' '}
                 <Link
-                  href={`/posts/${currentlyReading.slug}`}
+                  href={`/books/${currentlyReading.slug}`}
                   className="block text-sm"
                 >
                   {'"'}{currentlyReading.title}{'"'}, {currentlyReading.author}
