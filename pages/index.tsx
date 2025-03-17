@@ -114,9 +114,9 @@ export default function Home() {
 
         {mostLikedPosts && mostLikedPosts.length > 0 && (
           <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
-            <p className="font-semibold mt-0">
+            <h3 className="font-semibold mt-0">
               <span className="mr-1">👏</span>가장 응원받은 글
-            </p>
+            </h3>
             <ul>
               {mostLikedPosts.map((post) => (
                 <li key={post.slug}>
@@ -131,9 +131,9 @@ export default function Home() {
 
         {currentlyReading && currentlyReading.length > 0 && (
           <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
-            <p className="font-semibold mt-0">
+            <h3 className="font-semibold mt-0">
               <span className="mr-1">📖</span>현재 읽고 있는 책
-            </p>
+            </h3>
             <ul>
               {currentlyReading.map((book) => (
                 <li key={book.slug}>

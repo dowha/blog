@@ -61,7 +61,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
                   href={`/posts/${post.slug}`}
                   className="flex items-start hover:underline hover:text-[theme_color]"
                 >
-                  <h3 className="full-title group">
+                  <h2 className="full-title group">
                     <span className="font-mono">{index + 1}</span>
                     {'.'}&nbsp;{post.title}
                     {post.subtitle && (
@@ -70,7 +70,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
                         {post.subtitle}
                       </span>
                     )}
-                  </h3>
+                  </h2>
                 </Link>
                 <div className="pl-1 py-0.5 sm:py-0">
                   <span className="text-xs sm:text-sm text-gray-500 font-mono whitespace-nowrap">
