@@ -84,9 +84,10 @@ export default function BookDetailPage({
             <Image
               src={book.thumbnail}
               alt={book.title}
-              width={64}
-              height={96}
-              className="absolute w-16 h-24 sm:w-32 sm:h-48 object-cover"
+              width={128}
+              height={192}
+              quality={100}
+              className="absolute w-32 h-48 sm:w-32 sm:h-48 object-cover"
             />
           </div>
         )}
@@ -111,8 +112,14 @@ export default function BookDetailPage({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data: books } = await supabase.from('books').select('slug')
-  const paths = books?.map((book) => ({ params: { slug: book.slug } })) || []
+  const { data: books } = await supabase.from('books').select('slug, content')
+
+  // content가 null이 아닌 책만 경로로 추가
+  const paths =
+    books
+      ?.filter((book) => book.content) // content가 존재하는 책만 포함
+      .map((book) => ({ params: { slug: book.slug } })) || []
+
   return { paths, fallback: 'blocking' }
 }
 
@@ -137,6 +144,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     .from('books')
     .select('slug, title, created_at')
     .lt('created_at', book.created_at)
+    .not('content', 'is', null) // content가 null이 아닌 책만 선택
     .order('created_at', { ascending: false })
     .limit(1)
 
@@ -144,6 +152,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     .from('books')
     .select('slug, title, created_at')
     .gt('created_at', book.created_at)
+    .not('content', 'is', null) // content가 null이 아닌 책만 선택
     .order('created_at', { ascending: true })
     .limit(1)
 
