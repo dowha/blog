@@ -8,6 +8,7 @@ interface Book {
   publicationYear: number
   genre: string
   thumbnail?: string | null
+  isReading?: boolean
 }
 
 interface BookCardProps {
@@ -17,10 +18,15 @@ interface BookCardProps {
 export default function BookCard({ book, className }: BookCardProps) {
   return (
     <div
-      className={`border border-border h-full p-3 hover:bg-gray-100 rounded-lg w-full bg-card ${
-        className || ''
-      }`}
+      className={`relative border h-full p-3 rounded-lg w-full bg-card border-gray-200 
+      } ${className || ''}`}
     >
+      {book.isReading && (
+        <span className="absolute bottom-3 right-3 bg-amber-300 text-white text-xs px-2 py-1 rounded">
+          읽는 중
+        </span>
+      )}
+
       <div className="flex gap-3">
         {/* 썸네일 */}
         <div className="h-24 w-16 flex-shrink-0 overflow-hidden rounded bg-gray-200 flex items-center justify-center">
@@ -43,12 +49,11 @@ export default function BookCard({ book, className }: BookCardProps) {
             <h3 className="leading-tight text-foreground text-base font-semibold truncate">
               {book.title}
             </h3>
-
             <span className="mt-1 text-sm text-gray-500 block">
               {book.author}
             </span>
             <span className="mt-0.5 text-sm text-gray-400 block">
-              {book.publisher}({book.publicationYear})
+              {book.publisher}, {book.publicationYear}
             </span>
             <span className="text-xs text-gray-600 inline-block mb-1">
               #{book.genre}

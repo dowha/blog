@@ -53,30 +53,28 @@ async function fetchMostLikedPosts() {
 
   return postData
 }
-
-async function fetchCurrentlyReadingBook() {
+async function fetchCurrentlyReadingBooks() {
   const { data, error } = await supabase
     .from('books')
     .select('title, author, slug')
-    .order('created_at', { ascending: false })
-    .limit(1)
+    .eq('is_reading', true) // 현재 읽고 있는 책만 필터링
+    .order('created_at', { ascending: false }) // 최신순 정렬
 
-  if (error || !data || data.length === 0) {
-    return null
+  if (error) {
+    console.error('❌ Error fetching currently reading books:', error)
+    return []
   }
 
-  return data[0]
+  return data || []
 }
 
 export default function Home() {
   const [mostLikedPosts, setMostLikedPosts] = useState<
     { title: string; slug: string }[] | null
   >(null)
-  const [currentlyReading, setCurrentlyReading] = useState<{
-    title: string
-    author: string
-    slug: string
-  } | null>(null)
+  const [currentlyReading, setCurrentlyReading] = useState<
+    { title: string; author: string; slug: string }[] | null
+  >(null)
 
   useEffect(() => {
     async function getMostLikedPosts() {
@@ -85,15 +83,13 @@ export default function Home() {
         setMostLikedPosts(posts)
       }
     }
-    async function getCurrentlyReadingBook() {
-      const book = await fetchCurrentlyReadingBook()
-      if (book) {
-        setCurrentlyReading(book)
-      }
+    async function getCurrentlyReadingBooks() {
+      const books = await fetchCurrentlyReadingBooks()
+      setCurrentlyReading(books) // null 대신 빈 배열로 설정하면 조건문이 더 간결해짐
     }
 
     getMostLikedPosts()
-    getCurrentlyReadingBook()
+    getCurrentlyReadingBooks()
   }, [])
 
   return (
@@ -133,21 +129,21 @@ export default function Home() {
           </div>
         )}
 
-        {currentlyReading && (
+        {currentlyReading && currentlyReading.length > 0 && (
           <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
             <p className="font-semibold mt-0">
               <span className="mr-1">📖</span>현재 읽고 있는 책
             </p>
             <ul>
-              <li>
-                {' '}
-                <Link
-                  href={`/books/${currentlyReading.slug}`}
-                  className="block text-sm"
-                >
-                  {'"'}{currentlyReading.title}{'"'}, {currentlyReading.author}
-                </Link>
-              </li>
+              {currentlyReading.map((book) => (
+                <li key={book.slug}>
+                  <Link href={`/books`} className="block text-sm">
+                    {'"'}
+                    {book.title}
+                    {'"'}, {book.author}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         )}

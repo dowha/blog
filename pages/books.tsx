@@ -13,7 +13,9 @@ interface Book {
   publicationYear: number
   genre: string
   thumbnail?: string
+  isReading?: boolean
   slug: string
+  content?: string | null
 }
 
 export default function BooksPage() {
@@ -26,23 +28,34 @@ export default function BooksPage() {
       const { data, error } = await supabase
         .from('books')
         .select(
-          'id, title, author, publisher, publication_year, genre, slug, link, thumbnail, content'
+          'id, title, author, publisher, publication_year, genre, slug, link, thumbnail, content, is_reading, created_at'
         )
-        .order('created_at', { ascending: false }) // ✅ 최신순 정렬
 
       if (error) {
         console.error('❌ Error fetching books:', error)
       } else {
         console.log('📚 Books data:', data) // ✅ 데이터 확인
 
-        // ✅ TypeScript에서 `publication_year`를 `publicationYear`로 변환
+        // ✅ TypeScript에서 필드명 변환
         const formattedData = data.map((book) => ({
           ...book,
           publicationYear: book.publication_year, // 필드명 변환
+          isReading: book.is_reading, // 필드명 변환
         }))
 
-        setBooks(formattedData)
-        setFilteredBooks(formattedData)
+        // ✅ 정렬 로직 추가
+        const sortedData = formattedData.sort((a, b) => {
+          if (a.isReading === b.isReading) {
+            return (
+              new Date(b.created_at).getTime() -
+              new Date(a.created_at).getTime()
+            ) // 최신순
+          }
+          return b.isReading - a.isReading // true가 먼저 오도록 정렬
+        })
+
+        setBooks(sortedData)
+        setFilteredBooks(sortedData)
       }
     }
     fetchBooks()
@@ -70,15 +83,24 @@ export default function BooksPage() {
         />
 
         <div className="mt-8 grid grid-cols-1 gap-2 md:grid-cols-2">
-          {filteredBooks.map((book) => (
-            <Link
-              key={book.id}
-              href={`/books/${book.slug}`}
-              className="block no-underline"
-            >
-              <BookCard key={book.id} book={book} />
-            </Link>
-          ))}
+          {filteredBooks.map((book) =>
+            book.content ? (
+              <Link
+                key={book.id}
+                href={`/books/${book.slug}`}
+                className="block no-underline"
+              >
+                <BookCard book={book} className="hover:bg-gray-100" />
+              </Link>
+            ) : (
+              <div key={book.id} className="block no-underline">
+                <BookCard
+                  book={book}
+                  className="cursor-not-allowed bg-amber-50"
+                />
+              </div>
+            )
+          )}
         </div>
       </article>
     </>
