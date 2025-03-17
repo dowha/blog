@@ -18,7 +18,7 @@ interface BookCardProps {
 export default function BookCard({ book, className }: BookCardProps) {
   return (
     <div
-      className={`relative border h-full p-3 rounded-lg w-full bg-card border-gray-200 
+      className={`relative border h-full p-3 rounded-lg w-full bg-card border-gray-200 group 
       } ${className || ''}`}
     >
       {book.isReading && (
@@ -44,7 +44,7 @@ export default function BookCard({ book, className }: BookCardProps) {
         </div>
 
         {/* 책 정보 */}
-        <div className="flex flex-1 flex-col justify-between text-left overflow-hidden group">
+        <div className="flex flex-1 flex-col justify-between text-left overflow-hidden ">
           <div>
             <h2
               className={`leading-tight text-foreground text-md font-semibold truncate ${
