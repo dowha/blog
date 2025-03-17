@@ -28,7 +28,7 @@ export default function BooksPage() {
       const { data, error } = await supabase
         .from('books')
         .select(
-          'id, title, author, publisher, publication_year, genre, slug, link, thumbnail, content, is_reading, created_at'
+          'id, title, author, publisher, publication_year, genre, slug, thumbnail, content, is_reading, created_at'
         )
 
       if (error) {
