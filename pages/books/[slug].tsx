@@ -15,7 +15,6 @@ interface Book {
   genre: string
   slug: string
   created_at: string
-  link?: string
   thumbnail?: string
   content?: string
 }
@@ -131,12 +130,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { data: book } = await supabase
     .from('books')
     .select(
-      'id, title, author, publisher, publication_year, genre, slug, link, thumbnail, content, created_at'
+      'id, title, author, publisher, publication_year, genre, slug, thumbnail, content, created_at'
     )
     .eq('slug', params.slug)
     .single()
 
-  if (!book) {
+  if (!book || !book.content) {
     return { notFound: true }
   }
 
