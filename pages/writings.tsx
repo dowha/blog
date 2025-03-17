@@ -68,15 +68,29 @@ export default function WritingPage({
     <>
       <Seo title="Writings" description={descriptionText} />
       <article className="post-list page-container">
-        <h1 className="text-xl font-bold">
+        <h1 className="text-xl font-bold flex items-center">
           Writings
-          <a href="/api/rss" target="_blank" rel="noopener">
+          <a
+            href="/api/rss"
+            target="_blank"
+            rel="noopener"
+            className="relative ml-1 w-4 h-4 inline-block"
+          >
+            {/* 기본 아이콘 */}
             <Image
               src="/rss.svg"
               alt="RSS"
               width={16}
               height={16}
-              className="inline-block ml-1"
+              className="absolute inset-0 transition-opacity duration-300 hover:opacity-0"
+            />
+            {/* Hover 시 나타날 주황색 아이콘 */}
+            <Image
+              src="/rss-hover.svg" // ✅ 주황색 버전의 아이콘을 별도로 저장
+              alt="RSS"
+              width={16}
+              height={16}
+              className="absolute inset-0 opacity-0 transition-opacity duration-300 hover:opacity-100"
             />
           </a>
         </h1>

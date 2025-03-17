@@ -53,7 +53,7 @@ export default function BookCard({ book, className }: BookCardProps) {
               {book.author}
             </span>
             <span className="mt-0.5 text-sm text-gray-400 block">
-              {book.publisher}, {book.publicationYear}
+              {book.publisher}({book.publicationYear})
             </span>
             <span className="text-xs text-gray-600 inline-block mb-1">
               #{book.genre}
