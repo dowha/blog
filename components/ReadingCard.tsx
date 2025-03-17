@@ -44,9 +44,13 @@ export default function BookCard({ book, className }: BookCardProps) {
         </div>
 
         {/* 책 정보 */}
-        <div className="flex flex-1 flex-col justify-between text-left overflow-hidden">
+        <div className="flex flex-1 flex-col justify-between text-left overflow-hidden group">
           <div>
-            <h2 className="leading-tight text-foreground text-md font-semibold truncate">
+            <h2
+              className={`leading-tight text-foreground text-md font-semibold truncate ${
+                book.isReading ? '' : 'group-hover:text-[#0a85d1]'
+              }`}
+            >
               {book.title}
             </h2>
             <span className="mt-1 text-sm text-gray-500 block">
@@ -54,7 +58,9 @@ export default function BookCard({ book, className }: BookCardProps) {
             </span>
             <span className="mt-0.5 text-sm text-gray-400 block">
               {book.publisher}
-              <span className="text-xs font-mono">({book.publicationYear})</span>
+              <span className="text-xs font-mono">
+                ({book.publicationYear})
+              </span>
             </span>
             <span className="text-xs text-gray-600 inline-block mb-1">
               #{book.genre}
