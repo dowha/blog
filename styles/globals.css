@@ -136,8 +136,8 @@
     @apply flex items-center gap-1 mt-6 text-xs px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 sm:font-semibold rounded-md;
   }
 
-  .post-list h3,
-  .series h3 {
+  .post-list h2,
+  .series h2 {
     @apply font-normal;
   }
 

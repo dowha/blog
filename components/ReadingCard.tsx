@@ -46,14 +46,15 @@ export default function BookCard({ book, className }: BookCardProps) {
         {/* 책 정보 */}
         <div className="flex flex-1 flex-col justify-between text-left overflow-hidden">
           <div>
-            <h3 className="leading-tight text-foreground text-base font-semibold truncate">
+            <h2 className="leading-tight text-foreground text-md font-semibold truncate">
               {book.title}
-            </h3>
+            </h2>
             <span className="mt-1 text-sm text-gray-500 block">
               {book.author}
             </span>
             <span className="mt-0.5 text-sm text-gray-400 block">
-              {book.publisher}({book.publicationYear})
+              {book.publisher}
+              <span className="text-xs font-mono">({book.publicationYear})</span>
             </span>
             <span className="text-xs text-gray-600 inline-block mb-1">
               #{book.genre}

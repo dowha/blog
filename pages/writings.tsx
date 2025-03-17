@@ -125,14 +125,14 @@ export default function WritingPage({
                             </div>
                           </div>
                         )}
-                        <h3>{post.title}</h3>
+                        <h2>{post.title}</h2>
                       </a>
                     ) : (
                       <Link
                         href={`/posts/${post.slug}`}
                         className="flex items-center"
                       >
-                        <h3 className="full-title group">
+                        <h2 className="full-title group">
                           {post.title}
                           {post.subtitle && (
                             <span className="subtitle relative">
@@ -140,7 +140,7 @@ export default function WritingPage({
                               {post.subtitle}
                             </span>
                           )}
-                        </h3>
+                        </h2>
                       </Link>
                     )}
                     <div className="pl-1 py-0.5 sm:py-0">
