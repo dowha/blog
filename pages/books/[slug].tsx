@@ -5,6 +5,7 @@ import Seo from '@/components/Seo'
 import Copyright from '@/components/Copyright'
 import { ScrollToTopButton, CopyLinkButton } from '@/components/ActionButtons'
 import Image from 'next/image'
+import Link from 'next/link'
 
 interface Book {
   id: string
@@ -36,7 +37,8 @@ export default function BookDetailPage({
       <article className="single-book page-container">
         <h1 className="text-xl font-bold">{book.title}</h1>
         <p className="text-sm text-gray-500 mb-4">
-          {book.author}, {book.publisher}
+          {book.author}
+          {book.publisher ? `, ${book.publisher}` : ''}
           <span className="text-sm font-mono">({book.publicationYear})</span>
         </p>
         <div className="flex justify-between mt-8 text-sm">
@@ -94,15 +96,20 @@ export default function BookDetailPage({
         {book.content ? (
           <MarkdownContent content={book.content} />
         ) : (
-          <p className="text-gray-500">현재 읽고 있는 중.</p>
+          <p className="text-gray-500">읽는 중.</p>
         )}
-        <p className="text-xs text-gray-500 px-1 py-0.5 inline-block">
-          #{book.genre}
+        <p className="text-sm text-gray-500 px-1 py-0.5">
+          <Link
+            href={{ pathname: '/books', hash: book.genre }}
+            className="inline"
+          >
+            #{book.genre}
+          </Link>
         </p>
 
         <div className="flex items-center gap-2 mt-4">
           <ScrollToTopButton />
-          <CopyLinkButton slug={book.slug} isBookPage />{' '}
+          <CopyLinkButton slug={book.slug} isBookPage />
         </div>
       </article>
       <Copyright />

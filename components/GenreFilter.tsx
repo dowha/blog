@@ -11,23 +11,42 @@ export default function GenreFilter({
   onChange: (genre: string) => void
 }) {
   const [genres, setGenres] = useState<string[]>(['전체'])
+
+  // ✅ 페이지 로드 시 URL의 해시값을 읽어서 selectedGenre 설정
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const hashGenre = decodeURIComponent(window.location.hash.substring(1))
+      if (hashGenre) {
+        onChange(hashGenre) // ✅ 안전하게 실행
+      }
+    }
+  }, [onChange]) // ✅ onChange 추가하여 경고 해결
+
   useEffect(() => {
     async function fetchGenres() {
-      const { data, error } = await supabase
-        .from('books')
-        .select('genre, created_at') // ✅ created_at 추가
-        .order('created_at', { ascending: false }) // ✅ 최신순 정렬
+      const { data, error } = await supabase.from('books').select('genre')
 
       if (error) {
         console.error('Error fetching genres:', error)
       } else {
-        // 중복 제거 후 최신순 유지
+        // 중복 제거 후 배열로 저장
         const uniqueGenres = Array.from(new Set(data.map((book) => book.genre)))
         setGenres(['전체', ...uniqueGenres])
       }
     }
     fetchGenres()
   }, [])
+
+  // ✅ 버튼 클릭 시 URL 해시 업데이트
+  const handleGenreChange = (genre: string) => {
+    onChange(genre)
+
+    if (genre === '전체') {
+      window.history.pushState(null, '', window.location.pathname) // ✅ "전체" 선택 시 해시 제거
+    } else {
+      window.location.hash = encodeURIComponent(genre) // ✅ 다른 장르는 해시 추가
+    }
+  }
 
   return (
     <div className="space-y-2 mt-6">
@@ -40,10 +59,9 @@ export default function GenreFilter({
                 ? 'bg-gray-800 text-white'
                 : 'border border-gray-200 text-gray-600 hover:bg-gray-100'
             }`}
-            onClick={() => onChange(genre)}
+            onClick={() => handleGenreChange(genre)}
           >
-            {genre === '전체' ? genre : `${genre}`}{' '}
-            {/* "전체"에서는 # 없이 표시 */}
+            {genre === '전체' ? genre : `${genre}`}
           </button>
         ))}
       </div>
