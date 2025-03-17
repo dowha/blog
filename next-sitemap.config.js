@@ -14,7 +14,12 @@ module.exports = {
     return {
       loc: path,
       changefreq: 'weekly',
-      priority: path === '/' ? 1.0 : path.startsWith('/posts') ? 0.5 : 0.7,
+      priority:
+        path === '/'
+          ? 1.0
+          : path.startsWith('/posts') || path.startsWith('/books')
+          ? 0.5
+          : 0.7,
     }
   },
   robotsTxtOptions: {
