@@ -21,37 +21,39 @@ const extractYouTubeEmbedUrl = (url: string) => {
 
 // ③ 커스텀 렌더러(ExtendedComponents 타입 사용)
 const customComponents: ExtendedComponents = {
-  a: ({ href = '', children, ...props }) => {
-    const youtubeEmbedUrl = extractYouTubeEmbedUrl(href)
-    const childrenArray = React.Children.toArray(children)
-    const isBareLink =
-      childrenArray.length === 1 &&
-      typeof childrenArray[0] === 'string' &&
-      childrenArray[0].trim() === href
+ a: ({ href = '', children, ...props }) => {
+  // props에서 node를 제거하고 나머지 props만 사용
+  const { node, ...restProps } = props;
+  const youtubeEmbedUrl = extractYouTubeEmbedUrl(href);
+  const childrenArray = React.Children.toArray(children);
+  const isBareLink =
+    childrenArray.length === 1 &&
+    typeof childrenArray[0] === 'string' &&
+    childrenArray[0].trim() === href;
 
-    if (youtubeEmbedUrl && isBareLink) {
-      return (
-        <div className="mt-6 w-full mx-auto aspect-video">
-          <iframe
-            className="w-full h-full rounded-lg shadow-lg"
-            src={youtubeEmbedUrl}
-            title="YouTube video player"
-            allowFullScreen
-          />
-        </div>
-      )
-    }
-
-    if (href.startsWith('/')) {
-      return <a href={href} {...props} />
-    }
-
+  if (youtubeEmbedUrl && isBareLink) {
     return (
-      <a href={href} {...props} target="_blank" rel="noopener">
-        {children}
-      </a>
-    )
-  },
+      <div className="mt-6 w-full mx-auto aspect-video">
+        <iframe
+          className="w-full h-full rounded-lg shadow-lg"
+          src={youtubeEmbedUrl}
+          title="YouTube video player"
+          allowFullScreen
+        />
+      </div>
+    );
+  }
+
+  if (href.startsWith('/')) {
+    return <a href={href} {...restProps} />;
+  }
+
+  return (
+    <a href={href} {...restProps} target="_blank" rel="noopener">
+      {children}
+    </a>
+  );
+},
 
   p: ({ children }) => {
     const hasBlockElements = React.Children.toArray(children).some((child) => {
