@@ -21,7 +21,7 @@ const extractYouTubeEmbedUrl = (url: string) => {
 
 // ③ 커스텀 렌더러(ExtendedComponents 타입 사용)
 const customComponents: ExtendedComponents = {
-  a: ({ href = '', children, ...props }) => {
+  a: ({ href = '', children, ...props }) => { // node 제거
     const youtubeEmbedUrl = extractYouTubeEmbedUrl(href)
     const childrenArray = React.Children.toArray(children)
     const isBareLink =
@@ -43,7 +43,7 @@ const customComponents: ExtendedComponents = {
     }
 
     if (href.startsWith('/')) {
-      return <a href={href} {...props} />
+      return <a href={href} {...props}>{children}</a>
     }
 
     return (
