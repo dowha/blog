@@ -21,11 +21,13 @@ const extractYouTubeEmbedUrl = (url: string) => {
 
 // ③ 커스텀 렌더러(ExtendedComponents 타입 사용)
 const customComponents: ExtendedComponents = {
- a: ({ href = '', children, ...props }) => {
+a: ({ href = '', children, ...props }) => {
   const youtubeEmbedUrl = extractYouTubeEmbedUrl(href);
-  const childrenText = React.Children.map(children, (child) =>
+  
+  // children이 null 또는 undefined일 경우 빈 배열로 변환하여 처리
+  const childrenText = React.Children.map(children ?? [], (child) =>
     typeof child === 'string' ? child : ''
-  ).join('');
+  )?.join('') ?? '';
 
   const isBareLink = childrenText.trim() === href;
 
@@ -56,6 +58,7 @@ const customComponents: ExtendedComponents = {
     </a>
   );
 },
+
 
 p: ({ children }) => {
   const childrenArray = React.Children.toArray(children);
