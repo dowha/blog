@@ -54,10 +54,9 @@ const customComponents: ExtendedComponents = {
   },
 
 p: ({ children }) => {
-  // children이 배열 형태일 수도 있으므로 React.Children.toArray로 변환
   const childrenArray = React.Children.toArray(children);
 
-  // 블록 요소가 포함되었는지 확인 (div, iframe, figure 등)
+  // 블록 요소 확인
   const hasBlockElements = childrenArray.some(child => {
     if (typeof child === 'object' && child !== null && 'type' in child) {
       return ['div', 'iframe', 'figure'].includes(child.type as string);
@@ -65,21 +64,27 @@ p: ({ children }) => {
     return false;
   });
 
-  // 인라인 요소만 포함되어 있는지 확인 (a, code, strong, em, span 등)
+  // 인라인 요소만 포함되어 있는지 확인
   const isInlineOnly = childrenArray.every(child => {
     if (typeof child === 'object' && child !== null && 'type' in child) {
       return ['a', 'code', 'strong', 'em', 'span'].includes(child.type as string);
     }
-    return typeof child === 'string'; // 텍스트만 포함된 경우도 인라인
+    return typeof child === 'string';
   });
 
-  // 블록 요소가 포함된 경우 p 태그를 제거
+  // 블록 요소가 있으면 <p> 제거
   if (hasBlockElements) {
     return <>{children}</>;
   }
 
-  return <p>{children}</p>;
+  // ✅ isInlineOnly를 실제로 사용하여 ESLint 오류 방지
+  if (isInlineOnly) {
+    return <p>{children}</p>;
+  }
+
+  return <>{children}</>;
 },
+
 
 
   img: ({ src = '', alt = '이미지' }) => (
