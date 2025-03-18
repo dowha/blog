@@ -63,7 +63,7 @@ a: ({ href = '', children, ...props }) => {
 p: ({ children }) => {
   const childrenArray = React.Children.toArray(children);
 
-  // 블록 요소 확인
+  // 블록 요소 확인 (div, iframe, figure 등)
   const hasBlockElements = childrenArray.some(child => {
     if (typeof child === 'object' && child !== null && 'type' in child) {
       return ['div', 'iframe', 'figure'].includes(child.type as string);
@@ -71,28 +71,13 @@ p: ({ children }) => {
     return false;
   });
 
-  // 인라인 요소만 포함되어 있는지 확인
-  const isInlineOnly = childrenArray.every(child => {
-    if (typeof child === 'object' && child !== null && 'type' in child) {
-      return ['a', 'code', 'strong', 'em', 'span'].includes(child.type as string);
-    }
-    return typeof child === 'string';
-  });
-
-  // 블록 요소가 있으면 <p> 제거
-  if (hasBlockElements) {
-    return <>{children}</>;
-  }
-
-  // ✅ isInlineOnly를 실제로 사용하여 ESLint 오류 방지
-  if (isInlineOnly) {
+  // 🔹 수정된 부분: 링크 포함 여부와 관계없이 <p> 태그 유지
+  if (!hasBlockElements) {
     return <p>{children}</p>;
   }
 
   return <>{children}</>;
 },
-
-
 
   img: ({ src = '', alt = '이미지' }) => (
     <div className="flex justify-center my-4">
