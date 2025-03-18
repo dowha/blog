@@ -53,31 +53,39 @@ const customComponents: ExtendedComponents = {
     )
   },
 
- p: ({ children }) => {
-  const hasBlockElements = React.Children.toArray(children).some((child) => {
-    if (typeof child === 'object' && child !== null && 'type' in child) {
-      if (typeof child.type === 'string') {
-        return ['div', 'iframe'].includes(child.type)
-      }
-      return true
-    }
-    return false
-  })
+p: ({ children }) => {
+  const childrenArray = React.Children.toArray(children);
 
-  // 만약 children이 단순한 텍스트나 인라인 요소(a 태그 포함)만 포함하고 있다면 p 태그 유지
-  const isInlineOnly = React.Children.toArray(children).every((child) => {
+  // 블록 요소 확인
+  const hasBlockElements = childrenArray.some(child => {
     if (typeof child === 'object' && child !== null && 'type' in child) {
-      return ['a', 'code', 'strong', 'em', 'span'].includes(child.type as string)
+      return ['div', 'iframe', 'figure'].includes(child.type as string);
     }
-    return true
-  })
+    return false;
+  });
 
+  // 인라인 요소만 포함되어 있는지 확인
+  const isInlineOnly = childrenArray.every(child => {
+    if (typeof child === 'object' && child !== null && 'type' in child) {
+      return ['a', 'code', 'strong', 'em', 'span'].includes(child.type as string);
+    }
+    return typeof child === 'string';
+  });
+
+  // 블록 요소가 있으면 <p> 제거
   if (hasBlockElements) {
-    return <>{children}</>
+    return <>{children}</>;
   }
 
-  return isInlineOnly ? <p>{children}</p> : <>{children}</>
+  // ✅ isInlineOnly를 실제로 사용하여 ESLint 오류 방지
+  if (isInlineOnly) {
+    return <p>{children}</p>;
+  }
+
+  return <>{children}</>;
 },
+
+
 
   img: ({ src = '', alt = '이미지' }) => (
     <div className="flex justify-center my-4">
