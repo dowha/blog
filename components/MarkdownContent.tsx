@@ -21,39 +21,37 @@ const extractYouTubeEmbedUrl = (url: string) => {
 
 // ③ 커스텀 렌더러(ExtendedComponents 타입 사용)
 const customComponents: ExtendedComponents = {
-a: ({ href = '', children, ...props }) => {
-  // 여기서 node를 분리하고, _node로 이름을 변경하여 사용하지 않음을 명시합니다.
-  const { node: _node, ...restProps } = props;
-  const youtubeEmbedUrl = extractYouTubeEmbedUrl(href);
-  const childrenArray = React.Children.toArray(children);
-  const isBareLink =
-    childrenArray.length === 1 &&
-    typeof childrenArray[0] === 'string' &&
-    childrenArray[0].trim() === href;
+  a: ({ href = '', children, ...props }) => {
+    const youtubeEmbedUrl = extractYouTubeEmbedUrl(href)
+    const childrenArray = React.Children.toArray(children)
+    const isBareLink =
+      childrenArray.length === 1 &&
+      typeof childrenArray[0] === 'string' &&
+      childrenArray[0].trim() === href
 
-  if (youtubeEmbedUrl && isBareLink) {
+    if (youtubeEmbedUrl && isBareLink) {
+      return (
+        <div className="mt-6 w-full mx-auto aspect-video">
+          <iframe
+            className="w-full h-full rounded-lg shadow-lg"
+            src={youtubeEmbedUrl}
+            title="YouTube video player"
+            allowFullScreen
+          />
+        </div>
+      )
+    }
+
+    if (href.startsWith('/')) {
+      return <a href={href} {...props} />
+    }
+
     return (
-      <div className="mt-6 w-full mx-auto aspect-video">
-        <iframe
-          className="w-full h-full rounded-lg shadow-lg"
-          src={youtubeEmbedUrl}
-          title="YouTube video player"
-          allowFullScreen
-        />
-      </div>
-    );
-  }
-
-  if (href.startsWith('/')) {
-    return <a href={href} {...restProps} />;
-  }
-
-  return (
-    <a href={href} {...restProps} target="_blank" rel="noopener">
-      {children}
-    </a>
-  );
-},
+      <a href={href} {...props} target="_blank" rel="noopener">
+        {children}
+      </a>
+    )
+  },
 
   p: ({ children }) => {
     const hasBlockElements = React.Children.toArray(children).some((child) => {
@@ -122,13 +120,14 @@ a: ({ href = '', children, ...props }) => {
     )
   },
 
-date: ({ children, ...props }) => {
-  return (
-    <span className="font-mono text-xs" {...props}>
-      {children}
-    </span>
-  )
-},
+  // ④ date 태그 커스텀 렌더러 (node 제거, any 제거)
+  date: ({ children, ...props }) => {
+    return (
+      <span className="font-mono text-xs" {...props}>
+        {children}
+      </span>
+    )
+  },
 }
 
 // ⑤ MarkdownContent 컴포넌트에서 확장된 customComponents 사용
