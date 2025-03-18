@@ -23,47 +23,41 @@ const extractYouTubeEmbedUrl = (url: string) => {
 const customComponents: ExtendedComponents = {
 a: ({ href = '', children, ...props }) => {
   const youtubeEmbedUrl = extractYouTubeEmbedUrl(href);
-  
-  // children이 null 또는 undefined일 경우 빈 배열로 변환하여 처리
+
   const childrenText = React.Children.map(children ?? [], (child) =>
     typeof child === 'string' ? child : ''
   )?.join('') ?? '';
 
   const isBareLink = childrenText.trim() === href;
 
+  // ✅ 1. YouTube 링크가 텍스트 없이 단독으로 입력되었을 때 iframe으로 변환
   if (youtubeEmbedUrl && isBareLink) {
     return (
-      <div className="mt-6 w-full mx-auto aspect-video">
-        <iframe
-          className="w-full h-full rounded-lg shadow-lg"
-          src={youtubeEmbedUrl}
-          title="YouTube video player"
-          allowFullScreen
-        />
-      </div>
+      <>
+        <div className="mt-6 w-full mx-auto aspect-video">
+          <iframe
+            className="w-full h-full rounded-lg shadow-lg"
+            src={youtubeEmbedUrl}
+            title="YouTube video player"
+            allowFullScreen
+          />
+        </div>
+      </>
     );
   }
 
-  if (href.startsWith('/')) {
-    return (
-      <a href={href} {...props}>
-        {childrenText || children}
-      </a>
-    );
-  }
-
+  // ✅ 2. [텍스트](유튜브 링크) 또는 일반 외부 링크는 그대로 <a> 태그로 출력
   return (
     <a href={href} {...props} target="_blank" rel="noopener">
-      {childrenText || children}
+      {children}
     </a>
   );
 },
 
-
 p: ({ children }) => {
   const childrenArray = React.Children.toArray(children);
 
-  // 블록 요소 확인 (div, iframe, figure 등)
+  // ✅ 블록 요소가 포함된 경우 <p> 태그 없이 출력
   const hasBlockElements = childrenArray.some(child => {
     if (typeof child === 'object' && child !== null && 'type' in child) {
       return ['div', 'iframe', 'figure'].includes(child.type as string);
@@ -71,11 +65,12 @@ p: ({ children }) => {
     return false;
   });
 
-  // 🔹 만약 블록 요소가 포함된 경우, <p> 태그 없이 그대로 반환
+  // ✅ YouTube 링크 단독 입력 시 <p> 제거 (이미 iframe으로 변환됨)
   if (hasBlockElements) {
     return <>{children}</>;
   }
 
+  // ✅ YouTube 링크가 포함된 [텍스트](링크)는 그대로 <p> 태그 안에 유지
   return <p>{children}</p>;
 },
 
