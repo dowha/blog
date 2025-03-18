@@ -21,7 +21,7 @@ const extractYouTubeEmbedUrl = (url: string) => {
 
 // ③ 커스텀 렌더러(ExtendedComponents 타입 사용)
 const customComponents: ExtendedComponents = {
-  a: ({ href = '', children, node, ...props }) => { // node를 구조 분해 할당으로 제거
+  a: ({ href = '', children, _node, ...props }) => { // `_node`로 변경
     const youtubeEmbedUrl = extractYouTubeEmbedUrl(href)
     const childrenArray = React.Children.toArray(children)
     const isBareLink =
@@ -52,7 +52,6 @@ const customComponents: ExtendedComponents = {
       </a>
     )
   },
-
   p: ({ children }) => {
     const hasBlockElements = React.Children.toArray(children).some((child) => {
       if (typeof child === 'object' && child !== null && 'type' in child) {
