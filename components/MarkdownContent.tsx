@@ -71,12 +71,12 @@ p: ({ children }) => {
     return false;
   });
 
-  // 🔹 수정된 부분: 링크 포함 여부와 관계없이 <p> 태그 유지
-  if (!hasBlockElements) {
-    return <p>{children}</p>;
+  // 🔹 만약 블록 요소가 포함된 경우, <p> 태그 없이 그대로 반환
+  if (hasBlockElements) {
+    return <>{children}</>;
   }
 
-  return <>{children}</>;
+  return <p>{children}</p>;
 },
 
   img: ({ src = '', alt = '이미지' }) => (
