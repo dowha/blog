@@ -30,23 +30,21 @@ a: ({ href = '', children, ...props }) => {
 
   const isBareLink = childrenText.trim() === href;
 
-  // ✅ 1. YouTube 링크가 텍스트 없이 단독으로 입력되었을 때 iframe으로 변환
+  // ✅ 1. 단독 YouTube URL → iframe으로 변환
   if (youtubeEmbedUrl && isBareLink) {
     return (
-      <>
-        <div className="mt-6 w-full mx-auto aspect-video">
-          <iframe
-            className="w-full h-full rounded-lg shadow-lg"
-            src={youtubeEmbedUrl}
-            title="YouTube video player"
-            allowFullScreen
-          />
-        </div>
-      </>
+      <div className="mt-6 w-full mx-auto aspect-video">
+        <iframe
+          className="w-full h-full rounded-lg shadow-lg"
+          src={youtubeEmbedUrl}
+          title="YouTube video player"
+          allowFullScreen
+        />
+      </div>
     );
   }
 
-  // ✅ 2. [텍스트](유튜브 링크) 또는 일반 외부 링크는 그대로 <a> 태그로 출력
+  // ✅ 2. [YouTube 링크](URL) 또는 [일반 링크](URL) → <a> 태그로 출력
   return (
     <a href={href} {...props} target="_blank" rel="noopener">
       {children}
@@ -65,14 +63,14 @@ p: ({ children }) => {
     return false;
   });
 
-  // ✅ YouTube 링크 단독 입력 시 <p> 제거 (이미 iframe으로 변환됨)
+  // ✅ YouTube 링크 단독 입력 시 <p> 제거
   if (hasBlockElements) {
     return <>{children}</>;
   }
 
-  // ✅ YouTube 링크가 포함된 [텍스트](링크)는 그대로 <p> 태그 안에 유지
   return <p>{children}</p>;
 },
+
 
   img: ({ src = '', alt = '이미지' }) => (
     <div className="flex justify-center my-4">
