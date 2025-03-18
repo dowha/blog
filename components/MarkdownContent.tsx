@@ -22,8 +22,8 @@ const extractYouTubeEmbedUrl = (url: string) => {
 // ③ 커스텀 렌더러(ExtendedComponents 타입 사용)
 const customComponents: ExtendedComponents = {
 a: ({ href = '', children, ...props }) => {
-  // 여기서 node를 분리하여 제거
-  const { node, ...restProps } = props;
+  // 여기서 node를 분리하고, _node로 이름을 변경하여 사용하지 않음을 명시합니다.
+  const { node: _node, ...restProps } = props;
   const youtubeEmbedUrl = extractYouTubeEmbedUrl(href);
   const childrenArray = React.Children.toArray(children);
   const isBareLink =
