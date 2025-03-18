@@ -122,14 +122,13 @@ a: ({ href = '', children, ...props }) => {
     )
   },
 
-  // ④ date 태그 커스텀 렌더러 (node 제거, any 제거)
-  date: ({ children, ...props }) => {
-    return (
-      <span className="font-mono text-xs" {...props}>
-        {children}
-      </span>
-    )
-  },
+date: ({ children, ...props }) => {
+  return (
+    <span className="font-mono text-xs" {...props}>
+      {children}
+    </span>
+  )
+},
 }
 
 // ⑤ MarkdownContent 컴포넌트에서 확장된 customComponents 사용
