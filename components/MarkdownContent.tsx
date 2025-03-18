@@ -21,37 +21,41 @@ const extractYouTubeEmbedUrl = (url: string) => {
 
 // ③ 커스텀 렌더러(ExtendedComponents 타입 사용)
 const customComponents: ExtendedComponents = {
-  a: ({ href = '', children, ...props }) => { // node 제거
-    const youtubeEmbedUrl = extractYouTubeEmbedUrl(href)
-    const childrenArray = React.Children.toArray(children)
-    const isBareLink =
-      childrenArray.length === 1 &&
-      typeof childrenArray[0] === 'string' &&
-      childrenArray[0].trim() === href
+ a: ({ href = '', children, ...props }) => {
+  const youtubeEmbedUrl = extractYouTubeEmbedUrl(href);
+  const childrenText = React.Children.map(children, (child) =>
+    typeof child === 'string' ? child : ''
+  ).join('');
 
-    if (youtubeEmbedUrl && isBareLink) {
-      return (
-        <div className="mt-6 w-full mx-auto aspect-video">
-          <iframe
-            className="w-full h-full rounded-lg shadow-lg"
-            src={youtubeEmbedUrl}
-            title="YouTube video player"
-            allowFullScreen
-          />
-        </div>
-      )
-    }
+  const isBareLink = childrenText.trim() === href;
 
-    if (href.startsWith('/')) {
-      return <a href={href} {...props}>{children}</a>
-    }
-
+  if (youtubeEmbedUrl && isBareLink) {
     return (
-      <a href={href} {...props} target="_blank" rel="noopener">
-        {children}
+      <div className="mt-6 w-full mx-auto aspect-video">
+        <iframe
+          className="w-full h-full rounded-lg shadow-lg"
+          src={youtubeEmbedUrl}
+          title="YouTube video player"
+          allowFullScreen
+        />
+      </div>
+    );
+  }
+
+  if (href.startsWith('/')) {
+    return (
+      <a href={href} {...props}>
+        {childrenText || children}
       </a>
-    )
-  },
+    );
+  }
+
+  return (
+    <a href={href} {...props} target="_blank" rel="noopener">
+      {childrenText || children}
+    </a>
+  );
+},
 
 p: ({ children }) => {
   const childrenArray = React.Children.toArray(children);
