@@ -21,8 +21,8 @@ const extractYouTubeEmbedUrl = (url: string) => {
 
 // ③ 커스텀 렌더러(ExtendedComponents 타입 사용)
 const customComponents: ExtendedComponents = {
- a: ({ href = '', children, ...props }) => {
-  // props에서 node를 제거하고 나머지 props만 사용
+a: ({ href = '', children, ...props }) => {
+  // 여기서 node를 분리하여 제거
   const { node, ...restProps } = props;
   const youtubeEmbedUrl = extractYouTubeEmbedUrl(href);
   const childrenArray = React.Children.toArray(children);
