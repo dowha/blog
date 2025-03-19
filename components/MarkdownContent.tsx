@@ -59,12 +59,20 @@ const customComponents: ExtendedComponents = {
     
     React.Children.forEach(children, child => {
       // div 태그나 특정 클래스를 가진 요소 확인
-      if (
-        React.isValidElement(child) && 
-        ((child.type === 'div' || child.props?.className?.includes('youtube-embed')))
-      ) {
-        hasYouTubeEmbed = true;
-        hasBlockElements = true;
+      if (React.isValidElement(child)) {
+        const element = child as React.ReactElement;
+        
+        // div 태그이거나 youtube-embed 클래스를 가진 요소인지 확인
+        if (
+          element.type === 'div' || 
+          (typeof element.props === 'object' && 
+           element.props !== null && 
+           typeof element.props.className === 'string' && 
+           element.props.className.includes('youtube-embed'))
+        ) {
+          hasYouTubeEmbed = true;
+          hasBlockElements = true;
+        }
       }
     });
 
@@ -75,11 +83,11 @@ const customComponents: ExtendedComponents = {
     
     // 블록 요소 포함 확인
     React.Children.forEach(children, child => {
-      if (
-        React.isValidElement(child) && 
-        ['div', 'iframe', 'figure'].includes(String(child.type))
-      ) {
-        hasBlockElements = true;
+      if (React.isValidElement(child)) {
+        const element = child as React.ReactElement;
+        if (['div', 'iframe', 'figure'].includes(String(element.type))) {
+          hasBlockElements = true;
+        }
       }
     });
 
