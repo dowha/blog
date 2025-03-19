@@ -4,8 +4,6 @@ import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import Image from 'next/image'
 import { ComponentProps } from 'react'
-// rehype-sanitize를 추가하여 안전한 HTML 처리
-import rehypeSanitize from 'rehype-sanitize'
 
 // ① react-markdown이 사용하는 기본 Components를 확장
 interface ExtendedComponents extends Components {
@@ -180,7 +178,7 @@ const MarkdownContent = ({ content }: { content: string }) => {
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
-      rehypePlugins={[rehypeRaw, rehypeSanitize]}
+      rehypePlugins={[rehypeRaw]}
       components={customComponents}
       skipHtml={false}
       unwrapDisallowed={true}
