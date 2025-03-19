@@ -21,56 +21,84 @@ const extractYouTubeEmbedUrl = (url: string) => {
 
 // ③ 커스텀 렌더러(ExtendedComponents 타입 사용)
 const customComponents: ExtendedComponents = {
-a: ({ href = '', children, ...props }) => {
-  const youtubeEmbedUrl = extractYouTubeEmbedUrl(href);
+  a: ({ href = '', children, ...props }) => {
+    const youtubeEmbedUrl = extractYouTubeEmbedUrl(href);
 
-  const childrenText = React.Children.map(children ?? [], (child) =>
-    typeof child === 'string' ? child : ''
-  )?.join('') ?? '';
+    const childrenText = React.Children.map(children ?? [], (child) =>
+      typeof child === 'string' ? child : ''
+    )?.join('') ?? '';
 
-  const isBareLink = childrenText.trim() === href;
+    const isBareLink = childrenText.trim() === href;
 
-  // ✅ 1. 단독 YouTube URL → iframe으로 변환
-  if (youtubeEmbedUrl && isBareLink) {
-    return (
-      <div className="mt-6 w-full mx-auto aspect-video">
-        <iframe
-          className="w-full h-full rounded-lg shadow-lg"
-          src={youtubeEmbedUrl}
-          title="YouTube video player"
-          allowFullScreen
-        />
-      </div>
-    );
-  }
-
-  // ✅ 2. [YouTube 링크](URL) 또는 [일반 링크](URL) → <a> 태그로 출력
-  return (
-    <a href={href} {...props} target="_blank" rel="noopener">
-      {children}
-    </a>
-  );
-},
-
-p: ({ children }) => {
-  const childrenArray = React.Children.toArray(children);
-
-  // ✅ 블록 요소가 포함된 경우 <p> 태그 없이 출력
-  const hasBlockElements = childrenArray.some(child => {
-    if (typeof child === 'object' && child !== null && 'type' in child) {
-      return ['div', 'iframe', 'figure'].includes(child.type as string);
+    // ✅ 1. 단독 YouTube URL → iframe으로 변환
+    if (youtubeEmbedUrl && isBareLink) {
+      return (
+        <div className="mt-6 w-full mx-auto aspect-video youtube-embed">
+          <iframe
+            className="w-full h-full rounded-lg shadow-lg"
+            src={youtubeEmbedUrl}
+            title="YouTube video player"
+            allowFullScreen
+          />
+        </div>
+      );
     }
-    return false;
-  });
 
-  // ✅ YouTube 링크 단독 입력 시 <p> 제거
-  if (hasBlockElements) {
-    return <>{children}</>;
-  }
+    // ✅ 2. [YouTube 링크](URL) 또는 [일반 링크](URL) → <a> 태그로 출력
+    return (
+      <a href={href} {...props} target="_blank" rel="noopener">
+        {children}
+      </a>
+    );
+  },
 
-  return <p>{children}</p>;
-},
+  p: ({ children, ...props }) => {
+    // YouTube 임베드가 있는지 확인하는 향상된 로직
+    let hasYouTubeEmbed = false;
+    let hasBlockElements = false;
+    
+    React.Children.forEach(children, child => {
+      // div 태그나 특정 클래스를 가진 요소 확인
+      if (React.isValidElement(child)) {
+        const element = child as React.ReactElement;
+        
+        // div 태그이거나 youtube-embed 클래스를 가진 요소인지 확인
+        if (
+          element.type === 'div' || 
+          (typeof element.props === 'object' && 
+           element.props !== null && 
+           // 수정된 부분: className이 존재하는지 확인 후 string 타입인지 확인
+           'className' in element.props && 
+           typeof element.props.className === 'string' && 
+           element.props.className.includes('youtube-embed'))
+        ) {
+          hasYouTubeEmbed = true;
+          hasBlockElements = true;
+        }
+      }
+    });
 
+    // 유튜브 임베드가 있으면 p 태그 없이 직접 렌더링
+    if (hasYouTubeEmbed) {
+      return <>{children}</>;
+    }
+    
+    // 블록 요소 포함 확인
+    React.Children.forEach(children, child => {
+      if (React.isValidElement(child)) {
+        const element = child as React.ReactElement;
+        if (['div', 'iframe', 'figure'].includes(String(element.type))) {
+          hasBlockElements = true;
+        }
+      }
+    });
+
+    if (hasBlockElements) {
+      return <>{children}</>;
+    }
+
+    return <p {...props}>{children}</p>;
+  },
 
   img: ({ src = '', alt = '이미지' }) => (
     <div className="flex justify-center my-4">
@@ -123,7 +151,7 @@ p: ({ children }) => {
     )
   },
 
-  // ④ date 태그 커스텀 렌더러 (node 제거, any 제거)
+  // ④ date 태그 커스텀 렌더러
   date: ({ children, ...props }) => {
     return (
       <span className="font-mono text-xs" {...props}>
@@ -133,15 +161,29 @@ p: ({ children }) => {
   },
 }
 
+// 유튜브 URL만 있는 경우 처리를 위한 전처리 함수
+const preprocessMarkdown = (content: string) => {
+  // YouTube URL만 있는 줄을 감지하여 특수 마커로 감싸기
+  return content.replace(
+    /^(https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)[\w-]+)$/gm,
+    '<div class="youtube-only-line">$1</div>'
+  );
+};
+
 // ⑤ MarkdownContent 컴포넌트에서 확장된 customComponents 사용
-const MarkdownContent = ({ content }: { content: string }) => (
-  <ReactMarkdown
-    remarkPlugins={[remarkGfm]}
-    rehypePlugins={[rehypeRaw]}
-    components={customComponents}
-  >
-    {content}
-  </ReactMarkdown>
-)
+const MarkdownContent = ({ content }: { content: string }) => {
+  // 컨텐츠 전처리
+  const processedContent = preprocessMarkdown(content);
+  
+  return (
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      rehypePlugins={[rehypeRaw]}
+      components={customComponents}
+    >
+      {processedContent}
+    </ReactMarkdown>
+  );
+};
 
 export default MarkdownContent
