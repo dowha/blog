@@ -53,50 +53,49 @@ const customComponents: ExtendedComponents = {
   },
 
   p: ({ children, ...props }) => {
-    // YouTube 임베드가 있는지 확인하는 향상된 로직
-    let hasYouTubeEmbed = false;
+    // 1. 먼저 children에 div나 youtube embed 등 블록 요소가 포함되어 있는지 확인
     let hasBlockElements = false;
     
     React.Children.forEach(children, child => {
-      // div 태그나 특정 클래스를 가진 요소 확인
       if (React.isValidElement(child)) {
         const element = child as React.ReactElement;
         
-        // div 태그이거나 youtube-embed 클래스를 가진 요소인지 확인
-        if (
-          element.type === 'div' || 
-          (typeof element.props === 'object' && 
-           element.props !== null && 
-           // 수정된 부분: className이 존재하는지 확인 후 string 타입인지 확인
-           'className' in element.props && 
-           typeof element.props.className === 'string' && 
-           element.props.className.includes('youtube-embed'))
-        ) {
-          hasYouTubeEmbed = true;
-          hasBlockElements = true;
-        }
-      }
-    });
-
-    // 유튜브 임베드가 있으면 p 태그 없이 직접 렌더링
-    if (hasYouTubeEmbed) {
-      return <>{children}</>;
-    }
-    
-    // 블록 요소 포함 확인
-    React.Children.forEach(children, child => {
-      if (React.isValidElement(child)) {
-        const element = child as React.ReactElement;
+        // div, iframe, figure 태그인지 확인
         if (['div', 'iframe', 'figure'].includes(String(element.type))) {
           hasBlockElements = true;
         }
+        
+        // youtube-embed 클래스를 가진 요소인지 확인
+        if (
+          typeof element.props === 'object' && 
+          element.props !== null && 
+          'className' in element.props && 
+          typeof element.props.className === 'string' && 
+          element.props.className.includes('youtube-embed')
+        ) {
+          hasBlockElements = true;
+        }
+        
+        // youtube-only-line 클래스를 가진 div도 확인
+        if (
+          element.type === 'div' &&
+          typeof element.props === 'object' && 
+          element.props !== null && 
+          'className' in element.props && 
+          typeof element.props.className === 'string' && 
+          element.props.className.includes('youtube-only-line')
+        ) {
+          hasBlockElements = true;
+        }
       }
     });
 
+    // 블록 요소가 포함되어 있으면 p 태그 없이 직접 children만 렌더링
     if (hasBlockElements) {
       return <>{children}</>;
     }
-
+    
+    // 블록 요소가 없는 경우에만 p 태그로 래핑하여 반환
     return <p {...props}>{children}</p>;
   },
 
@@ -164,9 +163,10 @@ const customComponents: ExtendedComponents = {
 // 유튜브 URL만 있는 경우 처리를 위한 전처리 함수
 const preprocessMarkdown = (content: string) => {
   // YouTube URL만 있는 줄을 감지하여 특수 마커로 감싸기
+  // HTML 태그 형태가 아닌 마크다운 구문으로 변환하여 reactMarkdown이 적절히 처리하도록 함
   return content.replace(
     /^(https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)[\w-]+)$/gm,
-    '<div class="youtube-only-line">$1</div>'
+    (match) => match
   );
 };
 
@@ -180,6 +180,8 @@ const MarkdownContent = ({ content }: { content: string }) => {
       remarkPlugins={[remarkGfm]}
       rehypePlugins={[rehypeRaw]}
       components={customComponents}
+      skipHtml={false}
+      unwrapDisallowed={true}
     >
       {processedContent}
     </ReactMarkdown>
