@@ -67,6 +67,8 @@ const customComponents: ExtendedComponents = {
           element.type === 'div' || 
           (typeof element.props === 'object' && 
            element.props !== null && 
+           // 수정된 부분: className이 존재하는지 확인 후 string 타입인지 확인
+           'className' in element.props && 
            typeof element.props.className === 'string' && 
            element.props.className.includes('youtube-embed'))
         ) {
