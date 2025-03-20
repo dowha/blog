@@ -87,7 +87,9 @@
     @apply break-words underline underline-offset-4 decoration-gray-200 hover:text-[#0a85d1];
   }
 
-    .post-list a h2, .series a h2 {hover:text-[#0a85d1];
+    .post-list a h2, .series a h2 {
+      @apply
+      hover:text-[#0a85d1];
   }
   
   a.no-underline {
