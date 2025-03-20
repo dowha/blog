@@ -102,7 +102,7 @@ export default function RecordsPage({ records }: Props) {
           목록과 그에 대한 짧은 소회를 담은 메모 따위입니다.`
   return (
     <>
-      <Seo title="Records" description="{descriptionText}" />
+      <Seo title="Records" description={descriptionText} />
       <article className="records page-container">
         <h1 className="text-xl font-bold">Records</h1>
         <p className="mt-4 text-keepall">{descriptionText}</p>
