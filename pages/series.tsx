@@ -39,12 +39,12 @@ export default function SeriesPage({ series }: Props) {
               ></span>
 
               {/* 시리즈 이름 */}
-              <h2 className="pl-2 pr-4 relative z-10 group-hover:text-black">
+              <h2 className="pl-2 pr-4 relative z-10 group-hover:text-gray-800">
                 <span className="mr-1">{item.emoji}</span>{item.series_name}
               </h2>
 
               {/* 오른쪽 화살표 (기본적으로 숨겨져 있다가 hover 시 표시) */}
-              <span className="absolute group-hover:text-black right-4 opacity-0 group-hover:opacity-100 transition duration-300">
+              <span className="absolute group-hover:text-gray-800 right-4 opacity-0 group-hover:opacity-100 transition duration-300">
                 →
               </span>
             </Link>
