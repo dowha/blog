@@ -44,9 +44,10 @@ a: ({ href = '', children, ...props }) => {
     );
   }
 
-  // ✅ 2. [YouTube 링크](URL) 또는 [일반 링크](URL) → <a> 태그로 출력
+const isInternalLink = href.startsWith('/');
+
   return (
-    <a href={href} {...props} target="_blank" rel="noopener">
+    <a href={href} {...props} target={isInternalLink ? undefined : '_blank'} rel={isInternalLink ? undefined : 'noopener'}>
       {children}
     </a>
   );
