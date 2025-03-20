@@ -49,9 +49,11 @@ function Collapse({
     <div className={`border-t border-gray-300 ${isLast ? 'border-b' : ''}`}>
       <button
         onClick={handleToggle}
-        className="w-full text-left pl-2 pr-4 py-2 focus:outline-none flex items-center justify-between"
+        className="group w-full text-left pl-2 pr-4 py-2 focus:outline-none flex items-center justify-between"
       >
-        <h2>{title}</h2>
+        <h2 className={`${isOpen ? 'text-black' : 'group-hover:text-black'}`}>
+          {title}
+        </h2>
         <svg
           className={`h-4 w-4 transform transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
@@ -72,6 +74,7 @@ function Collapse({
     </div>
   )
 }
+
 
 export default function RecordsPage({ records }: Props) {
   const router = useRouter()
@@ -101,7 +104,7 @@ export default function RecordsPage({ records }: Props) {
           목록과 그에 대한 짧은 소회를 담은 메모 따위입니다.`
   return (
     <>
-      <Seo title="Records" description="{descriptionText}" />
+      <Seo title="Records" description={descriptionText} />
       <article className="records page-container">
         <h1 className="text-xl font-bold">Records</h1>
         <p className="mt-4 text-keepall">{descriptionText}</p>
