@@ -46,9 +46,10 @@ a: ({ href = '', children, ...props }) => {
 
 const isInternalLink = href.startsWith('/');
 
-  return (
-    <a href={href} {...props} target={isInternalLink ? undefined : '_blank'} rel={isInternalLink ? undefined : 'noopener'}>
-      {children}
+return (
+    <a href={href} {...Object.fromEntries(Object.entries(props).filter(([key]) => key !== 'node'))}
+       target={isInternalLink ? undefined : '_blank'} rel={isInternalLink ? undefined : 'noopener'}>
+      {children}      {children}
     </a>
   );
 },
