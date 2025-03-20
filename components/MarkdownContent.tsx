@@ -47,11 +47,11 @@ const childrenText = React.Children.toArray(children)
 const isInternalLink = href.startsWith('/');
 
 return (
-    <a href={href} {...Object.fromEntries(Object.entries(props).filter(([key]) => key !== 'node'))}
-       target={isInternalLink ? undefined : '_blank'} rel={isInternalLink ? undefined : 'noopener'}>
-      {children}      {children}
-    </a>
-  );
+  <a href={href} {...Object.fromEntries(Object.entries(props).filter(([key]) => key !== 'node'))}
+     target={isInternalLink ? undefined : '_blank'} rel={isInternalLink ? undefined : 'noopener'}>
+    {children}
+  </a>
+);
 },
 
 p: ({ children }) => {
