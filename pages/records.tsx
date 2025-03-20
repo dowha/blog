@@ -51,7 +51,7 @@ function Collapse({
         onClick={handleToggle}
         className="group w-full text-left pl-2 pr-4 py-2 focus:outline-none flex items-center justify-between"
       >
-        <h2 className={`${isOpen ? 'text-black' : 'group-hover:text-black'}`}>
+        <h2 className={`${isOpen ? 'text-gray-800' : 'group-hover:text-gray-800'}`}>
           {title}
         </h2>
         <svg
