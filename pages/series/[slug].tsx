@@ -59,7 +59,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
               <div key={post.slug} className="flex items-start justify-between">
                 <Link
                   href={`/posts/${post.slug}`}
-                  className="flex items-start hover:underline hover:text-[theme_color]"
+                  className="flex items-start hover:underline"
                 >
                   <h2 className="full-title group">
                     <span className="font-mono">{index + 1}</span>

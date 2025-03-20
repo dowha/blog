@@ -28,7 +28,7 @@ export default function SeriesPage({ series }: Props) {
             <Link
               key={item.slug}
               href={`/series/${item.slug}`}
-              className="relative flex items-center justify-between border-b border-gray-300 py-2 font-semibold hover:text-black no-underline transition duration-300 group"
+              className="relative flex items-center justify-between border-b border-gray-300 py-2 font-semibold no-underline transition duration-300 group"
             >
               {/* Hover 시 배경색을 적용할 오버레이 */}
               <span
@@ -39,7 +39,7 @@ export default function SeriesPage({ series }: Props) {
               ></span>
 
               {/* 시리즈 이름 */}
-              <h2 className="pl-2 pr-4 relative z-10">
+              <h2 className="pl-2 pr-4 relative z-10 hover:text-black">
                 <span className="mr-1">{item.emoji}</span>{item.series_name}
               </h2>
 
