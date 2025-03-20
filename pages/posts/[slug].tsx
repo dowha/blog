@@ -73,7 +73,7 @@ function SeriesPosts({
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
-          p: ({ ...props }) => <p {...props} className="text-sm mt-2" />,
+          p: ({ children }) => <p className="text-sm mt-2">{children}</p>,
         }}
       >
         {post.description}
