@@ -45,34 +45,34 @@ function Collapse({
     }
   }
 
-  return (
-<button
-  onClick={handleToggle}
-  className="group w-full text-left pl-2 pr-4 py-2 focus:outline-none flex items-center justify-between"
->
-  <h2 className={`${isOpen ? 'text-black' : 'group-hover:text-black'}`}>
-    {title}
-  </h2>
-  <svg
-    className={`h-4 w-4 transform transition-transform duration-200 ${
-      isOpen ? 'rotate-180' : ''
-    }`}
-    fill="currentColor"
-    viewBox="0 0 20 20"
-  >
-    <path
-      fillRule="evenodd"
-      d="M10 12a1 1 0 01-.707-.293l-5-5a1 1 0 111.414-1.414L10 9.586l4.293-4.293a1 1 0 111.414 1.414l-5 5A1 1 0 0110 12z"
-      clipRule="evenodd"
-    />
-  </svg>
-</button>
-      {isOpen && (
-        <div className="record-contents py-2 pl-2 pr-4">{children}</div>
-      )}
-    </div>
-  )
-}
+return (
+  <div className={`border-t border-gray-300 ${isLast ? 'border-b' : ''}`}>
+    <button
+      onClick={handleToggle}
+      className="group w-full text-left pl-2 pr-4 py-2 focus:outline-none flex items-center justify-between"
+    >
+      <h2 className={`${isOpen ? 'text-black' : 'group-hover:text-black'}`}>
+        {title}
+      </h2>
+      <svg
+        className={`h-4 w-4 transform transition-transform duration-200 ${
+          isOpen ? 'rotate-180' : ''
+        }`}
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path
+          fillRule="evenodd"
+          d="M10 12a1 1 0 01-.707-.293l-5-5a1 1 0 111.414-1.414L10 9.586l4.293-4.293a1 1 0 111.414 1.414l-5 5A1 1 0 0110 12z"
+          clipRule="evenodd"
+        />
+      </svg>
+    </button>
+    {isOpen && (
+      <div className="record-contents py-2 pl-2 pr-4">{children}</div>
+    )}
+  </div>
+)
 
 export default function RecordsPage({ records }: Props) {
   const router = useRouter()
