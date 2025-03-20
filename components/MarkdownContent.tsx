@@ -24,9 +24,9 @@ const customComponents: ExtendedComponents = {
 a: ({ href = '', children, ...props }) => {
   const youtubeEmbedUrl = extractYouTubeEmbedUrl(href);
 
-  const childrenText = React.Children.map(children ?? [], (child) =>
-    typeof child === 'string' ? child : ''
-  )?.join('') ?? '';
+const childrenText = React.Children.toArray(children)
+  .map((child) => (typeof child === 'string' ? child.trim() : ''))
+  .join('');
 
   const isBareLink = childrenText.trim() === href;
 
