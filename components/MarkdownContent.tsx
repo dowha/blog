@@ -29,6 +29,7 @@ a: ({ href = '', children, ...props }) => {
   )?.join('') ?? '';
 
   const isBareLink = childrenText.trim() === href;
+   const { node, ...safeProps } = props;
 
   // ✅ 1. 단독 YouTube URL → iframe으로 변환
   if (youtubeEmbedUrl && isBareLink) {
