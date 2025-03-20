@@ -45,7 +45,7 @@ function SeriesPosts({
         {/* series name과 페이지 번호를 하나의 그룹으로 묶음 */}
         <div className="flex items-center">
           <span className="text-md font-semibold">
-            <a href={`/series/${post.series_slug}`}>{post.series_name}</a>
+            <a href={`/series/${post.series_slug}`} className="no-underline">{post.series_name}</a>
           </span>
           {posts.length > 1 && (
             <span className="text-sm font-mono ml-2">
