@@ -186,30 +186,9 @@
     @apply mb-6;
   }
 
-  .subtitle::before,
-  .subtitle::after {
-    content: '—\200B'; /* Zero-width space to reduce the gap */
-    color: inherit;
-    font-size: 1em;
-  }
-
-  .subtitle::before {
-    margin-right: -0.3em;
-  }
-
   .single-post > .subtitle {
     @apply text-gray-800;
     font-size: 1rem;
-  }
-
-  .single-post > .subtitle::before,
-  .single-post > .subtitle::after {
-    @apply hover:text-current;
-
-    content: '—\200B'; /* Zero-width space to reduce the gap */
-    color: inherit;
-    font-size: 1em;
-    margin: 0;
   }
 
   /* ✅ 인용구 스타일 */
