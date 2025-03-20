@@ -3,7 +3,12 @@ import { GetStaticProps, GetStaticPaths } from 'next'
 import MarkdownContent from '@/components/MarkdownContent'
 import Seo from '@/components/Seo'
 import Copyright from '@/components/Copyright'
-import { ScrollToTopButton, CopyLinkButton } from '@/components/ActionButtons'
+import {
+  ScrollToTopButton,
+  CopyLinkButton,
+  LuckyPostButton,
+  ClapButton,
+} from '@/components/ActionButtons'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -109,7 +114,9 @@ export default function BookDetailPage({
 
         <div className="flex items-center gap-2 mt-4">
           <ScrollToTopButton />
+          <LuckyPostButton />
           <CopyLinkButton slug={book.slug} isBookPage />
+          <ClapButton bookId={book.id} />
         </div>
       </article>
       <Copyright />

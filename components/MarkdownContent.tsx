@@ -11,104 +11,93 @@ interface ExtendedComponents extends Components {
   date?: FC<HTMLAttributes<HTMLSpanElement> & { children?: React.ReactNode }>
 }
 
-// ② YouTube 링크 추출 함수 (원본 그대로)
-const extractYouTubeEmbedUrl = (url: string) => {
-  const youtubeRegex =
-    /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/
-  const match = url.match(youtubeRegex)
-  return match ? `https://www.youtube.com/embed/${match[1]}` : null
+// node 속성 필터링 유틸리티 함수
+const filterProps = <T extends Record<string, unknown>>(
+  props: T
+): Omit<T, 'node'> => {
+  const result = { ...props } // 얕은 복사
+  delete (result as { node?: unknown }).node
+  return result
 }
 
 // ③ 커스텀 렌더러(ExtendedComponents 타입 사용)
 const customComponents: ExtendedComponents = {
-a: ({ href = '', children, ...props }) => {
-  const youtubeEmbedUrl = extractYouTubeEmbedUrl(href);
-
-const childrenText = React.Children.toArray(children)
-  .map((child) => (typeof child === 'string' ? child.trim() : ''))
-  .join('');
-
-  const isBareLink = childrenText.trim() === href;
-
-  // ✅ 1. 단독 YouTube URL → iframe으로 변환
-  if (youtubeEmbedUrl && isBareLink) {
+  a: ({ href = '', children, ...props }) => {
+    const isInternalLink = href.startsWith('/')
+    const filteredProps = filterProps(props)
     return (
-      <div className="mt-6 w-full mx-auto aspect-video">
-        <iframe
-          className="w-full h-full rounded-lg shadow-lg"
-          src={youtubeEmbedUrl}
-          title="YouTube video player"
-          allowFullScreen
-        />
-      </div>
-    );
-  }
+      <a
+        href={href}
+        {...filteredProps}
+        target={isInternalLink ? undefined : '_blank'}
+        rel={isInternalLink ? undefined : 'noopener'}
+      >
+        {children}
+      </a>
+    )
+  },
 
-const isInternalLink = href.startsWith('/');
+  p: ({ children }) => {
+    const childrenArray = React.Children.toArray(children)
 
-return (
-  <a href={href} {...Object.fromEntries(Object.entries(props).filter(([key]) => key !== 'node'))}
-     target={isInternalLink ? undefined : '_blank'} rel={isInternalLink ? undefined : 'noopener'}>
-    {children}
-  </a>
-);
-},
+    // 기존 블록 요소 검사 로직
+    const hasBlockElements = childrenArray.some((child) => {
+      if (React.isValidElement(child) && typeof child.type === 'string') {
+        return ['div', 'iframe', 'figure'].includes(child.type)
+      }
+      return false
+    })
 
-p: ({ children }) => {
-  const childrenArray = React.Children.toArray(children);
-
-  // ✅ 블록 요소가 포함된 경우 <p> 태그 없이 출력
-  const hasBlockElements = childrenArray.some(child => {
-    if (typeof child === 'object' && child !== null && 'type' in child) {
-      return ['div', 'iframe', 'figure'].includes(child.type as string);
+    if (hasBlockElements) {
+      return <>{children}</>
     }
-    return false;
-  });
 
-  // ✅ YouTube 링크 단독 입력 시 <p> 제거
-  if (hasBlockElements) {
-    return <>{children}</>;
-  }
-
-  return <p>{children}</p>;
-},
-
+    return <p>{children}</p>
+  },
 
   img: ({ src = '', alt = '이미지' }) => (
     <div className="flex justify-center my-4">
       <Image
         src={src}
         alt={alt}
-        width={800}
-        height={450}
-        className="max-w-full h-auto rounded-lg shadow-md"
+        width={0}
+        height={0}
+        sizes="100vw"
+        className="w-full h-auto max-w-[800px] rounded-lg"
       />
     </div>
   ),
 
-  iframe: ({ style, ...props }) => (
-    <div className="mt-6 w-full mx-auto">
-      <iframe
-        {...props}
-        style={{
-          width: '100%',
-          maxWidth: '660px',
-          overflow: 'hidden',
-          borderRadius: '10px',
-          ...style,
-        }}
-        scrolling="no"
-      />
-    </div>
-  ),
+  iframe: ({ style, ...props }: ComponentProps<'iframe'>) => {
+    const filteredProps = filterProps(props)
+    return (
+      <div className="mt-6 w-full mx-auto">
+        <iframe
+          {...filteredProps}
+          style={{
+            width: '100%',
+            maxWidth: '660px',
+            overflow: 'hidden',
+            borderRadius: '10px',
+            ...style,
+          }}
+          scrolling="no"
+        />
+      </div>
+    )
+  },
 
   code: ({ className, children, ...props }: ComponentProps<'code'>) => {
     // ✅ 블록 코드인지 확인 (className이 있거나, 여러 줄이면 블록 코드)
     const isBlock = className || String(children).includes('\n')
+    const filteredProps = filterProps(props)
 
     if (!isBlock) {
       return (
-        <code className="bg-gray-100 text-[#0a85d1] px-1 py-0.5 rounded whitespace-nowrap">
+        <code
+          className="bg-gray-100 text-[#0a85d1] px-1 py-0.5 rounded whitespace-nowrap"
+          {...filteredProps}
+        >
           {children}
         </code>
       )
@@ -116,7 +105,7 @@ p: ({ children }) => {
 
     return (
       <pre className="bg-gray-900 text-white mt-6 text-sm p-4 rounded-lg overflow-auto">
-        <code className={className} {...props}>
+        <code className={className} {...filteredProps}>
           {Array.isArray(children)
             ? children.join('')
             : String(children).trim()}
@@ -125,10 +114,11 @@ p: ({ children }) => {
     )
   },
 
-  // ④ date 태그 커스텀 렌더러 (node 제거, any 제거)
+  // ④ date 태그 커스텀 렌더러
   date: ({ children, ...props }) => {
+    const filteredProps = filterProps(props)
     return (
-      <span className="font-mono text-xs" {...props}>
+      <span className="font-mono text-xs" {...filteredProps}>
         {children}
       </span>
     )
