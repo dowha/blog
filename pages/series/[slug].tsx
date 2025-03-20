@@ -66,7 +66,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
                     {'.'}&nbsp;{post.title}
                     {post.subtitle && (
                       <span className="subtitle relative">
-                        {' '}
+                        {': '}
                         {post.subtitle}
                       </span>
                     )}
