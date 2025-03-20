@@ -39,7 +39,7 @@ export default function SeriesPage({ series }: Props) {
               ></span>
 
               {/* 시리즈 이름 */}
-              <h2 className="pl-2 pr-4 relative z-10 hover:text-black">
+              <h2 className="pl-2 pr-4 relative z-10 group-hover:text-black">
                 <span className="mr-1">{item.emoji}</span>{item.series_name}
               </h2>
 
