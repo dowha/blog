@@ -141,27 +141,40 @@ export const ClapButton = ({
   }, [postId, bookId])
 
   const handleClap = async () => {
-    if (!postId && !bookId) return
+  if (!postId && !bookId) return
 
-    setClaps((prev) => prev + 1)
+  setClaps((prev) => prev + 1)
 
-    const userAgent = navigator.userAgent || null
-    const referrer = document.referrer || null
+  // 📌 user agent와 현재 referrer
+  const userAgent = navigator.userAgent || null
+  const referrerNow = document.referrer || null
 
-    const { error } = await supabase.from('content_likes').insert([
-      {
-        post_id: postId || null,
-        book_id: bookId || null,
-        user_agent: userAgent,
-        referrer: referrer,
-      },
-    ])
-
-    if (error) {
-      alert('응원 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.')
-      setClaps((prev) => prev - 1)
-    }
+  // 📌 최초 referrer 저장 (사이트 내부 페이지가 아닐 경우만)
+  if (
+    referrerNow &&
+    !referrerNow.includes(window.location.hostname) &&
+    !localStorage.getItem('initial_referrer')
+  ) {
+    localStorage.setItem('initial_referrer', referrerNow)
   }
+
+  // 📌 localStorage에 있는 최초 referrer 사용
+  const initialReferrer = localStorage.getItem('initial_referrer') || referrerNow
+
+  const { error } = await supabase.from('content_likes').insert([
+    {
+      post_id: postId || null,
+      book_id: bookId || null,
+      user_agent: userAgent,
+      referrer: initialReferrer, // 최초 외부 referrer 우선 저장
+    },
+  ])
+
+  if (error) {
+    alert('응원 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.')
+    setClaps((prev) => prev - 1)
+  }
+}
 
   return (
     <Button
