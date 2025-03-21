@@ -119,10 +119,10 @@ export const ClapButton = ({
   const [claps, setClaps] = useState(0)
 
   useEffect(() => {
-    if (!postId && !bookId) return // postId, bookId 둘 다 없으면 API 요청 X
+    if (!postId && !bookId) return
 
     async function fetchClaps() {
-      let query = supabase.from('content_likes').select('', { count: 'exact' }) // count만 가져옴
+      let query = supabase.from('content_likes').select('', { count: 'exact' })
 
       if (postId) {
         query = query.eq('post_id', postId)
@@ -143,18 +143,23 @@ export const ClapButton = ({
   const handleClap = async () => {
     if (!postId && !bookId) return
 
-    setClaps((prev) => prev + 1) // UI 즉시 업데이트
+    setClaps((prev) => prev + 1)
+
+    const userAgent = navigator.userAgent || null
+    const referrer = document.referrer || null
 
     const { error } = await supabase.from('content_likes').insert([
       {
         post_id: postId || null,
         book_id: bookId || null,
+        user_agent: userAgent,
+        referrer: referrer,
       },
     ])
 
     if (error) {
       alert('응원 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.')
-      setClaps((prev) => prev - 1) // 실패 시 롤백
+      setClaps((prev) => prev - 1)
     }
   }
 
