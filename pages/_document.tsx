@@ -48,7 +48,7 @@ export default function Document() {
         />
         <link rel="alternate" type="application/rss+xml" title="Dowha's Blog RSS Feed" href="/api/rss" />
       </Head>
-      <body className="flex min-h-dvh antialiased">
+      <body className="md:flex min-h-dvh antialiased">
         <noscript>
           <iframe
             src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
