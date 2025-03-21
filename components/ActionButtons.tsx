@@ -140,6 +140,15 @@ export const ClapButton = ({
     fetchClaps()
   }, [postId, bookId])
 
+  const getOrCreateAnonymousId = () => {
+  let anonId = localStorage.getItem('anonymous_id')
+  if (!anonId) {
+    anonId = crypto.randomUUID()
+    localStorage.setItem('anonymous_id', anonId)
+  }
+  return anonId
+}
+  
   const handleClap = async () => {
   if (!postId && !bookId) return
 
@@ -160,13 +169,15 @@ export const ClapButton = ({
 
   // 📌 localStorage에 있는 최초 referrer 사용
   const initialReferrer = localStorage.getItem('initial_referrer') || referrerNow
-
+ const anonymousId = getOrCreateAnonymousId()
+    
   const { error } = await supabase.from('content_likes').insert([
     {
       post_id: postId || null,
       book_id: bookId || null,
       user_agent: userAgent,
       referrer: initialReferrer, // 최초 외부 referrer 우선 저장
+       anonymous_id: anonymousId,
     },
   ])
 
