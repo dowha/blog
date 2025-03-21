@@ -41,7 +41,7 @@
 
   /* ✅ 메인 컨텐츠 스타일 */
   main {
-    @apply w-full max-w-2xl mx-auto relative;
+    @apply flex-1 w-full max-w-2xl mx-auto relative;
   }
 
   /* ✅ 텍스트 드래그 스타일 */
