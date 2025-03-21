@@ -121,7 +121,7 @@ export default function BooksPage() {
               <div key={book.id} className="block no-underline">
                 <BookCard
                   book={book}
-                  className="cursor-not-allowed bg-amber-50 no-group"
+                  className="cursor-wait bg-amber-50 no-group"
                 />
               </div>
             )
