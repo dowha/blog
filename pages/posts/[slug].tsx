@@ -73,7 +73,7 @@ function SeriesPosts({
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
-          p: ({ children }) => <p className="text-sm mt-2">{children}</p>,
+          p: ({ children }) => <p className="text-sm mt-2 series-list">{children}</p>,
         }}
       >
         {post.description}
@@ -196,7 +196,7 @@ export default function PostPage({
         <MarkdownContent content={post.content} />
 
         {post.series_name && post.series_slug && (
-          <SeriesPosts post={post} posts={[...posts].reverse()} />
+          <SeriesPosts post={post} posts={[...posts]} />
         )}
         <div className="flex items-center gap-2 mt-4">
           <ScrollToTopButton />
