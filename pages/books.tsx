@@ -5,6 +5,8 @@ import GenreFilter from '@/components/GenreFilter'
 import Seo from '@/components/Seo'
 import Link from 'next/link'
 import Image from 'next/image'
+import { LoadMoreButton } from '@/components/ActionButtons'
+
 interface Book {
   id: string
   title: string
@@ -23,6 +25,9 @@ export default function BooksPage() {
   const [filteredBooks, setFilteredBooks] = useState<Book[]>([])
   const [selectedGenre, setSelectedGenre] = useState('전체')
 
+  const [visibleCount, setVisibleCount] = useState(8) // ✅ 추가
+  const LOAD_COUNT = 8 // ✅ 추가
+
   useEffect(() => {
     async function fetchBooks() {
       const { data, error } = await supabase
@@ -34,41 +39,46 @@ export default function BooksPage() {
       if (error) {
         console.error('❌ Error fetching books:', error)
       } else {
-        console.log('📚 Books data:', data) // ✅ 데이터 확인
+        console.log('📚 Books data:', data)
 
-        // ✅ TypeScript에서 필드명 변환
         const formattedData = data.map((book) => ({
           ...book,
-          publicationYear: book.publication_year, // 필드명 변환
-          isReading: book.is_reading, // 필드명 변환
+          publicationYear: book.publication_year,
+          isReading: book.is_reading,
         }))
 
-        // ✅ 정렬 로직 추가
         const sortedData = formattedData.sort((a, b) => {
           if (a.isReading === b.isReading) {
             return (
               new Date(b.created_at).getTime() -
               new Date(a.created_at).getTime()
-            ) // 최신순
+            )
           }
-          return b.isReading - a.isReading // true가 먼저 오도록 정렬
+          return b.isReading - a.isReading
         })
 
         setBooks(sortedData)
         setFilteredBooks(sortedData)
       }
     }
+
     fetchBooks()
   }, [])
 
   const handleFilterChange = (genre: string) => {
     setSelectedGenre(genre)
+    setVisibleCount(LOAD_COUNT) // ✅ 필터 변경 시 초기화
     if (genre === '전체') {
       setFilteredBooks(books)
     } else {
       setFilteredBooks(books.filter((book) => book.genre === genre))
     }
   }
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + LOAD_COUNT) // ✅ "더 보기" 버튼 기능
+  }
+
   const descriptionText = `책 읽기는 제게 큰 즐거움이자 평생을 함께 하고 싶은 친구입니다.`
 
   return (
@@ -83,7 +93,6 @@ export default function BooksPage() {
             rel="noopener"
             className="relative ml-1 w-4 h-4 inline-block"
           >
-            {/* 기본 아이콘 */}
             <Image
               src="/rss.svg"
               alt="RSS"
@@ -91,9 +100,8 @@ export default function BooksPage() {
               height={16}
               className="absolute inset-0 transition-opacity duration-300 hover:opacity-0"
             />
-            {/* Hover 시 나타날 주황색 아이콘 */}
             <Image
-              src="/rss-hover.svg" // ✅ 주황색 버전의 아이콘을 별도로 저장
+              src="/rss-hover.svg"
               alt="RSS"
               width={16}
               height={16}
@@ -102,13 +110,14 @@ export default function BooksPage() {
           </a>
         </h1>
         <p className="mt-4 text-keepall">{descriptionText}</p>
+
         <GenreFilter
           selectedGenre={selectedGenre}
           onChange={handleFilterChange}
         />
 
         <div className="mt-8 grid grid-cols-1 gap-2 md:grid-cols-2">
-          {filteredBooks.map((book) =>
+          {filteredBooks.slice(0, visibleCount).map((book) =>
             book.content ? (
               <Link
                 key={book.id}
@@ -127,6 +136,11 @@ export default function BooksPage() {
             )
           )}
         </div>
+
+        <LoadMoreButton
+          loadMore={handleLoadMore}
+          hasMore={visibleCount < filteredBooks.length}
+        />
       </article>
     </>
   )
