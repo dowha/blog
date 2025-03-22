@@ -1,9 +1,8 @@
 import { supabase } from '@/supabase'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Link from 'next/link'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
 import Seo from '@/components/Seo'
+import MarkdownContent from '@/components/MarkdownContent'
 
 type SeriesRecord = {
   id: string
@@ -45,10 +44,8 @@ export default function SeriesDetailPage({ series, posts }: Props) {
           >
             <span className="mr-1 self-start">{series.emoji}</span>{' '}
             {/* 이모지 아이콘 */}
-            <div className="leading-relaxed text-keepall">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {series.description}
-              </ReactMarkdown>
+            <div className="leading-relaxed text-keepall series-list">
+              <MarkdownContent content={series.description} />
             </div>
           </div>
         )}
