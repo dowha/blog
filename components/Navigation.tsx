@@ -40,7 +40,7 @@ export function Navigation() {
               target="_blank"
               rel="noopener"
             >
-              <span className="hidden sm:inline">about</span>
+              <span className="hidden lg:inline">about</span>
             </a>
           </li>
         </ul>
