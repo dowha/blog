@@ -6,9 +6,9 @@ export function Navigation() {
   const currentPath = router.pathname
 
   return (
-    <nav className="w-full p-6 text-gray-500 md:w-64 md:mr-6 mb-6 md:mb-0">
+    <nav className="w-full p-6 text-gray-500 lg:w-64 lg:mr-6 mb-6 lg:mb-0">
       <div className="space-y-2">
-        <ul className="lowercase flex flex-wrap gap-4 justify-center w-full md:block md:gap-0 md:space-y-2 md:text-right md:sticky md:top-6">
+        <ul className="lowercase flex flex-wrap gap-4 justify-center w-full lg:block lg:gap-0 lg:space-y-2 lg:text-right lg:sticky lg:top-6">
           {[
             { name: 'home', path: '/' },
             { name: 'writings', path: '/writings', related: '/posts/' }, // 📌 related 추가
@@ -30,7 +30,7 @@ export function Navigation() {
               </Link>
             </li>
           ))}
-          <li className="relative hidden md:flex justify-end py-4 my-4">
+          <li className="relative hidden lg:flex justify-end py-4 my-4">
             <div className="absolute right-0 w-16 border-t border-gray-200"></div>
           </li>
           <li>
