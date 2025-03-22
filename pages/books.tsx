@@ -79,7 +79,7 @@ export default function BooksPage() {
     setVisibleCount((prev) => prev + LOAD_COUNT) // ✅ "더 보기" 버튼 기능
   }
 
-  const descriptionText = `책 읽기는 제게 큰 즐거움이자 평생을 함께 하고 싶은 친구입니다.`
+  const descriptionText = `책 읽기는 제게 큰 즐거움이자 평생을 함께하고 싶은 친구입니다.`
 
   return (
     <>
