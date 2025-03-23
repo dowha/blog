@@ -8,7 +8,7 @@ export function Navigation() {
   return (
     <nav className="w-full p-6 text-gray-500 lg:w-64 lg:mr-6 mb-6 lg:mb-0">
       <div className="space-y-2">
-        <ul className="lowercase flex flex-wrap gap-4 justify-center w-full lg:block lg:gap-0 lg:space-y-2 lg:text-right lg:sticky lg:top-6">
+        <ul className="lowercase flex flex-wrap gap-4 justify-center w-full lg:block lg:gap-0 lg:space-y-2 lg:text-right lg:top-6">
           {[
             { name: 'home', path: '/' },
             { name: 'writings', path: '/writings', related: '/posts/' }, // 📌 related 추가
