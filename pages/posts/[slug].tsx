@@ -29,7 +29,7 @@ function SeriesPosts({
     theme_color: string
     updated_at: string
   }
-  posts?: { title: string; slug: string }[]
+  posts?: { title: string; slug: string; subtitle?: string }[]
 }) {
   const [expanded, setExpanded] = useState(false)
 
@@ -45,7 +45,9 @@ function SeriesPosts({
         {/* series name과 페이지 번호를 하나의 그룹으로 묶음 */}
         <div className="flex items-center">
           <span className="text-md font-semibold">
-            <a href={`/series/${post.series_slug}`} className="no-underline">{post.series_name}</a>
+            <a href={`/series/${post.series_slug}`} className="no-underline">
+              {post.series_name}
+            </a>
           </span>
           {posts.length > 1 && (
             <span className="text-sm font-mono ml-2">
@@ -73,7 +75,9 @@ function SeriesPosts({
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
-          p: ({ children }) => <p className="text-sm mt-2 series-list">{children}</p>,
+          p: ({ children }) => (
+            <p className="text-sm mt-2 series-list">{children}</p>
+          ),
         }}
       >
         {post.description}
@@ -87,10 +91,13 @@ function SeriesPosts({
             <div key={p.slug} className="flex items-start">
               <a
                 href={`/posts/${p.slug}`}
-                className={p.slug === post.slug ? 'font-semibold' : ''}
+                className={`no-underline ${
+                  p.slug === post.slug ? 'font-semibold' : ''
+                }`}
               >
                 <span className="font-mono">{index + 1}</span>
                 {'.'}&nbsp;{p.title}
+                {p.subtitle && ': ' + p.subtitle}
               </a>
             </div>
           ))}
@@ -251,7 +258,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (post.series_id) {
     const { data: seriesPosts } = await supabase
       .from('posts')
-      .select('title, slug')
+      .select('title, slug, subtitle')
       .eq('series_id', post.series_id)
       .eq('status', 'public')
 
