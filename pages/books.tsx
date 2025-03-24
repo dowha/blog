@@ -6,6 +6,7 @@ import Seo from '@/components/Seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { LoadMoreButton } from '@/components/ActionButtons'
+import LoadingSpinner from '@/components/LoadingSpinner' // ✅ 추가
 
 interface Book {
   id: string
@@ -24,12 +25,14 @@ export default function BooksPage() {
   const [books, setBooks] = useState<Book[]>([])
   const [filteredBooks, setFilteredBooks] = useState<Book[]>([])
   const [selectedGenre, setSelectedGenre] = useState('전체')
+  const [isLoading, setIsLoading] = useState(true) // ✅ 로딩 상태 추가
 
   const [visibleCount, setVisibleCount] = useState(8) // ✅ 추가
   const LOAD_COUNT = 8 // ✅ 추가
 
   useEffect(() => {
     async function fetchBooks() {
+      setIsLoading(true) // ✅ 로딩 시작
       const { data, error } = await supabase
         .from('books')
         .select(
@@ -60,6 +63,7 @@ export default function BooksPage() {
         setBooks(sortedData)
         setFilteredBooks(sortedData)
       }
+      setIsLoading(false) // ✅ 로딩 종료
     }
 
     fetchBooks()
@@ -116,31 +120,37 @@ export default function BooksPage() {
           onChange={handleFilterChange}
         />
 
-        <div className="mt-8 grid grid-cols-1 gap-2 md:grid-cols-2">
-          {filteredBooks.slice(0, visibleCount).map((book) =>
-            book.content ? (
-              <Link
-                key={book.id}
-                href={`/books/${book.slug}`}
-                className="block no-underline"
-              >
-                <BookCard book={book} className="hover:bg-gray-100" />
-              </Link>
-            ) : (
-              <div key={book.id} className="block no-underline">
-                <BookCard
-                  book={book}
-                  className="cursor-wait bg-amber-50 no-group"
-                />
-              </div>
-            )
-          )}
-        </div>
+        {isLoading ? (
+          <LoadingSpinner /> // ✅ 로딩 중일 때
+        ) : (
+          <>
+            <div className="mt-8 grid grid-cols-1 gap-2 md:grid-cols-2">
+              {filteredBooks.slice(0, visibleCount).map((book) =>
+                book.content ? (
+                  <Link
+                    key={book.id}
+                    href={`/books/${book.slug}`}
+                    className="block no-underline"
+                  >
+                    <BookCard book={book} className="hover:bg-gray-100" />
+                  </Link>
+                ) : (
+                  <div key={book.id} className="block no-underline">
+                    <BookCard
+                      book={book}
+                      className="cursor-wait bg-amber-50 no-group"
+                    />
+                  </div>
+                )
+              )}
+            </div>
 
-        <LoadMoreButton
-          loadMore={handleLoadMore}
-          hasMore={visibleCount < filteredBooks.length}
-        />
+            <LoadMoreButton
+              loadMore={handleLoadMore}
+              hasMore={visibleCount < filteredBooks.length}
+            />
+          </>
+        )}
       </article>
     </>
   )
