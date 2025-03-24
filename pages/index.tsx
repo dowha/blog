@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/supabase'
 import Seo from '@/components/Seo'
+import LoadingSpinner from '@/components/LoadingSpinner' // ✅ 추가
 
 // 가장 최신 콘텐츠 가져오기
 async function fetchLatestSingleContent() {
@@ -132,8 +133,12 @@ export default function Home() {
     { title: string; author: string; slug: string }[]
   >([])
 
+  const [isLoading, setIsLoading] = useState(true) // ✅ 로딩 상태 추가
+
   useEffect(() => {
     async function fetchData() {
+      setIsLoading(true) // ✅ 로딩 시작
+
       const [latest, mostLiked, books] = await Promise.all([
         fetchLatestSingleContent(),
         fetchMostLikedContent(),
@@ -143,6 +148,8 @@ export default function Home() {
       if (latest) setLatestContent(latest)
       setMostLikedContent(mostLiked) // ✅ mostLiked는 항상 배열이므로 그대로 사용 가능
       setCurrentlyReading(books)
+
+      setIsLoading(false) // ✅ 로딩 끝
     }
 
     fetchData()
@@ -164,59 +171,64 @@ export default function Home() {
             rel="noopener"
           >
             메일 폼
-          </a>{' '}
+          </a>
           을 통해서 연락 주세요.
         </p>
+        {isLoading ? (
+          <LoadingSpinner /> // ✅ 로딩 중일 때
+        ) : (
+          <>
+            {latestContent && (
+              <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
+                <h2 className="font-semibold mt-0">
+                  <span className="mr-1">🌱</span> 최근 작성한 글
+                </h2>
+                <ul>
+                  <li>
+                    <Link href={latestContent.slug} className="block text-sm">
+                      {latestContent.title}
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            )}
 
-        {latestContent && (
-          <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
-            <h2 className="font-semibold mt-0">
-              <span className="mr-1">🌱</span> 최근 작성한 글
-            </h2>
-            <ul>
-              <li>
-                <Link href={latestContent.slug} className="block text-sm">
-                  {latestContent.title}
-                </Link>
-              </li>
-            </ul>
-          </div>
-        )}
+            {mostLikedContent.length > 0 && (
+              <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
+                <h2 className="font-semibold mt-0">
+                  <span className="mr-1">👏</span> 가장 응원받은 콘텐츠
+                </h2>
+                <ul>
+                  {mostLikedContent.map((content) => (
+                    <li key={content.slug}>
+                      <Link href={content.slug} className="block text-sm">
+                        {content.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
-        {mostLikedContent.length > 0 && (
-          <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
-            <h2 className="font-semibold mt-0">
-              <span className="mr-1">👏</span> 가장 응원받은 콘텐츠
-            </h2>
-            <ul>
-              {mostLikedContent.map((content) => (
-                <li key={content.slug}>
-                  <Link href={content.slug} className="block text-sm">
-                    {content.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {currentlyReading.length > 0 && (
-          <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
-            <h2 className="font-semibold mt-0">
-              <span className="mr-1">📖</span> 요즘 읽고 있는 책
-            </h2>
-            <ul>
-              {currentlyReading.map((book) => (
-                <li key={book.slug}>
-                  <Link href={`/books`} className="block text-sm">
-                    {'"'}
-                    {book.title}
-                    {'"'}, {book.author}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+            {currentlyReading.length > 0 && (
+              <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
+                <h2 className="font-semibold mt-0">
+                  <span className="mr-1">📖</span> 요즘 읽고 있는 책
+                </h2>
+                <ul>
+                  {currentlyReading.map((book) => (
+                    <li key={book.slug}>
+                      <Link href={`/books`} className="block text-sm">
+                        {'"'}
+                        {book.title}
+                        {'"'}, {book.author}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </>
         )}
       </article>
     </>
