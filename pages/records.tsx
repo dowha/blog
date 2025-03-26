@@ -51,7 +51,11 @@ function Collapse({
         onClick={handleToggle}
         className="group w-full text-left pl-2 pr-4 py-2 focus:outline-none flex items-center justify-between"
       >
-        <h2 className={`${isOpen ? 'text-gray-800' : 'group-hover:text-gray-800'}`}>
+        <h2
+          className={`${
+            isOpen ? 'text-gray-800' : 'group-hover:text-gray-800'
+          }`}
+        >
           {title}
         </h2>
         <svg
@@ -75,14 +79,12 @@ function Collapse({
   )
 }
 
-
 export default function RecordsPage({ records }: Props) {
   const router = useRouter()
   const [openedSlug, setOpenedSlug] = useState<string | null>(null)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // ✅ `router.asPath`에서 해시 직접 추출
       const hashIndex = router.asPath.indexOf('#')
       const hasQuery = router.asPath.includes('?')
       let hash = ''
@@ -90,21 +92,27 @@ export default function RecordsPage({ records }: Props) {
       if (hashIndex !== -1) {
         hash = router.asPath.substring(hashIndex + 1)
         if (hasQuery) {
-          hash = hash.split('?')[0] // ✅ 해시에서 쿼리 파라미터 제거
+          hash = hash.split('?')[0]
         }
       }
 
       if (hash) {
-        setOpenedSlug(hash) // ✅ 해시가 있으면 Collapse 열기
+        setOpenedSlug(hash)
       }
     }
-  }, [router.asPath]) // ✅ URL 변경 시 실행
+  }, [router.asPath])
+
+  const openedRecord = openedSlug
+    ? records.find((record) => record.slug === openedSlug)
+    : null
+
+  const pageTitle = openedRecord ? `${openedRecord.title}` : 'Records'
 
   const descriptionText = ` 별도의 글로 쓰기에는 애매한 기록을 모아둡니다. 주로 개인적인 어떤
           목록과 그에 대한 짧은 소회를 담은 메모 따위입니다.`
   return (
     <>
-      <Seo title="Records" description={descriptionText} />
+      <Seo title={pageTitle} description={descriptionText} />
       <article className="records page-container">
         <h1 className="text-xl font-bold">Records</h1>
         <p className="mt-4 text-keepall">{descriptionText}</p>
