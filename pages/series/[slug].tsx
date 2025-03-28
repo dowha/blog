@@ -42,7 +42,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
               backgroundColor: `${series.theme_color}4D`,
             }}
           >
-            <span className="mr-1 self-start">{series.emoji}</span>{' '}
+            <span className="mr-1 self-start">{series.emoji}</span>
             {/* 이모지 아이콘 */}
             <div className="leading-relaxed text-keepall series-list">
               <MarkdownContent content={series.description} />
