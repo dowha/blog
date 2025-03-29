@@ -181,7 +181,7 @@ export default function Home() {
             {latestContent && (
               <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
                 <h2 className="font-semibold mt-0">
-                  <span className="mr-1">🌱</span> 최근 작성한 글
+                  <span className="mr-1">🌱</span> 최근에 쓴 글
                 </h2>
                 <ul>
                   <li>
