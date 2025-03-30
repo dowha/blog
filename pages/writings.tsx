@@ -135,7 +135,7 @@ export default function WritingPage({
                         <h2 className="full-title group">
                           {post.title}
                           {post.subtitle && (
-                            <span className="subtitle relative">
+                            <span className="subtitle relative text-sm">
                               {': '}
                               {post.subtitle}
                             </span>
