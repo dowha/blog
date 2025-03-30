@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Layout from '@/components/Layout'
 import Script from 'next/script'
+import { Toaster } from 'sonner' 
 
 // GTM ID 환경 변수
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || ''
@@ -40,6 +41,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       />
       <Layout>
         <Component {...pageProps} />
+        <Toaster richColors position="top-center" duration={1500} /> 
       </Layout>
     </>
   )

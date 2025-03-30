@@ -1,8 +1,19 @@
+'use client'
+
 import { Navigation } from '@/components/Navigation'
 import type React from 'react'
 import Footer from '@/components/Footer'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    if (typeof window !== 'undefined' && sessionStorage.getItem('showLuckyToast') === 'true') {
+      toast.success('짜잔!')
+      sessionStorage.removeItem('showLuckyToast')
+    }
+  }, [])
+
   return (
     <div>
       <div className="flex flex-col lg:flex-row">
