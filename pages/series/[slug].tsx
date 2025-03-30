@@ -62,7 +62,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
                     <span className="font-mono">{index + 1}</span>
                     {'.'}&nbsp;{post.title}
                     {post.subtitle && (
-                      <span className="subtitle relative">
+                      <span className="subtitle relative text-sm">
                         {': '}
                         {post.subtitle}
                       </span>
