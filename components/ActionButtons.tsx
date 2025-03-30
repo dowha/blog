@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { supabase } from '@/supabase'
 import Button from './Button'
+import { toast } from 'sonner'
 
 export const HomeButton = () => {
   const router = useRouter()
@@ -34,7 +35,6 @@ export const LoadMoreButton = ({
 export const LuckyPostButton = () => {
   const handleLuckyClick = async () => {
     try {
-      // posts와 books에서 slug 가져오기
       const { data: posts, error: postError } = await supabase
         .from('posts')
         .select('slug')
@@ -62,15 +62,19 @@ export const LuckyPostButton = () => {
       ]
 
       if (allContent.length === 0) {
-        alert('게시물이 없습니다.')
+        toast.error('공개된 콘텐츠가 없습니다.')
         return
       }
 
       const randomContent =
         allContent[Math.floor(Math.random() * allContent.length)]
+
+      sessionStorage.setItem('showLuckyToast', 'true')
       window.location.href = randomContent.slug
-    } catch (err) {
-      console.error('랜덤 콘텐츠 이동 실패:', err)
+    } catch {
+      toast.error(
+        '데이터를 불러오는 데 실패했습니다. 잠시 후 다시 시도해주세요.'
+      )
     }
   }
 
@@ -100,9 +104,9 @@ export const CopyLinkButton = ({
           : ''
 
       await navigator.clipboard.writeText(shareUrl)
-      alert('공유 링크가 복사되었습니다.')
-    } catch (err) {
-      console.error('URL 복사 실패:', err)
+      toast.success('공유 링크가 복사되었습니다.')
+    } catch {
+      toast.error('링크 복사에 실패했습니다.')
     }
   }
 
@@ -157,7 +161,6 @@ export const ClapButton = ({
     const userAgent = navigator.userAgent || null
     const referrerNow = document.referrer || null
 
-    // ✅ 최초 외부 referrer만 sessionStorage에 저장
     if (
       referrerNow &&
       !referrerNow.includes(window.location.hostname) &&
@@ -166,7 +169,8 @@ export const ClapButton = ({
       sessionStorage.setItem('initial_referrer', referrerNow)
     }
 
-    const initialReferrer = sessionStorage.getItem('initial_referrer') || referrerNow
+    const initialReferrer =
+      sessionStorage.getItem('initial_referrer') || referrerNow
     const anonymousId = getOrCreateAnonymousId()
 
     const { error } = await supabase.from('content_likes').insert([
@@ -180,8 +184,10 @@ export const ClapButton = ({
     ])
 
     if (error) {
-      alert('응원 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.')
+      toast.warning('과분한 응원 감사합니다. 잠시 쉬었다가 또 응원해 주세요.')
       setClaps((prev) => prev - 1)
+    } else {
+      toast.info('응원 감사합니다!')
     }
   }
 
