@@ -24,6 +24,8 @@ function Collapse({
   isLast,
   openedSlug,
   setOpenedSlug,
+  hoveredSlug,
+  setHoveredSlug,
 }: {
   title: string
   slug: string
@@ -31,9 +33,13 @@ function Collapse({
   isLast: boolean
   openedSlug: string | null
   setOpenedSlug: (slug: string | null) => void
+  hoveredSlug: string | null
+  setHoveredSlug: (slug: string | null) => void
 }) {
   const router = useRouter()
   const isOpen = openedSlug === slug
+  const isFocused = hoveredSlug === slug || openedSlug === slug
+  const shouldDim = (hoveredSlug !== null || openedSlug !== null) && !isFocused
 
   const handleToggle = () => {
     if (isOpen) {
@@ -47,34 +53,42 @@ function Collapse({
 
   return (
     <div className={`border-t border-gray-300 ${isLast ? 'border-b' : ''}`}>
-      <button
-        onClick={handleToggle}
-        className="group w-full text-left pl-2 pr-4 py-2 focus:outline-none flex items-center justify-between"
+      <div
+        className={`transition-opacity duration-300 ${
+          shouldDim ? 'opacity-40' : 'opacity-100'
+        }`}
+        onMouseEnter={() => setHoveredSlug(slug)}
+        onMouseLeave={() => setHoveredSlug(null)}
       >
-        <h2
-          className={`${
-            isOpen ? 'text-gray-800' : 'group-hover:text-gray-800'
-          }`}
+        <button
+          onClick={handleToggle}
+          className="group w-full text-left pl-2 pr-4 py-2 focus:outline-none flex items-center justify-between"
         >
-          {title}
-        </h2>
-        <svg
-          className={`h-4 w-4 transform transition-transform duration-200 ${
-            isOpen ? 'rotate-180' : ''
-          }`}
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path
-            fillRule="evenodd"
-            d="M10 12a1 1 0 01-.707-.293l-5-5a1 1 0 111.414-1.414L10 9.586l4.293-4.293a1 1 0 111.414 1.414l-5 5A1 1 0 0110 12z"
-            clipRule="evenodd"
-          />
-        </svg>
-      </button>
-      {isOpen && (
-        <div className="record-contents py-2 pl-2 pr-4">{children}</div>
-      )}
+          <h2
+            className={`${
+              isOpen ? 'text-gray-800' : 'group-hover:text-gray-800'
+            }`}
+          >
+            {title}
+          </h2>
+          <svg
+            className={`h-4 w-4 transform transition-transform duration-200 ${
+              isOpen ? 'rotate-180' : ''
+            }`}
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 12a1 1 0 01-.707-.293l-5-5a1 1 0 111.414-1.414L10 9.586l4.293-4.293a1 1 0 111.414 1.414l-5 5A1 1 0 0110 12z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
+        {isOpen && (
+          <div className="record-contents py-2 pl-2 pr-4">{children}</div>
+        )}
+      </div>
     </div>
   )
 }
@@ -82,6 +96,7 @@ function Collapse({
 export default function RecordsPage({ records }: Props) {
   const router = useRouter()
   const [openedSlug, setOpenedSlug] = useState<string | null>(null)
+  const [hoveredSlug, setHoveredSlug] = useState<string | null>(null)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -108,8 +123,8 @@ export default function RecordsPage({ records }: Props) {
 
   const pageTitle = openedRecord ? `${openedRecord.title}` : 'Records'
 
-  const descriptionText = ` 별도의 글로 쓰기에는 애매한 기록을 모아둡니다. 주로 개인적인 어떤
-          목록과 그에 대한 짧은 소회를 담은 메모 따위입니다.`
+  const descriptionText = `별도의 글로 쓰기에는 애매한 기록을 모아둡니다. 주로 개인적인 어떤 목록과 그에 대한 짧은 소회를 담은 메모 따위입니다.`
+
   return (
     <>
       <Seo title={pageTitle} description={descriptionText} />
@@ -125,6 +140,8 @@ export default function RecordsPage({ records }: Props) {
               isLast={index === records.length - 1}
               openedSlug={openedSlug}
               setOpenedSlug={setOpenedSlug}
+              hoveredSlug={hoveredSlug}
+              setHoveredSlug={setHoveredSlug}
             >
               <MarkdownContent content={record.content} />
               <CopyLinkButton slug={record.slug} isRecordPage />
