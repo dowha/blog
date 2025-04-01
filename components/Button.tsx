@@ -13,15 +13,20 @@ const Button: React.FC<ButtonProps> = ({
   label,
   showNumberOnlyOnMobile,
 }) => {
+  const accessibleLabel =
+    /*ariaLabel ||*/ label || (typeof icon === 'string' ? icon : '버튼')
   return (
-    <button onClick={onClick} className="default-button">
+    <button
+      onClick={onClick}
+      className="default-button"
+      aria-label={accessibleLabel}
+    >
       <span>{icon}</span>
       {label &&
         (showNumberOnlyOnMobile ? (
           <>
             <span className="inline sm:hidden">
               {label.match(/\(\d+\)/)?.[0] || label}{' '}
-              {/* 괄호 포함 숫자만 표시 */}
             </span>
             <span className="hidden sm:inline">{label}</span>
           </>

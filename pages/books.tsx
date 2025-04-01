@@ -40,10 +40,7 @@ export default function BooksPage() {
         )
 
       if (error) {
-        console.error('❌ Error fetching books:', error)
       } else {
-        console.log('📚 Books data:', data)
-
         const formattedData = data.map((book) => ({
           ...book,
           publicationYear: book.publication_year,
