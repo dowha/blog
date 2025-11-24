@@ -11,6 +11,7 @@ type Record = {
   content: string
   created_at: string
   slug: string
+  updated_at: string
 }
 
 type Props = {
@@ -156,9 +157,9 @@ export default function RecordsPage({ records }: Props) {
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const { data: records, error } = await supabase
     .from('records')
-    .select('title, content, created_at, slug')
+    .select('title, content, created_at, slug, updated_at')
     .eq('status', 'public')
-    .order('created_at', { ascending: false })
+    .order('updated_at', { ascending: false })
 
   if (error || !records) {
     return { props: { records: [] } }
