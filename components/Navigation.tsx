@@ -11,6 +11,7 @@ export function Navigation() {
     { name: 'series', path: '/series', related: '/series/' },
     { name: 'books', path: '/books', related: '/books/' },
     { name: 'records', path: '/records' },
+    { name: 'shorts', path: '/shorts' },
   ]
 
   return (
@@ -19,7 +20,7 @@ export function Navigation() {
       aria-label="메뉴"
     >
       <div className="space-y-2">
-        <ul className="lowercase flex flex-wrap gap-4 justify-center w-full lg:block lg:gap-0 lg:space-y-2 lg:text-right lg:top-6">
+        <ul className="lowercase flex flex-wrap gap-2 sm:gap-4 justify-center w-full text-sm lg:text-base lg:block lg:gap-0 lg:space-y-2 lg:text-right lg:top-6">
           {menuItems.map((item) => {
             const isActive =
               currentPath === item.path ||
@@ -28,9 +29,8 @@ export function Navigation() {
               <li key={item.path}>
                 <Link
                   href={item.path}
-                  className={`hover:text-[#0a85d1] ${
-                    isActive ? 'font-semibold text-gray-800' : ''
-                  }`}
+                  className={`hover:text-[#0a85d1] ${isActive ? 'font-semibold text-gray-800' : ''
+                    }`}
                   aria-current={isActive ? 'page' : undefined}
                 >
                   {item.name}
