@@ -43,7 +43,7 @@ export default async function handler(
   )
 
   allItems.forEach((item) => {
-    const isPost = posts.some((post) => post.slug === item.slug) // ✅ 해당 `slug`가 posts에 존재하는지 확인
+    const isPost = (posts || []).some((post) => post.slug === item.slug) // ✅ 해당 `slug`가 posts에 존재하는지 확인
     feed.item({
       title: item.title,
       description: item.content ? item.content.slice(0, 100) + '...' : '',
