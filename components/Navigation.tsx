@@ -20,7 +20,7 @@ export function Navigation() {
       aria-label="메뉴"
     >
       <div className="space-y-2">
-        <ul className="lowercase flex flex-wrap gap-2 sm:gap-4 justify-center w-full text-sm lg:text-base lg:block lg:gap-0 lg:space-y-2 lg:text-right lg:top-6">
+        <ul className="lowercase flex flex-wrap gap-2 sm:gap-4 justify-center w-full text-sm lg:text-base lg:block lg:gap-2 lg:space-y-4 lg:text-right lg:top-6">
           {menuItems.map((item) => {
             const isActive =
               currentPath === item.path ||
