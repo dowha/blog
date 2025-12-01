@@ -35,7 +35,7 @@ export default function ShortsPage() {
       const { data, error } = await supabase
         .from('shorts')
         .select('id, short_id, content, created_at, related_links')
-        .eq('status', 'public')
+        .eq('is_published', true)
         .order('created_at', { ascending: false })
 
       if (!data || error) {

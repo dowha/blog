@@ -22,23 +22,28 @@ export async function getStaticProps() {
     .select(
       'title, subtitle, created_at, slug, is_external, external_url, source_name'
     )
-    .eq('status', 'public')
+    .eq('is_published', true)
     .order('created_at', { ascending: false })
 
   if (error) {
     console.error('Error fetching posts:', error)
-    return { props: { initialPosts: [] }, revalidate: 60 }
+    return { props: { initialPosts: [], allPosts: [] }, revalidate: 60 }
   }
 
+  const safePosts = posts || []
+
   return {
-    props: { initialPosts: posts.slice(0, LIMIT), allPosts: posts },
+    props: {
+      initialPosts: safePosts.slice(0, LIMIT),
+      allPosts: safePosts,
+    },
     revalidate: 60,
   }
 }
 
 export default function WritingPage({
-  initialPosts,
-  allPosts,
+  initialPosts = [],
+  allPosts = [],
 }: {
   initialPosts: Post[]
   allPosts: Post[]
