@@ -100,7 +100,7 @@ export default function ShortsPage() {
   }
 
   const handleCopyLink = async (shortId: number) => {
-    const url = `${window.location.origin}${window.location.pathname}#${shortId}`
+    const url = `${window.location.origin}/shorts#${shortId}?type=share`
     try {
       await navigator.clipboard.writeText(url)
       toast.success('이 Shorts 링크가 복사되었습니다.')
