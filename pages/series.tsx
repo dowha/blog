@@ -59,7 +59,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   const { data: series, error } = await supabase
     .from('series')
     .select('series_name, slug, theme_color, emoji') // 새로운 컬럼 포함
-    .eq('status', 'public')
+    .eq('is_published', true)
 
   if (error || !series) {
     return { props: { series: [] } }

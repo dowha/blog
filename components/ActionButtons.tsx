@@ -38,7 +38,7 @@ export const LuckyPostButton = () => {
       const { data: posts, error: postError } = await supabase
         .from('posts')
         .select('slug')
-        .eq('status', 'public')
+        .eq('is_published', true)
         .eq('is_external', false)
 
       const { data: books, error: bookError } = await supabase
@@ -94,13 +94,12 @@ export const CopyLinkButton = ({
     try {
       const shareUrl =
         typeof window !== 'undefined'
-          ? `${window.location.origin}${
-              isBookPage
-                ? `/books/${slug}?type=share`
-                : isRecordPage
-                ? `/records#${slug}?type=share`
-                : `/posts/${slug}?type=share`
-            }`
+          ? `${window.location.origin}${isBookPage
+            ? `/books/${slug}?type=share`
+            : isRecordPage
+              ? `/records#${slug}?type=share`
+              : `/posts/${slug}?type=share`
+          }`
           : ''
 
       await navigator.clipboard.writeText(shareUrl)

@@ -9,7 +9,7 @@ async function fetchLatestSingleContent() {
   const { data: latestPost } = await supabase
     .from('posts')
     .select('title, slug, created_at')
-    .eq('status', 'public')
+    .eq('is_published', true)
     .eq('is_external', false)
     .order('created_at', { ascending: false })
     .limit(1)
