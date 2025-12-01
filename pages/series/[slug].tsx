@@ -10,7 +10,7 @@ type SeriesRecord = {
   slug: string
   theme_color: string
   description: string
-  status: string
+  is_published: boolean
   emoji: string
 }
 
@@ -95,7 +95,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const { data: seriesData, error } = await supabase
     .from('series')
     .select('slug')
-    .eq('status', 'public')
+    .eq('is_published', true)
 
   if (error) {
     console.error('시리즈 슬러그를 가져오는 중 오류 발생:', error)
@@ -121,7 +121,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
     .from('series')
     .select('*')
     .eq('slug', slug)
-    .eq('status', 'public')
+    .eq('is_published', true)
     .single()
 
   if (seriesError || !seriesData) {

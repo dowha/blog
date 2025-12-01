@@ -6,11 +6,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // ✅ Supabase에서 `status = "public"` && `is_external = false` 인 `posts` 데이터 가져오기
+  // ✅ Supabase에서 `is_published = true` && `is_external = false` 인 `posts` 데이터 가져오기
   const { data: posts, error: postsError } = await supabase
     .from('posts')
     .select('title, slug, created_at, content')
-    .eq('status', 'public') // ✅ 공개된 글만
+    .eq('is_published', true) // ✅ 공개된 글만
     .eq('is_external', false) // ✅ 외부 글 제외
     .order('created_at', { ascending: false }) // ✅ 최신순 정렬
     .limit(5) // ✅ 최신 5개만 가져오기

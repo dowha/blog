@@ -55,9 +55,8 @@ function Collapse({
   return (
     <div className={`border-t border-gray-300 ${isLast ? 'border-b' : ''}`}>
       <div
-        className={`transition-opacity duration-300 ${
-          shouldDim ? 'opacity-40' : 'opacity-100'
-        }`}
+        className={`transition-opacity duration-300 ${shouldDim ? 'opacity-40' : 'opacity-100'
+          }`}
         onMouseEnter={() => setHoveredSlug(slug)}
         onMouseLeave={() => setHoveredSlug(null)}
       >
@@ -66,16 +65,14 @@ function Collapse({
           className="group w-full text-left pl-2 pr-4 py-2 focus:outline-none flex items-center justify-between"
         >
           <h2
-            className={`${
-              isOpen ? 'text-gray-800' : 'group-hover:text-gray-800'
-            }`}
+            className={`${isOpen ? 'text-gray-800' : 'group-hover:text-gray-800'
+              }`}
           >
             {title}
           </h2>
           <svg
-            className={`h-4 w-4 transform transition-transform duration-200 ${
-              isOpen ? 'rotate-180' : ''
-            }`}
+            className={`h-4 w-4 transform transition-transform duration-200 ${isOpen ? 'rotate-180' : ''
+              }`}
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -158,7 +155,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   const { data: records, error } = await supabase
     .from('records')
     .select('title, content, created_at, slug, updated_at')
-    .eq('status', 'public')
+    .eq('is_published', true)
     .order('updated_at', { ascending: false })
 
   if (error || !records) {

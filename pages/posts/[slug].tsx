@@ -58,9 +58,8 @@ function SeriesPosts({
         </div>
         {/* svg 아이콘은 오른쪽 끝에 위치 */}
         <svg
-          className={`h-4 w-4 transform transition-transform duration-200 ${
-            expanded ? 'rotate-180' : ''
-          }`}
+          className={`h-4 w-4 transform transition-transform duration-200 ${expanded ? 'rotate-180' : ''
+            }`}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -91,9 +90,8 @@ function SeriesPosts({
             <div key={p.slug} className="flex items-start">
               <a
                 href={`/posts/${p.slug}`}
-                className={`no-underline ${
-                  p.slug === post.slug ? 'font-semibold' : ''
-                }`}
+                className={`no-underline ${p.slug === post.slug ? 'font-semibold' : ''
+                  }`}
               >
                 <span className="font-mono">{index + 1}</span>
                 {'.'}&nbsp;{p.title}
@@ -221,7 +219,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const { data: posts } = await supabase
     .from('posts')
     .select('slug')
-    .eq('status', 'public')
+    .eq('is_published', true)
     .eq('is_external', false)
 
   const paths = posts?.map((post) => ({ params: { slug: post.slug } })) || []
@@ -237,7 +235,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     .from('posts')
     .select('*, series:series_id (series_name, slug, description, theme_color)')
     .eq('slug', params.slug)
-    .eq('status', 'public')
+    .eq('is_published', true)
     .eq('is_external', false)
     .single()
 
@@ -260,7 +258,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       .from('posts')
       .select('title, slug, subtitle')
       .eq('series_id', post.series_id)
-      .eq('status', 'public')
+      .eq('is_published', true)
 
     posts = seriesPosts || []
   }
@@ -268,7 +266,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { data: prevPostData } = await supabase
     .from('posts')
     .select('slug, title')
-    .eq('status', 'public')
+    .eq('is_published', true)
     .eq('is_external', false)
     .lt('created_at', post.created_at)
     .order('created_at', { ascending: false })
@@ -278,7 +276,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { data: nextPostData } = await supabase
     .from('posts')
     .select('slug, title')
-    .eq('status', 'public')
+    .eq('is_published', true)
     .eq('is_external', false)
     .gt('created_at', post.created_at)
     .order('created_at', { ascending: true })
