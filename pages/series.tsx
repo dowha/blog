@@ -23,33 +23,35 @@ export default function SeriesPage({ series }: Props) {
       <article className="series-list page-container">
         <h1 className="text-xl font-bold">Series</h1>
         <p className="mt-4 text-keepall">{descriptionText}</p>
-        <div className="mt-6 border-t border-gray-300">
-          {series.map((item) => (
-            <Link
-              key={item.slug}
-              href={`/series/${item.slug}`}
-              className="relative flex items-center justify-between border-b border-gray-300 py-2 font-semibold no-underline transition duration-300 group"
-            >
-              {/* Hover 시 배경색을 적용할 오버레이 */}
-              <span
-                className="absolute inset-0 transition duration-300 opacity-0 group-hover:opacity-100"
-                style={{
-                  backgroundColor: item.theme_color || 'transparent',
-                }}
-              ></span>
+        {series.length > 0 && (
+          <div className="mt-6 border-t border-gray-300">
+            {series.map((item) => (
+              <Link
+                key={item.slug}
+                href={`/series/${item.slug}`}
+                className="relative flex items-center justify-between border-b border-gray-300 py-2 font-semibold no-underline transition duration-300 group"
+              >
+                {/* Hover 시 배경색을 적용할 오버레이 */}
+                <span
+                  className="absolute inset-0 transition duration-300 opacity-0 group-hover:opacity-100"
+                  style={{
+                    backgroundColor: item.theme_color || 'transparent',
+                  }}
+                ></span>
 
-              {/* 시리즈 이름 */}
-              <h2 className="pl-2 pr-4 relative z-10 group-hover:text-gray-800">
-                <span className="mr-1">{item.emoji}</span>{item.series_name}
-              </h2>
+                {/* 시리즈 이름 */}
+                <h2 className="pl-2 pr-4 relative z-10 group-hover:text-gray-800">
+                  <span className="mr-1">{item.emoji}</span>{item.series_name}
+                </h2>
 
-              {/* 오른쪽 화살표 (기본적으로 숨겨져 있다가 hover 시 표시) */}
-              <span className="absolute group-hover:text-gray-800 right-4 opacity-0 group-hover:opacity-100 transition duration-300">
-                →
-              </span>
-            </Link>
-          ))}
-        </div>
+                {/* 오른쪽 화살표 (기본적으로 숨겨져 있다가 hover 시 표시) */}
+                <span className="absolute group-hover:text-gray-800 right-4 opacity-0 group-hover:opacity-100 transition duration-300">
+                  →
+                </span>
+              </Link>
+            ))}
+          </div>
+        )}
       </article>
     </>
   )
