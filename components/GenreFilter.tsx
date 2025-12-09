@@ -11,17 +11,6 @@ export default function GenreFilter({
   onChange: (genre: string) => void
 }) {
   const [genres, setGenres] = useState<string[]>(['전체'])
-
-  // ✅ 페이지 로드 시 URL의 해시값을 읽어서 selectedGenre 설정
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.location.hash) {
-      const hashGenre = decodeURIComponent(window.location.hash.substring(1))
-      if (hashGenre) {
-        onChange(hashGenre) // ✅ 안전하게 실행
-      }
-    }
-  }, [onChange]) // ✅ onChange 추가하여 경고 해결
-
   useEffect(() => {
     async function fetchGenres() {
       const { data, error } = await supabase.from('books').select('genre')
@@ -37,15 +26,9 @@ export default function GenreFilter({
     fetchGenres()
   }, [])
 
-  // ✅ 버튼 클릭 시 URL 해시 업데이트
+  // ✅ 버튼 클릭 시 onChange만 호출 (URL 변경은 부모 컴포넌트에서 처리)
   const handleGenreChange = (genre: string) => {
     onChange(genre)
-
-    if (genre === '전체') {
-      window.history.pushState(null, '', window.location.pathname) // ✅ "전체" 선택 시 해시 제거
-    } else {
-      window.location.hash = encodeURIComponent(genre) // ✅ 다른 장르는 해시 추가
-    }
   }
 
   return (
@@ -54,11 +37,10 @@ export default function GenreFilter({
         {genres.map((genre) => (
           <button
             key={genre}
-            className={`px-2 py-1 text-xs rounded-md cursor-pointer ${
-              selectedGenre === genre
-                ? 'bg-gray-800 text-white'
-                : 'border border-gray-200 text-gray-600 hover:bg-gray-100'
-            }`}
+            className={`px-2 py-1 text-xs rounded-md cursor-pointer ${selectedGenre === genre
+              ? 'bg-gray-800 text-white'
+              : 'border border-gray-200 text-gray-600 hover:bg-gray-100'
+              }`}
             onClick={() => handleGenreChange(genre)}
           >
             {genre === '전체' ? genre : `${genre}`}

@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/supabase'
 import BookCard from '@/components/ReadingCard'
 import GenreFilter from '@/components/GenreFilter'
 import Seo from '@/components/Seo'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { LoadMoreButton } from '@/components/ActionButtons'
 import LoadingSpinner from '@/components/LoadingSpinner' // ✅ 추가
@@ -22,6 +23,7 @@ interface Book {
 }
 
 export default function BooksPage() {
+  const router = useRouter()
   const [books, setBooks] = useState<Book[]>([])
   const [filteredBooks, setFilteredBooks] = useState<Book[]>([])
   const [selectedGenre, setSelectedGenre] = useState('전체')
@@ -58,7 +60,8 @@ export default function BooksPage() {
         })
 
         setBooks(sortedData)
-        setFilteredBooks(sortedData)
+
+        setBooks(sortedData)
       }
       setIsLoading(false) // ✅ 로딩 종료
     }
@@ -66,15 +69,61 @@ export default function BooksPage() {
     fetchBooks()
   }, [])
 
-  const handleFilterChange = (genre: string) => {
+  // ✅ books 데이터가 로드된 후 URL hash 리스너 설정
+  useEffect(() => {
+    if (books.length === 0) return
+
+    // URL 해시값을 읽어 필터 상태 업데이트 함수
+    const handleHashChange = () => {
+      const hash = window.location.hash
+      let initialGenre = '전체'
+
+      if (hash) {
+        try {
+          // 한글 해시 깨짐 방지를 위한 디코딩 (# 제거 후 디코딩)
+          initialGenre = decodeURIComponent(hash.replace('#', ''))
+        } catch (e) {
+          console.error('Hash decoding failed:', e)
+        }
+      }
+
+      setSelectedGenre(initialGenre)
+
+      if (initialGenre === '전체') {
+        setFilteredBooks(books)
+      } else {
+        setFilteredBooks(books.filter((book) => book.genre === initialGenre))
+      }
+    }
+
+    // 초기 실행
+    handleHashChange()
+
+    // 뒤로가기/앞으로가기 등 URL 변경 감지
+    window.addEventListener('hashchange', handleHashChange)
+    window.addEventListener('popstate', handleHashChange)
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange)
+      window.removeEventListener('popstate', handleHashChange)
+    }
+  }, [books])
+
+
+
+  const handleFilterChange = useCallback((genre: string) => {
     setSelectedGenre(genre)
     setVisibleCount(LOAD_COUNT) // ✅ 필터 변경 시 초기화
     if (genre === '전체') {
+      // '전체'일 때는 해시 제거 (replace 사용하여 URL 깔끔하게 유지)
+      router.replace('/books', undefined, { shallow: true })
       setFilteredBooks(books)
     } else {
+      // 장르 선택 시 URL에 해시 추가 (예: #소설)
+      router.push(`/books#${genre}`, undefined, { shallow: true })
       setFilteredBooks(books.filter((book) => book.genre === genre))
     }
-  }
+  }, [books, router])
 
   const handleLoadMore = () => {
     setVisibleCount((prev) => prev + LOAD_COUNT) // ✅ "더 보기" 버튼 기능
