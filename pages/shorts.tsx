@@ -52,44 +52,45 @@ export default function ShortsPage() {
 
   // 2. 해시 변경 감지 및 스크롤/하이라이팅 처리
   useEffect(() => {
-    // 데이터가 없으면 로직 수행 불가
     if (shorts.length === 0) return
 
     const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '')
+      // 1. 해시값 가져오기 (# 제거)
+      const rawHash = window.location.hash.replace('#', '')
 
-      if (hash) {
-        const targetIndex = shorts.findIndex((item: Short) => String(item.short_id) === hash)
+      // 2. [핵심] ? 뒤의 쿼리 파라미터가 붙어 있다면 제거하여 '순수 ID'만 추출
+      // 예: '123?type=share' -> '123'
+      // 예: '123' -> '123'
+      // 이렇게 해야 뒤에 무엇이 붙든 상관없이 항상 ID 매칭이 성공합니다.
+      const targetId = rawHash.split('?')[0]
+
+      if (targetId) {
+        // 데이터와 비교 (문자열 변환 등으로 안전하게 비교)
+        const targetIndex = shorts.findIndex((item: Short) => String(item.short_id) === targetId)
 
         if (targetIndex !== -1) {
-          // 타겟이 현재 보이는 범위 밖에 있다면 더 로드
           if (targetIndex >= visibleCount) {
             setVisibleCount(targetIndex + 5)
           }
 
-          setHighlightedId(hash)
+          setHighlightedId(targetId)
 
-          // DOM 렌더링 시간을 벌어주기 위한 지연
           setTimeout(() => {
-            const element = document.getElementById(hash)
+            // ID로 요소 찾기 (여기서 순수 ID인 targetId가 들어가야 함)
+            const element = document.getElementById(targetId)
             if (element) {
               element.scrollIntoView({ behavior: 'smooth', block: 'center' })
             }
           }, 300)
         }
       } else {
-        // 해시가 지워지면 하이라이트 해제
         setHighlightedId(null)
       }
     }
 
-    // A. 초기 로드 시 실행 (새 탭 진입 등)
     handleHashChange()
-
-    // B. 해시 변경 이벤트 리스너 등록 (같은 탭에서 주소 변경 시)
     window.addEventListener('hashchange', handleHashChange)
 
-    // Clean-up 함수
     return () => {
       window.removeEventListener('hashchange', handleHashChange)
     }
@@ -144,7 +145,10 @@ export default function ShortsPage() {
   const hasTodayPosts = groupedShorts.length > 0 && getDayLabel(groupedShorts[0].dateLabel) === '( Today )'
 
   const ThinkingBubble = () => (
-    <div className="flex items-end gap-2 group">
+    <div
+      className="flex items-end gap-2 group cursor-pointer"
+      onClick={() => window.location.href = '/shorts'}
+    >
       <div className="relative bg-gray-100 rounded-3xl px-5 py-3 text-gray-600 transition-colors duration-300 hover:bg-gray-200">
         <div className="flex items-center gap-1 h-6">
           <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
