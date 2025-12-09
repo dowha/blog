@@ -110,7 +110,7 @@ export default function ShortsPage() {
     }
   }
 
-  const descriptionText = `280자 이내의 짧은 생각, 메모, 인용문 등을 씁니다.`
+  const descriptionText = `280자 이내의 짧은 생각, 메모, 인용문 등을 씁니다. 언젠가 더 긴 글이 되기도 하겠죠.`
 
   const visibleItems = shorts.slice(0, visibleCount)
 
