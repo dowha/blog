@@ -135,7 +135,7 @@ export default function ShortsPage() {
   const getDayLabel = (dateLabel: string) => {
     if (dateLabel === todayLabel) return '( Today )'
     if (dateLabel === yesterdayLabel) return '( Yesterday )'
-    if (dateLabel === dayBeforeYesterdayLabel) return '( Day Before Yesterday )'
+    if (dateLabel === dayBeforeYesterdayLabel) return '( 2 Days Ago )'
 
     // "2025.03.22. (Wed)" -> "( 2025.03.22. Wed )" 변환
     return `( ${dateLabel.replace(/[()]/g, '')} )`
