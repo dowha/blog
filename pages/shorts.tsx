@@ -68,7 +68,7 @@ export default function ShortsPage() {
         return
       }
 
-      setShorts(shortsData as any)
+      setShorts(shortsData as unknown as Short[])
       setIsLoading(false)
     }
 
