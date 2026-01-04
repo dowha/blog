@@ -154,7 +154,7 @@
 
   /* ✅ 리스트 스타일 */
   main ul {
-    @apply list-disc pl-5 mt-6;
+    @apply list-disc pl-5;
   }
 
   main li {
@@ -162,7 +162,7 @@
   }
 
   main ol {
-    @apply list-decimal pl-5 mt-6;
+    @apply list-decimal pl-5;
   }
 
   /* ✅ 본문 스타일 */
