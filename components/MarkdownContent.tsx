@@ -55,18 +55,24 @@ const customComponents: ExtendedComponents = {
     return <p>{children}</p>
   },
 
-  img: ({ src = '', alt = '이미지' }) => (
-    <div className="flex justify-center my-4">
-      <Image
-        src={src}
-        alt={alt}
-        width={0}
-        height={0}
-        sizes="100vw"
-        className="w-full h-auto max-w-[800px] rounded-lg"
-      />
-    </div>
-  ),
+  img: ({ src = '', alt = '이미지' }) => {
+    // react-markdown의 src 타입이 string | Blob이므로, next/image를 위해 string으로 변환
+    const imageSrc = typeof src === 'string' ? src : ''
+    if (!imageSrc) return null
+
+    return (
+      <div className="flex justify-center my-4">
+        <Image
+          src={imageSrc}
+          alt={alt}
+          width={0}
+          height={0}
+          sizes="100vw"
+          className="w-full h-auto max-w-[800px] rounded-lg"
+        />
+      </div>
+    )
+  },
 
   iframe: ({ style, ...props }: ComponentProps<'iframe'>) => {
     const filteredProps = filterProps(props)
