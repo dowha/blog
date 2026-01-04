@@ -24,6 +24,23 @@ type Short = {
   } | null
 }
 
+type ShortResponse = {
+  id: string
+  short_id: number
+  content: string
+  created_at: string
+  related_post_id: string | null
+  related_post: {
+    title: string
+    slug: string
+  }[] | null
+  related_book_id: string | null
+  related_book: {
+    title: string
+    slug: string
+  }[] | null
+}
+
 type GroupedShorts = {
   dateLabel: string
   shorts: Short[]
@@ -68,7 +85,14 @@ export default function ShortsPage() {
         return
       }
 
-      setShorts(shortsData as any)
+      // DB 응답(배열 형태의 relation)을 프론트엔드 타입(단일 객체 형태)으로 변환
+      const formattedShorts: Short[] = (shortsData as ShortResponse[]).map((item) => ({
+        ...item,
+        related_post: item.related_post?.[0] || null,
+        related_book: item.related_book?.[0] || null,
+      }))
+
+      setShorts(formattedShorts)
       setIsLoading(false)
     }
 
