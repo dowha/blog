@@ -86,11 +86,21 @@ export default function ShortsPage() {
       }
 
       // DB 응답(배열 형태의 relation)을 프론트엔드 타입(단일 객체 형태)으로 변환
-      const formattedShorts: Short[] = (shortsData as ShortResponse[]).map((item) => ({
-        ...item,
-        related_post: item.related_post?.[0] || null,
-        related_book: item.related_book?.[0] || null,
-      }))
+      const formattedShorts: Short[] = (shortsData as ShortResponse[]).map((item) => {
+        const relatedPostData = Array.isArray(item.related_post)
+          ? item.related_post[0]
+          : item.related_post
+
+        const relatedBookData = Array.isArray(item.related_book)
+          ? item.related_book[0]
+          : item.related_book
+
+        return {
+          ...item,
+          related_post: relatedPostData || null,
+          related_book: relatedBookData || null,
+        }
+      })
 
       setShorts(formattedShorts)
       setIsLoading(false)
