@@ -12,7 +12,16 @@ type Short = {
   short_id: number
   content: string
   created_at: string
-  related_links: string[]
+  related_post_id: string | null
+  related_post: {
+    title: string
+    slug: string
+  } | null
+  related_book_id: string | null
+  related_book: {
+    title: string
+    slug: string
+  } | null
 }
 
 type GroupedShorts = {
@@ -33,23 +42,42 @@ export default function ShortsPage() {
     async function fetchShorts() {
       setIsLoading(true)
 
-      const { data, error } = await supabase
+      const { data: shortsData, error: shortsError } = await supabase
         .from('shorts')
-        .select('id, short_id, content, created_at, related_links')
+        .select(`
+          id, 
+          short_id, 
+          content, 
+          created_at, 
+          related_post_id,
+          related_post:posts!related_post_id (
+            title,
+            slug
+          ),
+          related_book_id,
+          related_book:books!related_book_id (
+            title,
+            slug
+          )
+        `)
         .eq('is_published', true)
         .order('created_at', { ascending: false })
 
-      if (!data || error) {
+      if (!shortsData || shortsError) {
         setIsLoading(false)
         return
       }
 
-      setShorts(data)
+      setShorts(shortsData as any)
       setIsLoading(false)
     }
 
     fetchShorts()
   }, [])
+
+  // ... (skip lines 68-259)
+
+
 
   // 2. 해시 변경 감지 및 스크롤/하이라이팅 처리
   useEffect(() => {
@@ -243,25 +271,42 @@ export default function ShortsPage() {
                                 </>
                               )}
 
-                              {item.related_links && item.related_links.length > 0 && (
+                              {(item.related_post || item.related_book) && (
                                 <div className="mt-2 flex flex-wrap gap-2">
-                                  {item.related_links.map((link, i) => (
+                                  {item.related_post && (
                                     <a
-                                      key={i}
-                                      href={link}
+                                      href={`/posts/${item.related_post.slug}`}
                                       target="_self"
                                       onClick={(e) => e.stopPropagation()}
                                       className={`
-                                        text-[11px] px-1.5 py-0.5 rounded transition-colors no-underline border
+                                        text-[11px] px-1.5 py-0.5 rounded transition-colors no-underline border flex items-center gap-1
                                         ${isHighlighted
                                           ? 'bg-white/20 border-white/30 text-white hover:bg-white/30'
-                                          : 'bg-white/50 border-gray-200 text-gray-400 hover:text-gray-600'
+                                          : 'bg-white/50 border-gray-200 text-gray-500 hover:text-gray-700'
                                         }
                                       `}
                                     >
-                                      {item.related_links.length === 1 ? '연관 글' : `연관 글(${i + 1})`}
+                                      <span className="opacity-70">Related:</span>
+                                      <span className="font-medium">{item.related_post.title}</span>
                                     </a>
-                                  ))}
+                                  )}
+                                  {item.related_book && (
+                                    <a
+                                      href={`/books/${item.related_book.slug}`}
+                                      target="_self"
+                                      onClick={(e) => e.stopPropagation()}
+                                      className={`
+                                        text-[11px] px-1.5 py-0.5 rounded transition-colors no-underline border flex items-center gap-1
+                                        ${isHighlighted
+                                          ? 'bg-white/20 border-white/30 text-white hover:bg-white/30'
+                                          : 'bg-white/50 border-gray-200 text-gray-500 hover:text-gray-700'
+                                        }
+                                      `}
+                                    >
+                                      <span className="opacity-70">Related:</span>
+                                      <span className="font-medium">{item.related_book.title}</span>
+                                    </a>
+                                  )}
                                 </div>
                               )}
                             </div>
