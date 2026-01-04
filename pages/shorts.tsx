@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ComponentProps } from 'react'
 import { supabase } from '@/supabase'
 import Seo from '@/components/Seo'
 import { LoadMoreButton } from '@/components/ActionButtons'
@@ -221,7 +221,7 @@ export default function ShortsPage() {
                                   allowedElements={['strong', 'em', 'a']}
                                   unwrapDisallowed={true}
                                   components={{
-                                    a: ({ node, ...props }: any) => (
+                                    a: ({ node: _node, ...props }: ComponentProps<'a'> & { node?: unknown }) => (
                                       <a
                                         {...props}
                                         target="_blank"
@@ -230,8 +230,8 @@ export default function ShortsPage() {
                                           e.stopPropagation()
                                         }}
                                         className={`underline decoration-1 underline-offset-2 transition-colors ${isHighlighted
-                                          ? 'text-white decoration-white/50 hover:decoration-white'
-                                          : 'text-blue-500 decoration-blue-500/30 hover:decoration-blue-500'
+                                            ? 'text-white decoration-white/50 hover:decoration-white'
+                                            : 'text-blue-500 decoration-blue-500/30 hover:decoration-blue-500'
                                           }`}
                                       />
                                     ),
