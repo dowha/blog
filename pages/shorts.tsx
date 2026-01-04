@@ -5,6 +5,7 @@ import { LoadMoreButton } from '@/components/ActionButtons'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { format, subDays } from 'date-fns'
 import { toast } from 'sonner'
+import ReactMarkdown from 'react-markdown'
 
 type Short = {
   id: string
@@ -207,7 +208,7 @@ export default function ShortsPage() {
                             <div
                               onClick={() => handleCopyLink(item.short_id)}
                               className={`
-                                relative px-5 py-3 leading-relaxed max-w-[85%] whitespace-pre-wrap 
+                                relative px-5 py-3 leading-relaxed max-w-[85%] whitespace-pre-wrap
                                 transition-all duration-500 cursor-pointer group/bubble
                                 ${isHighlighted
                                   ? 'bg-[#0A84FF] text-white hover:bg-[#006DFF] rounded-2xl'
@@ -215,7 +216,30 @@ export default function ShortsPage() {
                                 }
                               `}
                             >
-                              {item.content}
+                              <div className="markdown-content">
+                                <ReactMarkdown
+                                  allowedElements={['strong', 'em', 'a']}
+                                  unwrapDisallowed={true}
+                                  components={{
+                                    a: ({ node, ...props }: any) => (
+                                      <a
+                                        {...props}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={(e) => {
+                                          e.stopPropagation()
+                                        }}
+                                        className={`underline decoration-1 underline-offset-2 transition-colors ${isHighlighted
+                                          ? 'text-white decoration-white/50 hover:decoration-white'
+                                          : 'text-blue-500 decoration-blue-500/30 hover:decoration-blue-500'
+                                          }`}
+                                      />
+                                    ),
+                                  }}
+                                >
+                                  {item.content}
+                                </ReactMarkdown>
+                              </div>
 
                               {/* 하이라이트된 경우: 뾰족한 꼬리, 그 외: 동글동글한 꼬리 */}
                               {isHighlighted ? (
