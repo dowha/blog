@@ -221,7 +221,7 @@ export default function ShortsPage() {
                                   allowedElements={['strong', 'em']}
                                   unwrapDisallowed={true}
                                 >
-                                  {item.content}
+                                  {item.content.replace(/^(\s*)- /gm, '$1\\- ')}
                                 </ReactMarkdown>
                               </div>
 
