@@ -2,8 +2,8 @@ name: 'IndexNow URL Submission'
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # 매일 한국 시간 오전 9시(UTC 00:00)에 실행
-  workflow_dispatch:  # 수동 실행 가능
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   submit-urls:
@@ -36,30 +36,26 @@ jobs:
           if not indexnow_key:
               raise ValueError('❌ ERROR: INDEXNOW_KEY is not set!')
 
-          sitemap_url = 'https://blog.dowha.kim/sitemap.xml'
-
-          # 브라우저처럼 보이기 위한 User-Agent 추가
-          headers = {
-              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
-          }
-
-          # IndexNow 엔드포인트 리스트
-          endpoints = {
-              "IndexNow": "https://api.indexnow.org/indexnow?url={url}&key=" + indexnow_key,
-              "Bing": "https://www.bing.com/indexnow?url={url}&key=" + indexnow_key,
-              "Naver": "https://searchadvisor.naver.com/indexnow?url={url}&key=" + indexnow_key
-          }
+          # 1. 파일 경로 설정 (블로그 소스 내 sitemap.xml 위치 확인 필요)
+          # 보통 루트에 있다면 'sitemap.xml', 특정 폴더에 있다면 'public/sitemap.xml' 등
+          sitemap_path = 'sitemap.xml' 
 
           try:
-              # 최신 사이트맵 가져오기 (headers 추가)
-              response = requests.get(sitemap_url, headers=headers)
-              if response.status_code != 200:
-                  print(f'❌ Failed to retrieve sitemap: {response.status_code}')
-                  print(f'Response Content: {response.text[:500]}') # 에러 내용 확인용
-                  exit(1)
+              # 2. 인터넷 요청 대신 로컬 파일 읽기
+              if not os.path.exists(sitemap_path):
+                  # 만약 루트에 없다면 다른 흔한 경로(public/ 등)도 확인 시도
+                  possible_paths = ['public/sitemap.xml', '_site/sitemap.xml']
+                  for p in possible_paths:
+                      if os.path.exists(p):
+                          sitemap_path = p
+                          break
+              
+              print(f'🔍 Reading sitemap from: {sitemap_path}')
+              with open(sitemap_path, 'r', encoding='utf-8') as f:
+                  sitemap_content = f.read()
 
               # XML 파싱
-              root = ET.fromstring(response.content)
+              root = ET.fromstring(sitemap_content)
               namespace = {'ns': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
               urls = [url.text for url in root.findall('ns:url/ns:loc', namespaces=namespace)]
 
@@ -67,18 +63,24 @@ jobs:
                   print("⚠️ No URLs found in sitemap.")
                   exit(0)
 
-              # 최신 URL 몇 개만 선택 (최근 5개)
+              # 최신 URL 5개 선택
               latest_urls = urls[-5:]
+
+              # IndexNow 전송 로직 (이 부분은 외부 API 호출이므로 requests 유지)
+              endpoints = {
+                  "IndexNow": "https://api.indexnow.org/indexnow?url={url}&key=" + indexnow_key,
+                  "Bing": "https://www.bing.com/indexnow?url={url}&key=" + indexnow_key,
+                  "Naver": "https://searchadvisor.naver.com/indexnow?url={url}&key=" + indexnow_key
+              }
 
               for url in latest_urls:
                   for name, endpoint in endpoints.items():
                       full_url = endpoint.format(url=url)
-                      # API 전송 시에도 headers를 포함하는 것이 안전함
-                      res = requests.get(full_url, headers=headers)
+                      res = requests.get(full_url)
                       if res.status_code == 200:
                           print(f'✅ {name} 성공: {url}')
                       else:
-                          print(f'❌ {name} 실패: {url}, 상태 코드: {res.status_code}, 응답: {res.text}')
+                          print(f'❌ {name} 실패: {url}, 상태 코드: {res.status_code}')
 
           except Exception as e:
               print(f'❌ Exception occurred: {e}')
