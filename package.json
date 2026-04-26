@@ -9,9 +9,6 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "engines": {
-    "node": ">=20.0.0"
-  },
   "dependencies": {
     "@supabase/supabase-js": "^2.89.0",
     "date-fns": "^4.1.0",
