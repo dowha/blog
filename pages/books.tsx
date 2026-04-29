@@ -56,7 +56,7 @@ export default function BooksPage() {
               new Date(a.created_at).getTime()
             )
           }
-          return b.isReading - a.isReading
+          return a.isReading ? -1 : 1
         })
 
         setBooks(sortedData)
