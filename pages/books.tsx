@@ -131,7 +131,7 @@ export default function BooksPage() {
 
   return (
     <>
-      <Seo title="Books" description="{descriptionText}" />
+      <Seo title="Books" description={descriptionText} />
       <article className="book-list page-container">
         <h1 className="text-xl font-bold flex items-center">
           Books

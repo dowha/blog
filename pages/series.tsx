@@ -19,7 +19,7 @@ const descriptionText = `특별히 엮어둔 글 목록입니다. 의도적으�
 export default function SeriesPage({ series }: Props) {
   return (
     <>
-      <Seo title="Series" description="{descriptionText}" />
+      <Seo title="Series" description={descriptionText} />
       <article className="series-list page-container">
         <h1 className="text-xl font-bold">Series</h1>
         <p className="mt-4 text-keepall">{descriptionText}</p>
