@@ -60,8 +60,6 @@ export default function BooksPage() {
         })
 
         setBooks(sortedData)
-
-        setBooks(sortedData)
       }
       setIsLoading(false) // ✅ 로딩 종료
     }
