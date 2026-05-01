@@ -33,7 +33,14 @@ export function Navigation() {
                     }`}
                   aria-current={isActive ? 'page' : undefined}
                 >
-                  {item.name}
+                  {isActive ? (
+                    <>
+                      <span className="lg:hidden">⦁</span>
+                      <span className="hidden lg:inline">{item.name}</span>
+                    </>
+                  ) : (
+                    item.name
+                  )}
                 </Link>
               </li>
             )
