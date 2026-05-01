@@ -132,7 +132,7 @@ export default function PostPage({
 
   return (
     <>
-      <Seo title={post.title} description={post.content.slice(0, 150)} />
+      <Seo title={post.title} description={post.content?.slice(0, 150) ?? ''} />
       <article className="single-post page-container">
         <h1 className="text-xl font-bold">{post.title}</h1>
         {post.subtitle && <h2 className="subtitle mt-0">{post.subtitle}</h2>}
