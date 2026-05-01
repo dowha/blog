@@ -81,6 +81,7 @@ export default function ShortsPage() {
         .order('created_at', { ascending: false })
 
       if (!shortsData || shortsError) {
+        console.error('shorts fetch 오류:', shortsError)
         setIsLoading(false)
         return
       }

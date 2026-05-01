@@ -42,6 +42,7 @@ export default function BooksPage() {
         )
 
       if (error) {
+        console.error('books fetch 오류:', error)
       } else {
         const formattedData = data.map((book) => ({
           ...book,

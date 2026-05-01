@@ -6,7 +6,7 @@ import LoadingSpinner from '@/components/LoadingSpinner' // ✅ 추가
 
 // 가장 최신 콘텐츠 가져오기
 async function fetchLatestSingleContent() {
-  const { data: latestPost } = await supabase
+  const { data: latestPost, error: postError } = await supabase
     .from('posts')
     .select('title, slug, created_at')
     .eq('is_published', true)
@@ -14,12 +14,16 @@ async function fetchLatestSingleContent() {
     .order('created_at', { ascending: false })
     .limit(1)
 
-  const { data: latestBook } = await supabase
+  if (postError) console.error('최신 포스트 fetch 오류:', postError)
+
+  const { data: latestBook, error: bookError } = await supabase
     .from('books')
     .select('title, slug, created_at')
     .not('content', 'is', null)
     .order('created_at', { ascending: false })
     .limit(1)
+
+  if (bookError) console.error('최신 도서 fetch 오류:', bookError)
 
   const post = latestPost?.[0] ?? null
   const book = latestBook?.[0] ?? null
@@ -43,6 +47,7 @@ async function fetchCurrentlyReadingBooks() {
     .eq('is_reading', true)
     .order('created_at', { ascending: false })
 
+  if (error) console.error('현재 읽는 책 fetch 오류:', error)
   return error ? [] : data || []
 }
 
@@ -55,6 +60,7 @@ async function fetchMostLikedContent(): Promise<
     .select('post_id, book_id')
 
   if (likesError || !allLikes || allLikes.length === 0) {
+    if (likesError) console.error('콘텐츠 좋아요 fetch 오류:', likesError)
     return []
   }
 
