@@ -128,12 +128,13 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
     return { notFound: true }
   }
 
-  // 시리즈 id와 is_external이 false인 게시물만 가져옵니다.
+  // 시리즈 id와 is_external이 false이며 공개된 게시물만 가져옵니다.
   const { data: postsData, error: postsError } = await supabase
     .from('posts')
     .select('title, subtitle, slug, created_at')
     .eq('series_id', seriesData.id)
     .eq('is_external', false)
+    .eq('is_published', true)
     .order('created_at', { ascending: true })
 
   if (postsError) {
