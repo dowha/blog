@@ -16,11 +16,11 @@ export function Navigation() {
 
   return (
     <nav
-      className="w-full p-6 text-gray-500 lg:w-64 lg:mr-6 mb-6 lg:mb-0"
+      className="w-full p-6 text-gray-500 lg:w-64 lg:mr-6 lg:mb-0"
       aria-label="메뉴"
     >
       <div className="space-y-2">
-        <ul className="lowercase flex flex-wrap gap-2 sm:gap-4 justify-center w-full text-sm lg:text-base lg:block lg:gap-2 lg:space-y-4 lg:text-right lg:top-6">
+        <ul className="lowercase flex flex-wrap gap-3 sm:gap-4 justify-center w-full text-sm lg:text-base lg:block lg:gap-2 lg:space-y-4 lg:text-right lg:top-6">
           {menuItems.map((item) => {
             const isActive =
               currentPath === item.path ||
@@ -35,7 +35,7 @@ export function Navigation() {
                 >
                   {isActive ? (
                     <>
-                      <span className="lg:hidden">⦁</span>
+                      <span className="lg:hidden relative top-px">⦁</span>
                       <span className="hidden lg:inline">{item.name}</span>
                     </>
                   ) : (
