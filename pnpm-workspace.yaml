@@ -1,8 +1,0 @@
-allowBuilds:
-  sharp: true
-  unrs-resolver: true
-minimumReleaseAgeExclude:
-  - ws@8.20.1
-overrides:
-  ws@>=8.0.0 <8.20.1: ^8.20.1
-  postcss@<8.5.10: ^8.5.10
