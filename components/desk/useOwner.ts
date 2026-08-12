@@ -27,7 +27,7 @@ export function useOwner() {
 export const loginWithGoogle = () =>
   supabase.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: `${window.location.origin}/admin` },
+    options: { redirectTo: `${window.location.origin}/desk` },
   })
 
 export const logout = () => supabase.auth.signOut()

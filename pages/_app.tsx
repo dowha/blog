@@ -1,5 +1,5 @@
 import '@/styles/globals.css'
-import '@uiw/react-md-editor/markdown-editor.css' // /admin 마크다운 에디터 스타일 (.w-md-editor 스코프)
+import '@uiw/react-md-editor/markdown-editor.css' // /desk 마크다운 에디터 스타일 (.w-md-editor 스코프)
 import type { AppProps } from 'next/app'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'

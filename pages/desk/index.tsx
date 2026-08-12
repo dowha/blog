@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { supabase } from '@/supabase'
-import { useOwner, loginWithGoogle, logout } from '@/components/admin/useOwner'
+import { useOwner, loginWithGoogle, logout } from '@/components/desk/useOwner'
 
 type PostRow = {
   id: string
@@ -85,7 +85,7 @@ export default function AdminHome() {
               <h1 className="text-lg font-semibold">글 관리</h1>
               <div className="flex items-center gap-3 text-sm">
                 <Link
-                  href="/admin/edit"
+                  href="/desk/edit"
                   className="rounded-lg bg-gray-900 px-3 py-1.5 font-medium text-white hover:bg-gray-700"
                 >
                   + 새 글
@@ -142,7 +142,7 @@ export default function AdminHome() {
                   </button>
                   {!p.is_external && (
                     <Link
-                      href={{ pathname: '/admin/edit', query: { id: p.id } }}
+                      href={{ pathname: '/desk/edit', query: { id: p.id } }}
                       className="shrink-0 text-xs text-gray-500 hover:underline"
                     >
                       수정

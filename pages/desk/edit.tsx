@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { toast } from 'sonner'
 import { supabase } from '@/supabase'
-import { useOwner } from '@/components/admin/useOwner'
+import { useOwner } from '@/components/desk/useOwner'
 
 // react-md-editor는 window 의존 → SSR 비활성화
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
@@ -92,7 +92,7 @@ export default function AdminEdit() {
         .insert({ ...payload, id: newId, is_external: false, created_at: now }))
       if (!error) {
         // 새 글 → 편집 모드로 전환(이후 저장은 update)
-        router.replace({ pathname: '/admin/edit', query: { id: newId } }, undefined, { shallow: true })
+        router.replace({ pathname: '/desk/edit', query: { id: newId } }, undefined, { shallow: true })
       }
     }
 
@@ -110,7 +110,7 @@ export default function AdminEdit() {
     return (
       <div className="p-8 text-sm text-gray-500">
         접근 권한이 없습니다.{' '}
-        <Link href="/admin" className="underline">
+        <Link href="/desk" className="underline">
           로그인
         </Link>
       </div>
@@ -124,7 +124,7 @@ export default function AdminEdit() {
       </Head>
       <div className="mx-auto w-full max-w-3xl px-4 py-8">
         <div className="mb-5 flex items-center justify-between">
-          <Link href="/admin" className="text-sm text-gray-500 hover:underline">
+          <Link href="/desk" className="text-sm text-gray-500 hover:underline">
             ← 목록
           </Link>
           <div className="flex items-center gap-2">
