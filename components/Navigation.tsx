@@ -59,12 +59,6 @@ export function Navigation() {
               <span className="hidden lg:inline">about</span>
             </a>
           </li>
-          {/* 큰 화면에서만 노출되는 숨은 /desk 진입점 (투명색) */}
-          <li className="hidden lg:block">
-            <Link href="/desk" className="text-transparent" aria-hidden="true" tabIndex={-1}>
-              *
-            </Link>
-          </li>
         </ul>
       </div>
     </nav>
