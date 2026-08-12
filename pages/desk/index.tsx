@@ -127,7 +127,7 @@ export default function DeskHome() {
                         {p.title || '(제목 없음)'}
                       </span>
                       {p.is_external && (
-                        <span className="shrink-0 rounded bg-gray-100 px-1.5 py-0.5 text-[10px] text-gray-400">
+                        <span className="shrink-0 text-[11px] font-medium text-sky-600">
                           외부
                         </span>
                       )}
@@ -138,10 +138,8 @@ export default function DeskHome() {
                   </div>
                   <button
                     onClick={() => togglePublish(p)}
-                    className={`shrink-0 rounded-full px-2.5 py-1 text-[11px] ${
-                      p.is_published
-                        ? 'bg-green-50 text-green-700 hover:bg-green-100'
-                        : 'bg-amber-50 text-amber-700 hover:bg-amber-100'
+                    className={`shrink-0 text-[11px] font-medium hover:underline ${
+                      p.is_published ? 'text-green-600' : 'text-amber-600'
                     }`}
                     title="클릭하여 발행/초안 전환"
                   >
