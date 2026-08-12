@@ -68,7 +68,7 @@ export default function DeskHome() {
         <title>Desk — 글 관리</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
-      <div className="w-full">
+      <div className="page-container">
         {loading ? (
           <p className="text-xs text-gray-400">확인 중…</p>
         ) : !user ? (

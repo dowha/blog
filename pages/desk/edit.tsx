@@ -118,7 +118,7 @@ export default function DeskEdit() {
         <title>{id ? '글 수정' : '새 글'} — Desk</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
-      <div className="w-full">
+      <div className="page-container">
         <div className="mb-5 flex items-center justify-between">
           <button
             onClick={() => router.push('/desk')}
