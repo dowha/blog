@@ -1,6 +1,9 @@
 import { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+  // @uiw/react-md-editor(및 미리보기 의존성)는 ESM에서 CSS를 import하는데,
+  // Pages Router는 node_modules 내부 글로벌 CSS import를 막으므로 직접 트랜스파일하게 한다.
+  transpilePackages: ['@uiw/react-md-editor', '@uiw/react-markdown-preview'],
   images: {
     domains: ['thumbnail.dowha.kim', 'images.dowha.kim'], // ✅ 두 개의 도메인 추가
   },
