@@ -169,7 +169,7 @@ export default function DeskHome() {
                         {p.title || '(제목 없음)'}
                       </span>
                       {p.is_external && (
-                        <span className="shrink-0 text-[11px] font-medium text-sky-600">
+                        <span className="shrink-0 text-[11px] font-medium leading-none text-sky-600">
                           외부
                         </span>
                       )}
