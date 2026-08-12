@@ -71,9 +71,10 @@ export default function DeskHome() {
 
   const togglePublish = async (p: Row) => {
     const next = !p.is_published
+    // updated_at은 DB 트리거(moddatetime)가 자동 갱신
     const { error } = await supabase
       .from(section)
-      .update({ is_published: next, updated_at: new Date().toISOString() })
+      .update({ is_published: next })
       .eq('id', p.id)
     if (!error) setRows((prev) => prev.map((x) => (x.id === p.id ? { ...x, is_published: next } : x)))
   }

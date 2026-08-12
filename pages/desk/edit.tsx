@@ -78,13 +78,12 @@ export default function DeskEdit() {
     if (!form.title.trim()) return toast.error('제목을 입력하세요.')
     if (!form.slug.trim()) return toast.error('slug(주소)를 입력하세요.')
     setBusy(true)
-    const now = new Date().toISOString()
+    // created_at/updated_at은 DB 기본값(now)·트리거(moddatetime)가 처리
     const base = {
       title: form.title.trim(),
       slug: form.slug.trim(),
       content: form.content,
       is_published: publish,
-      updated_at: now,
     }
     // posts 전용 필드
     const payload = isRecord
@@ -109,7 +108,7 @@ export default function DeskEdit() {
       const newId = crypto.randomUUID()
       ;({ error } = await supabase
         .from(table)
-        .insert({ ...payload, id: newId, is_external: false, created_at: now }))
+        .insert({ ...payload, id: newId, is_external: false }))
       if (!error) {
         router.replace({ pathname: '/desk/edit', query: { id: newId } }, undefined, { shallow: true })
       }
