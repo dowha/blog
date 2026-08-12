@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
-import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { toast } from 'sonner'
@@ -21,7 +20,7 @@ const empty = {
   is_published: false,
 }
 
-export default function AdminEdit() {
+export default function DeskEdit() {
   const router = useRouter()
   const { user, loading, isOwner } = useOwner()
   const id = typeof router.query.id === 'string' ? router.query.id : null
@@ -31,7 +30,6 @@ export default function AdminEdit() {
   const [busy, setBusy] = useState(false)
   const [loadingPost, setLoadingPost] = useState(false)
 
-  // 시리즈 목록
   useEffect(() => {
     if (!isOwner) return
     supabase
@@ -41,7 +39,6 @@ export default function AdminEdit() {
       .then(({ data }) => setSeries(data ?? []))
   }, [isOwner])
 
-  // 편집 대상 로드
   useEffect(() => {
     if (!isOwner || !id) return
     setLoadingPost(true)
@@ -91,7 +88,6 @@ export default function AdminEdit() {
         .from('posts')
         .insert({ ...payload, id: newId, is_external: false, created_at: now }))
       if (!error) {
-        // 새 글 → 편집 모드로 전환(이후 저장은 update)
         router.replace({ pathname: '/desk/edit', query: { id: newId } }, undefined, { shallow: true })
       }
     }
@@ -105,40 +101,39 @@ export default function AdminEdit() {
     }
   }
 
-  if (loading) return <div className="p-8 text-sm text-gray-400">확인 중…</div>
+  if (loading) return <p className="text-xs text-gray-400">확인 중…</p>
   if (!user || !isOwner)
     return (
-      <div className="p-8 text-sm text-gray-500">
+      <div className="py-16 text-sm text-gray-500">
         접근 권한이 없습니다.{' '}
-        <Link href="/desk" className="underline">
+        <button onClick={() => router.push('/desk')} className="text-gray-700 underline underline-offset-2">
           로그인
-        </Link>
+        </button>
       </div>
     )
 
   return (
     <>
       <Head>
-        <title>{id ? '글 수정' : '새 글'} — Admin</title>
+        <title>{id ? '글 수정' : '새 글'} — Desk</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
-      <div className="mx-auto w-full max-w-3xl px-4 py-8">
+      <div className="w-full">
         <div className="mb-5 flex items-center justify-between">
-          <Link href="/desk" className="text-sm text-gray-500 hover:underline">
+          <button
+            onClick={() => router.push('/desk')}
+            className="text-xs text-gray-400 hover:text-gray-700"
+          >
             ← 목록
-          </Link>
+          </button>
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => save(false)}
-              disabled={busy}
-              className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-medium hover:bg-gray-50 disabled:opacity-50"
-            >
+            <button onClick={() => save(false)} disabled={busy} className="default-button !mt-0 disabled:opacity-50">
               초안 저장
             </button>
             <button
               onClick={() => save(true)}
               disabled={busy}
-              className="rounded-lg bg-gray-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-700 disabled:opacity-50"
+              className="default-button !mt-0 !bg-[#0a85d1] !text-white hover:!bg-[#0972b5] disabled:opacity-50"
             >
               발행
             </button>
@@ -146,29 +141,29 @@ export default function AdminEdit() {
         </div>
 
         {loadingPost ? (
-          <p className="text-sm text-gray-400">불러오는 중…</p>
+          <p className="text-xs text-gray-400">불러오는 중…</p>
         ) : (
           <div className="flex flex-col gap-4">
             <input
               value={form.title}
               onChange={(e) => set('title', e.target.value)}
               placeholder="제목"
-              className="w-full border-b border-gray-200 pb-2 text-2xl font-semibold outline-none placeholder:text-gray-300"
+              className="w-full border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 outline-none placeholder:text-gray-300"
             />
             <input
               value={form.subtitle}
               onChange={(e) => set('subtitle', e.target.value)}
               placeholder="부제 (선택)"
-              className="w-full text-sm text-gray-600 outline-none placeholder:text-gray-300"
+              className="w-full text-sm text-gray-500 outline-none placeholder:text-gray-300"
             />
-            <div className="flex flex-wrap items-center gap-3 text-sm">
+            <div className="flex flex-wrap items-center gap-3 text-xs">
               <label className="flex items-center gap-1.5">
                 <span className="text-gray-400">slug</span>
                 <input
                   value={form.slug}
                   onChange={(e) => set('slug', e.target.value)}
                   placeholder="url-address"
-                  className="rounded border border-gray-200 px-2 py-1 font-mono text-xs outline-none focus:border-gray-400"
+                  className="rounded border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
                 />
               </label>
               <label className="flex items-center gap-1.5">
@@ -176,7 +171,7 @@ export default function AdminEdit() {
                 <select
                   value={form.series_id}
                   onChange={(e) => set('series_id', e.target.value)}
-                  className="rounded border border-gray-200 px-2 py-1 text-xs outline-none focus:border-gray-400"
+                  className="rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
                 >
                   <option value="">— 없음 —</option>
                   {series.map((s) => (
@@ -187,7 +182,7 @@ export default function AdminEdit() {
                 </select>
               </label>
               <span
-                className={`ml-auto rounded-full px-2.5 py-1 text-[11px] font-medium ${
+                className={`ml-auto rounded-full px-2.5 py-1 text-[11px] ${
                   form.is_published ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'
                 }`}
               >
