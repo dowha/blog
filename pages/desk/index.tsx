@@ -4,20 +4,25 @@ import { useRouter } from 'next/router'
 import { supabase } from '@/supabase'
 import { useOwner, loginWithGoogle, logout } from '@/components/desk/useOwner'
 
-type PostRow = {
+type Row = {
   id: string
   title: string
   slug: string | null
-  subtitle: string | null
   is_published: boolean
-  is_external: boolean
+  is_external?: boolean
   updated_at: string | null
   created_at: string
 }
 
-type Filter = 'all' | 'draft' | 'published' | 'external'
+// 섹션 = 대상 테이블. label은 nav 메뉴 명칭에 맞춤.
+type Section = 'posts' | 'records'
+const SECTIONS: { key: Section; label: string }[] = [
+  { key: 'posts', label: 'Writings' },
+  { key: 'records', label: 'Records' },
+]
 
-const FILTERS: { key: Filter; label: string }[] = [
+type Filter = 'all' | 'draft' | 'published' | 'external'
+const ALL_FILTERS: { key: Filter; label: string }[] = [
   { key: 'all', label: '전체' },
   { key: 'draft', label: '초안' },
   { key: 'published', label: '발행' },
@@ -27,40 +32,65 @@ const FILTERS: { key: Filter; label: string }[] = [
 export default function DeskHome() {
   const router = useRouter()
   const { user, loading, isOwner } = useOwner()
-  const [posts, setPosts] = useState<PostRow[]>([])
+  const [section, setSection] = useState<Section>('posts')
+  const [rows, setRows] = useState<Row[]>([])
   const [filter, setFilter] = useState<Filter>('draft')
   const [fetching, setFetching] = useState(false)
 
+  const isPosts = section === 'posts'
+  // records엔 외부(is_external) 개념이 없으므로 필터에서 제외
+  const filters = isPosts ? ALL_FILTERS : ALL_FILTERS.filter((f) => f.key !== 'external')
+
+  // 에디터 진입 시 돌아올 섹션 복원 (?tab=records)
+  useEffect(() => {
+    if (router.isReady && router.query.tab === 'records') setSection('records')
+  }, [router.isReady, router.query.tab])
+
   const load = async () => {
     setFetching(true)
+    const cols = isPosts
+      ? 'id,title,slug,is_published,is_external,updated_at,created_at'
+      : 'id,title,slug,is_published,updated_at,created_at'
     const { data } = await supabase
-      .from('posts')
-      .select('id,title,slug,subtitle,is_published,is_external,updated_at,created_at')
+      .from(section)
+      .select(cols)
       .order('created_at', { ascending: false })
-    setPosts(data ?? [])
+    setRows((data as unknown as Row[]) ?? [])
     setFetching(false)
   }
 
   useEffect(() => {
     if (isOwner) load()
-  }, [isOwner])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOwner, section])
 
-  const togglePublish = async (p: PostRow) => {
-    const next = !p.is_published
-    const { error } = await supabase
-      .from('posts')
-      .update({ is_published: next, updated_at: new Date().toISOString() })
-      .eq('id', p.id)
-    if (!error) setPosts((prev) => prev.map((x) => (x.id === p.id ? { ...x, is_published: next } : x)))
+  const changeSection = (s: Section) => {
+    setSection(s)
+    setFilter('draft')
   }
 
-  const shown = posts.filter((p) => {
+  const togglePublish = async (p: Row) => {
+    const next = !p.is_published
+    const { error } = await supabase
+      .from(section)
+      .update({ is_published: next, updated_at: new Date().toISOString() })
+      .eq('id', p.id)
+    if (!error) setRows((prev) => prev.map((x) => (x.id === p.id ? { ...x, is_published: next } : x)))
+  }
+
+  const shown = rows.filter((p) => {
     if (filter === 'all') return true
-    if (filter === 'external') return p.is_external
+    if (filter === 'external') return !!p.is_external
     if (filter === 'draft') return !p.is_external && !p.is_published
     return !p.is_external && p.is_published // 발행(내부)
   })
   const fmt = (s: string | null) => (s ? s.slice(0, 10) : '-')
+
+  // 에디터 라우팅 (records는 type 파라미터 부여)
+  const editHref = (id?: string) => ({
+    pathname: '/desk/edit',
+    query: { ...(section === 'records' ? { type: 'record' } : {}), ...(id ? { id } : {}) },
+  })
 
   return (
     <>
@@ -89,9 +119,9 @@ export default function DeskHome() {
             <div className="mb-6 flex items-center justify-between">
               <h1 className="!mb-0 text-gray-800">Desk</h1>
               <div className="flex items-center gap-3">
-                <button onClick={() => router.push('/desk/edit')} className="default-button !mt-0">
+                <button onClick={() => router.push(editHref())} className="default-button !mt-0">
                   <span>✏️</span>
-                  <span>새 글</span>
+                  <span>{isPosts ? '새 글' : '새 기록'}</span>
                 </button>
                 <button onClick={logout} className="text-xs text-gray-400 hover:text-gray-600">
                   로그아웃
@@ -99,15 +129,26 @@ export default function DeskHome() {
               </div>
             </div>
 
-            <div className="mb-3 flex items-center gap-1 text-xs">
-              {FILTERS.map(({ key, label }) => (
+            <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
+              <select
+                value={section}
+                onChange={(e) => changeSection(e.target.value as Section)}
+                className="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
+                aria-label="섹션 선택"
+              >
+                {SECTIONS.map((s) => (
+                  <option key={s.key} value={s.key}>
+                    {s.label}
+                  </option>
+                ))}
+              </select>
+              <span className="mx-1 h-4 w-px bg-gray-200" />
+              {filters.map(({ key, label }) => (
                 <button
                   key={key}
                   onClick={() => setFilter(key)}
                   className={`rounded-md px-2.5 py-1 ${
-                    filter === key
-                      ? 'bg-gray-800 text-white'
-                      : 'text-gray-500 hover:bg-gray-100'
+                    filter === key ? 'bg-gray-800 text-white' : 'text-gray-500 hover:bg-gray-100'
                   }`}
                 >
                   {label}
@@ -145,9 +186,9 @@ export default function DeskHome() {
                   >
                     {p.is_published ? '발행됨' : '초안'}
                   </button>
-                  {!p.is_external && (
+                  {(!isPosts || !p.is_external) && (
                     <button
-                      onClick={() => router.push({ pathname: '/desk/edit', query: { id: p.id } })}
+                      onClick={() => router.push(editHref(p.id))}
                       className="shrink-0 text-xs text-gray-400 hover:text-gray-700"
                     >
                       수정

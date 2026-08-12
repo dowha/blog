@@ -25,41 +25,51 @@ export default function DeskEdit() {
   const { user, loading, isOwner } = useOwner()
   const id = typeof router.query.id === 'string' ? router.query.id : null
 
+  // type=record → records 테이블. 기본은 posts(Writings).
+  const isRecord = router.query.type === 'record'
+  const table = isRecord ? 'records' : 'posts'
+  const label = isRecord ? '기록' : '글'
+
   const [form, setForm] = useState({ ...empty })
   const [series, setSeries] = useState<SeriesRow[]>([])
   const [busy, setBusy] = useState(false)
   const [loadingPost, setLoadingPost] = useState(false)
 
+  // 시리즈 목록은 posts에서만 필요
   useEffect(() => {
-    if (!isOwner) return
+    if (!isOwner || isRecord) return
     supabase
       .from('series')
       .select('id,series_name')
       .order('series_name')
       .then(({ data }) => setSeries(data ?? []))
-  }, [isOwner])
+  }, [isOwner, isRecord])
 
   useEffect(() => {
     if (!isOwner || !id) return
     setLoadingPost(true)
+    const cols = isRecord
+      ? 'title,slug,content,is_published'
+      : 'title,subtitle,slug,content,series_id,is_published'
     supabase
-      .from('posts')
-      .select('title,subtitle,slug,content,series_id,is_published')
+      .from(table)
+      .select(cols)
       .eq('id', id)
       .single()
       .then(({ data }) => {
-        if (data)
+        const d = data as unknown as Record<string, unknown> | null
+        if (d)
           setForm({
-            title: data.title ?? '',
-            subtitle: data.subtitle ?? '',
-            slug: data.slug ?? '',
-            content: data.content ?? '',
-            series_id: data.series_id ?? '',
-            is_published: !!data.is_published,
+            title: (d.title as string) ?? '',
+            subtitle: (d.subtitle as string) ?? '',
+            slug: (d.slug as string) ?? '',
+            content: (d.content as string) ?? '',
+            series_id: (d.series_id as string) ?? '',
+            is_published: !!d.is_published,
           })
         setLoadingPost(false)
       })
-  }, [isOwner, id])
+  }, [isOwner, id, table, isRecord])
 
   const set = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
     setForm((f) => ({ ...f, [k]: v }))
@@ -69,23 +79,36 @@ export default function DeskEdit() {
     if (!form.slug.trim()) return toast.error('slug(주소)를 입력하세요.')
     setBusy(true)
     const now = new Date().toISOString()
-    const payload = {
+    const base = {
       title: form.title.trim(),
-      subtitle: form.subtitle.trim() || null,
       slug: form.slug.trim(),
       content: form.content,
-      series_id: form.series_id || null,
       is_published: publish,
       updated_at: now,
     }
+    // posts 전용 필드
+    const payload = isRecord
+      ? base
+      : { ...base, subtitle: form.subtitle.trim() || null, series_id: form.series_id || null }
 
     let error
     if (id) {
-      ;({ error } = await supabase.from('posts').update(payload).eq('id', id))
+      ;({ error } = await supabase.from(table).update(payload).eq('id', id))
+    } else if (isRecord) {
+      // records: id/created_at는 DB 기본값 → 삽입 후 새 id 회수
+      const res = await supabase.from(table).insert(payload).select('id').single()
+      error = res.error
+      if (!res.error && res.data) {
+        router.replace(
+          { pathname: '/desk/edit', query: { type: 'record', id: res.data.id } },
+          undefined,
+          { shallow: true }
+        )
+      }
     } else {
       const newId = crypto.randomUUID()
       ;({ error } = await supabase
-        .from('posts')
+        .from(table)
         .insert({ ...payload, id: newId, is_external: false, created_at: now }))
       if (!error) {
         router.replace({ pathname: '/desk/edit', query: { id: newId } }, undefined, { shallow: true })
@@ -101,6 +124,9 @@ export default function DeskEdit() {
     }
   }
 
+  const backToList = () =>
+    router.push(isRecord ? { pathname: '/desk', query: { tab: 'records' } } : '/desk')
+
   if (loading) return <p className="text-xs text-gray-400">확인 중…</p>
   if (!user || !isOwner)
     return (
@@ -115,15 +141,12 @@ export default function DeskEdit() {
   return (
     <>
       <Head>
-        <title>{`${id ? '글 수정' : '새 글'} | Dowha's Blog`}</title>
+        <title>{`${id ? label + ' 수정' : '새 ' + label} | Dowha's Blog`}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
       <div className="page-container">
         <div className="mb-5 flex items-center justify-between">
-          <button
-            onClick={() => router.push('/desk')}
-            className="text-xs text-gray-400 hover:text-gray-700"
-          >
+          <button onClick={backToList} className="text-xs text-gray-400 hover:text-gray-700">
             ← 목록
           </button>
           <div className="flex items-center gap-2">
@@ -150,12 +173,14 @@ export default function DeskEdit() {
               placeholder="제목"
               className="w-full border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 outline-none placeholder:text-gray-300"
             />
-            <input
-              value={form.subtitle}
-              onChange={(e) => set('subtitle', e.target.value)}
-              placeholder="부제 (선택)"
-              className="w-full text-sm text-gray-500 outline-none placeholder:text-gray-300"
-            />
+            {!isRecord && (
+              <input
+                value={form.subtitle}
+                onChange={(e) => set('subtitle', e.target.value)}
+                placeholder="부제 (선택)"
+                className="w-full text-sm text-gray-500 outline-none placeholder:text-gray-300"
+              />
+            )}
             <div className="flex flex-wrap items-center gap-3 text-xs">
               <label className="flex items-center gap-1.5">
                 <span className="text-gray-400">slug</span>
@@ -166,21 +191,23 @@ export default function DeskEdit() {
                   className="rounded border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
                 />
               </label>
-              <label className="flex items-center gap-1.5">
-                <span className="text-gray-400">시리즈</span>
-                <select
-                  value={form.series_id}
-                  onChange={(e) => set('series_id', e.target.value)}
-                  className="rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
-                >
-                  <option value="">— 없음 —</option>
-                  {series.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.series_name}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              {!isRecord && (
+                <label className="flex items-center gap-1.5">
+                  <span className="text-gray-400">시리즈</span>
+                  <select
+                    value={form.series_id}
+                    onChange={(e) => set('series_id', e.target.value)}
+                    className="rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                  >
+                    <option value="">— 없음 —</option>
+                    {series.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.series_name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
               <span
                 className={`ml-auto rounded-full px-2.5 py-1 text-[11px] ${
                   form.is_published ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'
