@@ -15,13 +15,20 @@ type PostRow = {
   created_at: string
 }
 
-type Filter = 'all' | 'published' | 'draft'
+type Filter = 'all' | 'draft' | 'published' | 'external'
+
+const FILTERS: { key: Filter; label: string }[] = [
+  { key: 'all', label: '전체' },
+  { key: 'draft', label: '초안' },
+  { key: 'published', label: '발행' },
+  { key: 'external', label: '외부' },
+]
 
 export default function DeskHome() {
   const router = useRouter()
   const { user, loading, isOwner } = useOwner()
   const [posts, setPosts] = useState<PostRow[]>([])
-  const [filter, setFilter] = useState<Filter>('all')
+  const [filter, setFilter] = useState<Filter>('draft')
   const [fetching, setFetching] = useState(false)
 
   const load = async () => {
@@ -47,9 +54,12 @@ export default function DeskHome() {
     if (!error) setPosts((prev) => prev.map((x) => (x.id === p.id ? { ...x, is_published: next } : x)))
   }
 
-  const shown = posts.filter((p) =>
-    filter === 'all' ? true : filter === 'published' ? p.is_published : !p.is_published,
-  )
+  const shown = posts.filter((p) => {
+    if (filter === 'all') return true
+    if (filter === 'external') return p.is_external
+    if (filter === 'draft') return !p.is_external && !p.is_published
+    return !p.is_external && p.is_published // 발행(내부)
+  })
   const fmt = (s: string | null) => (s ? s.slice(0, 10) : '-')
 
   return (
@@ -90,17 +100,17 @@ export default function DeskHome() {
             </div>
 
             <div className="mb-3 flex items-center gap-1 text-xs">
-              {(['all', 'published', 'draft'] as Filter[]).map((f) => (
+              {FILTERS.map(({ key, label }) => (
                 <button
-                  key={f}
-                  onClick={() => setFilter(f)}
+                  key={key}
+                  onClick={() => setFilter(key)}
                   className={`rounded-md px-2.5 py-1 ${
-                    filter === f
+                    filter === key
                       ? 'bg-gray-800 text-white'
                       : 'text-gray-500 hover:bg-gray-100'
                   }`}
                 >
-                  {f === 'all' ? '전체' : f === 'published' ? '발행' : '초안'}
+                  {label}
                 </button>
               ))}
               <span className="ml-auto text-gray-400">
