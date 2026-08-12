@@ -115,7 +115,7 @@ export default function DeskEdit() {
   return (
     <>
       <Head>
-        <title>{id ? '글 수정' : '새 글'} | Dowha's Blog</title>
+        <title>{`${id ? '글 수정' : '새 글'} | Dowha's Blog`}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
       <div className="page-container">

@@ -65,7 +65,7 @@ export default function DeskHome() {
   return (
     <>
       <Head>
-        <title>Desk | Dowha's Blog</title>
+        <title>{"Desk | Dowha's Blog"}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
       <div className="page-container">
