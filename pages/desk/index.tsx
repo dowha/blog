@@ -65,7 +65,7 @@ export default function DeskHome() {
   return (
     <>
       <Head>
-        <title>Desk — 글 관리</title>
+        <title>Desk | Dowha's Blog</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
       <div className="page-container">
@@ -87,7 +87,7 @@ export default function DeskHome() {
         ) : (
           <>
             <div className="mb-6 flex items-center justify-between">
-              <h1 className="!mb-0 text-gray-800">글 관리</h1>
+              <h1 className="!mb-0 text-gray-800">Desk</h1>
               <div className="flex items-center gap-3">
                 <button onClick={() => router.push('/desk/edit')} className="default-button !mt-0">
                   <span>✏️</span>
