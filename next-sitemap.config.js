@@ -7,8 +7,8 @@ module.exports = {
   generateIndexSitemap: false, // 인덱스 파일 비활성화 → sitemap-0.xml 방지
   priority: 0.7, // 기본 우선순위 (기본값, 다른 페이지에 적용)
   transform: async (config, path) => {
-    if (path.includes('[slug]')) {
-      return null // null을 반환하면 사이트맵에서 제거됨
+    if (path.includes('[slug]') || path.startsWith('/desk')) {
+      return null // null을 반환하면 사이트맵에서 제거됨 (/desk 관리자 페이지 제외)
     }
 
     return {
@@ -27,14 +27,15 @@ module.exports = {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/series/[slug]', '/posts/[slug]', '/books/[slug]'],
+        disallow: ['/desk', '/series/[slug]', '/posts/[slug]', '/books/[slug]'],
       },
-      { userAgent: 'Googlebot', allow: '/' },
-      { userAgent: 'OpenAI-GPT', allow: '/' },
-      { userAgent: 'bingbot', allow: '/' },
-      { userAgent: 'Anthropic-AI', allow: '/' },
-      { userAgent: 'Claude', allow: '/' },
-      { userAgent: 'PerplexityBot', allow: '/' },
+      // 명명된 봇은 각자 그룹만 적용되므로 /desk 차단을 개별로 명시해야 실제로 막힘
+      { userAgent: 'Googlebot', allow: '/', disallow: ['/desk'] },
+      { userAgent: 'OpenAI-GPT', allow: '/', disallow: ['/desk'] },
+      { userAgent: 'bingbot', allow: '/', disallow: ['/desk'] },
+      { userAgent: 'Anthropic-AI', allow: '/', disallow: ['/desk'] },
+      { userAgent: 'Claude', allow: '/', disallow: ['/desk'] },
+      { userAgent: 'PerplexityBot', allow: '/', disallow: ['/desk'] },
     ],
     additionalSitemaps: [
       'https://blog.dowha.kim/api/rss', // ✅ RSS 사이트맵 추가
