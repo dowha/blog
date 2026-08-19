@@ -510,7 +510,7 @@ export default function DeskEdit() {
                       <>
                         {/* 바깥 클릭으로 닫기 */}
                         <div className="fixed inset-0 z-40" onClick={() => setEmojiOpen(false)} />
-                        <div className="absolute left-0 top-8 z-50">
+                        <div className="desk-emoji-picker absolute left-0 top-8 z-50">
                           <EmojiPicker
                             onEmojiClick={(e: EmojiClickData) => {
                               set('emoji', e.emoji)

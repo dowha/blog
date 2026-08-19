@@ -241,3 +241,36 @@
     word-break: keep-all;
   }
 }
+
+/* /desk 시리즈 이모지 피커 축소.
+   emoji-picker-react의 내부 클래스·CSS 변수를 덮어쓴다. @layer 밖에 두어
+   globals.css의 base 레이어(h2 등)보다 우선하도록 한다. */
+.desk-emoji-picker .EmojiPickerReact {
+  --epr-emoji-size: 22px;
+  --epr-emoji-padding: 4px;
+  --epr-category-navigation-button-size: 22px;
+  --epr-category-label-height: 24px;
+  --epr-horizontal-padding: 8px;
+  --epr-header-padding: 8px var(--epr-horizontal-padding);
+  --epr-search-input-height: 28px;
+  --epr-search-input-padding: 0 8px;
+}
+
+.desk-emoji-picker .epr-category-nav {
+  padding: 4px 8px;
+  gap: 2px;
+}
+
+/* 카테고리 라벨은 h2라 블로그 본문 타이포그래피의 영향을 받는다 */
+.desk-emoji-picker h2.epr-emoji-category-label {
+  height: 24px;
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+/* native 스타일은 이모지를 텍스트로 그리므로 글자 크기를 직접 지정한다 */
+.desk-emoji-picker .epr-emoji-native {
+  font-size: 18px;
+}
