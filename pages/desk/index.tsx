@@ -8,26 +8,49 @@ type Row = {
   id: string
   title: string
   slug: string | null
-  is_published: boolean
+  is_published?: boolean
   is_external?: boolean
-  updated_at: string | null
+  is_reading?: boolean // books 전용
+  updated_at?: string | null // books엔 없음(트리거 미존재)
   created_at: string
 }
 
 // 섹션 = 대상 테이블. label은 nav 메뉴 명칭에 맞춤.
-type Section = 'posts' | 'records'
+type Section = 'posts' | 'records' | 'books'
 const SECTIONS: { key: Section; label: string }[] = [
   { key: 'posts', label: 'Writings' },
   { key: 'records', label: 'Records' },
+  { key: 'books', label: 'Books' },
 ]
 
-type Filter = 'all' | 'draft' | 'published' | 'external'
-const ALL_FILTERS: { key: Filter; label: string }[] = [
-  { key: 'all', label: '전체' },
-  { key: 'draft', label: '초안' },
-  { key: 'published', label: '발행' },
-  { key: 'external', label: '외부' },
-]
+// books는 발행 개념 대신 읽기 상태(is_reading)를 쓴다.
+type Filter = 'all' | 'draft' | 'published' | 'external' | 'reading' | 'read'
+const FILTERS: Record<Section, { key: Filter; label: string }[]> = {
+  posts: [
+    { key: 'all', label: '전체' },
+    { key: 'draft', label: '초안' },
+    { key: 'published', label: '발행' },
+    { key: 'external', label: '외부' },
+  ],
+  // records엔 외부(is_external) 개념이 없음
+  records: [
+    { key: 'all', label: '전체' },
+    { key: 'draft', label: '초안' },
+    { key: 'published', label: '발행' },
+  ],
+  books: [
+    { key: 'all', label: '전체' },
+    { key: 'reading', label: '읽는 중' },
+    { key: 'read', label: '읽음' },
+  ],
+}
+
+const NOUN: Record<Section, string> = { posts: '글', records: '기록', books: '책' }
+const DEFAULT_FILTER = (s: Section): Filter => (s === 'books' ? 'all' : 'draft')
+
+// 에디터는 type 파라미터로 대상 테이블을 구분한다.
+const TYPE_QUERY = (s: Section) =>
+  s === 'records' ? { type: 'record' } : s === 'books' ? { type: 'book' } : {}
 
 export default function DeskHome() {
   const router = useRouter()
@@ -38,19 +61,26 @@ export default function DeskHome() {
   const [fetching, setFetching] = useState(false)
 
   const isPosts = section === 'posts'
-  // records엔 외부(is_external) 개념이 없으므로 필터에서 제외
-  const filters = isPosts ? ALL_FILTERS : ALL_FILTERS.filter((f) => f.key !== 'external')
+  const isBooks = section === 'books'
+  const noun = NOUN[section]
 
-  // 에디터 진입 시 돌아올 섹션 복원 (?tab=records)
+  // 에디터 진입 시 돌아올 섹션 복원 (?tab=records | ?tab=books)
   useEffect(() => {
-    if (router.isReady && router.query.tab === 'records') setSection('records')
+    if (!router.isReady) return
+    const tab = router.query.tab
+    if (tab === 'records' || tab === 'books') {
+      setSection(tab)
+      setFilter(DEFAULT_FILTER(tab))
+    }
   }, [router.isReady, router.query.tab])
 
   const load = async () => {
     setFetching(true)
     const cols = isPosts
       ? 'id,title,slug,is_published,is_external,updated_at,created_at'
-      : 'id,title,slug,is_published,updated_at,created_at'
+      : isBooks
+        ? 'id,title,slug,is_reading,created_at'
+        : 'id,title,slug,is_published,updated_at,created_at'
     const { data } = await supabase
       .from(section)
       .select(cols)
@@ -66,31 +96,33 @@ export default function DeskHome() {
 
   const changeSection = (s: Section) => {
     setSection(s)
-    setFilter('draft')
+    setFilter(DEFAULT_FILTER(s))
   }
 
-  const togglePublish = async (p: Row) => {
-    const next = !p.is_published
+  // posts/records는 발행 여부, books는 읽기 여부를 토글한다.
+  const toggleState = async (p: Row) => {
+    const col = isBooks ? 'is_reading' : 'is_published'
+    const next = !(isBooks ? p.is_reading : p.is_published)
     // updated_at은 DB 트리거(moddatetime)가 자동 갱신
     const { error } = await supabase
       .from(section)
-      .update({ is_published: next })
+      .update({ [col]: next })
       .eq('id', p.id)
-    if (!error) setRows((prev) => prev.map((x) => (x.id === p.id ? { ...x, is_published: next } : x)))
+    if (!error) setRows((prev) => prev.map((x) => (x.id === p.id ? { ...x, [col]: next } : x)))
   }
 
   const shown = rows.filter((p) => {
     if (filter === 'all') return true
+    if (isBooks) return filter === 'reading' ? !!p.is_reading : !p.is_reading
     if (filter === 'external') return !!p.is_external
     if (filter === 'draft') return !p.is_external && !p.is_published
     return !p.is_external && p.is_published // 발행(내부)
   })
-  const fmt = (s: string | null) => (s ? s.slice(0, 10) : '-')
+  const fmt = (s: string | null | undefined) => (s ? s.slice(0, 10) : '-')
 
-  // 에디터 라우팅 (records는 type 파라미터 부여)
   const editHref = (id?: string) => ({
     pathname: '/desk/edit',
-    query: { ...(section === 'records' ? { type: 'record' } : {}), ...(id ? { id } : {}) },
+    query: { ...TYPE_QUERY(section), ...(id ? { id } : {}) },
   })
 
   return (
@@ -122,7 +154,7 @@ export default function DeskHome() {
               <div className="flex items-center gap-3">
                 <button onClick={() => router.push(editHref())} className="default-button !mt-0">
                   <span>✏️</span>
-                  <span>{isPosts ? '새 글' : '새 기록'}</span>
+                  <span>{`새 ${noun}`}</span>
                 </button>
                 <button onClick={logout} className="text-xs text-gray-400 hover:text-gray-600">
                   로그아웃
@@ -144,7 +176,7 @@ export default function DeskHome() {
                 ))}
               </select>
               <span className="mx-1 h-4 w-px bg-gray-200" />
-              {filters.map(({ key, label }) => (
+              {FILTERS[section].map(({ key, label }) => (
                 <button
                   key={key}
                   onClick={() => setFilter(key)}
@@ -161,45 +193,56 @@ export default function DeskHome() {
             </div>
 
             <ul className="border-t border-gray-100">
-              {shown.map((p) => (
-                <li key={p.id} className="flex items-center gap-3 border-b border-gray-100 py-3">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1.5">
-                      <span className="truncate text-sm text-gray-800">
-                        {p.title || '(제목 없음)'}
-                      </span>
-                      {p.is_external && (
-                        <span className="shrink-0 text-[11px] font-medium leading-none text-sky-600">
-                          외부
+              {shown.map((p) => {
+                // books: 읽는 중(amber) / 읽음(green), 그 외: 초안(amber) / 발행됨(green)
+                const active = isBooks ? !p.is_reading : !!p.is_published
+                const stateLabel = isBooks
+                  ? p.is_reading
+                    ? '읽는 중'
+                    : '읽음'
+                  : p.is_published
+                    ? '발행됨'
+                    : '초안'
+                return (
+                  <li key={p.id} className="flex items-center gap-3 border-b border-gray-100 py-3">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5">
+                        <span className="truncate text-sm text-gray-800">
+                          {p.title || '(제목 없음)'}
                         </span>
-                      )}
+                        {p.is_external && (
+                          <span className="shrink-0 text-[11px] font-medium leading-none text-sky-600">
+                            외부
+                          </span>
+                        )}
+                      </div>
+                      <div className="mt-0.5 truncate text-[11px] text-gray-400">
+                        {p.slug || '—'} · {fmt(p.updated_at || p.created_at)}
+                      </div>
                     </div>
-                    <div className="mt-0.5 truncate text-[11px] text-gray-400">
-                      {p.slug || '—'} · {fmt(p.updated_at || p.created_at)}
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => togglePublish(p)}
-                    className={`shrink-0 text-[11px] font-medium hover:underline ${
-                      p.is_published ? 'text-green-600' : 'text-amber-600'
-                    }`}
-                    title="클릭하여 발행/초안 전환"
-                  >
-                    {p.is_published ? '발행됨' : '초안'}
-                  </button>
-                  {(!isPosts || !p.is_external) && (
                     <button
-                      onClick={() => router.push(editHref(p.id))}
-                      className="shrink-0 text-xs text-gray-400 hover:text-gray-700"
+                      onClick={() => toggleState(p)}
+                      className={`shrink-0 text-[11px] font-medium hover:underline ${
+                        active ? 'text-green-600' : 'text-amber-600'
+                      }`}
+                      title={isBooks ? '클릭하여 읽는 중/읽음 전환' : '클릭하여 발행/초안 전환'}
                     >
-                      수정
+                      {stateLabel}
                     </button>
-                  )}
-                </li>
-              ))}
+                    {(!isPosts || !p.is_external) && (
+                      <button
+                        onClick={() => router.push(editHref(p.id))}
+                        className="shrink-0 text-xs text-gray-400 hover:text-gray-700"
+                      >
+                        수정
+                      </button>
+                    )}
+                  </li>
+                )
+              })}
               {!fetching && shown.length === 0 && (
                 <li className="border-b border-gray-100 py-8 text-center text-xs text-gray-400">
-                  글이 없습니다.
+                  {`${noun}이 없습니다.`}
                 </li>
               )}
             </ul>
