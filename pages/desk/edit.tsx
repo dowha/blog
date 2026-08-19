@@ -7,11 +7,14 @@ import { toast } from 'sonner'
 import { supabase } from '@/supabase'
 import { useOwner } from '@/components/desk/useOwner'
 import { ALLOWED_IMAGE_TYPES, MAX_UPLOAD_BYTES, UPLOAD_ACCEPT } from '@/lib/upload'
+import { SHORTS_MAX_LENGTH, pureTextLength } from '@/lib/shorts'
 
 // react-md-editor는 window 의존 → SSR 비활성화
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 
 type SeriesRow = { id: string; series_name: string }
+// shorts의 연결 대상. ok=false면 상세 페이지가 없어 링크가 404가 된다.
+type RelOption = { id: string; title: string; ok: boolean }
 
 // next.config.ts images.domains에 등록된 도메인만 렌더링 가능
 const THUMB_DOMAINS = ['thumbnail.dowha.kim', 'images.dowha.kim']
@@ -30,6 +33,9 @@ const empty = {
   genre: '',
   thumbnail: '',
   is_reading: true,
+  // shorts 전용
+  related_post_id: '',
+  related_book_id: '',
 }
 
 export default function DeskEdit() {
@@ -37,29 +43,38 @@ export default function DeskEdit() {
   const { user, loading, isOwner } = useOwner()
   const id = typeof router.query.id === 'string' ? router.query.id : null
 
-  // type=record → records, type=book → books. 기본은 posts(Writings).
+  // type=record → records, type=book → books, type=short → shorts. 기본은 posts(Writings).
   const isRecord = router.query.type === 'record'
   const isBook = router.query.type === 'book'
-  const table = isRecord ? 'records' : isBook ? 'books' : 'posts'
-  const label = isRecord ? '기록' : isBook ? '책' : '글'
-  const typeQuery = isRecord ? { type: 'record' } : isBook ? { type: 'book' } : {}
+  const isShort = router.query.type === 'short'
+  const table = isRecord ? 'records' : isBook ? 'books' : isShort ? 'shorts' : 'posts'
+  const label = isRecord ? '기록' : isBook ? '책' : isShort ? 'Shorts' : '글'
+  const typeQuery = isRecord
+    ? { type: 'record' }
+    : isBook
+      ? { type: 'book' }
+      : isShort
+        ? { type: 'short' }
+        : {}
 
   const [form, setForm] = useState({ ...empty })
   const [series, setSeries] = useState<SeriesRow[]>([])
   const [genres, setGenres] = useState<string[]>([])
+  const [relPosts, setRelPosts] = useState<RelOption[]>([])
+  const [relBooks, setRelBooks] = useState<RelOption[]>([])
   const [busy, setBusy] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [loadingPost, setLoadingPost] = useState(false)
 
   // 시리즈 목록은 posts에서만 필요
   useEffect(() => {
-    if (!isOwner || isRecord || isBook) return
+    if (!isOwner || isRecord || isBook || isShort) return
     supabase
       .from('series')
       .select('id,series_name')
       .order('series_name')
       .then(({ data }) => setSeries(data ?? []))
-  }, [isOwner, isRecord, isBook])
+  }, [isOwner, isRecord, isBook, isShort])
 
   // 장르는 기존 books에서 수집해 입력 자동완성으로 제공
   useEffect(() => {
@@ -72,6 +87,34 @@ export default function DeskEdit() {
       )
   }, [isOwner, isBook])
 
+  // shorts 연결 후보. 상세 페이지가 실제로 존재하는지(ok)까지 함께 계산한다.
+  useEffect(() => {
+    if (!isOwner || !isShort) return
+    const load = async () => {
+      const [posts, books, reviewed] = await Promise.all([
+        supabase.from('posts').select('id,title,is_external,is_published').order('created_at', { ascending: false }),
+        supabase.from('books').select('id,title').order('created_at', { ascending: false }),
+        supabase.from('books').select('id').not('content', 'is', null),
+      ])
+      const reviewedIds = new Set((reviewed.data ?? []).map((b) => b.id as string))
+      setRelPosts(
+        (posts.data ?? []).map((r) => ({
+          id: r.id as string,
+          title: (r.title as string) ?? '(제목 없음)',
+          ok: !r.is_external && !!r.is_published,
+        }))
+      )
+      setRelBooks(
+        (books.data ?? []).map((r) => ({
+          id: r.id as string,
+          title: (r.title as string) ?? '(제목 없음)',
+          ok: reviewedIds.has(r.id as string),
+        }))
+      )
+    }
+    load()
+  }, [isOwner, isShort])
+
   useEffect(() => {
     if (!isOwner || !id) return
     setLoadingPost(true)
@@ -79,7 +122,9 @@ export default function DeskEdit() {
       ? 'title,slug,content,is_published'
       : isBook
         ? 'title,slug,content,author,publisher,publication_year,genre,thumbnail,is_reading'
-        : 'title,subtitle,slug,content,series_id,is_published'
+        : isShort
+          ? 'content,is_published,related_post_id,related_book_id'
+          : 'title,subtitle,slug,content,series_id,is_published'
     supabase
       .from(table)
       .select(cols)
@@ -101,10 +146,12 @@ export default function DeskEdit() {
             genre: (d.genre as string) ?? '',
             thumbnail: (d.thumbnail as string) ?? '',
             is_reading: d.is_reading == null ? true : !!d.is_reading,
+            related_post_id: (d.related_post_id as string) ?? '',
+            related_book_id: (d.related_book_id as string) ?? '',
           })
         setLoadingPost(false)
       })
-  }, [isOwner, id, table, isRecord, isBook])
+  }, [isOwner, id, table, isRecord, isBook, isShort])
 
   const set = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
     setForm((f) => ({ ...f, [k]: v }))
@@ -146,11 +193,25 @@ export default function DeskEdit() {
   }
 
   const save = async (publish: boolean) => {
-    if (!form.title.trim()) return toast.error('제목을 입력하세요.')
-    if (!form.slug.trim()) return toast.error('slug(주소)를 입력하세요.')
+    if (isShort) {
+      if (!form.content.trim()) return toast.error('내용을 입력하세요.')
+      if (pureTextLength(form.content) > SHORTS_MAX_LENGTH)
+        return toast.error(`${SHORTS_MAX_LENGTH}자를 넘을 수 없습니다.`)
+    } else {
+      if (!form.title.trim()) return toast.error('제목을 입력하세요.')
+      if (!form.slug.trim()) return toast.error('slug(주소)를 입력하세요.')
+    }
 
     let payload: Record<string, unknown>
-    if (isBook) {
+    if (isShort) {
+      // short_id는 set_short_id_trigger가 채번하므로 보내지 않는다.
+      payload = {
+        content: form.content,
+        is_published: publish,
+        related_post_id: form.related_post_id || null,
+        related_book_id: form.related_book_id || null,
+      }
+    } else if (isBook) {
       if (!form.author.trim()) return toast.error('저자를 입력하세요.')
       if (!form.genre.trim()) return toast.error('장르를 입력하세요.')
       const year = Number(form.publication_year)
@@ -185,8 +246,8 @@ export default function DeskEdit() {
     let error
     if (id) {
       ;({ error } = await supabase.from(table).update(payload).eq('id', id))
-    } else if (isRecord || isBook) {
-      // records/books: id·created_at는 DB 기본값 → 삽입 후 새 id 회수
+    } else if (isRecord || isBook || isShort) {
+      // records/books/shorts: id·created_at는 DB 기본값 → 삽입 후 새 id 회수
       const res = await supabase.from(table).insert(payload).select('id').single()
       error = res.error
       if (!res.error && res.data) {
@@ -223,7 +284,9 @@ export default function DeskEdit() {
         ? { pathname: '/desk', query: { tab: 'records' } }
         : isBook
           ? { pathname: '/desk', query: { tab: 'books' } }
-          : '/desk'
+          : isShort
+            ? { pathname: '/desk', query: { tab: 'shorts' } }
+            : '/desk'
     )
 
   if (loading) return <p className="text-xs text-gray-400">확인 중…</p>
@@ -241,6 +304,12 @@ export default function DeskEdit() {
   const bookPublic = !!form.content.trim()
   // next/image는 등록된 도메인만 처리하므로 그 경우에만 미리보기를 띄운다.
   const previewable = THUMB_DOMAINS.some((d) => form.thumbnail.startsWith(`https://${d}/`))
+  // shorts 길이는 DB CHECK와 같은 규칙으로 센다(마크다운 문법 제외).
+  const shortLength = pureTextLength(form.content)
+  const shortOver = isShort && shortLength > SHORTS_MAX_LENGTH
+  const brokenRel =
+    (!!form.related_post_id && relPosts.some((o) => o.id === form.related_post_id && !o.ok)) ||
+    (!!form.related_book_id && relBooks.some((o) => o.id === form.related_book_id && !o.ok))
 
   return (
     <>
@@ -264,12 +333,16 @@ export default function DeskEdit() {
               </button>
             ) : (
               <>
-                <button onClick={() => save(false)} disabled={busy} className="default-button !mt-0 disabled:opacity-50">
+                <button
+                  onClick={() => save(false)}
+                  disabled={busy || shortOver}
+                  className="default-button !mt-0 disabled:opacity-50"
+                >
                   초안 저장
                 </button>
                 <button
                   onClick={() => save(true)}
-                  disabled={busy}
+                  disabled={busy || shortOver}
                   className="default-button !mt-0 !bg-[#0a85d1] !text-white hover:!bg-[#0972b5] disabled:opacity-50"
                 >
                   발행
@@ -283,12 +356,14 @@ export default function DeskEdit() {
           <p className="text-xs text-gray-400">불러오는 중…</p>
         ) : (
           <div className="flex flex-col gap-4">
-            <input
-              value={form.title}
-              onChange={(e) => set('title', e.target.value)}
-              placeholder="제목"
-              className="w-full border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 outline-none placeholder:text-gray-300"
-            />
+            {!isShort && (
+              <input
+                value={form.title}
+                onChange={(e) => set('title', e.target.value)}
+                placeholder="제목"
+                className="w-full border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 outline-none placeholder:text-gray-300"
+              />
+            )}
             {!isRecord && !isBook && (
               <input
                 value={form.subtitle}
@@ -336,15 +411,56 @@ export default function DeskEdit() {
             )}
 
             <div className="flex flex-wrap items-center gap-3 text-xs">
-              <label className="flex items-center gap-1.5">
-                <span className="text-gray-400">slug</span>
-                <input
-                  value={form.slug}
-                  onChange={(e) => set('slug', e.target.value)}
-                  placeholder="url-address"
-                  className="rounded border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
-                />
-              </label>
+              {!isShort && (
+                <label className="flex items-center gap-1.5">
+                  <span className="text-gray-400">slug</span>
+                  <input
+                    value={form.slug}
+                    onChange={(e) => set('slug', e.target.value)}
+                    placeholder="url-address"
+                    className="rounded border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                  />
+                </label>
+              )}
+              {isShort && (
+                <>
+                  {/* 후보는 상세 페이지가 실제로 있는 것만. 이미 걸려 있는 값은 깨졌더라도 유지한다. */}
+                  <label className="flex items-center gap-1.5">
+                    <span className="text-gray-400">관련 글</span>
+                    <select
+                      value={form.related_post_id}
+                      onChange={(e) => set('related_post_id', e.target.value)}
+                      className="max-w-[14rem] rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                    >
+                      <option value="">— 없음 —</option>
+                      {relPosts
+                        .filter((o) => o.ok || o.id === form.related_post_id)
+                        .map((o) => (
+                          <option key={o.id} value={o.id}>
+                            {o.ok ? o.title : `⚠︎ ${o.title}`}
+                          </option>
+                        ))}
+                    </select>
+                  </label>
+                  <label className="flex items-center gap-1.5">
+                    <span className="text-gray-400">관련 책</span>
+                    <select
+                      value={form.related_book_id}
+                      onChange={(e) => set('related_book_id', e.target.value)}
+                      className="max-w-[14rem] rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                    >
+                      <option value="">— 없음 —</option>
+                      {relBooks
+                        .filter((o) => o.ok || o.id === form.related_book_id)
+                        .map((o) => (
+                          <option key={o.id} value={o.id}>
+                            {o.ok ? o.title : `⚠︎ ${o.title}`}
+                          </option>
+                        ))}
+                    </select>
+                  </label>
+                </>
+              )}
               {!isRecord && !isBook && (
                 <label className="flex items-center gap-1.5">
                   <span className="text-gray-400">시리즈</span>
@@ -425,14 +541,40 @@ export default function DeskEdit() {
               </span>
             </div>
 
-            <div data-color-mode="light">
-              <MDEditor
-                value={form.content}
-                onChange={(v) => set('content', v ?? '')}
-                height={520}
-                textareaProps={{ placeholder: isBook ? '리뷰 (마크다운, 비우면 비공개)' : '본문 (마크다운)' }}
-              />
-            </div>
+            {brokenRel && (
+              <p className="-mt-2 text-[11px] text-amber-600">
+                ⚠︎ 표시된 항목은 공개된 상세 페이지가 없어 링크가 404가 됩니다.
+              </p>
+            )}
+
+            {isShort ? (
+              <div className="flex flex-col gap-1.5">
+                <textarea
+                  value={form.content}
+                  onChange={(e) => set('content', e.target.value)}
+                  rows={6}
+                  placeholder="내용"
+                  className="w-full resize-y rounded border border-gray-200 p-3 text-sm leading-6 text-gray-800 outline-none placeholder:text-gray-300 focus:border-gray-400"
+                />
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="text-gray-400">굵게(**), 기울임(*)만 화면에 표시됩니다</span>
+                  <span className={shortOver ? 'font-medium text-red-500' : 'text-gray-400'}>
+                    {shortLength} / {SHORTS_MAX_LENGTH}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div data-color-mode="light">
+                <MDEditor
+                  value={form.content}
+                  onChange={(v) => set('content', v ?? '')}
+                  height={520}
+                  textareaProps={{
+                    placeholder: isBook ? '리뷰 (마크다운, 비우면 비공개)' : '본문 (마크다운)',
+                  }}
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

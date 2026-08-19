@@ -13,16 +13,19 @@ type Row = {
   is_published?: boolean
   is_external?: boolean
   is_reading?: boolean // books 전용
-  updated_at?: string | null // books엔 없음(트리거 미존재)
+  short_id?: number // shorts 전용
+  content?: string // shorts는 제목이 없어 본문을 대신 보여준다
+  updated_at?: string | null // books·shorts엔 없음(트리거 미존재)
   created_at: string
 }
 
 // 섹션 = 대상 테이블. label은 nav 메뉴 명칭에 맞춤.
-type Section = 'posts' | 'records' | 'books'
+type Section = 'posts' | 'records' | 'books' | 'shorts'
 const SECTIONS: { key: Section; label: string }[] = [
   { key: 'posts', label: 'Writings' },
   { key: 'records', label: 'Records' },
   { key: 'books', label: 'Books' },
+  { key: 'shorts', label: 'Shorts' },
 ]
 
 // books는 발행 개념 대신 읽기 상태(is_reading)를 쓴다.
@@ -45,14 +48,37 @@ const FILTERS: Record<Section, { key: Filter; label: string }[]> = {
     { key: 'reading', label: '읽는 중' },
     { key: 'read', label: '읽음' },
   ],
+  shorts: [
+    { key: 'all', label: '전체' },
+    { key: 'draft', label: '초안' },
+    { key: 'published', label: '발행' },
+  ],
 }
 
-const NOUN: Record<Section, string> = { posts: '글', records: '기록', books: '책' }
+const NOUN: Record<Section, string> = {
+  posts: '글',
+  records: '기록',
+  books: '책',
+  shorts: 'Shorts',
+}
+// 조사가 달라 문장은 따로 둔다.
+const EMPTY_MESSAGE: Record<Section, string> = {
+  posts: '글이 없습니다.',
+  records: '기록이 없습니다.',
+  books: '책이 없습니다.',
+  shorts: 'Shorts가 없습니다.',
+}
 const DEFAULT_FILTER = (s: Section): Filter => (s === 'books' ? 'reading' : 'draft')
 
 // 에디터는 type 파라미터로 대상 테이블을 구분한다.
 const TYPE_QUERY = (s: Section) =>
-  s === 'records' ? { type: 'record' } : s === 'books' ? { type: 'book' } : {}
+  s === 'records'
+    ? { type: 'record' }
+    : s === 'books'
+      ? { type: 'book' }
+      : s === 'shorts'
+        ? { type: 'short' }
+        : {}
 
 export default function DeskHome() {
   const router = useRouter()
@@ -67,13 +93,14 @@ export default function DeskHome() {
 
   const isPosts = section === 'posts'
   const isBooks = section === 'books'
+  const isShorts = section === 'shorts'
   const noun = NOUN[section]
 
-  // 에디터 진입 시 돌아올 섹션 복원 (?tab=records | ?tab=books)
+  // 에디터 진입 시 돌아올 섹션 복원 (?tab=records | ?tab=books | ?tab=shorts)
   useEffect(() => {
     if (!router.isReady) return
     const tab = router.query.tab
-    if (tab === 'records' || tab === 'books') {
+    if (tab === 'records' || tab === 'books' || tab === 'shorts') {
       setSection(tab)
       setFilter(DEFAULT_FILTER(tab))
     }
@@ -85,7 +112,9 @@ export default function DeskHome() {
       ? 'id,title,slug,is_published,is_external,updated_at,created_at'
       : isBooks
         ? 'id,title,slug,is_reading,created_at'
-        : 'id,title,slug,is_published,updated_at,created_at'
+        : isShorts
+          ? 'id,short_id,content,is_published,created_at'
+          : 'id,title,slug,is_published,updated_at,created_at'
     const { data } = await supabase
       .from(section)
       .select(cols)
@@ -142,6 +171,13 @@ export default function DeskHome() {
     return !p.is_external && p.is_published // 발행(내부)
   })
   const fmt = (s: string | null | undefined) => (s ? s.slice(0, 10) : '-')
+
+  // shorts는 title·slug가 없어 본문 발췌와 #short_id로 대신한다.
+  const rowTitle = (p: Row) =>
+    isShorts
+      ? (p.content ?? '').replace(/\s+/g, ' ').trim() || '(내용 없음)'
+      : p.title || '(제목 없음)'
+  const rowMeta = (p: Row) => (isShorts ? `#${p.short_id ?? '-'}` : p.slug || '—')
 
   const editHref = (id?: string) => ({
     pathname: '/desk/edit',
@@ -230,9 +266,7 @@ export default function DeskHome() {
                   <li key={p.id} className="flex items-center gap-3 border-b border-gray-100 py-3">
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-1.5">
-                        <span className="truncate text-sm text-gray-800">
-                          {p.title || '(제목 없음)'}
-                        </span>
+                        <span className="truncate text-sm text-gray-800">{rowTitle(p)}</span>
                         {p.is_external && (
                           <span className="shrink-0 text-[11px] font-medium leading-none text-sky-600">
                             외부
@@ -240,7 +274,7 @@ export default function DeskHome() {
                         )}
                       </div>
                       <div className="mt-0.5 truncate text-[11px] text-gray-400">
-                        {p.slug || '—'} · {fmt(p.updated_at || p.created_at)}
+                        {rowMeta(p)} · {fmt(p.updated_at || p.created_at)}
                       </div>
                     </div>
                     <button
@@ -265,7 +299,7 @@ export default function DeskHome() {
               })}
               {!fetching && shown.length === 0 && (
                 <li className="border-b border-gray-100 py-8 text-center text-xs text-gray-400">
-                  {`${noun}이 없습니다.`}
+                  {EMPTY_MESSAGE[section]}
                 </li>
               )}
             </ul>
