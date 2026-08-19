@@ -226,16 +226,22 @@ export default function DeskHome() {
         ) : (
           <>
             <div className="mb-6 flex items-center justify-between">
-              <h1 className="!mb-0 text-gray-800">Desk</h1>
-              <div className="flex items-center gap-3">
-                <button onClick={() => router.push(editHref())} className="default-button !mt-0">
-                  <span>✏️</span>
-                  <span>{`새 ${noun}`}</span>
+              <h1 className="!mb-0 text-gray-800">
+                Desk
+                {/* 로그아웃은 제목 옆 *로 숨긴다 */}
+                <button
+                  onClick={logout}
+                  title="로그아웃"
+                  aria-label="로그아웃"
+                  className="ml-1 align-super text-sm text-gray-300 hover:text-gray-600"
+                >
+                  *
                 </button>
-                <button onClick={logout} className="text-xs text-gray-400 hover:text-gray-600">
-                  로그아웃
-                </button>
-              </div>
+              </h1>
+              <button onClick={() => router.push(editHref())} className="default-button !mt-0">
+                <span>✏️</span>
+                <span>{`새 ${noun}`}</span>
+              </button>
             </div>
 
             <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
