@@ -46,6 +46,8 @@ const empty = {
   // shorts 전용
   related_post_id: '',
   related_book_id: '',
+  // 새 글·새 Shorts에서만 쓰는 작성 시각(datetime-local). 비우면 DB 기본값 now()
+  created_at: '',
   // series 전용 (series_name은 title 칸을 그대로 쓴다)
   description: '',
   theme_color: '#FFFFFF',
@@ -180,6 +182,7 @@ export default function DeskEdit() {
             genre: (d.genre as string) ?? '',
             thumbnail: (d.thumbnail as string) ?? '',
             is_reading: d.is_reading == null ? true : !!d.is_reading,
+            created_at: '', // 기존 항목의 작성 시각은 에디터에서 다루지 않는다
             related_post_id: (d.related_post_id as string) ?? '',
             related_book_id: (d.related_book_id as string) ?? '',
             description: (d.description as string) ?? '',
@@ -307,6 +310,13 @@ export default function DeskEdit() {
       payload = isRecord
         ? base
         : { ...base, subtitle: form.subtitle.trim() || null, series_id: form.series_id || null }
+    }
+
+    // 작성 시각은 새로 만들 때만 지정할 수 있다. 비우면 DB 기본값 now()가 쓰인다.
+    if (!id && (isPost || isShort) && form.created_at) {
+      const at = new Date(form.created_at)
+      if (Number.isNaN(at.getTime())) return toast.error('작성 시각이 올바르지 않습니다.')
+      payload.created_at = at.toISOString()
     }
 
     setBusy(true)
@@ -685,6 +695,18 @@ export default function DeskEdit() {
                     <span>읽는 중</span>
                   </label>
                 </>
+              )}
+              {!id && (isPost || isShort) && (
+                <label className="flex items-center gap-1.5">
+                  <span className="text-gray-400">작성 시각</span>
+                  <input
+                    type="datetime-local"
+                    value={form.created_at}
+                    onChange={(e) => set('created_at', e.target.value)}
+                    title="비우면 저장하는 시각으로 기록됩니다"
+                    className="rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                  />
+                </label>
               )}
               <span
                 className={`ml-auto rounded-full px-2.5 py-1 text-[11px] ${
