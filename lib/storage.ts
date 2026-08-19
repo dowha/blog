@@ -1,4 +1,3 @@
-import { randomBytes } from 'crypto'
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { ALLOWED_IMAGE_TYPES, type SignedUpload } from '@/lib/upload'
@@ -32,30 +31,44 @@ const client = () =>
     responseChecksumValidation: 'WHEN_REQUIRED',
   })
 
-// slug 기반 키 + 임의 접미사. 표지를 교체해도 키가 달라져 CDN 캐시에 옛 이미지가 남지 않는다.
-export const buildKey = (slug: string, ext: string) => {
-  const base = slug.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
-  return `${base || 'book'}-${randomBytes(3).toString('hex')}.${ext}`
+/**
+ * 업로드한 파일명을 그대로 키로 쓴다(버킷 루트에 <파일명>.<ext>).
+ * 파일명은 클라이언트가 준 값이므로 경로 구분자를 떼고 안전한 문자만 남긴다.
+ * 확장자는 파일명이 아니라 MIME에서 결정한다(jpeg → jpg로 정규화됨).
+ * 이름이 같으면 기존 객체를 덮어쓴다.
+ */
+export const buildKey = (filename: string, slug: string, ext: string) => {
+  const base = (filename.split(/[\\/]/).pop() ?? '').replace(/\.[^.]*$/, '') // 경로·확장자 제거
+  const safe = base
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]+/g, '-')
+    .replace(/^[.\-]+|[.\-]+$/g, '')
+    .slice(0, 100)
+  const fallback = slug.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
+  return `${safe || fallback || 'book'}.${ext}`
 }
 
 export async function createThumbnailUpload({
+  filename,
   slug,
   contentType,
 }: {
+  filename: string
   slug: string
   contentType: string
 }): Promise<SignedUpload> {
   const ext = ALLOWED_IMAGE_TYPES[contentType]
   if (!ext) throw new Error('지원하지 않는 이미지 형식입니다.')
 
-  const key = buildKey(slug, ext)
+  const key = buildKey(filename, slug, ext)
   const uploadUrl = await getSignedUrl(
     client(),
     new PutObjectCommand({
       Bucket: env('R2_BUCKET'),
       Key: key,
       ContentType: contentType,
-      CacheControl: 'public, max-age=31536000, immutable',
+      // 같은 파일명으로 덮어쓸 수 있으므로 immutable은 쓰지 않는다
+      CacheControl: 'public, max-age=3600',
     }),
     { expiresIn: 60 }
   )
@@ -63,6 +76,6 @@ export async function createThumbnailUpload({
   return {
     uploadUrl,
     publicUrl: `${env('R2_PUBLIC_BASE').replace(/\/$/, '')}/${key}`,
-    headers: { 'Content-Type': contentType, 'Cache-Control': 'public, max-age=31536000, immutable' },
+    headers: { 'Content-Type': contentType, 'Cache-Control': 'public, max-age=3600' },
   }
 }

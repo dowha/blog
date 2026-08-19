@@ -214,7 +214,12 @@ export default function DeskEdit() {
       const res = await fetch('/api/desk/upload-url', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
-        body: JSON.stringify({ slug: form.slug.trim(), contentType: file.type, size: file.size }),
+        body: JSON.stringify({
+          filename: file.name,
+          slug: form.slug.trim(),
+          contentType: file.type,
+          size: file.size,
+        }),
       })
       const signed = await res.json()
       if (!res.ok) throw new Error(signed.error ?? '서명 발급에 실패했습니다.')

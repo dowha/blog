@@ -4,7 +4,7 @@ import { OWNER_EMAIL } from '@/components/desk/useOwner'
 import { createThumbnailUpload } from '@/lib/storage'
 import { ALLOWED_IMAGE_TYPES, MAX_UPLOAD_BYTES, type SignedUpload } from '@/lib/upload'
 
-type Body = { slug?: unknown; contentType?: unknown; size?: unknown }
+type Body = { filename?: unknown; slug?: unknown; contentType?: unknown; size?: unknown }
 
 /**
  * /desk 에디터용 표지 업로드 서명 발급.
@@ -33,9 +33,12 @@ export default async function handler(
     return res.status(401).json({ error: '접근 권한이 없습니다.' })
   }
 
-  const { slug, contentType, size } = (req.body ?? {}) as Body
+  const { filename, slug, contentType, size } = (req.body ?? {}) as Body
   if (typeof slug !== 'string' || !slug.trim()) {
     return res.status(400).json({ error: 'slug가 필요합니다.' })
+  }
+  if (typeof filename !== 'string' || !filename.trim()) {
+    return res.status(400).json({ error: '파일명이 필요합니다.' })
   }
   if (typeof contentType !== 'string' || !ALLOWED_IMAGE_TYPES[contentType]) {
     return res.status(400).json({ error: 'jpg·png·webp·avif 이미지만 올릴 수 있습니다.' })
@@ -45,7 +48,7 @@ export default async function handler(
   }
 
   try {
-    return res.status(200).json(await createThumbnailUpload({ slug, contentType }))
+    return res.status(200).json(await createThumbnailUpload({ filename, slug, contentType }))
   } catch (e) {
     const message = e instanceof Error ? e.message : '서명 발급에 실패했습니다.'
     console.error('upload-url 오류:', message)
