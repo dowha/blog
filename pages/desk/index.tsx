@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { toast } from 'sonner'
 import { supabase } from '@/supabase'
 import { useOwner, loginWithGoogle, logout } from '@/components/desk/useOwner'
+import ConfirmDialog from '@/components/desk/ConfirmDialog'
 
 type Row = {
   id: string
@@ -59,6 +61,9 @@ export default function DeskHome() {
   const [rows, setRows] = useState<Row[]>([])
   const [filter, setFilter] = useState<Filter>('draft')
   const [fetching, setFetching] = useState(false)
+  // 상태 전환은 확인 다이얼로그를 한 번 거친다.
+  const [pending, setPending] = useState<Row | null>(null)
+  const [applying, setApplying] = useState(false)
 
   const isPosts = section === 'posts'
   const isBooks = section === 'books'
@@ -97,18 +102,36 @@ export default function DeskHome() {
   const changeSection = (s: Section) => {
     setSection(s)
     setFilter(DEFAULT_FILTER(s))
+    setPending(null) // 열려 있던 확인창이 다른 테이블에 적용되지 않도록
   }
 
   // posts/records는 발행 여부, books는 읽기 여부를 토글한다.
-  const toggleState = async (p: Row) => {
+  const applyToggle = async () => {
+    if (!pending) return
     const col = isBooks ? 'is_reading' : 'is_published'
-    const next = !(isBooks ? p.is_reading : p.is_published)
+    const next = !(isBooks ? pending.is_reading : pending.is_published)
+    setApplying(true)
     // updated_at은 DB 트리거(moddatetime)가 자동 갱신
     const { error } = await supabase
       .from(section)
       .update({ [col]: next })
-      .eq('id', p.id)
-    if (!error) setRows((prev) => prev.map((x) => (x.id === p.id ? { ...x, [col]: next } : x)))
+      .eq('id', pending.id)
+    setApplying(false)
+    if (error) {
+      toast.error('변경 실패: ' + error.message)
+      return
+    }
+    setRows((prev) => prev.map((x) => (x.id === pending.id ? { ...x, [col]: next } : x)))
+    setPending(null)
+  }
+
+  // 확인 문구는 '바뀔 상태' 기준으로 만든다.
+  const confirmMessage = (p: Row) => {
+    const title = p.title || '제목 없음'
+    if (isBooks) return `'${title}'을(를) ${p.is_reading ? '읽음' : '읽는 중'}으로 변경할까요?`
+    return p.is_published
+      ? `'${title}'을(를) 초안으로 되돌릴까요?`
+      : `'${title}'을(를) 발행할까요?`
   }
 
   const shown = rows.filter((p) => {
@@ -221,7 +244,7 @@ export default function DeskHome() {
                       </div>
                     </div>
                     <button
-                      onClick={() => toggleState(p)}
+                      onClick={() => setPending(p)}
                       className={`shrink-0 text-[11px] font-medium hover:underline ${
                         active ? 'text-green-600' : 'text-amber-600'
                       }`}
@@ -246,6 +269,15 @@ export default function DeskHome() {
                 </li>
               )}
             </ul>
+
+            <ConfirmDialog
+              open={!!pending}
+              message={pending ? confirmMessage(pending) : ''}
+              confirmLabel="변경"
+              busy={applying}
+              onConfirm={applyToggle}
+              onCancel={() => setPending(null)}
+            />
           </>
         )}
       </div>
