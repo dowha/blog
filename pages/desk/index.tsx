@@ -23,10 +23,10 @@ type Row = {
 type Section = 'posts' | 'records' | 'books' | 'shorts' | 'series'
 const SECTIONS: { key: Section; label: string }[] = [
   { key: 'posts', label: 'Writings' },
-  { key: 'records', label: 'Records' },
-  { key: 'books', label: 'Books' },
-  { key: 'shorts', label: 'Shorts' },
   { key: 'series', label: 'Series' },
+  { key: 'books', label: 'Books' },
+  { key: 'records', label: 'Records' },
+  { key: 'shorts', label: 'Shorts' },
 ]
 
 // books는 발행 개념 대신 읽기 상태(is_reading)를 쓴다.

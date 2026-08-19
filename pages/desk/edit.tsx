@@ -19,6 +19,13 @@ type RelOption = { id: string; title: string; ok: boolean }
 // next.config.ts images.domains에 등록된 도메인만 렌더링 가능
 const THUMB_DOMAINS = ['thumbnail.dowha.kim', 'images.dowha.kim']
 
+const HEX_COLOR = /^#[0-9a-fA-F]{6}$/
+// '#' 없이 붙여넣어도 받아준다.
+const normalizeHex = (v: string) => {
+  const t = v.trim().toUpperCase()
+  return t === '' || t.startsWith('#') ? t : `#${t}`
+}
+
 const empty = {
   title: '',
   subtitle: '',
@@ -52,6 +59,7 @@ export default function DeskEdit() {
   const isBook = router.query.type === 'book'
   const isShort = router.query.type === 'short'
   const isSeries = router.query.type === 'series'
+  const isPost = !isRecord && !isBook && !isShort && !isSeries
   const table = isRecord
     ? 'records'
     : isBook
@@ -107,7 +115,10 @@ export default function DeskEdit() {
     if (!isOwner || !isShort) return
     const load = async () => {
       const [posts, books, reviewed] = await Promise.all([
-        supabase.from('posts').select('id,title,is_external,is_published').order('created_at', { ascending: false }),
+        supabase
+          .from('posts')
+          .select('id,title,is_external,is_published')
+          .order('created_at', { ascending: false }),
         supabase.from('books').select('id,title').order('created_at', { ascending: false }),
         supabase.from('books').select('id').not('content', 'is', null),
       ])
@@ -116,6 +127,7 @@ export default function DeskEdit() {
         (posts.data ?? []).map((r) => ({
           id: r.id as string,
           title: (r.title as string) ?? '(제목 없음)',
+          // 외부 글은 /shorts의 배지가 /posts/[slug]로 나가 404가 되므로 제외한다.
           ok: !r.is_external && !!r.is_published,
         }))
       )
@@ -225,7 +237,7 @@ export default function DeskEdit() {
       // 알파값을 만들기 때문에 반드시 #RRGGBB 7자리여야 한다.
       if (isSeries) {
         if (!form.description.trim()) return toast.error('설명을 입력하세요.')
-        if (!/^#[0-9a-fA-F]{6}$/.test(form.theme_color))
+        if (!HEX_COLOR.test(form.theme_color))
           return toast.error('테마 색상은 #RRGGBB 형식이어야 합니다.')
       }
     }
@@ -346,6 +358,7 @@ export default function DeskEdit() {
   // shorts 길이는 DB CHECK와 같은 규칙으로 센다(마크다운 문법 제외).
   const shortLength = pureTextLength(form.content)
   const shortOver = isShort && shortLength > SHORTS_MAX_LENGTH
+  const validColor = HEX_COLOR.test(form.theme_color)
   const brokenRel =
     (!!form.related_post_id && relPosts.some((o) => o.id === form.related_post_id && !o.ok)) ||
     (!!form.related_book_id && relBooks.some((o) => o.id === form.related_book_id && !o.ok))
@@ -403,7 +416,7 @@ export default function DeskEdit() {
                 className="w-full border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 outline-none placeholder:text-gray-300"
               />
             )}
-            {!isRecord && !isBook && (
+            {isPost && (
               <input
                 value={form.subtitle}
                 onChange={(e) => set('subtitle', e.target.value)}
@@ -474,14 +487,23 @@ export default function DeskEdit() {
                   </label>
                   <label className="flex items-center gap-1.5">
                     <span className="text-gray-400">테마 색상</span>
-                    {/* 상세 페이지가 '4D'를 이어붙여 알파를 만들므로 항상 7자리를 보장한다 */}
+                    {/* 상세 페이지가 '4D'를 이어붙여 알파를 만들므로 #RRGGBB 7자리여야 한다.
+                        피커와 직접 입력 중 아무거나 쓸 수 있다. */}
                     <input
                       type="color"
-                      value={form.theme_color}
+                      value={validColor ? form.theme_color : '#FFFFFF'}
                       onChange={(e) => set('theme_color', e.target.value.toUpperCase())}
                       className="h-6 w-10 cursor-pointer rounded border border-gray-200"
                     />
-                    <span className="font-mono text-[11px] text-gray-400">{form.theme_color}</span>
+                    <input
+                      value={form.theme_color}
+                      onChange={(e) => set('theme_color', normalizeHex(e.target.value))}
+                      placeholder="#FFFFFF"
+                      maxLength={7}
+                      className={`w-[5.5rem] rounded border px-2 py-1 font-mono text-[11px] outline-none focus:border-gray-400 ${
+                        validColor ? 'border-gray-200 text-gray-700' : 'border-red-300 text-red-500'
+                      }`}
+                    />
                   </label>
                 </>
               )}
@@ -524,7 +546,7 @@ export default function DeskEdit() {
                   </label>
                 </>
               )}
-              {!isRecord && !isBook && (
+              {isPost && (
                 <label className="flex items-center gap-1.5">
                   <span className="text-gray-400">시리즈</span>
                   <select
