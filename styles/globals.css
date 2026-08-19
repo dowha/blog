@@ -252,11 +252,11 @@
   --epr-category-label-height: 24px;
   --epr-horizontal-padding: 8px;
   --epr-header-padding: 8px var(--epr-horizontal-padding);
-  /* 돋보기(좌)·지우기(우) 아이콘이 절대 배치되므로 입력 패딩으로 자리를 비워둬야 한다.
-     아이콘 20px + inner-padding 6px = 26px → 좌우 28px */
+  /* 돋보기(좌)·지우기(우) 버튼이 입력 위에 절대 배치되므로 패딩으로 자리를 비워둔다.
+     아이콘 20px + inner-padding 6px = 26px → 여유 포함 좌우 30px */
   --epr-search-bar-inner-padding: 6px;
   --epr-search-input-height: 28px;
-  --epr-search-input-padding: 0 28px;
+  --epr-search-input-padding: 0 30px;
 }
 
 .desk-emoji-picker .epr-category-nav {
@@ -276,4 +276,18 @@
 /* native 스타일은 이모지를 텍스트로 그리므로 글자 크기를 직접 지정한다 */
 .desk-emoji-picker .epr-emoji-native {
   font-size: 18px;
+}
+
+/* 지우기 버튼은 30x30 원형이라 28px 검색창 밖으로 튀어나온다.
+   입력 안쪽 높이(28px - 상하 보더 2px = 26px)에 들어가도록 줄인다. */
+.desk-emoji-picker .epr-btn-clear-search {
+  width: 22px;
+  height: 22px;
+}
+
+/* 검색 입력 자체는 라이브러리가 클래스명을 생성하므로 구조로 지정한다.
+   블로그 base 타이포그래피를 상속받지 않도록 글자 크기·행간을 못박는다. */
+.desk-emoji-picker .epr-search-container input {
+  font-size: 12px;
+  line-height: 26px;
 }
