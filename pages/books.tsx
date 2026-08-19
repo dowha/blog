@@ -3,6 +3,7 @@ import { supabase } from '@/supabase'
 import BookCard from '@/components/ReadingCard'
 import GenreFilter from '@/components/GenreFilter'
 import Seo from '@/components/Seo'
+import { useDeskShortcut } from '@/components/desk/useDeskShortcut'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
@@ -23,6 +24,8 @@ interface Book {
 }
 
 export default function BooksPage() {
+  // 소유자 로그인 시 제목 더블클릭으로 /desk 진입
+  const deskShortcut = useDeskShortcut('books')
   const router = useRouter()
   const [books, setBooks] = useState<Book[]>([])
   const [filteredBooks, setFilteredBooks] = useState<Book[]>([])
@@ -135,7 +138,7 @@ export default function BooksPage() {
       <Seo title="Books" description={descriptionText} />
       <article className="book-list page-container">
         <h1 className="text-xl font-bold flex items-center">
-          Books
+          <span {...deskShortcut}>Books</span>
           <a
             href="/api/rss"
             target="_blank"

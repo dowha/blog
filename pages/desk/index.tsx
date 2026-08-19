@@ -107,15 +107,16 @@ export default function DeskHome() {
   const isSeries = section === 'series'
   const noun = NOUN[section]
 
-  // 에디터 진입 시 돌아올 섹션 복원 (?tab=records | ?tab=books | ?tab=shorts)
+  // ?tab=…      에디터에서 돌아올 섹션 복원
+  // ?filter=all  공개 페이지 제목에서 들어온 경우엔 초안/읽는 중 대신 전체를 연다
   useEffect(() => {
     if (!router.isReady) return
     const tab = router.query.tab
-    if (tab === 'records' || tab === 'books' || tab === 'shorts' || tab === 'series') {
-      setSection(tab)
-      setFilter(DEFAULT_FILTER(tab))
-    }
-  }, [router.isReady, router.query.tab])
+    const next: Section | null =
+      tab === 'records' || tab === 'books' || tab === 'shorts' || tab === 'series' ? tab : null
+    if (next) setSection(next)
+    setFilter(router.query.filter === 'all' ? 'all' : DEFAULT_FILTER(next ?? 'posts'))
+  }, [router.isReady, router.query.tab, router.query.filter])
 
   const load = async () => {
     setFetching(true)

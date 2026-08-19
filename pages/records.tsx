@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import MarkdownContent from '@/components/MarkdownContent'
 import Seo from '@/components/Seo'
+import { useDeskShortcut } from '@/components/desk/useDeskShortcut'
 import { CopyLinkButton } from '@/components/ActionButtons'
 
 type Record = {
@@ -92,6 +93,8 @@ function Collapse({
 }
 
 export default function RecordsPage({ records }: Props) {
+  // 소유자 로그인 시 제목 더블클릭으로 /desk 진입
+  const deskShortcut = useDeskShortcut('records')
   const router = useRouter()
   const [openedSlug, setOpenedSlug] = useState<string | null>(null)
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null)
@@ -127,7 +130,9 @@ export default function RecordsPage({ records }: Props) {
     <>
       <Seo title={pageTitle} description={descriptionText} />
       <article className="records page-container">
-        <h1 className="text-xl font-bold">Records</h1>
+        <h1 className="text-xl font-bold" {...deskShortcut}>
+          Records
+        </h1>
         <p className="mt-4 text-keepall">{descriptionText}</p>
 
         {records.map((record, index) => (

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/supabase'
 import Seo from '@/components/Seo'
+import { useDeskShortcut } from '@/components/desk/useDeskShortcut'
 import { LoadMoreButton } from '@/components/ActionButtons'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import { format, subDays } from 'date-fns'
@@ -47,6 +48,8 @@ type GroupedShorts = {
 }
 
 export default function ShortsPage() {
+  // 소유자 로그인 시 제목 더블클릭으로 /desk 진입
+  const deskShortcut = useDeskShortcut('shorts')
   const [shorts, setShorts] = useState<Short[]>([])
   const [visibleCount, setVisibleCount] = useState(10)
   const [highlightedId, setHighlightedId] = useState<string | null>(null)
@@ -233,7 +236,9 @@ export default function ShortsPage() {
     <>
       <Seo title="Shorts" description={descriptionText} />
       <article className="page-container">
-        <h1 className="text-xl font-bold">Shorts</h1>
+        <h1 className="text-xl font-bold" {...deskShortcut}>
+          Shorts
+        </h1>
         <p className="mt-4 text-keepall text-gray-600">{descriptionText}</p>
 
         {isLoading ? (

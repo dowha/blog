@@ -2,6 +2,7 @@ import { supabase } from '@/supabase'
 import { useState } from 'react'
 import Link from 'next/link'
 import Seo from '@/components/Seo'
+import { useDeskShortcut } from '@/components/desk/useDeskShortcut'
 import Image from 'next/image'
 import { LoadMoreButton } from '@/components/ActionButtons'
 
@@ -49,6 +50,8 @@ export default function WritingPage({
   allPosts: Post[]
 }) {
   const [posts, setPosts] = useState<Post[]>(initialPosts)
+  // 소유자 로그인 시 제목 더블클릭으로 /desk 진입
+  const deskShortcut = useDeskShortcut('posts')
   const [offset, setOffset] = useState(initialPosts.length)
   const LIMIT = 10
 
@@ -74,7 +77,7 @@ export default function WritingPage({
       <Seo title="Writings" description={descriptionText} />
       <article className="post-list page-container">
         <h1 className="text-xl font-bold flex items-center">
-          Writings
+          <span {...deskShortcut}>Writings</span>
           <a
             href="/api/rss"
             target="_blank"
