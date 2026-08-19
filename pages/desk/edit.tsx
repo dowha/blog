@@ -520,8 +520,8 @@ export default function DeskEdit() {
                             emojiStyle={'native' as EmojiStyle}
                             lazyLoadEmojis
                             skinTonesDisabled
-                            width={320}
-                            height={380}
+                            width={264}
+                            height={300}
                             previewConfig={{ showPreview: false }}
                           />
                         </div>
