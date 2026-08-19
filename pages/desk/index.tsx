@@ -16,16 +16,17 @@ type Row = {
   short_id?: number // shorts 전용
   content?: string // shorts는 제목이 없어 본문을 대신 보여준다
   updated_at?: string | null // books·shorts엔 없음(트리거 미존재)
-  created_at: string
+  created_at?: string // series엔 없음
 }
 
 // 섹션 = 대상 테이블. label은 nav 메뉴 명칭에 맞춤.
-type Section = 'posts' | 'records' | 'books' | 'shorts'
+type Section = 'posts' | 'records' | 'books' | 'shorts' | 'series'
 const SECTIONS: { key: Section; label: string }[] = [
   { key: 'posts', label: 'Writings' },
   { key: 'records', label: 'Records' },
   { key: 'books', label: 'Books' },
   { key: 'shorts', label: 'Shorts' },
+  { key: 'series', label: 'Series' },
 ]
 
 // books는 발행 개념 대신 읽기 상태(is_reading)를 쓴다.
@@ -53,6 +54,11 @@ const FILTERS: Record<Section, { key: Filter; label: string }[]> = {
     { key: 'draft', label: '초안' },
     { key: 'published', label: '발행' },
   ],
+  series: [
+    { key: 'all', label: '전체' },
+    { key: 'draft', label: '초안' },
+    { key: 'published', label: '발행' },
+  ],
 }
 
 const NOUN: Record<Section, string> = {
@@ -60,6 +66,7 @@ const NOUN: Record<Section, string> = {
   records: '기록',
   books: '책',
   shorts: 'Shorts',
+  series: '시리즈',
 }
 // 조사가 달라 문장은 따로 둔다.
 const EMPTY_MESSAGE: Record<Section, string> = {
@@ -67,6 +74,7 @@ const EMPTY_MESSAGE: Record<Section, string> = {
   records: '기록이 없습니다.',
   books: '책이 없습니다.',
   shorts: 'Shorts가 없습니다.',
+  series: '시리즈가 없습니다.',
 }
 const DEFAULT_FILTER = (s: Section): Filter => (s === 'books' ? 'reading' : 'draft')
 
@@ -78,7 +86,9 @@ const TYPE_QUERY = (s: Section) =>
       ? { type: 'book' }
       : s === 'shorts'
         ? { type: 'short' }
-        : {}
+        : s === 'series'
+          ? { type: 'series' }
+          : {}
 
 export default function DeskHome() {
   const router = useRouter()
@@ -94,13 +104,14 @@ export default function DeskHome() {
   const isPosts = section === 'posts'
   const isBooks = section === 'books'
   const isShorts = section === 'shorts'
+  const isSeries = section === 'series'
   const noun = NOUN[section]
 
   // 에디터 진입 시 돌아올 섹션 복원 (?tab=records | ?tab=books | ?tab=shorts)
   useEffect(() => {
     if (!router.isReady) return
     const tab = router.query.tab
-    if (tab === 'records' || tab === 'books' || tab === 'shorts') {
+    if (tab === 'records' || tab === 'books' || tab === 'shorts' || tab === 'series') {
       setSection(tab)
       setFilter(DEFAULT_FILTER(tab))
     }
@@ -114,11 +125,13 @@ export default function DeskHome() {
         ? 'id,title,slug,is_reading,created_at'
         : isShorts
           ? 'id,short_id,content,is_published,created_at'
-          : 'id,title,slug,is_published,updated_at,created_at'
+          : isSeries
+            ? 'id,title:series_name,slug,is_published' // series엔 created_at이 없다
+            : 'id,title,slug,is_published,updated_at,created_at'
     const { data } = await supabase
       .from(section)
       .select(cols)
-      .order('created_at', { ascending: false })
+      .order(isSeries ? 'series_name' : 'created_at', { ascending: isSeries })
     setRows((data as unknown as Row[]) ?? [])
     setFetching(false)
   }
@@ -156,7 +169,7 @@ export default function DeskHome() {
 
   // 확인 문구는 '바뀔 상태' 기준으로 만든다.
   const confirmMessage = (p: Row) => {
-    const title = p.title || '제목 없음'
+    const title = rowTitle(p)
     if (isBooks) return `'${title}'을(를) ${p.is_reading ? '읽음' : '읽는 중'}으로 변경할까요?`
     return p.is_published
       ? `'${title}'을(를) 초안으로 되돌릴까요?`
@@ -178,6 +191,9 @@ export default function DeskHome() {
       ? (p.content ?? '').replace(/\s+/g, ' ').trim() || '(내용 없음)'
       : p.title || '(제목 없음)'
   const rowMeta = (p: Row) => (isShorts ? `#${p.short_id ?? '-'}` : p.slug || '—')
+  // series엔 날짜 컬럼이 없어 slug만 보여준다.
+  const rowSub = (p: Row) =>
+    isSeries ? rowMeta(p) : `${rowMeta(p)} · ${fmt(p.updated_at || p.created_at)}`
 
   const editHref = (id?: string) => ({
     pathname: '/desk/edit',
@@ -274,7 +290,7 @@ export default function DeskHome() {
                         )}
                       </div>
                       <div className="mt-0.5 truncate text-[11px] text-gray-400">
-                        {rowMeta(p)} · {fmt(p.updated_at || p.created_at)}
+                        {rowSub(p)}
                       </div>
                     </div>
                     <button

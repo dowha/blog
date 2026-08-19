@@ -36,6 +36,10 @@ const empty = {
   // shorts 전용
   related_post_id: '',
   related_book_id: '',
+  // series 전용 (series_name은 title 칸을 그대로 쓴다)
+  description: '',
+  theme_color: '#FFFFFF',
+  emoji: '',
 }
 
 export default function DeskEdit() {
@@ -47,15 +51,26 @@ export default function DeskEdit() {
   const isRecord = router.query.type === 'record'
   const isBook = router.query.type === 'book'
   const isShort = router.query.type === 'short'
-  const table = isRecord ? 'records' : isBook ? 'books' : isShort ? 'shorts' : 'posts'
-  const label = isRecord ? '기록' : isBook ? '책' : isShort ? 'Shorts' : '글'
+  const isSeries = router.query.type === 'series'
+  const table = isRecord
+    ? 'records'
+    : isBook
+      ? 'books'
+      : isShort
+        ? 'shorts'
+        : isSeries
+          ? 'series'
+          : 'posts'
+  const label = isRecord ? '기록' : isBook ? '책' : isShort ? 'Shorts' : isSeries ? '시리즈' : '글'
   const typeQuery = isRecord
     ? { type: 'record' }
     : isBook
       ? { type: 'book' }
       : isShort
         ? { type: 'short' }
-        : {}
+        : isSeries
+          ? { type: 'series' }
+          : {}
 
   const [form, setForm] = useState({ ...empty })
   const [series, setSeries] = useState<SeriesRow[]>([])
@@ -68,13 +83,13 @@ export default function DeskEdit() {
 
   // 시리즈 목록은 posts에서만 필요
   useEffect(() => {
-    if (!isOwner || isRecord || isBook || isShort) return
+    if (!isOwner || isRecord || isBook || isShort || isSeries) return
     supabase
       .from('series')
       .select('id,series_name')
       .order('series_name')
       .then(({ data }) => setSeries(data ?? []))
-  }, [isOwner, isRecord, isBook, isShort])
+  }, [isOwner, isRecord, isBook, isShort, isSeries])
 
   // 장르는 기존 books에서 수집해 입력 자동완성으로 제공
   useEffect(() => {
@@ -124,7 +139,9 @@ export default function DeskEdit() {
         ? 'title,slug,content,author,publisher,publication_year,genre,thumbnail,is_reading'
         : isShort
           ? 'content,is_published,related_post_id,related_book_id'
-          : 'title,subtitle,slug,content,series_id,is_published'
+          : isSeries
+            ? 'title:series_name,slug,description,theme_color,emoji,is_published'
+            : 'title,subtitle,slug,content,series_id,is_published'
     supabase
       .from(table)
       .select(cols)
@@ -148,10 +165,13 @@ export default function DeskEdit() {
             is_reading: d.is_reading == null ? true : !!d.is_reading,
             related_post_id: (d.related_post_id as string) ?? '',
             related_book_id: (d.related_book_id as string) ?? '',
+            description: (d.description as string) ?? '',
+            theme_color: (d.theme_color as string) ?? '#FFFFFF',
+            emoji: (d.emoji as string) ?? '',
           })
         setLoadingPost(false)
       })
-  }, [isOwner, id, table, isRecord, isBook, isShort])
+  }, [isOwner, id, table, isRecord, isBook, isShort, isSeries])
 
   const set = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
     setForm((f) => ({ ...f, [k]: v }))
@@ -198,12 +218,29 @@ export default function DeskEdit() {
       if (pureTextLength(form.content) > SHORTS_MAX_LENGTH)
         return toast.error(`${SHORTS_MAX_LENGTH}자를 넘을 수 없습니다.`)
     } else {
-      if (!form.title.trim()) return toast.error('제목을 입력하세요.')
+      if (!form.title.trim())
+        return toast.error(isSeries ? '시리즈 이름을 입력하세요.' : '제목을 입력하세요.')
       if (!form.slug.trim()) return toast.error('slug(주소)를 입력하세요.')
+      // description은 NOT NULL이고, theme_color는 상세 페이지에서 '4D'를 이어붙여
+      // 알파값을 만들기 때문에 반드시 #RRGGBB 7자리여야 한다.
+      if (isSeries) {
+        if (!form.description.trim()) return toast.error('설명을 입력하세요.')
+        if (!/^#[0-9a-fA-F]{6}$/.test(form.theme_color))
+          return toast.error('테마 색상은 #RRGGBB 형식이어야 합니다.')
+      }
     }
 
     let payload: Record<string, unknown>
-    if (isShort) {
+    if (isSeries) {
+      payload = {
+        series_name: form.title.trim(),
+        slug: form.slug.trim(),
+        description: form.description.trim(),
+        theme_color: form.theme_color,
+        emoji: form.emoji.trim() || null,
+        is_published: publish,
+      }
+    } else if (isShort) {
       // short_id는 set_short_id_trigger가 채번하므로 보내지 않는다.
       payload = {
         content: form.content,
@@ -246,8 +283,8 @@ export default function DeskEdit() {
     let error
     if (id) {
       ;({ error } = await supabase.from(table).update(payload).eq('id', id))
-    } else if (isRecord || isBook || isShort) {
-      // records/books/shorts: id·created_at는 DB 기본값 → 삽입 후 새 id 회수
+    } else if (isRecord || isBook || isShort || isSeries) {
+      // records/books/shorts/series: id는 DB 기본값 → 삽입 후 새 id 회수
       const res = await supabase.from(table).insert(payload).select('id').single()
       error = res.error
       if (!res.error && res.data) {
@@ -286,7 +323,9 @@ export default function DeskEdit() {
           ? { pathname: '/desk', query: { tab: 'books' } }
           : isShort
             ? { pathname: '/desk', query: { tab: 'shorts' } }
-            : '/desk'
+            : isSeries
+              ? { pathname: '/desk', query: { tab: 'series' } }
+              : '/desk'
     )
 
   if (loading) return <p className="text-xs text-gray-400">확인 중…</p>
@@ -360,7 +399,7 @@ export default function DeskEdit() {
               <input
                 value={form.title}
                 onChange={(e) => set('title', e.target.value)}
-                placeholder="제목"
+                placeholder={isSeries ? '시리즈 이름' : '제목'}
                 className="w-full border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 outline-none placeholder:text-gray-300"
               />
             )}
@@ -421,6 +460,30 @@ export default function DeskEdit() {
                     className="rounded border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
                   />
                 </label>
+              )}
+              {isSeries && (
+                <>
+                  <label className="flex items-center gap-1.5">
+                    <span className="text-gray-400">이모지</span>
+                    <input
+                      value={form.emoji}
+                      onChange={(e) => set('emoji', e.target.value)}
+                      placeholder="🌱"
+                      className="w-16 rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                    />
+                  </label>
+                  <label className="flex items-center gap-1.5">
+                    <span className="text-gray-400">테마 색상</span>
+                    {/* 상세 페이지가 '4D'를 이어붙여 알파를 만들므로 항상 7자리를 보장한다 */}
+                    <input
+                      type="color"
+                      value={form.theme_color}
+                      onChange={(e) => set('theme_color', e.target.value.toUpperCase())}
+                      className="h-6 w-10 cursor-pointer rounded border border-gray-200"
+                    />
+                    <span className="font-mono text-[11px] text-gray-400">{form.theme_color}</span>
+                  </label>
+                </>
               )}
               {isShort && (
                 <>
@@ -547,7 +610,17 @@ export default function DeskEdit() {
               </p>
             )}
 
-            {isShort ? (
+            {isSeries ? (
+              <div className="flex flex-col gap-1.5">
+                <textarea
+                  value={form.description}
+                  onChange={(e) => set('description', e.target.value)}
+                  rows={5}
+                  placeholder="설명 (마크다운, 시리즈 페이지 상단에 표시됩니다)"
+                  className="w-full resize-y rounded border border-gray-200 p-3 text-sm leading-6 text-gray-800 outline-none placeholder:text-gray-300 focus:border-gray-400"
+                />
+              </div>
+            ) : isShort ? (
               <div className="flex flex-col gap-1.5">
                 <textarea
                   value={form.content}
