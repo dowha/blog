@@ -62,6 +62,8 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     .from('series')
     .select('series_name, slug, theme_color, emoji') // 새로운 컬럼 포함
     .eq('is_published', true)
+    // series엔 created_at이 없어 이름순으로 고정한다(정렬이 없으면 순서가 보장되지 않음)
+    .order('series_name', { ascending: true })
 
   if (error || !series) {
     return { props: { series: [] } }
