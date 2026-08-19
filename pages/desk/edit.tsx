@@ -6,11 +6,14 @@ import Image from 'next/image'
 import { toast } from 'sonner'
 import { supabase } from '@/supabase'
 import { useOwner } from '@/components/desk/useOwner'
+import type { EmojiClickData, EmojiStyle } from 'emoji-picker-react'
 import { ALLOWED_IMAGE_TYPES, MAX_UPLOAD_BYTES, UPLOAD_ACCEPT } from '@/lib/upload'
 import { SHORTS_MAX_LENGTH, pureTextLength } from '@/lib/shorts'
 
 // react-md-editor는 window 의존 → SSR 비활성화
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
+// 이모지 피커는 시리즈 편집에서만 쓰므로 별도 청크로 분리한다.
+const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false })
 
 type SeriesRow = { id: string; series_name: string }
 // shorts의 연결 대상. ok=false면 상세 페이지가 없어 링크가 404가 된다.
@@ -87,6 +90,7 @@ export default function DeskEdit() {
   const [relBooks, setRelBooks] = useState<RelOption[]>([])
   const [busy, setBusy] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [emojiOpen, setEmojiOpen] = useState(false)
   const [loadingPost, setLoadingPost] = useState(false)
 
   // 시리즈 목록은 posts에서만 필요
@@ -187,6 +191,13 @@ export default function DeskEdit() {
 
   const set = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
     setForm((f) => ({ ...f, [k]: v }))
+
+  useEffect(() => {
+    if (!emojiOpen) return
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setEmojiOpen(false)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [emojiOpen])
 
   // 표지 업로드: 서버에서 서명 URL을 받아 브라우저가 스토리지로 직접 PUT한다.
   const uploadThumbnail = async (file: File) => {
@@ -476,15 +487,47 @@ export default function DeskEdit() {
               )}
               {isSeries && (
                 <>
-                  <label className="flex items-center gap-1.5">
+                  <div className="relative flex items-center gap-1.5">
                     <span className="text-gray-400">이모지</span>
-                    <input
-                      value={form.emoji}
-                      onChange={(e) => set('emoji', e.target.value)}
-                      placeholder="🌱"
-                      className="w-16 rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
-                    />
-                  </label>
+                    <button
+                      type="button"
+                      onClick={() => setEmojiOpen((v) => !v)}
+                      className="flex h-6 w-9 items-center justify-center rounded border border-gray-200 text-sm hover:bg-gray-50"
+                      aria-label="이모지 선택"
+                    >
+                      {form.emoji || <span className="text-[11px] text-gray-300">선택</span>}
+                    </button>
+                    {form.emoji && (
+                      <button
+                        type="button"
+                        onClick={() => set('emoji', '')}
+                        className="text-[11px] text-gray-400 hover:text-gray-600"
+                      >
+                        지우기
+                      </button>
+                    )}
+                    {emojiOpen && (
+                      <>
+                        {/* 바깥 클릭으로 닫기 */}
+                        <div className="fixed inset-0 z-40" onClick={() => setEmojiOpen(false)} />
+                        <div className="absolute left-0 top-8 z-50">
+                          <EmojiPicker
+                            onEmojiClick={(e: EmojiClickData) => {
+                              set('emoji', e.emoji)
+                              setEmojiOpen(false)
+                            }}
+                            // 이미지 스프라이트(jsdelivr) 대신 시스템 이모지 폰트를 쓴다
+                            emojiStyle={'native' as EmojiStyle}
+                            lazyLoadEmojis
+                            skinTonesDisabled
+                            width={320}
+                            height={380}
+                            previewConfig={{ showPreview: false }}
+                          />
+                        </div>
+                      </>
+                    )}
+                  </div>
                   <label className="flex items-center gap-1.5">
                     <span className="text-gray-400">테마 색상</span>
                     {/* 상세 페이지가 '4D'를 이어붙여 알파를 만들므로 #RRGGBB 7자리여야 한다.
