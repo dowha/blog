@@ -91,6 +91,7 @@ export default function DeskEdit() {
   const [busy, setBusy] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [emojiOpen, setEmojiOpen] = useState(false)
+  const [customGenre, setCustomGenre] = useState(false)
   const [loadingPost, setLoadingPost] = useState(false)
 
   // 시리즈 목록은 posts에서만 필요
@@ -185,6 +186,7 @@ export default function DeskEdit() {
             theme_color: (d.theme_color as string) ?? '#FFFFFF',
             emoji: (d.emoji as string) ?? '',
           })
+        setCustomGenre(false)
         setLoadingPost(false)
       })
   }, [isOwner, id, table, isRecord, isBook, isShort, isSeries])
@@ -374,6 +376,8 @@ export default function DeskEdit() {
   // shorts 길이는 DB CHECK와 같은 규칙으로 센다(마크다운 문법 제외).
   const shortLength = pureTextLength(form.content)
   const shortOver = isShort && shortLength > SHORTS_MAX_LENGTH
+  const genreOptions =
+    form.genre && !customGenre && !genres.includes(form.genre) ? [form.genre, ...genres] : genres
   const validColor = HEX_COLOR.test(form.theme_color)
   const brokenRel =
     (!!form.related_post_id && relPosts.some((o) => o.id === form.related_post_id && !o.ok)) ||
@@ -461,20 +465,40 @@ export default function DeskEdit() {
                   inputMode="numeric"
                   maxLength={4}
                   placeholder="출판연도"
-                  className="w-24 rounded border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                  className="w-24 rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
                 />
-                <input
-                  value={form.genre}
-                  onChange={(e) => set('genre', e.target.value)}
-                  list="book-genres"
-                  placeholder="장르"
+                {/* genre는 자유 text 컬럼이라 기존 목록에서 고르거나 새로 만들 수 있어야 한다 */}
+                <select
+                  value={customGenre ? '__custom__' : form.genre}
+                  onChange={(e) => {
+                    const v = e.target.value
+                    if (v === '__custom__') {
+                      setCustomGenre(true)
+                      set('genre', '')
+                    } else {
+                      setCustomGenre(false)
+                      set('genre', v)
+                    }
+                  }}
                   className="w-32 rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
-                />
-                <datalist id="book-genres">
-                  {genres.map((g) => (
-                    <option key={g} value={g} />
+                >
+                  <option value="">— 장르 —</option>
+                  {genreOptions.map((g) => (
+                    <option key={g} value={g}>
+                      {g}
+                    </option>
                   ))}
-                </datalist>
+                  <option value="__custom__">＋ 직접 입력</option>
+                </select>
+                {customGenre && (
+                  <input
+                    value={form.genre}
+                    onChange={(e) => set('genre', e.target.value)}
+                    placeholder="새 장르"
+                    autoFocus
+                    className="w-28 rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                  />
+                )}
               </div>
             )}
 
