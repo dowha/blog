@@ -252,8 +252,11 @@
   --epr-category-label-height: 24px;
   --epr-horizontal-padding: 8px;
   --epr-header-padding: 8px var(--epr-horizontal-padding);
+  /* 돋보기(좌)·지우기(우) 아이콘이 절대 배치되므로 입력 패딩으로 자리를 비워둬야 한다.
+     아이콘 20px + inner-padding 6px = 26px → 좌우 28px */
+  --epr-search-bar-inner-padding: 6px;
   --epr-search-input-height: 28px;
-  --epr-search-input-padding: 0 8px;
+  --epr-search-input-padding: 0 28px;
 }
 
 .desk-emoji-picker .epr-category-nav {
