@@ -46,7 +46,7 @@ const FILTERS: Record<Section, { key: Filter; label: string }[]> = {
 }
 
 const NOUN: Record<Section, string> = { posts: '글', records: '기록', books: '책' }
-const DEFAULT_FILTER = (s: Section): Filter => (s === 'books' ? 'all' : 'draft')
+const DEFAULT_FILTER = (s: Section): Filter => (s === 'books' ? 'reading' : 'draft')
 
 // 에디터는 type 파라미터로 대상 테이블을 구분한다.
 const TYPE_QUERY = (s: Section) =>
