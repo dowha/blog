@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 import { toast } from 'sonner'
 import { supabase } from '@/supabase'
 import { useOwner } from '@/components/desk/useOwner'
+import { ALLOWED_IMAGE_TYPES, MAX_UPLOAD_BYTES, UPLOAD_ACCEPT } from '@/lib/upload'
 
 // react-md-editor는 window 의존 → SSR 비활성화
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
@@ -46,6 +48,7 @@ export default function DeskEdit() {
   const [series, setSeries] = useState<SeriesRow[]>([])
   const [genres, setGenres] = useState<string[]>([])
   const [busy, setBusy] = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [loadingPost, setLoadingPost] = useState(false)
 
   // 시리즈 목록은 posts에서만 필요
@@ -105,6 +108,42 @@ export default function DeskEdit() {
 
   const set = <K extends keyof typeof form>(k: K, v: (typeof form)[K]) =>
     setForm((f) => ({ ...f, [k]: v }))
+
+  // 표지 업로드: 서버에서 서명 URL을 받아 브라우저가 스토리지로 직접 PUT한다.
+  const uploadThumbnail = async (file: File) => {
+    if (!form.slug.trim()) return toast.error('slug를 먼저 입력하세요. (파일명에 사용됩니다)')
+    if (!ALLOWED_IMAGE_TYPES[file.type]) return toast.error('jpg·png·webp·avif만 올릴 수 있습니다.')
+    if (file.size > MAX_UPLOAD_BYTES) return toast.error('이미지 크기는 5MB 이하여야 합니다.')
+
+    setUploading(true)
+    try {
+      const { data: sessionData } = await supabase.auth.getSession()
+      const accessToken = sessionData.session?.access_token
+      if (!accessToken) throw new Error('세션이 만료되었습니다. 다시 로그인하세요.')
+
+      const res = await fetch('/api/desk/upload-url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+        body: JSON.stringify({ slug: form.slug.trim(), contentType: file.type, size: file.size }),
+      })
+      const signed = await res.json()
+      if (!res.ok) throw new Error(signed.error ?? '서명 발급에 실패했습니다.')
+
+      const put = await fetch(signed.uploadUrl, {
+        method: 'PUT',
+        headers: signed.headers,
+        body: file,
+      })
+      if (!put.ok) throw new Error(`스토리지 업로드 실패 (${put.status})`)
+
+      set('thumbnail', signed.publicUrl)
+      toast.success('표지를 업로드했습니다. 저장을 눌러 반영하세요.')
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : '업로드에 실패했습니다.')
+    } finally {
+      setUploading(false)
+    }
+  }
 
   const save = async (publish: boolean) => {
     if (!form.title.trim()) return toast.error('제목을 입력하세요.')
@@ -200,6 +239,8 @@ export default function DeskEdit() {
 
   // books는 발행 플래그가 없다. 리뷰(content) 유무가 곧 공개 여부.
   const bookPublic = !!form.content.trim()
+  // next/image는 등록된 도메인만 처리하므로 그 경우에만 미리보기를 띄운다.
+  const previewable = THUMB_DOMAINS.some((d) => form.thumbnail.startsWith(`https://${d}/`))
 
   return (
     <>
@@ -333,6 +374,35 @@ export default function DeskEdit() {
                       className="w-64 rounded border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
                     />
                   </label>
+                  {/* URL 직접 입력과 파일 업로드 중 아무거나 쓸 수 있다. */}
+                  <label
+                    className={`cursor-pointer rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-500 hover:bg-gray-50 ${
+                      uploading ? 'pointer-events-none opacity-50' : ''
+                    }`}
+                  >
+                    {uploading ? '업로드 중…' : '업로드'}
+                    <input
+                      type="file"
+                      accept={UPLOAD_ACCEPT}
+                      className="hidden"
+                      disabled={uploading}
+                      onChange={(e) => {
+                        const file = e.target.files?.[0]
+                        e.target.value = '' // 같은 파일 재선택 허용
+                        if (file) uploadThumbnail(file)
+                      }}
+                    />
+                  </label>
+                  {previewable && (
+                    <Image
+                      src={form.thumbnail}
+                      alt="표지 미리보기"
+                      width={32}
+                      height={48}
+                      className="h-12 w-8 rounded border border-gray-200 object-cover"
+                      unoptimized
+                    />
+                  )}
                   <label className="flex items-center gap-1.5 text-gray-500">
                     <input
                       type="checkbox"
