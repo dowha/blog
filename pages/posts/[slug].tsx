@@ -259,6 +259,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       .select('title, slug, subtitle')
       .eq('series_id', post.series_id)
       .eq('is_published', true)
+      .eq('is_external', false) // 외부 글은 /posts/[slug]가 없어 링크가 404가 된다
+      .order('created_at', { ascending: true }) // /series/[slug]와 순서를 맞춘다
 
     posts = seriesPosts || []
   }
