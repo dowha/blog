@@ -16,7 +16,7 @@
     "@uiw/react-md-editor": "^4.1.1",
     "date-fns": "^4.1.0",
     "emoji-picker-react": "^4.19.1",
-    "next": "15.5.21",
+    "next": "15.5.25",
     "next-sitemap": "^4.2.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
