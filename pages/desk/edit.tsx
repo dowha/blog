@@ -31,6 +31,14 @@ const normalizeHex = (v: string) => {
   return t === '' || t.startsWith('#') ? t : `#${t}`
 }
 
+// timestamptz(ISO) → datetime-local 입력값. 브라우저 로컬 시간대 기준, 분 단위.
+const toLocalInput = (iso: string | null | undefined) => {
+  if (!iso) return ''
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return ''
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16)
+}
+
 const empty = {
   title: '',
   subtitle: '',
@@ -48,7 +56,7 @@ const empty = {
   // shorts 전용
   related_post_id: '',
   related_book_id: '',
-  // 새 글·새 Shorts에서만 쓰는 작성 시각(datetime-local). 비우면 DB 기본값 now()
+  // 작성 시각(datetime-local). posts·books·shorts에서 사용. 새 항목에서 비우면 DB 기본값 now()
   created_at: '',
   // 외부 글(posts.is_external) 전용. 본문은 원문 사이트에 있고 링크·출처만 관리한다.
   is_external: false,
@@ -103,6 +111,9 @@ export default function DeskEdit() {
   const [emojiOpen, setEmojiOpen] = useState(false)
   const [customGenre, setCustomGenre] = useState(false)
   const [loadingPost, setLoadingPost] = useState(false)
+  // 불러온 작성 시각. 바뀐 경우에만 저장해서 초 단위 값이 잘리지 않게 한다.
+  const [origCreatedAt, setOrigCreatedAt] = useState('')
+  const hasCreatedAt = isPost || isBook || isShort
 
   // 시리즈 목록은 posts에서만 필요
   useEffect(() => {
@@ -163,12 +174,12 @@ export default function DeskEdit() {
     const cols = isRecord
       ? 'title,slug,content,is_published'
       : isBook
-        ? 'title,slug,content,author,publisher,publication_year,genre,thumbnail,is_reading'
+        ? 'title,slug,content,author,publisher,publication_year,genre,thumbnail,is_reading,created_at'
         : isShort
-          ? 'content,is_published,related_post_id,related_book_id'
+          ? 'content,is_published,related_post_id,related_book_id,created_at'
           : isSeries
             ? 'title:series_name,slug,description,theme_color,emoji,is_published'
-            : 'title,subtitle,slug,content,series_id,is_published,is_external,external_url,source_name'
+            : 'title,subtitle,slug,content,series_id,is_published,is_external,external_url,source_name,created_at'
     supabase
       .from(table)
       .select(cols)
@@ -176,6 +187,8 @@ export default function DeskEdit() {
       .single()
       .then(({ data }) => {
         const d = data as unknown as Record<string, unknown> | null
+        const created = toLocalInput(d?.created_at as string | null | undefined)
+        setOrigCreatedAt(created)
         if (d)
           setForm({
             title: (d.title as string) ?? '',
@@ -190,7 +203,7 @@ export default function DeskEdit() {
             genre: (d.genre as string) ?? '',
             thumbnail: (d.thumbnail as string) ?? '',
             is_reading: d.is_reading == null ? true : !!d.is_reading,
-            created_at: '', // 기존 항목의 작성 시각은 에디터에서 다루지 않는다
+            created_at: created,
             related_post_id: (d.related_post_id as string) ?? '',
             related_book_id: (d.related_book_id as string) ?? '',
             description: (d.description as string) ?? '',
@@ -336,11 +349,13 @@ export default function DeskEdit() {
         : { ...base, subtitle: form.subtitle.trim() || null, series_id: form.series_id || null }
     }
 
-    // 작성 시각은 새로 만들 때만 지정할 수 있다. 비우면 DB 기본값 now()가 쓰인다.
-    if (!id && (isPost || isShort) && form.created_at) {
-      const at = new Date(form.created_at)
-      if (Number.isNaN(at.getTime())) return toast.error('작성 시각이 올바르지 않습니다.')
-      payload.created_at = at.toISOString()
+    // 작성 시각: 새 항목은 비우면 DB 기본값 now(), 기존 항목은 바뀌었을 때만 보낸다(비우면 기존 값 유지).
+    if (hasCreatedAt) {
+      if (form.created_at && form.created_at !== origCreatedAt) {
+        const at = new Date(form.created_at)
+        if (Number.isNaN(at.getTime())) return toast.error('작성 시각이 올바르지 않습니다.')
+        payload.created_at = at.toISOString()
+      }
     }
 
     setBusy(true)
@@ -752,14 +767,14 @@ export default function DeskEdit() {
                   </label>
                 </>
               )}
-              {!id && (isPost || isShort) && (
+              {hasCreatedAt && (
                 <label className="flex items-center gap-1.5">
                   <span className="text-gray-400">작성 시각</span>
                   <input
                     type="datetime-local"
                     value={form.created_at}
                     onChange={(e) => set('created_at', e.target.value)}
-                    title="비우면 저장하는 시각으로 기록됩니다"
+                    title={id ? '목록 정렬과 날짜 표시에 쓰입니다' : '비우면 저장하는 시각으로 기록됩니다'}
                     className="rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
                   />
                 </label>
