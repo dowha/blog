@@ -68,7 +68,7 @@ export function Navigation() {
                   {/* 가장 최근에 작성·수정된 섹션 표시. absolute라 오른쪽 정렬된 글자 위치를 밀지 않는다 */}
                   {latestPath === item.path && (
                     <span
-                      className="absolute -right-2.5 -top-1 hidden lg:inline normal-case text-[10px] font-bold leading-none text-[#0a85d1]"
+                      className="absolute left-full top-1/2 ml-1.5 hidden h-4 w-4 -translate-y-1/2 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold normal-case leading-none text-white lg:inline-flex"
                       title="최근 업데이트"
                       aria-hidden="true"
                     >

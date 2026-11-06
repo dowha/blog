@@ -80,6 +80,22 @@
     font-family: 'Pretendard Variable', sans-serif;
   }
 
+  /* PC 메뉴: 화살표를 글자 흐름 밖(오른쪽)으로 빼서 'about'도 다른 메뉴와 오른쪽 끝을 맞춘다.
+     모바일은 about 글자가 숨겨지고 화살표만 보이므로 흐름 안에 그대로 둔다. */
+  @media (min-width: 1024px) {
+    nav a[target='_blank'] {
+      padding-right: 0;
+    }
+    nav a[target='_blank']:after {
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      margin-left: 0.125em;
+      line-height: 1em;
+    }
+  }
+
   /* ✅ 페이지 컨테이너 스타일 */
   .page-container {
     @apply w-full pl-0 pt-6 pb-12 sm:pl-10 md:pl-14;
