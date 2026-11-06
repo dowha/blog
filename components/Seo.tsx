@@ -20,7 +20,9 @@ export default function Seo({
   const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle
 
   const router = useRouter()
-  const currentUrl = `https://blog.dowha.kim${router.asPath}`
+  // 공유 링크(?type=share)나 #앵커가 대표 주소에 섞이지 않도록 경로만 쓴다
+  const path = router.asPath.split(/[?#]/)[0]
+  const currentUrl = `https://blog.dowha.kim${path}`
   const is404 = router.pathname === '/404'
 
   const ogType =
