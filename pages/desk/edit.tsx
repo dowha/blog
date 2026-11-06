@@ -9,6 +9,7 @@ import { useOwner } from '@/components/desk/useOwner'
 import type { EmojiClickData, EmojiStyle } from 'emoji-picker-react'
 import { ALLOWED_IMAGE_TYPES, MAX_UPLOAD_BYTES, UPLOAD_ACCEPT } from '@/lib/upload'
 import { SHORTS_MAX_LENGTH, pureTextLength } from '@/lib/shorts'
+import { notifyChanged } from '@/lib/indexnow'
 
 // react-md-editor는 window 의존 → SSR 비활성화
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
@@ -113,6 +114,9 @@ export default function DeskEdit() {
   const [loadingPost, setLoadingPost] = useState(false)
   // 불러온 작성 시각. 바뀐 경우에만 저장해서 초 단위 값이 잘리지 않게 한다.
   const [origCreatedAt, setOrigCreatedAt] = useState('')
+  // 저장 전 slug·공개 여부. 주소가 바뀌거나 비공개로 내릴 때 이전 주소도 검색엔진에 알리기 위해 기억한다.
+  const [origSlug, setOrigSlug] = useState('')
+  const [origPublic, setOrigPublic] = useState(false)
   const hasCreatedAt = isPost || isBook || isShort
 
   // 시리즈 목록은 posts에서만 필요
@@ -189,6 +193,8 @@ export default function DeskEdit() {
         const d = data as unknown as Record<string, unknown> | null
         const created = toLocalInput(d?.created_at as string | null | undefined)
         setOrigCreatedAt(created)
+        setOrigSlug((d?.slug as string) ?? '')
+        setOrigPublic(isBook ? !!(d?.content as string | null)?.trim() : !!d?.is_published)
         if (d)
           setForm({
             title: (d.title as string) ?? '',
@@ -384,6 +390,29 @@ export default function DeskEdit() {
     }
 
     setBusy(false)
+    if (!error) {
+      // 공개 중이거나 방금 비공개로 내린 경우에만 페이지 재생성 + IndexNow 알림 (실패해도 저장에는 영향 없음)
+      const nowPublic = isBook ? !!form.content.trim() : publish
+      if (nowPublic || origPublic) {
+        const slug = form.slug.trim()
+        const detail = (base: string) =>
+          [slug, origSlug].filter(Boolean).map((s) => `/${base}/${encodeURIComponent(s)}`)
+        const paths = isExternal
+          ? ['/writings', '/']
+          : isPost
+            ? [...detail('posts'), '/writings', '/']
+            : isBook
+              ? [...detail('books'), '/books']
+              : isSeries
+                ? [...detail('series'), '/series']
+                : isShort
+                  ? ['/shorts']
+                  : ['/records']
+        notifyChanged(paths)
+      }
+      setOrigSlug(form.slug.trim())
+      setOrigPublic(isBook ? !!form.content.trim() : publish)
+    }
     if (error) {
       toast.error('저장 실패: ' + error.message)
     } else if (isBook) {

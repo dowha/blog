@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { createClient } from '@supabase/supabase-js'
-import { OWNER_EMAIL } from '@/components/desk/useOwner'
+import { verifyOwner } from '@/lib/deskAuth'
 import { createThumbnailUpload } from '@/lib/storage'
 import { ALLOWED_IMAGE_TYPES, MAX_UPLOAD_BYTES, type SignedUpload } from '@/lib/upload'
 
@@ -19,19 +18,8 @@ export default async function handler(
     return res.status(405).json({ error: 'POST만 허용됩니다.' })
   }
 
-  const token = req.headers.authorization?.replace(/^Bearer\s+/i, '')
-  if (!token) return res.status(401).json({ error: '로그인이 필요합니다.' })
-
-  // anon 키 + 사용자 액세스 토큰으로 신원만 확인한다(서비스 롤 키는 쓰지 않음).
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
-    { auth: { persistSession: false, autoRefreshToken: false } }
-  )
-  const { data, error } = await supabase.auth.getUser(token)
-  if (error || data.user?.email !== OWNER_EMAIL) {
-    return res.status(401).json({ error: '접근 권한이 없습니다.' })
-  }
+  const authError = await verifyOwner(req)
+  if (authError) return res.status(401).json({ error: authError })
 
   const { filename, slug, contentType, size } = (req.body ?? {}) as Body
   if (typeof slug !== 'string' || !slug.trim()) {
