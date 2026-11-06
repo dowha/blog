@@ -178,7 +178,7 @@ export default function Home() {
             {latestBook && (
               <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
                 <h2 className="font-semibold mt-0">
-                  <span className="mr-1">📕</span> 최근에 읽은 책
+                  <span className="mr-1">📖</span> 최근에 읽은 책
                 </h2>
                 <ul>
                   <li>
@@ -212,7 +212,7 @@ export default function Home() {
             {currentlyReading.length > 0 && (
               <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
                 <h2 className="font-semibold mt-0">
-                  <span className="mr-1">🔖</span> 요즘 읽고 있는 책
+                  <span className="mr-1">📚</span> 요즘 읽고 있는 책
                 </h2>
                 <ul>
                   {/* 읽는 중인 책은 상세 페이지가 없어 링크 없이 표시 */}
