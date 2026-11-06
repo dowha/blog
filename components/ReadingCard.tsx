@@ -56,8 +56,8 @@ export default function BookCard({ book, className }: BookCardProps) {
               {book.author}
             </span>
             <span className="mt-0.5 text-sm text-gray-400 block">
-              {book.publisher}
-              <span className="text-xs font-mono">
+              {book.publisher}{' '}
+              <span className="tabular-nums">
                 ({book.publicationYear})
               </span>
             </span>

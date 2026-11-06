@@ -226,7 +226,7 @@ export default function ShortsPage() {
         <div className="absolute -left-2 bottom-3 w-4 h-4 rounded-full transition-colors duration-300 bg-inherit"></div>
         <div className="absolute -left-4 bottom-1 w-2 h-2 rounded-full transition-colors duration-300 bg-inherit"></div>
       </div>
-      <div className="flex flex-col text-[10px] text-gray-300 mb-1 whitespace-nowrap font-mono leading-tight opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+      <div className="flex flex-col text-[10px] text-gray-300 mb-1 whitespace-nowrap tabular-nums leading-tight opacity-0 transition-opacity duration-300 group-hover:opacity-100">
         <span>Thinking...</span>
       </div>
     </div>
@@ -256,7 +256,7 @@ export default function ShortsPage() {
                   <div key={group.dateLabel} className="pt-8 border-t border-gray-100 relative">
                     {/* ✅ dayLabel이 항상 존재하므로 모든 그룹에 라벨 표시됨 */}
                     {dayLabel && (
-                      <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#fcfcfc] px-2 text-xs text-gray-400 font-mono flex flex-col items-center gap-2 z-10">
+                      <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#fcfcfc] px-2 text-xs text-gray-400 tabular-nums flex flex-col items-center gap-2 z-10">
                         {dayLabel}
                       </div>
                     )}
@@ -351,7 +351,7 @@ export default function ShortsPage() {
                               )}
                             </div>
 
-                            <div className="flex flex-col text-[10px] text-gray-300 mb-1 whitespace-nowrap font-mono leading-tight opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                            <div className="flex flex-col text-[10px] text-gray-300 mb-1 whitespace-nowrap tabular-nums leading-tight opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                               <span>
                                 {format(new Date(item.created_at), 'yy.MM.dd.')}
                               </span>

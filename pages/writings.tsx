@@ -109,7 +109,7 @@ export default function WritingPage({
           .sort(([a], [b]) => parseInt(b) - parseInt(a))
           .map(([year, posts]) => (
             <section key={year} className="mt-6">
-              <h2 className="font-semibold font-mono text-gray-600">
+              <h2 className="font-semibold tabular-nums text-gray-600">
                 {Number(year) === currentYear ? '' : year}
               </h2>
               <div className="mt-2 space-y-2">
@@ -154,7 +154,7 @@ export default function WritingPage({
                       </Link>
                     )}
                     <div className="pl-1 py-0.5 sm:py-0">
-                      <span className="text-xs sm:text-sm text-gray-500 font-mono whitespace-nowrap">
+                      <span className="text-xs sm:text-sm text-gray-500 tabular-nums whitespace-nowrap">
                         {formatKstDate(post.created_at, false)}
                       </span>
                     </div>

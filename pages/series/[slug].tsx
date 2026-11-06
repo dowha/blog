@@ -60,7 +60,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
                   className="flex items-start hover:underline"
                 >
                   <h2 className="full-title group">
-                    <span className="font-mono">{index + 1}</span>
+                    <span className="tabular-nums">{index + 1}</span>
                     {'.'}&nbsp;{post.title}
                     {post.subtitle && (
                       <span className="subtitle relative text-sm">
@@ -71,7 +71,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
                   </h2>
                 </Link>
                 <div className="pl-1 py-0.5 sm:py-0">
-                  <span className="text-xs sm:text-sm text-gray-500 font-mono whitespace-nowrap">
+                  <span className="text-xs sm:text-sm text-gray-500 tabular-nums whitespace-nowrap">
                     {new Date(post.created_at)
                       .toLocaleDateString('ko-KR', {
                         year: '2-digit',

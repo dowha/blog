@@ -53,7 +53,7 @@ function SeriesPosts({
             </a>
           </span>
           {posts.length > 1 && (
-            <span className="text-sm font-mono ml-2">
+            <span className="text-sm tabular-nums ml-2">
               ({posts.findIndex((p) => p.slug === post.slug) + 1}/{posts.length}
               )
             </span>
@@ -96,7 +96,7 @@ function SeriesPosts({
                 className={`no-underline ${p.slug === post.slug ? 'font-semibold' : ''
                   }`}
               >
-                <span className="font-mono">{index + 1}</span>
+                <span className="tabular-nums">{index + 1}</span>
                 {'.'}&nbsp;{p.title}
                 {p.subtitle && ': ' + p.subtitle}
               </a>
@@ -164,7 +164,7 @@ export default function PostPage({
       <article className="single-post page-container">
         <h1 className="text-xl font-bold">{post.title}</h1>
         {post.subtitle && <h2 className="subtitle mt-0">{post.subtitle}</h2>}
-        <p className="text-sm text-gray-500 font-mono mb-4">
+        <p className="text-sm text-gray-500 tabular-nums mb-4">
           {formatKstDate(post.created_at)}{' '}
           {post.updated_at && (
             <>

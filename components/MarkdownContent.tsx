@@ -124,7 +124,7 @@ const customComponents: ExtendedComponents = {
   date: ({ children, ...props }) => {
     const filteredProps = filterProps(props)
     return (
-      <span className="font-mono text-xs" {...filteredProps}>
+      <span className="tabular-nums text-xs" {...filteredProps}>
         {children}
       </span>
     )
