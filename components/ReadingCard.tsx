@@ -22,7 +22,7 @@ export default function BookCard({ book, className }: BookCardProps) {
     >
       <div className="flex gap-3">
         {/* 썸네일 */}
-        <div className="h-24 w-16 flex-shrink-0 overflow-hidden rounded bg-gray-200 flex items-center justify-center">
+        <div className="relative h-24 w-16 flex-shrink-0 overflow-hidden rounded bg-gray-200 flex items-center justify-center">
           {book.thumbnail ? (
             <Image
               src={book.thumbnail}
@@ -33,6 +33,12 @@ export default function BookCard({ book, className }: BookCardProps) {
             />
           ) : (
             <span className="text-xs text-gray-500"></span>
+          )}
+          {/* 읽는 중 표시: 표지 정중앙 */}
+          {book.isReading && (
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-amber-100/95 px-1.5 py-px text-[11px] font-medium leading-4 text-amber-800 shadow-sm">
+              읽는 중
+            </span>
           )}
         </div>
 
@@ -55,13 +61,8 @@ export default function BookCard({ book, className }: BookCardProps) {
                 ({book.publicationYear})
               </span>
             </span>
-            <span className="mb-1 flex items-center gap-1.5 text-xs text-gray-600">
+            <span className="text-xs text-gray-600 inline-block mb-1">
               #{book.genre}
-              {book.isReading && (
-                <span className="rounded bg-amber-100 px-1.5 py-px text-[11px] font-medium leading-4 text-amber-800">
-                  읽는 중
-                </span>
-              )}
             </span>
           </div>
         </div>
