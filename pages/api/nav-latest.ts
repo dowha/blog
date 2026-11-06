@@ -5,7 +5,7 @@ const SECTIONS = ['writings', 'books', 'records', 'shorts'] as const
 export type LatestSection = (typeof SECTIONS)[number]
 
 /**
- * 메뉴 'N' 표시용: 가장 최근에 작성·수정된 콘텐츠가 있는 섹션.
+ * 메뉴 'N' 표시용: 새 게시물(records는 최신 수정)이 가장 최근인 섹션.
  * CDN에 10분 캐시해 방문자 수와 관계없이 DB 조회를 10분에 한 번 이하로 줄인다.
  */
 export default async function handler(
