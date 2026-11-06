@@ -309,14 +309,12 @@ export default function DeskHome() {
                     >
                       {stateLabel}
                     </button>
-                    {(!isPosts || !p.is_external) && (
-                      <button
-                        onClick={() => router.push(editHref(p.id))}
-                        className="shrink-0 text-xs text-gray-400 hover:text-gray-700"
-                      >
-                        수정
-                      </button>
-                    )}
+                    <button
+                      onClick={() => router.push(editHref(p.id))}
+                      className="shrink-0 text-xs text-gray-400 hover:text-gray-700"
+                    >
+                      수정
+                    </button>
                   </li>
                 )
               })}

@@ -23,6 +23,8 @@ type RelOption = { id: string; title: string; ok: boolean }
 const THUMB_DOMAINS = ['thumbnail.dowha.kim', 'images.dowha.kim']
 
 const HEX_COLOR = /^#[0-9a-fA-F]{6}$/
+// DB CHECK(posts_external_url_scheme)와 같은 규칙
+const HTTP_URL = /^https?:\/\//i
 // '#' 없이 붙여넣어도 받아준다.
 const normalizeHex = (v: string) => {
   const t = v.trim().toUpperCase()
@@ -48,6 +50,10 @@ const empty = {
   related_book_id: '',
   // 새 글·새 Shorts에서만 쓰는 작성 시각(datetime-local). 비우면 DB 기본값 now()
   created_at: '',
+  // 외부 글(posts.is_external) 전용. 본문은 원문 사이트에 있고 링크·출처만 관리한다.
+  is_external: false,
+  external_url: '',
+  source_name: '',
   // series 전용 (series_name은 title 칸을 그대로 쓴다)
   description: '',
   theme_color: '#FFFFFF',
@@ -86,6 +92,8 @@ export default function DeskEdit() {
           : {}
 
   const [form, setForm] = useState({ ...empty })
+  // 외부 글은 기존 항목을 불러왔을 때만 판별된다. (새 글은 항상 내부 글로 만든다)
+  const isExternal = isPost && !!id && form.is_external
   const [series, setSeries] = useState<SeriesRow[]>([])
   const [genres, setGenres] = useState<string[]>([])
   const [relPosts, setRelPosts] = useState<RelOption[]>([])
@@ -160,7 +168,7 @@ export default function DeskEdit() {
           ? 'content,is_published,related_post_id,related_book_id'
           : isSeries
             ? 'title:series_name,slug,description,theme_color,emoji,is_published'
-            : 'title,subtitle,slug,content,series_id,is_published'
+            : 'title,subtitle,slug,content,series_id,is_published,is_external,external_url,source_name'
     supabase
       .from(table)
       .select(cols)
@@ -188,6 +196,9 @@ export default function DeskEdit() {
             description: (d.description as string) ?? '',
             theme_color: (d.theme_color as string) ?? '#FFFFFF',
             emoji: (d.emoji as string) ?? '',
+            is_external: !!d.is_external,
+            external_url: (d.external_url as string) ?? '',
+            source_name: (d.source_name as string) ?? '',
           })
         setCustomGenre(false)
         setLoadingPost(false)
@@ -250,6 +261,11 @@ export default function DeskEdit() {
       if (!form.content.trim()) return toast.error('내용을 입력하세요.')
       if (pureTextLength(form.content) > SHORTS_MAX_LENGTH)
         return toast.error(`${SHORTS_MAX_LENGTH}자를 넘을 수 없습니다.`)
+    } else if (isExternal) {
+      if (!form.title.trim()) return toast.error('제목을 입력하세요.')
+      if (!HTTP_URL.test(form.external_url.trim()))
+        return toast.error('원문 링크는 http:// 또는 https://로 시작해야 합니다.')
+      if (!form.source_name.trim()) return toast.error('출처를 입력하세요.')
     } else {
       if (!form.title.trim())
         return toast.error(isSeries ? '시리즈 이름을 입력하세요.' : '제목을 입력하세요.')
@@ -264,7 +280,15 @@ export default function DeskEdit() {
     }
 
     let payload: Record<string, unknown>
-    if (isSeries) {
+    if (isExternal) {
+      // 외부 글은 slug·본문·부제·시리즈를 쓰지 않으므로 건드리지 않는다.
+      payload = {
+        title: form.title.trim(),
+        external_url: form.external_url.trim(),
+        source_name: form.source_name.trim(),
+        is_published: publish,
+      }
+    } else if (isSeries) {
       payload = {
         series_name: form.title.trim(),
         slug: form.slug.trim(),
@@ -446,7 +470,7 @@ export default function DeskEdit() {
                 className="w-full border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 outline-none placeholder:text-gray-300"
               />
             )}
-            {isPost && (
+            {isPost && !isExternal && (
               <input
                 value={form.subtitle}
                 onChange={(e) => set('subtitle', e.target.value)}
@@ -513,7 +537,39 @@ export default function DeskEdit() {
             )}
 
             <div className="flex flex-wrap items-center gap-3 text-xs">
-              {!isShort && (
+              {isExternal && (
+                <>
+                  <label className="flex items-center gap-1.5">
+                    <span className="text-gray-400">원문 링크</span>
+                    <input
+                      value={form.external_url}
+                      onChange={(e) => set('external_url', e.target.value)}
+                      placeholder="https://…"
+                      className="w-72 rounded border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                    />
+                  </label>
+                  <label className="flex items-center gap-1.5">
+                    <span className="text-gray-400">출처</span>
+                    <input
+                      value={form.source_name}
+                      onChange={(e) => set('source_name', e.target.value)}
+                      placeholder="매체·사이트 이름"
+                      className="w-40 rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                    />
+                  </label>
+                  {HTTP_URL.test(form.external_url.trim()) && (
+                    <a
+                      href={form.external_url.trim()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] text-gray-400 underline underline-offset-2 hover:text-gray-700"
+                    >
+                      열어보기 ↗
+                    </a>
+                  )}
+                </>
+              )}
+              {!isShort && !isExternal && (
                 <label className="flex items-center gap-1.5">
                   <span className="text-gray-400">slug</span>
                   <input
@@ -628,7 +684,7 @@ export default function DeskEdit() {
                   </label>
                 </>
               )}
-              {isPost && (
+              {isPost && !isExternal && (
                 <label className="flex items-center gap-1.5">
                   <span className="text-gray-400">시리즈</span>
                   <select
@@ -726,7 +782,11 @@ export default function DeskEdit() {
               </p>
             )}
 
-            {isSeries ? (
+            {isExternal ? (
+              <p className="text-[11px] text-gray-400">
+                외부 글은 본문을 원문 사이트에서 보여줍니다. 목록에서는 원문 링크로 연결됩니다.
+              </p>
+            ) : isSeries ? (
               <div className="flex flex-col gap-1.5">
                 <textarea
                   value={form.description}
