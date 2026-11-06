@@ -1,9 +1,33 @@
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+
+// 최근 업데이트 섹션은 탭당 한 번만 받는다 (페이지 이동마다 재요청하지 않음)
+let latestSectionPromise: Promise<string | null> | null = null
+function getLatestSection() {
+  latestSectionPromise ??= fetch('/api/nav-latest')
+    .then((r) => (r.ok ? r.json() : { section: null }))
+    .then((d: { section: string | null }) => d.section)
+    .catch(() => null)
+  return latestSectionPromise
+}
 
 export function Navigation() {
   const router = useRouter()
   const currentPath = router.pathname
+  const [latestPath, setLatestPath] = useState<string | null>(null)
+
+  useEffect(() => {
+    // 'N' 표시는 PC(lg) 메뉴에서만 보이므로 모바일에서는 요청하지 않는다
+    if (!window.matchMedia('(min-width: 1024px)').matches) return
+    let alive = true
+    getLatestSection().then((section) => {
+      if (alive && section) setLatestPath(`/${section}`)
+    })
+    return () => {
+      alive = false
+    }
+  }, [])
 
   const menuItems = [
     { name: 'home', path: '/' },
@@ -29,7 +53,7 @@ export function Navigation() {
               <li key={item.path}>
                 <Link
                   href={item.path}
-                  className={`hover:text-[#0a85d1] ${isActive ? 'font-semibold text-gray-800' : ''
+                  className={`relative hover:text-[#0a85d1] ${isActive ? 'font-semibold text-gray-800' : ''
                     }`}
                   aria-current={isActive ? 'page' : undefined}
                 >
@@ -40,6 +64,16 @@ export function Navigation() {
                     </>
                   ) : (
                     item.name
+                  )}
+                  {/* 가장 최근에 작성·수정된 섹션 표시. absolute라 오른쪽 정렬된 글자 위치를 밀지 않는다 */}
+                  {latestPath === item.path && (
+                    <span
+                      className="absolute -right-2.5 -top-1 hidden lg:inline normal-case text-[10px] font-bold leading-none text-[#0a85d1]"
+                      title="최근 업데이트"
+                      aria-hidden="true"
+                    >
+                      N
+                    </span>
                   )}
                 </Link>
               </li>
