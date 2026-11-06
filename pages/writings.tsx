@@ -5,6 +5,7 @@ import Seo from '@/components/Seo'
 import { useDeskShortcut } from '@/components/desk/useDeskShortcut'
 import Image from 'next/image'
 import { LoadMoreButton } from '@/components/ActionButtons'
+import { formatKstDate, kstYear } from '@/lib/date'
 
 type Post = {
   id: string
@@ -62,10 +63,10 @@ export default function WritingPage({
     setOffset(newOffset)
   }
 
-  const currentYear = new Date().getFullYear()
+  const currentYear = kstYear()
 
   const groupedPosts = posts.reduce((acc, post) => {
-    const year = new Date(post.created_at).getFullYear()
+    const year = kstYear(post.created_at)
     if (!acc[year]) acc[year] = []
     acc[year].push(post)
     return acc
@@ -154,12 +155,7 @@ export default function WritingPage({
                     )}
                     <div className="pl-1 py-0.5 sm:py-0">
                       <span className="text-xs sm:text-sm text-gray-500 font-mono whitespace-nowrap">
-                        {new Date(post.created_at)
-                          .toLocaleDateString('ko-KR', {
-                            month: '2-digit',
-                            day: '2-digit',
-                          })
-                          .replace(/\s/g, '')}
+                        {formatKstDate(post.created_at, false)}
                       </span>
                     </div>
                   </div>

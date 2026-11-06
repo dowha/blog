@@ -13,6 +13,7 @@ import {
   ClapButton,
 } from '@/components/ActionButtons'
 import { toExcerpt } from '@/lib/excerpt'
+import { formatKstDate } from '@/lib/date'
 
 function SeriesPosts({
   post,
@@ -138,24 +139,12 @@ export default function PostPage({
         <h1 className="text-xl font-bold">{post.title}</h1>
         {post.subtitle && <h2 className="subtitle mt-0">{post.subtitle}</h2>}
         <p className="text-sm text-gray-500 font-mono mb-4">
-          {new Date(post.created_at)
-            .toLocaleDateString('ko-KR', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-            })
-            .replace(/\s/g, '')}{' '}
+          {formatKstDate(post.created_at)}{' '}
           {post.updated_at && (
             <>
               <span className="text-xs">
                 {'🔄'}&thinsp;{'Last updated: '}
-                {new Date(post.updated_at)
-                  .toLocaleDateString('ko-KR', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                  })
-                  .replace(/\s/g, '')}
+                {formatKstDate(post.updated_at)}
               </span>
             </>
           )}
