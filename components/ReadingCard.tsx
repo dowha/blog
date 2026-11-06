@@ -36,7 +36,7 @@ export default function BookCard({ book, className }: BookCardProps) {
           )}
           {/* 읽는 중 표시: 표지 정중앙 */}
           {book.isReading && (
-            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-amber-100/95 px-1.5 py-px text-[11px] font-medium leading-4 text-amber-800 shadow-sm">
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-gray-900/70 px-1.5 py-px text-[11px] font-medium leading-4 text-white backdrop-blur-sm">
               읽는 중
             </span>
           )}
