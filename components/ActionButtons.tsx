@@ -125,7 +125,8 @@ export const ClapButton = ({
     if (!postId && !bookId) return
 
     async function fetchClaps() {
-      let query = supabase.from('content_likes').select('', { count: 'exact' })
+      // 민감 컬럼(user_agent 등)은 읽기 권한이 없으므로 id만 대상으로 개수만 센다
+      let query = supabase.from('content_likes').select('id', { count: 'exact', head: true })
 
       if (postId) {
         query = query.eq('post_id', postId)
@@ -172,20 +173,20 @@ export const ClapButton = ({
       sessionStorage.getItem('initial_referrer') || referrerNow
     const anonymousId = getOrCreateAnonymousId()
 
-    const { error } = await supabase.from('content_likes').insert([
-      {
-        post_id: postId || null,
-        book_id: bookId || null,
-        user_agent: userAgent,
-        referrer: initialReferrer,
-        anonymous_id: anonymousId,
-      },
-    ])
+    // 대상 검증·속도 제한은 DB 함수(add_clap)가 처리하고 갱신된 박수 수를 돌려준다
+    const { data, error } = await supabase.rpc('add_clap', {
+      p_post_id: postId || null,
+      p_book_id: bookId || null,
+      p_anonymous_id: anonymousId,
+      p_user_agent: userAgent,
+      p_referrer: initialReferrer,
+    })
 
     if (error) {
       toast.warning('과분한 응원 감사합니다. 잠시 쉬었다가 또 응원해 주세요.')
       setClaps((prev) => prev - 1)
     } else {
+      if (typeof data === 'number') setClaps(data)
       toast.info('응원 감사합니다!')
     }
   }
