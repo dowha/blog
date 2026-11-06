@@ -111,7 +111,7 @@
     vertical-align: 0.05em;
   }
 
-  /* 인용·이미지·영상으로 끝나면 다음 줄 왼쪽(본문 정렬선)에 둔다 */
+  /* 이미지·영상 등으로 끝나면 다음 줄 왼쪽(본문 정렬선)에 둔다 */
   .endmark-block {
     display: block;
     margin-top: 0.75em;
