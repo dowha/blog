@@ -3,6 +3,7 @@ import { GetStaticPaths, GetStaticProps } from 'next'
 import Link from 'next/link'
 import Seo from '@/components/Seo'
 import MarkdownContent from '@/components/MarkdownContent'
+import { toExcerpt } from '@/lib/excerpt'
 
 type SeriesRecord = {
   id: string
@@ -31,7 +32,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
     <>
       <Seo
         title={series.series_name}
-        description={series.description.slice(0, 150)}
+        description={toExcerpt(series.description)}
       />
       <article className="series page-container">
         <h1 className="text-xl font-bold">{series.series_name}</h1>

@@ -12,6 +12,7 @@ import {
   CopyLinkButton,
   ClapButton,
 } from '@/components/ActionButtons'
+import { toExcerpt } from '@/lib/excerpt'
 
 function SeriesPosts({
   post,
@@ -132,7 +133,7 @@ export default function PostPage({
 
   return (
     <>
-      <Seo title={post.title} description={post.content?.slice(0, 150) ?? ''} />
+      <Seo title={post.title} description={toExcerpt(post.content)} />
       <article className="single-post page-container">
         <h1 className="text-xl font-bold">{post.title}</h1>
         {post.subtitle && <h2 className="subtitle mt-0">{post.subtitle}</h2>}

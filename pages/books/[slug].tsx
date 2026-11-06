@@ -11,6 +11,7 @@ import {
 } from '@/components/ActionButtons'
 import Image from 'next/image'
 import Link from 'next/link'
+import { toExcerpt } from '@/lib/excerpt'
 
 interface Book {
   id: string
@@ -38,7 +39,7 @@ export default function BookDetailPage({
 
   return (
     <>
-      <Seo title={book.title} description={book.content?.slice(0, 150) || ''} />
+      <Seo title={book.title} description={toExcerpt(book.content)} />
       <article className="single-book page-container">
         <h1 className="text-xl font-bold">{book.title}</h1>
         <p className="text-sm text-gray-500 mb-4">

@@ -1,6 +1,7 @@
 import { supabase } from '@/supabase'
 import RSS from 'rss'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { toExcerpt } from '@/lib/excerpt'
 
 export default async function handler(
   req: NextApiRequest,
@@ -46,7 +47,7 @@ export default async function handler(
     const isPost = (posts || []).some((post) => post.slug === item.slug) // ✅ 해당 `slug`가 posts에 존재하는지 확인
     feed.item({
       title: item.title,
-      description: item.content ? item.content.slice(0, 100) + '...' : '',
+      description: toExcerpt(item.content, 100),
       url: `https://blog.dowha.kim/${isPost ? 'posts' : 'books'}/${item.slug}`, // ✅ posts인지 books인지 정확히 구분
       date: item.created_at,
     })
