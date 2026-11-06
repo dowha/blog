@@ -122,7 +122,7 @@ export default function BookDetailPage({
         )}
 
         {book.content ? (
-          <MarkdownContent content={book.content} />
+          <MarkdownContent content={book.content} endmark />
         ) : (
           <p className="text-gray-500">읽는 중.</p>
         )}

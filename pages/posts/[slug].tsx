@@ -214,7 +214,7 @@ export default function PostPage({
           )}
         </div>
 
-        <MarkdownContent content={post.content} />
+        <MarkdownContent content={post.content} endmark />
 
         {post.series_name && post.series_slug && (
           <SeriesPosts post={post} posts={[...posts]} />

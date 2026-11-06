@@ -96,6 +96,26 @@
     }
   }
 
+  /* 엔드마크: 글의 끝을 알리는 사이트 파랑 동그라미 (파비콘과 같은 원형). lib/rehypeEndmark.ts가 삽입 */
+  .endmark-inline,
+  .endmark-block {
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 9999px;
+    background-color: #0a85d1;
+  }
+
+  .endmark-inline {
+    display: inline-block;
+    margin-left: 0.4em;
+    vertical-align: 0.05em;
+  }
+
+  .endmark-block {
+    display: block;
+    margin: 0.75em 0 0 auto;
+  }
+
   /* ✅ 페이지 컨테이너 스타일 */
   .page-container {
     @apply w-full pl-0 pt-6 pb-12 sm:pl-10 md:pl-14;
