@@ -109,7 +109,7 @@ export default function WritingPage({
           .sort(([a], [b]) => parseInt(b) - parseInt(a))
           .map(([year, posts]) => (
             <section key={year} className="mt-6">
-              <h2 className="font-semibold tabular-nums text-gray-600">
+              <h2 className="!font-semibold tabular-nums text-gray-600">
                 {Number(year) === currentYear ? '' : year}
               </h2>
               <div className="mt-2 space-y-2">

@@ -66,7 +66,7 @@ export default function BookDetailPage({
         <h1 className="text-xl font-bold">{book.title}</h1>
         <p className="text-sm text-gray-500 mb-4">
           {book.author}
-          {book.publisher ? `, ${book.publisher}` : ''}{' '}
+          {book.publisher ? `, ${book.publisher}` : ''}
           <span className="tabular-nums">({book.publicationYear})</span>
         </p>
         <div className="flex justify-between mt-8 text-sm">
