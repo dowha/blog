@@ -3,57 +3,70 @@ import RSS from 'rss'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { toExcerpt } from '@/lib/excerpt'
 
+const SITE = 'https://blog.dowha.kim'
+const FEED_SIZE = 20
+const EXCERPT_LENGTH = 300
+
+// 요약은 HTML로 들어가므로 본문 텍스트의 특수문자를 이스케이프한다
+const escapeHtml = (s: string) =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // ✅ Supabase에서 `is_published = true` && `is_external = false` 인 `posts` 데이터 가져오기
+  // 공개된 내부 글(외부 글 제외)
   const { data: posts, error: postsError } = await supabase
     .from('posts')
     .select('title, slug, created_at, content')
-    .eq('is_published', true) // ✅ 공개된 글만
-    .eq('is_external', false) // ✅ 외부 글 제외
-    .order('created_at', { ascending: false }) // ✅ 최신순 정렬
-    .limit(5) // ✅ 최신 5개만 가져오기
+    .eq('is_published', true)
+    .eq('is_external', false)
+    .order('created_at', { ascending: false })
+    .limit(FEED_SIZE)
 
-  // ✅ Supabase에서 `content`가 `null`이 아닌 `books` 데이터 가져오기
+  // 감상이 있는 책만
   const { data: books, error: booksError } = await supabase
     .from('books')
     .select('title, slug, created_at, content')
-    .not('content', 'is', null) // ✅ 내용이 있는 책만 가져오기
-    .order('created_at', { ascending: false }) // ✅ 최신순 정렬
-    .limit(5) // ✅ 최신 5개만 가져오기
+    .not('content', 'is', null)
+    .order('created_at', { ascending: false })
+    .limit(FEED_SIZE)
 
   if (postsError || booksError) {
+    res.setHeader('Cache-Control', 'no-store')
     return res.status(500).json({ error: 'Failed to fetch RSS data' })
   }
 
-  // ✅ RSS 피드 생성
   const feed = new RSS({
     title: "Dowha's Blog RSS Feed",
     description: 'Latest blog posts and book reviews',
-    site_url: 'https://blog.dowha.kim',
-    feed_url: 'https://blog.dowha.kim/api/rss',
-    language: 'ko', // ✅ 한국어 설정
+    site_url: SITE,
+    feed_url: `${SITE}/api/rss`,
+    language: 'ko',
   })
 
-  // ✅ `posts` + `books` 데이터를 합쳐서 최신순 정렬
-  const allItems = [...(posts || []), ...(books || [])].sort(
-    (a, b) =>
-      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-  )
+  // 글과 책을 합쳐 최신순으로 FEED_SIZE개
+  const allItems = [
+    ...(posts || []).map((p) => ({ ...p, path: 'posts' })),
+    ...(books || []).map((b) => ({ ...b, path: 'books' })),
+  ]
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .slice(0, FEED_SIZE)
 
   allItems.forEach((item) => {
-    const isPost = (posts || []).some((post) => post.slug === item.slug) // ✅ 해당 `slug`가 posts에 존재하는지 확인
+    const url = `${SITE}/${item.path}/${item.slug}`
+    // 구독 앱에서도 글의 앞부분을 읽고, 전체는 블로그에서 보도록 링크를 붙인다
+    const excerpt = escapeHtml(toExcerpt(item.content || '', EXCERPT_LENGTH))
     feed.item({
       title: item.title,
-      description: toExcerpt(item.content, 100),
-      url: `https://blog.dowha.kim/${isPost ? 'posts' : 'books'}/${item.slug}`, // ✅ posts인지 books인지 정확히 구분
+      description: `<p>${excerpt}</p><p><a href="${url}">계속 읽기 →</a></p>`,
+      url,
+      guid: url,
       date: item.created_at,
     })
   })
 
-  // ✅ 한글 인코딩 문제 해결 (UTF-8 명확히 설정)
   res.setHeader('Content-Type', 'application/rss+xml; charset=utf-8')
+  res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400')
   res.status(200).send(feed.xml())
 }
