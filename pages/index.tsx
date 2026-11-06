@@ -51,79 +51,16 @@ async function fetchCurrentlyReadingBooks() {
   return error ? [] : data || []
 }
 
-// 가장 많이 좋아요 받은 콘텐츠 가져오기
-async function fetchMostLikedContent(): Promise<
-  { title: string; slug: string; type: 'post' | 'book' }[]
-> {
-  const { data: allLikes, error: likesError } = await supabase
-    .from('content_likes')
-    .select('post_id, book_id')
+// 가장 많이 응원받은 콘텐츠(공동 1위 포함). 집계는 DB 함수 most_liked_content에서 처리
+type LikedContent = { title: string; slug: string; type: 'post' | 'book' }
 
-  if (likesError || !allLikes || allLikes.length === 0) {
-    if (likesError) console.error('콘텐츠 좋아요 fetch 오류:', likesError)
+async function fetchMostLikedContent(): Promise<LikedContent[]> {
+  const { data, error } = await supabase.rpc('most_liked_content')
+  if (error) {
+    console.error('인기 콘텐츠 fetch 오류:', error)
     return []
   }
-
-  const contentCountMap: Record<
-    string,
-    { count: number; type: 'post' | 'book' }
-  > = {}
-  for (const like of allLikes) {
-    const id = like.post_id || like.book_id
-    if (!id) continue
-
-    const type: 'post' | 'book' = like.post_id ? 'post' : 'book'
-    if (!contentCountMap[id]) {
-      contentCountMap[id] = { count: 0, type }
-    }
-    contentCountMap[id].count += 1
-  }
-
-  let mostLikedContentIds: { id: string; type: 'post' | 'book' }[] = []
-  let maxCount = 0
-
-  for (const [id, { count, type }] of Object.entries(contentCountMap)) {
-    if (count > maxCount) {
-      mostLikedContentIds = [{ id, type }]
-      maxCount = count
-    } else if (count === maxCount) {
-      mostLikedContentIds.push({ id, type })
-    }
-  }
-
-  if (mostLikedContentIds.length === 0) {
-    return []
-  }
-
-  const postIds = mostLikedContentIds
-    .filter((item) => item.type === 'post')
-    .map((item) => item.id)
-  const bookIds = mostLikedContentIds
-    .filter((item) => item.type === 'book')
-    .map((item) => item.id)
-
-  const { data: postData } = await supabase
-    .from('posts')
-    .select('title, slug')
-    .in('id', postIds)
-
-  const { data: bookData } = await supabase
-    .from('books')
-    .select('title, slug')
-    .in('id', bookIds)
-
-  return [
-    ...(postData || []).map((post) => ({
-      title: post.title,
-      slug: `/posts/${post.slug}`,
-      type: 'post' as const, // ✅ 'post' 타입 고정
-    })),
-    ...(bookData || []).map((book) => ({
-      title: book.title,
-      slug: `/books/${book.slug}`,
-      type: 'book' as const, // ✅ 'book' 타입 고정
-    })),
-  ]
+  return (data ?? []) as LikedContent[]
 }
 
 export default function Home() {
@@ -131,9 +68,7 @@ export default function Home() {
     title: string
     slug: string
   } | null>(null)
-  const [mostLikedContent, setMostLikedContent] = useState<
-    { title: string; slug: string; type: 'post' | 'book' }[]
-  >([])
+  const [mostLikedContent, setMostLikedContent] = useState<LikedContent[]>([])
 
   const [currentlyReading, setCurrentlyReading] = useState<
     { title: string; author: string; slug: string }[]
