@@ -2,7 +2,6 @@
 
 import { Navigation } from '@/components/Navigation'
 import type React from 'react'
-import Footer from '@/components/Footer'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 
@@ -22,7 +21,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {children}
         </main>
       </div>
-      <Footer />
     </div>
   )
 }
