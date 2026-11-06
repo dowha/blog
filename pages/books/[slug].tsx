@@ -68,6 +68,14 @@ export default function BookDetailPage({
           {book.author}
           {book.publisher ? `, ${book.publisher}` : ''}
           <span className="tabular-nums">({book.publicationYear})</span>
+          {book.genre && (
+            <>
+              <span className="mx-1.5 text-gray-300" aria-hidden="true">|</span>
+              <Link href={{ pathname: '/books', hash: book.genre }} className="inline">
+                #{book.genre}
+              </Link>
+            </>
+          )}
         </p>
         <div className="flex justify-between mt-8 text-sm">
           {prevBook ? (
@@ -126,14 +134,6 @@ export default function BookDetailPage({
         ) : (
           <p className="text-gray-500">읽는 중.</p>
         )}
-        <p className="text-sm text-gray-500 px-1 py-0.5">
-          <Link
-            href={{ pathname: '/books', hash: book.genre }}
-            className="inline"
-          >
-            #{book.genre}
-          </Link>
-        </p>
 
         <div className="flex items-center gap-2 mt-4">
           <ScrollToTopButton />
