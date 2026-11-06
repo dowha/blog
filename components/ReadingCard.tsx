@@ -18,15 +18,8 @@ interface BookCardProps {
 export default function BookCard({ book, className }: BookCardProps) {
   return (
     <div
-      className={`relative border h-full p-3 rounded-lg w-full bg-card border-gray-200 group 
-      } ${className || ''}`}
+      className={`relative border h-full p-3 rounded-lg w-full bg-card border-gray-200 group ${className || ''}`}
     >
-      {book.isReading && (
-        <span className="absolute bottom-3 right-3 bg-amber-300 text-white text-xs px-2 py-1 rounded">
-          읽는 중
-        </span>
-      )}
-
       <div className="flex gap-3">
         {/* 썸네일 */}
         <div className="h-24 w-16 flex-shrink-0 overflow-hidden rounded bg-gray-200 flex items-center justify-center">
@@ -62,8 +55,13 @@ export default function BookCard({ book, className }: BookCardProps) {
                 ({book.publicationYear})
               </span>
             </span>
-            <span className="text-xs text-gray-600 inline-block mb-1">
+            <span className="mb-1 flex items-center gap-1.5 text-xs text-gray-600">
               #{book.genre}
+              {book.isReading && (
+                <span className="rounded bg-amber-100 px-1.5 py-px text-[11px] font-medium leading-4 text-amber-800">
+                  읽는 중
+                </span>
+              )}
             </span>
           </div>
         </div>
