@@ -12,6 +12,7 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { toExcerpt } from '@/lib/excerpt'
+import JsonLd, { AUTHOR, SITE_URL } from '@/components/JsonLd'
 
 interface Book {
   id: string
@@ -40,6 +41,27 @@ export default function BookDetailPage({
   return (
     <>
       <Seo title={book.title} description={toExcerpt(book.content)} />
+      <JsonLd
+        data={{
+          // 책 리뷰 글: 리뷰 대상(Book)과 작성자·작성일을 함께 표시
+          '@type': 'Review',
+          name: book.title,
+          reviewBody: toExcerpt(book.content, 300),
+          datePublished: new Date(book.created_at).toISOString(),
+          url: `${SITE_URL}/books/${book.slug}`,
+          inLanguage: 'ko-KR',
+          author: AUTHOR,
+          itemReviewed: {
+            '@type': 'Book',
+            name: book.title,
+            author: { '@type': 'Person', name: book.author },
+            ...(book.publisher ? { publisher: { '@type': 'Organization', name: book.publisher } } : {}),
+            ...(book.publicationYear ? { datePublished: String(book.publicationYear) } : {}),
+            ...(book.genre ? { genre: book.genre } : {}),
+            ...(book.thumbnail ? { image: book.thumbnail } : {}),
+          },
+        }}
+      />
       <article className="single-book page-container">
         <h1 className="text-xl font-bold">{book.title}</h1>
         <p className="text-sm text-gray-500 mb-4">

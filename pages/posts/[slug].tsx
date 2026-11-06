@@ -14,6 +14,7 @@ import {
 } from '@/components/ActionButtons'
 import { toExcerpt } from '@/lib/excerpt'
 import { formatKstDate } from '@/lib/date'
+import JsonLd, { AUTHOR, SITE_URL } from '@/components/JsonLd'
 
 function SeriesPosts({
   post,
@@ -135,6 +136,31 @@ export default function PostPage({
   return (
     <>
       <Seo title={post.title} description={toExcerpt(post.content)} />
+      <JsonLd
+        data={{
+          '@type': 'BlogPosting',
+          headline: post.title,
+          ...(post.subtitle ? { alternativeHeadline: post.subtitle } : {}),
+          description: toExcerpt(post.content),
+          datePublished: new Date(post.created_at).toISOString(),
+          dateModified: new Date(post.updated_at || post.created_at).toISOString(),
+          url: `${SITE_URL}/posts/${post.slug}`,
+          mainEntityOfPage: `${SITE_URL}/posts/${post.slug}`,
+          image: `${SITE_URL}/default-og-image.png`,
+          inLanguage: 'ko-KR',
+          author: AUTHOR,
+          publisher: AUTHOR,
+          ...(post.series_name && post.series_slug
+            ? {
+                isPartOf: {
+                  '@type': 'CreativeWorkSeries',
+                  name: post.series_name,
+                  url: `${SITE_URL}/series/${post.series_slug}`,
+                },
+              }
+            : {}),
+        }}
+      />
       <article className="single-post page-container">
         <h1 className="text-xl font-bold">{post.title}</h1>
         {post.subtitle && <h2 className="subtitle mt-0">{post.subtitle}</h2>}
