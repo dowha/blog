@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/supabase'
 import Seo from '@/components/Seo'
-import { formatKstDate } from '@/lib/date'
 import LoadingSpinner from '@/components/LoadingSpinner' // ✅ 추가
 
 type LinkItem = { title: string; slug: string }
@@ -47,13 +46,13 @@ function renderEmphasis(text: string) {
   })
 }
 
-type ShortItem = { short_id: number; content: string; created_at: string }
+type ShortItem = { short_id: number; content: string }
 
 // 요즘 생각: 공개된 최신 short 1개
 async function fetchLatestShort(): Promise<ShortItem | null> {
   const { data, error } = await supabase
     .from('shorts')
-    .select('short_id, content, created_at')
+    .select('short_id, content')
     .eq('is_published', true)
     .order('created_at', { ascending: false })
     .limit(1)
@@ -144,19 +143,16 @@ export default function Home() {
             {latestShort && (
               <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
                 <h2 className="font-semibold mt-0">
-                  <span className="mr-1">💭</span> 요즘 생각
+                  <span className="mr-1">💭</span> 요즘 하는 생각
                 </h2>
                 <Link
                   href={`/shorts#${latestShort.short_id}`}
-                  className="group/bubble relative mt-2 mb-1 ml-4 inline-block max-w-[85%] rounded-3xl bg-white px-4 py-2 text-sm leading-relaxed text-gray-600 no-underline whitespace-pre-wrap transition-colors hover:bg-gray-50"
+                  className="group/bubble relative mt-2 mb-2 ml-4 inline-block max-w-[85%] rounded-3xl bg-white px-4 py-2 text-sm leading-relaxed text-gray-600 no-underline whitespace-pre-wrap transition-colors hover:bg-gray-50"
                 >
                   {renderEmphasis(latestShort.content)}
                   <span className="absolute -left-2 bottom-3 h-4 w-4 rounded-full bg-inherit" />
                   <span className="absolute -left-4 bottom-1 h-2 w-2 rounded-full bg-inherit" />
                 </Link>
-                <p className="mt-0 mb-1 ml-4 text-xs text-gray-400 font-mono">
-                  {formatKstDate(latestShort.created_at)}
-                </p>
               </div>
             )}
 
