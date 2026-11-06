@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { LoadMoreButton } from '@/components/ActionButtons'
 
 type Post = {
+  id: string
   title: string
   subtitle: string
   slug: string
@@ -21,7 +22,7 @@ export async function getStaticProps() {
   const { data: posts, error } = await supabase
     .from('posts')
     .select(
-      'title, subtitle, created_at, slug, is_external, external_url, source_name'
+      'id, title, subtitle, created_at, slug, is_external, external_url, source_name'
     )
     .eq('is_published', true)
     .order('created_at', { ascending: false })
@@ -113,7 +114,7 @@ export default function WritingPage({
               <div className="mt-2 space-y-2">
                 {posts.map((post) => (
                   <div
-                    key={post.slug}
+                    key={post.id}
                     className="flex items-start justify-between"
                   >
                     {post.is_external && post.external_url ? (
