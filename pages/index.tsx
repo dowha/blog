@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/supabase'
 import Seo from '@/components/Seo'
+import { formatKstDate } from '@/lib/date'
 import LoadingSpinner from '@/components/LoadingSpinner' // ✅ 추가
 
 type LinkItem = { title: string; slug: string }
@@ -37,6 +38,31 @@ async function fetchLatestReadBook(): Promise<BookItem | null> {
   return data ? { ...data, slug: `/books/${data.slug}` } : null
 }
 
+// shorts는 굵게·기울임만 쓰므로 홈에서는 react-markdown(+36kB) 대신 간단히 변환한다
+function renderEmphasis(text: string) {
+  return text.split(/(\*\*[^*\n]+\*\*|(?<!\w)__[^_\n]+__(?!\w)|\*[^*\n]+\*|(?<!\w)_[^_\n]+_(?!\w))/g).map((part, i) => {
+    if (/^(\*\*|__).+\1$/.test(part)) return <strong key={i}>{part.slice(2, -2)}</strong>
+    if (/^([*_]).+\1$/.test(part)) return <em key={i}>{part.slice(1, -1)}</em>
+    return part
+  })
+}
+
+type ShortItem = { short_id: number; content: string; created_at: string }
+
+// 요즘 생각: 공개된 최신 short 1개
+async function fetchLatestShort(): Promise<ShortItem | null> {
+  const { data, error } = await supabase
+    .from('shorts')
+    .select('short_id, content, created_at')
+    .eq('is_published', true)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  if (error) console.error('최신 short fetch 오류:', error)
+  return data ?? null
+}
+
 // 현재 읽고 있는 책 가져오기
 async function fetchCurrentlyReadingBooks() {
   const { data, error } = await supabase
@@ -62,6 +88,7 @@ async function fetchMostLikedContent(): Promise<LikedContent[]> {
 }
 
 export default function Home() {
+  const [latestShort, setLatestShort] = useState<ShortItem | null>(null)
   const [latestPost, setLatestPost] = useState<LinkItem | null>(null)
   const [latestBook, setLatestBook] = useState<BookItem | null>(null)
   const [mostLikedContent, setMostLikedContent] = useState<LikedContent[]>([])
@@ -72,13 +99,15 @@ export default function Home() {
     async function fetchData() {
       setIsLoading(true)
 
-      const [post, book, mostLiked, reading] = await Promise.all([
+      const [short, post, book, mostLiked, reading] = await Promise.all([
+        fetchLatestShort(),
         fetchLatestPost(),
         fetchLatestReadBook(),
         fetchMostLikedContent(),
         fetchCurrentlyReadingBooks(),
       ])
 
+      setLatestShort(short)
       setLatestPost(post)
       setLatestBook(book)
       setMostLikedContent(mostLiked)
@@ -112,6 +141,25 @@ export default function Home() {
           <LoadingSpinner /> // ✅ 로딩 중일 때
         ) : (
           <>
+            {latestShort && (
+              <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
+                <h2 className="font-semibold mt-0">
+                  <span className="mr-1">💭</span> 요즘 생각
+                </h2>
+                <Link
+                  href={`/shorts#${latestShort.short_id}`}
+                  className="group/bubble relative mt-2 mb-1 ml-4 inline-block max-w-[85%] rounded-3xl bg-white px-4 py-2 text-sm leading-relaxed text-gray-600 no-underline whitespace-pre-wrap transition-colors hover:bg-gray-50"
+                >
+                  {renderEmphasis(latestShort.content)}
+                  <span className="absolute -left-2 bottom-3 h-4 w-4 rounded-full bg-inherit" />
+                  <span className="absolute -left-4 bottom-1 h-2 w-2 rounded-full bg-inherit" />
+                </Link>
+                <p className="mt-0 mb-1 ml-4 text-xs text-gray-400 font-mono">
+                  {formatKstDate(latestShort.created_at)}
+                </p>
+              </div>
+            )}
+
             {latestPost && (
               <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
                 <h2 className="font-semibold mt-0">
@@ -130,7 +178,7 @@ export default function Home() {
             {latestBook && (
               <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
                 <h2 className="font-semibold mt-0">
-                  <span className="mr-1">📚</span> 최근에 읽은 책
+                  <span className="mr-1">📕</span> 최근에 읽은 책
                 </h2>
                 <ul>
                   <li>
@@ -164,7 +212,7 @@ export default function Home() {
             {currentlyReading.length > 0 && (
               <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
                 <h2 className="font-semibold mt-0">
-                  <span className="mr-1">📖</span> 요즘 읽고 있는 책
+                  <span className="mr-1">🔖</span> 요즘 읽고 있는 책
                 </h2>
                 <ul>
                   {/* 읽는 중인 책은 상세 페이지가 없어 링크 없이 표시 */}
