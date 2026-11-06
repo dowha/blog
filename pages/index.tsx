@@ -4,46 +4,44 @@ import { supabase } from '@/supabase'
 import Seo from '@/components/Seo'
 import LoadingSpinner from '@/components/LoadingSpinner' // ✅ 추가
 
-// 가장 최신 콘텐츠 가져오기
-async function fetchLatestSingleContent() {
-  const { data: latestPost, error: postError } = await supabase
+type LinkItem = { title: string; slug: string }
+type BookItem = { title: string; author: string; slug: string }
+
+// 최근에 쓴 글(writings). 외부 글은 블로그 안에 페이지가 없어 제외
+async function fetchLatestPost(): Promise<LinkItem | null> {
+  const { data, error } = await supabase
     .from('posts')
-    .select('title, slug, created_at')
+    .select('title, slug')
     .eq('is_published', true)
     .eq('is_external', false)
     .order('created_at', { ascending: false })
     .limit(1)
+    .maybeSingle()
 
-  if (postError) console.error('최신 포스트 fetch 오류:', postError)
+  if (error) console.error('최신 글 fetch 오류:', error)
+  return data ? { title: data.title, slug: `/posts/${data.slug}` } : null
+}
 
-  const { data: latestBook, error: bookError } = await supabase
+// 최근에 읽은 책: 감상이 있고(상세 페이지 존재) 지금 읽는 중이 아닌 책
+async function fetchLatestReadBook(): Promise<BookItem | null> {
+  const { data, error } = await supabase
     .from('books')
-    .select('title, slug, created_at')
+    .select('title, author, slug')
     .not('content', 'is', null)
+    .not('is_reading', 'is', true) // null도 '읽는 중 아님'으로 취급
     .order('created_at', { ascending: false })
     .limit(1)
+    .maybeSingle()
 
-  if (bookError) console.error('최신 도서 fetch 오류:', bookError)
-
-  const post = latestPost?.[0] ?? null
-  const book = latestBook?.[0] ?? null
-
-  if (!post && !book) return null
-  if (!post)
-    return book ? { title: book.title, slug: `/books/${book.slug}` } : null
-  if (!book)
-    return post ? { title: post.title, slug: `/posts/${post.slug}` } : null
-
-  return new Date(post.created_at) > new Date(book.created_at)
-    ? { title: post.title, slug: `/posts/${post.slug}` }
-    : { title: book.title, slug: `/books/${book.slug}` }
+  if (error) console.error('최근 읽은 책 fetch 오류:', error)
+  return data ? { ...data, slug: `/books/${data.slug}` } : null
 }
 
 // 현재 읽고 있는 책 가져오기
 async function fetchCurrentlyReadingBooks() {
   const { data, error } = await supabase
     .from('books')
-    .select('title, author, slug')
+    .select('title, author')
     .eq('is_reading', true)
     .order('created_at', { ascending: false })
 
@@ -64,33 +62,28 @@ async function fetchMostLikedContent(): Promise<LikedContent[]> {
 }
 
 export default function Home() {
-  const [latestContent, setLatestContent] = useState<{
-    title: string
-    slug: string
-  } | null>(null)
+  const [latestPost, setLatestPost] = useState<LinkItem | null>(null)
+  const [latestBook, setLatestBook] = useState<BookItem | null>(null)
   const [mostLikedContent, setMostLikedContent] = useState<LikedContent[]>([])
-
-  const [currentlyReading, setCurrentlyReading] = useState<
-    { title: string; author: string; slug: string }[]
-  >([])
-
-  const [isLoading, setIsLoading] = useState(true) // ✅ 로딩 상태 추가
+  const [currentlyReading, setCurrentlyReading] = useState<Omit<BookItem, 'slug'>[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     async function fetchData() {
-      setIsLoading(true) // ✅ 로딩 시작
+      setIsLoading(true)
 
-      const [latest, mostLiked, books] = await Promise.all([
-        fetchLatestSingleContent(),
+      const [post, book, mostLiked, reading] = await Promise.all([
+        fetchLatestPost(),
+        fetchLatestReadBook(),
         fetchMostLikedContent(),
         fetchCurrentlyReadingBooks(),
       ])
 
-      if (latest) setLatestContent(latest)
-      setMostLikedContent(mostLiked) // ✅ mostLiked는 항상 배열이므로 그대로 사용 가능
-      setCurrentlyReading(books)
-
-      setIsLoading(false) // ✅ 로딩 끝
+      setLatestPost(post)
+      setLatestBook(book)
+      setMostLikedContent(mostLiked)
+      setCurrentlyReading(reading)
+      setIsLoading(false)
     }
 
     fetchData()
@@ -119,15 +112,32 @@ export default function Home() {
           <LoadingSpinner /> // ✅ 로딩 중일 때
         ) : (
           <>
-            {latestContent && (
+            {latestPost && (
               <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
                 <h2 className="font-semibold mt-0">
                   <span className="mr-1">🌱</span> 최근에 쓴 글
                 </h2>
                 <ul>
                   <li>
-                    <Link href={latestContent.slug} className="block text-sm">
-                      {latestContent.title}
+                    <Link href={latestPost.slug} className="block text-sm">
+                      {latestPost.title}
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            )}
+
+            {latestBook && (
+              <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
+                <h2 className="font-semibold mt-0">
+                  <span className="mr-1">📚</span> 최근에 읽은 책
+                </h2>
+                <ul>
+                  <li>
+                    <Link href={latestBook.slug} className="block text-sm">
+                      {'"'}
+                      {latestBook.title}
+                      {'"'}, {latestBook.author}
                     </Link>
                   </li>
                 </ul>
@@ -157,13 +167,12 @@ export default function Home() {
                   <span className="mr-1">📖</span> 요즘 읽고 있는 책
                 </h2>
                 <ul>
+                  {/* 읽는 중인 책은 상세 페이지가 없어 링크 없이 표시 */}
                   {currentlyReading.map((book) => (
-                    <li key={book.slug}>
-                      <Link href={`/books`} className="block text-sm">
-                        {'"'}
-                        {book.title}
-                        {'"'}, {book.author}
-                      </Link>
+                    <li key={`${book.title}-${book.author}`} className="text-sm">
+                      {'"'}
+                      {book.title}
+                      {'"'}, {book.author}
                     </li>
                   ))}
                 </ul>
