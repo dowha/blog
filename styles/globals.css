@@ -96,6 +96,15 @@
     }
   }
 
+  /* 하이라이트: ==문장== 또는 <mark>. dowha.kim 강조(em.wave)와 같은 은은한 브랜드 파랑 */
+  mark {
+    color: inherit;
+    padding: 0 1px;
+    background: linear-gradient(transparent 58%, rgb(0 134 255 / 0.12) 58%);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
   /* 엔드마크: 글의 끝을 알리는 사이트 파랑 동그라미 (파비콘과 같은 원형). lib/rehypeEndmark.ts가 삽입 */
   .endmark-inline,
   .endmark-block {

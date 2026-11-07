@@ -16,7 +16,7 @@ export function toExcerpt(markdown: string | null | undefined, max = 150): strin
     .replace(/^\s*([-*_]\s*){3,}$/gm, ' ') // 구분선
     .replace(/^\s*\|?(\s*:?-+:?\s*\|)+\s*$/gm, ' ') // 표 구분 줄
     .replace(/\|/g, ' ') // 표 칸
-    .replace(/(\*\*|__|~~|\*|`)/g, '') // 강조·코드 기호 (단일 _는 단어 속 밑줄일 수 있어 둔다)
+    .replace(/(\*\*|__|~~|==|\*|`)/g, '') // 강조·코드 기호 (단일 _는 단어 속 밑줄일 수 있어 둔다)
     .replace(/&nbsp;/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()

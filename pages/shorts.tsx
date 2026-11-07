@@ -9,6 +9,7 @@ import LoadingSpinner from '@/components/LoadingSpinner'
 import { format, subDays } from 'date-fns'
 import { toast } from 'sonner'
 import ReactMarkdown from 'react-markdown'
+import remarkMark from '@/lib/remarkMark'
 
 type Short = {
   id: string
@@ -296,7 +297,8 @@ export default function ShortsPage({ intro }: Props) {
                             >
                               <div className="markdown-content">
                                 <ReactMarkdown
-                                  allowedElements={['strong', 'em']}
+                                  remarkPlugins={[remarkMark]}
+                                  allowedElements={['strong', 'em', 'mark']}
                                   unwrapDisallowed={true}
                                 >
                                   {item.content.replace(/^(\s*)- /gm, '$1\\- ')}

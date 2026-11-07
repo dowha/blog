@@ -2,6 +2,7 @@ import React, { FC, HTMLAttributes } from 'react'
 import ReactMarkdown, { Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
+import remarkMark from '@/lib/remarkMark'
 import rehypeEndmark from '@/lib/rehypeEndmark'
 import Image from 'next/image'
 import { ComponentProps } from 'react'
@@ -136,7 +137,7 @@ const customComponents: ExtendedComponents = {
 // endmark: 글 끝에 엔드마크(파란 동그라미)를 붙인다. writings·books 본문에서만 사용
 const MarkdownContent = ({ content, endmark = false }: { content: string; endmark?: boolean }) => (
   <ReactMarkdown
-    remarkPlugins={[remarkGfm]}
+    remarkPlugins={[remarkGfm, remarkMark]}
     rehypePlugins={endmark ? [rehypeRaw, rehypeEndmark] : [rehypeRaw]}
     components={customComponents}
   >

@@ -10,6 +10,7 @@ import type { EmojiClickData, EmojiStyle } from 'emoji-picker-react'
 import { ALLOWED_IMAGE_TYPES, MAX_UPLOAD_BYTES, UPLOAD_ACCEPT } from '@/lib/upload'
 import { SHORTS_MAX_LENGTH, pureTextLength } from '@/lib/shorts'
 import { notifyChanged } from '@/lib/indexnow'
+import remarkMark from '@/lib/remarkMark'
 
 // react-md-editor는 window 의존 → SSR 비활성화
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
@@ -862,6 +863,8 @@ export default function DeskEdit() {
                   value={form.content}
                   onChange={(v) => set('content', v ?? '')}
                   height={520}
+                  // 미리보기에서도 ==하이라이트== 표시
+                  previewOptions={{ remarkPlugins: [remarkMark] }}
                   textareaProps={{
                     placeholder: isBook ? '리뷰 (마크다운, 비우면 비공개)' : '본문 (마크다운)',
                   }}

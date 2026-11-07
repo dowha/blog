@@ -4,6 +4,7 @@ import { GetStaticProps, GetStaticPaths } from 'next'
 import MarkdownContent from '@/components/MarkdownContent'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import remarkMark from '@/lib/remarkMark'
 import Copyright from '@/components/Copyright'
 import Seo from '@/components/Seo'
 import {
@@ -75,7 +76,7 @@ function SeriesPosts({
       </div>
 
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, remarkMark]}
         components={{
           p: ({ children }) => (
             <p className="text-sm mt-2 series-list">{children}</p>
