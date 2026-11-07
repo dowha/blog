@@ -1,15 +1,9 @@
 // components/LoadingSpinner.tsx
-import React from 'react'
-
+// 두 사이트 공통 로딩 표시: 글자 없이 회색 원만 돈다 (dowha.kim과 동일)
 function LoadingSpinner() {
   return (
-    <div className="flex items-center justify-center min-h-[300px] bg-white/20 backdrop-blur-sm rounded-md">
-      <div className="text-center">
-        <div className="inline-block">
-          <div className="w-8 h-8 rounded-full border-4 border-gray-400 border-t-transparent animate-spin" />
-        </div>
-        <p className="mt-2 text-sm text-gray-500 font-medium">Loading...</p>
-      </div>
+    <div role="status" aria-label="Loading" className="flex items-center justify-center min-h-[300px]">
+      <div className="w-6 h-6 rounded-full border-2 border-gray-300 border-t-transparent animate-spin" />
     </div>
   )
 }
