@@ -84,7 +84,7 @@ export default function WritingPage({
     <>
       <Seo title="Writings" description={descriptionText} />
       <article className="post-list page-container">
-        <h1 className="text-xl font-bold flex items-center">
+        <h1 className="font-bold flex items-center">
           <span {...deskShortcut}>Writings</span>
           <a
             href="/api/rss"

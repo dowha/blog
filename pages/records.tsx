@@ -132,7 +132,7 @@ export default function RecordsPage({ records, intro }: Props) {
     <>
       <Seo title={pageTitle} description={descriptionText} />
       <article className="records page-container">
-        <h1 className="text-xl font-bold" {...deskShortcut}>
+        <h1 className="font-bold" {...deskShortcut}>
           Records
         </h1>
         <p className="mt-4 text-keepall" dangerouslySetInnerHTML={{ __html: intro }} />

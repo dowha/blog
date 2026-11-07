@@ -132,7 +132,7 @@ export default function Home({ intro }: Props) {
     <>
       <Seo />
       <article className="page-container">
-        <h1 className="text-xl font-bold">{"Dowha's Blog"}</h1>
+        <h1 className="font-bold">{"Dowha's Blog"}</h1>
         <p
           className="mt-4 index-contents text-keepall"
           dangerouslySetInnerHTML={{ __html: intro }}

@@ -25,7 +25,7 @@ export default function Custom404() {
         <link rel="canonical" href="https://blog.dowha.kim/404" />
       </Head>
       <article className="page-container">
-        <h1 className="text-xl font-bold">404 Not Found</h1>
+        <h1 className="font-bold">404 Not Found</h1>
         <div className="mt-6 w-full mx-auto aspect-video">
           <iframe
             className="w-full h-full rounded-lg shadow-lg"

@@ -151,7 +151,7 @@
 
   /* ✅ 제목 스타일 */
   h1 {
-    @apply text-gray-800 text-xl mb-7;
+    @apply text-gray-800 text-lg md:text-xl mb-7;
   }
 
   .single-post h1,

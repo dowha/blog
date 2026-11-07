@@ -247,7 +247,7 @@ export default function ShortsPage({ intro }: Props) {
     <>
       <Seo title="Shorts" description={descriptionText} />
       <article className="page-container">
-        <h1 className="text-xl font-bold" {...deskShortcut}>
+        <h1 className="font-bold" {...deskShortcut}>
           Shorts
         </h1>
         <p className="mt-4 text-keepall text-gray-600" dangerouslySetInnerHTML={{ __html: intro }} />

@@ -63,7 +63,7 @@ export default function BookDetailPage({
         }}
       />
       <article className="single-book page-container">
-        <h1 className="text-xl font-bold">{book.title}</h1>
+        <h1 className="font-bold">{book.title}</h1>
         <p className="text-sm text-gray-500 mb-4">
           {book.author}
           {book.publisher ? `, ${book.publisher}` : ''}

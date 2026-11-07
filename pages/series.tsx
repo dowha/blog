@@ -24,7 +24,7 @@ export default function SeriesPage({ series, intro }: Props) {
     <>
       <Seo title="Series" description={introToText(intro)} />
       <article className="series-list page-container">
-        <h1 className="text-xl font-bold" {...deskShortcut}>
+        <h1 className="font-bold" {...deskShortcut}>
           Series
         </h1>
         <p className="mt-4 text-keepall" dangerouslySetInnerHTML={{ __html: intro }} />
