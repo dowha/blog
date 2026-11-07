@@ -19,7 +19,7 @@ export default function Custom404() {
         <meta property="og:type" content="website" />
         <meta
           property="og:image"
-          content="https://blog.dowha.kim/default-og-image.png"
+          content="https://blog.dowha.kim/default-og-image.png?v=2"
         />
         <meta property="og:url" content="https://blog.dowha.kim/404" />
         <link rel="canonical" href="https://blog.dowha.kim/404" />

@@ -146,7 +146,7 @@ export default function PostPage({
           dateModified: new Date(post.updated_at || post.created_at).toISOString(),
           url: `${SITE_URL}/posts/${post.slug}`,
           mainEntityOfPage: `${SITE_URL}/posts/${post.slug}`,
-          image: `${SITE_URL}/default-og-image.png`,
+          image: `${SITE_URL}/default-og-image.png?v=2`,
           inLanguage: 'ko-KR',
           author: AUTHOR,
           publisher: AUTHOR,
