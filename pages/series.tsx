@@ -1,4 +1,5 @@
 import { supabase } from '@/supabase'
+import { fetchPageIntro, introToText } from '@/lib/pageIntro'
 import { GetStaticProps } from 'next'
 import Link from 'next/link'
 import Seo from '@/components/Seo'
@@ -13,21 +14,20 @@ type SeriesRecord = {
 
 type Props = {
   series: SeriesRecord[]
+  intro: string
 }
 
-const descriptionText = `특별히 엮어둔 글 목록입니다. 의도적으로 한 주제 아래 쓴 글들도, 쓰고 보니 우연히 묶인 글들도 있습니다. 부디 재밌게 읽어주세요.`
-
-export default function SeriesPage({ series }: Props) {
+export default function SeriesPage({ series, intro }: Props) {
   // 소유자 로그인 시 제목 더블클릭으로 /desk 진입
   const deskShortcut = useDeskShortcut('series')
   return (
     <>
-      <Seo title="Series" description={descriptionText} />
+      <Seo title="Series" description={introToText(intro)} />
       <article className="series-list page-container">
         <h1 className="text-xl font-bold" {...deskShortcut}>
           Series
         </h1>
-        <p className="mt-4 text-keepall">{descriptionText}</p>
+        <p className="mt-4 text-keepall" dangerouslySetInnerHTML={{ __html: intro }} />
         {series.length > 0 && (
           <div className="mt-6 border-t border-gray-300">
             {series.map((item) => (
@@ -63,6 +63,7 @@ export default function SeriesPage({ series }: Props) {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
+  const intro = await fetchPageIntro('series')
   const { data: series, error } = await supabase
     .from('series')
     .select('series_name, slug, theme_color, emoji') // 새로운 컬럼 포함
@@ -71,11 +72,11 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     .order('series_name', { ascending: true })
 
   if (error || !series) {
-    return { props: { series: [] } }
+    return { props: { series: [], intro }, revalidate: 60 }
   }
 
   return {
-    props: { series },
+    props: { series, intro },
     revalidate: 60,
   }
 }

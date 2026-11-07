@@ -1,4 +1,5 @@
 import { supabase } from '@/supabase'
+import { fetchPageIntro, introToText } from '@/lib/pageIntro'
 import { GetStaticProps } from 'next'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
@@ -17,6 +18,7 @@ type Record = {
 
 type Props = {
   records: Record[]
+  intro: string
 }
 
 function Collapse({
@@ -92,7 +94,7 @@ function Collapse({
   )
 }
 
-export default function RecordsPage({ records }: Props) {
+export default function RecordsPage({ records, intro }: Props) {
   // 소유자 로그인 시 제목 더블클릭으로 /desk 진입
   const deskShortcut = useDeskShortcut('records')
   const router = useRouter()
@@ -124,7 +126,7 @@ export default function RecordsPage({ records }: Props) {
 
   const pageTitle = openedRecord ? `${openedRecord.title}` : 'Records'
 
-  const descriptionText = `별도의 글로 쓰기에는 애매한 기록을 모아둡니다. 주로 개인적인 어떤 목록과 그에 대한 짧은 소회를 담은 메모 따위입니다.`
+  const descriptionText = introToText(intro)
 
   return (
     <>
@@ -133,7 +135,7 @@ export default function RecordsPage({ records }: Props) {
         <h1 className="text-xl font-bold" {...deskShortcut}>
           Records
         </h1>
-        <p className="mt-4 text-keepall">{descriptionText}</p>
+        <p className="mt-4 text-keepall" dangerouslySetInnerHTML={{ __html: intro }} />
 
         {records.map((record, index) => (
           <div key={record.slug} className={index === 0 ? 'mt-6' : ''}>
@@ -157,6 +159,7 @@ export default function RecordsPage({ records }: Props) {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
+  const intro = await fetchPageIntro('records')
   const { data: records, error } = await supabase
     .from('records')
     .select('title, content, created_at, slug, updated_at')
@@ -164,11 +167,11 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     .order('updated_at', { ascending: false })
 
   if (error || !records) {
-    return { props: { records: [] } }
+    return { props: { records: [], intro }, revalidate: 60 }
   }
 
   return {
-    props: { records },
+    props: { records, intro },
     revalidate: 60,
   }
 }

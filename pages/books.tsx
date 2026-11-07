@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/supabase'
+import type { GetStaticProps } from 'next'
+import { fetchPageIntro, introToText } from '@/lib/pageIntro'
 import BookCard from '@/components/ReadingCard'
 import GenreFilter from '@/components/GenreFilter'
 import Seo from '@/components/Seo'
@@ -23,7 +25,15 @@ interface Book {
   content?: string | null
 }
 
-export default function BooksPage() {
+type Props = { intro: string }
+
+// 검색 설명이 첫 HTML에 들어가도록 소개 문구만 서버에서 넣는다 (/desk 저장 시 즉시 재생성)
+export const getStaticProps: GetStaticProps<Props> = async () => ({
+  props: { intro: await fetchPageIntro('books') },
+  revalidate: 60,
+})
+
+export default function BooksPage({ intro }: Props) {
   // 소유자 로그인 시 제목 더블클릭으로 /desk 진입
   const deskShortcut = useDeskShortcut('books')
   const router = useRouter()
@@ -131,7 +141,7 @@ export default function BooksPage() {
     setVisibleCount((prev) => prev + LOAD_COUNT) // ✅ "더 보기" 버튼 기능
   }
 
-  const descriptionText = `책 읽기는 제게 큰 즐거움이자 평생을 함께하고 싶은 친구입니다.`
+  const descriptionText = introToText(intro)
 
   return (
     <>
@@ -161,7 +171,7 @@ export default function BooksPage() {
             />
           </a>
         </h1>
-        <p className="mt-4 text-keepall">{descriptionText}</p>
+        <p className="mt-4 text-keepall" dangerouslySetInnerHTML={{ __html: intro }} />
 
         <GenreFilter
           selectedGenre={selectedGenre}

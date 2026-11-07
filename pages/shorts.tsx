@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/supabase'
+import type { GetStaticProps } from 'next'
+import { fetchPageIntro, introToText } from '@/lib/pageIntro'
 import Seo from '@/components/Seo'
 import { useDeskShortcut } from '@/components/desk/useDeskShortcut'
 import { LoadMoreButton } from '@/components/ActionButtons'
@@ -47,7 +49,15 @@ type GroupedShorts = {
   shorts: Short[]
 }
 
-export default function ShortsPage() {
+type Props = { intro: string }
+
+// 검색 설명이 첫 HTML에 들어가도록 소개 문구만 서버에서 넣는다 (/desk 저장 시 즉시 재생성)
+export const getStaticProps: GetStaticProps<Props> = async () => ({
+  props: { intro: await fetchPageIntro('shorts') },
+  revalidate: 60,
+})
+
+export default function ShortsPage({ intro }: Props) {
   // 소유자 로그인 시 제목 더블클릭으로 /desk 진입
   const deskShortcut = useDeskShortcut('shorts')
   const [shorts, setShorts] = useState<Short[]>([])
@@ -178,7 +188,7 @@ export default function ShortsPage() {
     }
   }
 
-  const descriptionText = `280자 이내의 짧은 생각, 메모, 인용문 등을 씁니다. 언젠가 더 긴 글이 되기도 하겠죠.`
+  const descriptionText = introToText(intro)
 
   const visibleItems = shorts.slice(0, visibleCount)
 
@@ -239,7 +249,7 @@ export default function ShortsPage() {
         <h1 className="text-xl font-bold" {...deskShortcut}>
           Shorts
         </h1>
-        <p className="mt-4 text-keepall text-gray-600">{descriptionText}</p>
+        <p className="mt-4 text-keepall text-gray-600" dangerouslySetInnerHTML={{ __html: intro }} />
 
         {isLoading ? (
           <LoadingSpinner />

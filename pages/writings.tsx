@@ -1,4 +1,5 @@
 import { supabase } from '@/supabase'
+import { fetchPageIntro, introToText } from '@/lib/pageIntro'
 import { useState } from 'react'
 import Link from 'next/link'
 import Seo from '@/components/Seo'
@@ -20,6 +21,7 @@ type Post = {
 
 export async function getStaticProps() {
   const LIMIT = 10
+  const intro = await fetchPageIntro('writings')
   const { data: posts, error } = await supabase
     .from('posts')
     .select(
@@ -30,7 +32,7 @@ export async function getStaticProps() {
 
   if (error) {
     console.error('Error fetching posts:', error)
-    return { props: { initialPosts: [], allPosts: [] }, revalidate: 60 }
+    return { props: { initialPosts: [], allPosts: [], intro }, revalidate: 60 }
   }
 
   const safePosts = posts || []
@@ -39,6 +41,7 @@ export async function getStaticProps() {
     props: {
       initialPosts: safePosts.slice(0, LIMIT),
       allPosts: safePosts,
+      intro,
     },
     revalidate: 60,
   }
@@ -47,7 +50,9 @@ export async function getStaticProps() {
 export default function WritingPage({
   initialPosts = [],
   allPosts = [],
+  intro,
 }: {
+  intro: string
   initialPosts: Post[]
   allPosts: Post[]
 }) {
@@ -72,7 +77,8 @@ export default function WritingPage({
     return acc
   }, {} as Record<number, Post[]>)
 
-  const descriptionText = `글 목록입니다.`
+  // writings 소개 문구는 화면에 보이지 않고 검색 설명으로만 쓴다 (/desk에서 편집)
+  const descriptionText = introToText(intro)
 
   return (
     <>

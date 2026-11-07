@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/supabase'
+import type { GetStaticProps } from 'next'
+import { fetchPageIntro } from '@/lib/pageIntro'
 import Seo from '@/components/Seo'
 import LoadingSpinner from '@/components/LoadingSpinner' // ✅ 추가
 
@@ -86,7 +88,15 @@ async function fetchMostLikedContent(): Promise<LikedContent[]> {
   return (data ?? []) as LikedContent[]
 }
 
-export default function Home() {
+type Props = { intro: string }
+
+// 소개 문구만 서버에서 넣는다 (/desk 저장 시 즉시 재생성). 검색 설명은 Seo 기본값 유지
+export const getStaticProps: GetStaticProps<Props> = async () => ({
+  props: { intro: await fetchPageIntro('home') },
+  revalidate: 60,
+})
+
+export default function Home({ intro }: Props) {
   const [latestShort, setLatestShort] = useState<ShortItem | null>(null)
   const [latestPost, setLatestPost] = useState<LinkItem | null>(null)
   const [latestBook, setLatestBook] = useState<BookItem | null>(null)
@@ -122,20 +132,10 @@ export default function Home() {
       <Seo />
       <article className="page-container">
         <h1 className="text-xl font-bold">{"Dowha's Blog"}</h1>
-        <p className="mt-4 index-contents text-keepall">
-          이것저것 쓰고 싶은 글을 씁니다. 부담감을 줄이고{' '}
-          <strong>꾸준하게</strong> 쓰는 것이 목표입니다.{' '}
-          <br className="hidden md:block" />
-          질문이나 피드백, 협업 제안 등은{' '}
-          <a
-            href="https://letterbird.co/hello-dowha"
-            target="_blank"
-            rel="noopener"
-          >
-            메일 폼
-          </a>
-          을 통해서 연락 주세요.
-        </p>
+        <p
+          className="mt-4 index-contents text-keepall"
+          dangerouslySetInnerHTML={{ __html: intro }}
+        />
         {isLoading ? (
           <LoadingSpinner /> // ✅ 로딩 중일 때
         ) : (
