@@ -477,7 +477,7 @@ export default function DeskEdit() {
               <button
                 onClick={() => save(false)}
                 disabled={busy}
-                className="default-button !mt-0 !bg-[#0a85d1] !text-white hover:!bg-[#0972b5] disabled:opacity-50"
+                className="default-button !mt-0 !bg-[#0086FF] !text-white hover:!bg-[#006FD6] disabled:opacity-50"
               >
                 저장
               </button>
@@ -493,7 +493,7 @@ export default function DeskEdit() {
                 <button
                   onClick={() => save(true)}
                   disabled={busy || shortOver}
-                  className="default-button !mt-0 !bg-[#0a85d1] !text-white hover:!bg-[#0972b5] disabled:opacity-50"
+                  className="default-button !mt-0 !bg-[#0086FF] !text-white hover:!bg-[#006FD6] disabled:opacity-50"
                 >
                   발행
                 </button>

@@ -47,7 +47,7 @@ export default function BookCard({ book, className }: BookCardProps) {
           <div>
             <h2
               className={`leading-tight text-foreground text-md font-semibold truncate ${
-                book.isReading ? '' : 'group-hover:text-[#0a85d1]'
+                book.isReading ? '' : 'group-hover:text-[#0086FF]'
               }`}
             >
               {book.title}

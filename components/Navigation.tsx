@@ -53,7 +53,7 @@ export function Navigation() {
               <li key={item.path}>
                 <Link
                   href={item.path}
-                  className={`relative hover:text-[#0a85d1] ${isActive ? 'font-semibold text-gray-800' : ''
+                  className={`relative hover:text-[#0086FF] ${isActive ? 'font-semibold text-gray-800' : ''
                     }`}
                   aria-current={isActive ? 'page' : undefined}
                 >
@@ -85,7 +85,7 @@ export function Navigation() {
           <li>
             <a
               href="https://dowha.kim"
-              className="group inline-flex items-center hover:text-[#0a85d1]"
+              className="group inline-flex items-center hover:text-[#0086FF]"
               target="_blank"
               rel="noopener"
               aria-label="about"

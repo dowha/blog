@@ -46,12 +46,12 @@
 
   /* ✅ 텍스트 드래그 스타일 */
   ::selection {
-    background-color: rgba(10, 133, 209, 0.1);
+    background-color: rgba(0, 134, 255, 0.1);
   }
 
   /* ✅ 링크 스타일 */
   a {
-    @apply break-words decoration-gray-200 hover:text-[#0a85d1];
+    @apply break-words decoration-gray-200 hover:text-[#0086FF];
   }
 
   nav a[target='_blank'] {
@@ -69,7 +69,7 @@
   .single-book a[target='_blank']:after,
   .series-list a[target='_blank']:after
    {
-    @apply text-gray-300 hover:text-[#0a85d1];
+    @apply text-gray-300 hover:text-[#0086FF];
 
     content: '↗';
     display: inline-block;
@@ -102,7 +102,7 @@
     width: 0.5em;
     height: 0.5em;
     border-radius: 9999px;
-    background-color: #0a85d1;
+    background-color: #0086FF;
   }
 
   .endmark-inline {
@@ -123,12 +123,12 @@
   }
 
   main a {
-    @apply break-words underline underline-offset-4 decoration-gray-200 hover:text-[#0a85d1];
+    @apply break-words underline underline-offset-4 decoration-gray-200 hover:text-[#0086FF];
   }
 
     .post-list a h2, .series a h2 {
       @apply
-      hover:text-[#0a85d1];
+      hover:text-[#0086FF];
   }
   
   a.no-underline {

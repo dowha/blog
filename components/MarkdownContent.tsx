@@ -102,7 +102,7 @@ const customComponents: ExtendedComponents = {
     if (!isBlock) {
       return (
         <code
-          className="bg-gray-100 text-[#0a85d1] px-1 py-0.5 rounded whitespace-nowrap"
+          className="bg-gray-100 text-[#0086FF] px-1 py-0.5 rounded whitespace-nowrap"
           {...filteredProps}
         >
           {children}
