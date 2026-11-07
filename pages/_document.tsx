@@ -20,19 +20,9 @@ export default function Document() {
           content="black-translucent"
         />
         {/* Favicon */}
+        {/* SVG를 우선 쓰고(고해상도에서도 선명), 지원하지 않는 브라우저는 ico로 대체 */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link
           rel="icon"
