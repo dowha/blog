@@ -30,4 +30,15 @@ export const loginWithGoogle = () =>
     options: { redirectTo: `${window.location.origin}/desk` },
   })
 
-export const logout = () => supabase.auth.signOut()
+export async function logout() {
+  // local: 이 브라우저의 이 사이트 세션만 끊는다.
+  // 기본값(global)은 같은 계정의 모든 세션을 끊어 dowha.kim /wave까지 로그아웃시킨다.
+  const { error } = await supabase.auth.signOut({ scope: 'local' })
+  if (!error) return
+  // 서버에 이미 없는 세션이면(session_not_found) auth-js가 저장된 세션을 지우지 않아
+  // 로그아웃이 안 되는 것처럼 보인다 → 직접 지우고 새로고침
+  Object.keys(localStorage)
+    .filter((k) => k.startsWith('sb-') && k.includes('-auth-token'))
+    .forEach((k) => localStorage.removeItem(k))
+  window.location.reload()
+}
