@@ -82,15 +82,11 @@ export function Navigation() {
           <li className="relative hidden lg:flex justify-end py-4 my-4">
             <div className="absolute right-0 w-16 border-t border-gray-200"></div>
           </li>
-          <li>
-            <a
-              href="https://dowha.kim"
-              className="group inline-flex items-center hover:text-[#0086FF]"
-              target="_blank"
-              rel="noopener"
-              aria-label="about"
-            >
-              <span className="hidden lg:inline">about</span>
+          {/* about은 PC 메뉴에서만 보인다 */}
+          <li className="hidden lg:block">
+            {/* 같은 가족 사이트(dowha.kim)라 외부 링크 표시 없이 같은 탭으로 이동 */}
+            <a href="https://dowha.kim" className="hover:text-[#0086FF]">
+              about
             </a>
           </li>
         </ul>
