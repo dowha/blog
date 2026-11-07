@@ -40,7 +40,8 @@ export function Navigation() {
 
   return (
     <nav
-      className="w-full p-6 text-gray-500 lg:w-64 lg:mr-6 lg:mb-0"
+      // 모바일·태블릿에서는 상단 고정, PC(lg)에서는 기존 사이드 메뉴 그대로
+      className="sticky top-0 z-30 w-full border-b border-gray-100 bg-[#FCFCFC]/90 px-6 py-4 text-gray-500 backdrop-blur lg:static lg:z-auto lg:w-64 lg:mr-6 lg:mb-0 lg:border-0 lg:bg-transparent lg:p-6 lg:backdrop-blur-none"
       aria-label="메뉴"
     >
       <div className="space-y-2">
