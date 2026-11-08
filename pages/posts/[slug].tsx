@@ -76,7 +76,9 @@ function SeriesPosts({
       </div>
 
       <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkMark]}
+        remarkPlugins={[[remarkGfm, { singleTilde: false }], remarkMark]}
+        disallowedElements={['del']}
+        unwrapDisallowed
         components={{
           p: ({ children }) => (
             <p className="text-sm mt-2 series-list">{children}</p>

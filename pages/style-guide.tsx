@@ -14,7 +14,11 @@ export default function StyleGuide({ markdown }: { markdown: string }) {
         <meta name="robots" content="noindex, nofollow" />
       </Head>
       <div className="page-container style-guide">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{markdown}</ReactMarkdown>
+        <ReactMarkdown
+          remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
+          disallowedElements={['del']}
+          unwrapDisallowed
+        >{markdown}</ReactMarkdown>
       </div>
     </>
   )

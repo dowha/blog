@@ -1,5 +1,6 @@
 import React, { FC, HTMLAttributes } from 'react'
 import ReactMarkdown, { Components } from 'react-markdown'
+import type { Options } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import remarkMark from '@/lib/remarkMark'
@@ -133,11 +134,19 @@ const customComponents: ExtendedComponents = {
   },
 }
 
+// 취소선은 쓰지 않는다. remark-gfm은 기본으로 ~하나~도 취소선으로 읽어서
+// '1~4권, 2015~16년'처럼 한 줄에 물결표가 두 번 나오면 사이가 지워진 것처럼 보인다.
+// singleTilde를 끄고, ~~두 개~~로 쓴 것도 취소선 없이 글자만 남긴다.
+const GFM_PLUGINS: Options['remarkPlugins'] = [[remarkGfm, { singleTilde: false }], remarkMark]
+const NO_STRIKE = ['del']
+
 // ⑤ MarkdownContent 컴포넌트에서 확장된 customComponents 사용
 // endmark: 글 끝에 엔드마크(파란 동그라미)를 붙인다. writings·books 본문에서만 사용
 const MarkdownContent = ({ content, endmark = false }: { content: string; endmark?: boolean }) => (
   <ReactMarkdown
-    remarkPlugins={[remarkGfm, remarkMark]}
+    remarkPlugins={GFM_PLUGINS}
+    disallowedElements={NO_STRIKE}
+    unwrapDisallowed
     rehypePlugins={endmark ? [rehypeRaw, rehypeEndmark] : [rehypeRaw]}
     components={customComponents}
   >
