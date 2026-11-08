@@ -23,6 +23,7 @@ interface Book {
   isReading?: boolean
   slug: string
   content?: string | null
+  lang?: string
 }
 
 type Props = { intro: string }
@@ -51,7 +52,7 @@ export default function BooksPage({ intro }: Props) {
       const { data, error } = await supabase
         .from('books')
         .select(
-          'id, title, author, publisher, publication_year, genre, slug, thumbnail, content, is_reading, created_at'
+          'id, title, author, publisher, publication_year, genre, slug, thumbnail, content, is_reading, created_at, lang'
         )
 
       if (error) {

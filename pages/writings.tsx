@@ -2,6 +2,7 @@ import { supabase } from '@/supabase'
 import { fetchPageIntro, introToText } from '@/lib/pageIntro'
 import { useState } from 'react'
 import Link from 'next/link'
+import LangBadge from '@/components/LangBadge'
 import Seo from '@/components/Seo'
 import { useDeskShortcut } from '@/components/desk/useDeskShortcut'
 import Image from 'next/image'
@@ -17,6 +18,7 @@ type Post = {
   is_external: boolean
   external_url?: string
   source_name?: string
+  lang?: string
 }
 
 export async function getStaticProps() {
@@ -25,7 +27,7 @@ export async function getStaticProps() {
   const { data: posts, error } = await supabase
     .from('posts')
     .select(
-      'id, title, subtitle, created_at, slug, is_external, external_url, source_name'
+      'id, title, subtitle, created_at, slug, is_external, external_url, source_name, lang'
     )
     .eq('is_published', true)
     .order('created_at', { ascending: false })
@@ -156,6 +158,7 @@ export default function WritingPage({
                               {post.subtitle}
                             </span>
                           )}
+                          <LangBadge lang={post.lang} />
                         </h2>
                       </Link>
                     )}

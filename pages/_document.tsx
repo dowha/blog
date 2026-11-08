@@ -1,10 +1,16 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import { Html, Head, Main, NextScript, type DocumentProps } from 'next/document'
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID
 
-export default function Document() {
+// 영어로 쓴 글·리뷰 페이지는 <html lang="en"> (posts.lang, books.lang). 나머지는 한국어
+function pageLang(props: DocumentProps): string {
+  const pageProps = props.__NEXT_DATA__?.props?.pageProps
+  return pageProps?.post?.lang === 'en' || pageProps?.book?.lang === 'en' ? 'en' : 'ko'
+}
+
+export default function Document(props: DocumentProps) {
   return (
-    <Html lang="ko">
+    <Html lang={pageLang(props)}>
       <Head>
         {/* Viewport 설정 (iPhone의 notch 대응) */}
         <meta

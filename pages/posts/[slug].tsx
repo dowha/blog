@@ -120,6 +120,7 @@ export default function PostPage({
   post: {
     title: string
     subtitle?: string
+    lang?: string
     content: string
     created_at: string
     series_name?: string
@@ -150,7 +151,7 @@ export default function PostPage({
           url: `${SITE_URL}/posts/${post.slug}`,
           mainEntityOfPage: `${SITE_URL}/posts/${post.slug}`,
           image: `${SITE_URL}/default-og-image.png?v=2`,
-          inLanguage: 'ko-KR',
+          inLanguage: post.lang === 'en' ? 'en' : 'ko-KR',
           author: AUTHOR,
           publisher: AUTHOR,
           ...(post.series_name && post.series_slug

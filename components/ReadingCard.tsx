@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import LangBadge from '@/components/LangBadge'
 
 interface Book {
   id: string
@@ -9,6 +10,8 @@ interface Book {
   genre: string
   thumbnail?: string | null
   isReading?: boolean
+  content?: string | null
+  lang?: string
 }
 
 interface BookCardProps {
@@ -46,11 +49,13 @@ export default function BookCard({ book, className }: BookCardProps) {
         <div className="flex flex-1 flex-col justify-between text-left overflow-hidden ">
           <div>
             <h2
-              className={`leading-tight text-foreground text-md font-semibold truncate ${
+              className={`flex items-center leading-tight text-foreground text-md font-semibold ${
                 book.isReading ? '' : 'group-hover:text-[#0086FF]'
               }`}
             >
-              {book.title}
+              <span className="truncate">{book.title}</span>
+              {/* 리뷰 언어 표시라 리뷰가 있는 책에만 */}
+              {book.content && <LangBadge lang={book.lang} />}
             </h2>
             <span className="mt-1 text-sm text-gray-500 block">
               {book.author}

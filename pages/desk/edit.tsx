@@ -50,6 +50,8 @@ const empty = {
   content: '',
   series_id: '' as string, // '' = 없음
   is_published: false,
+  // posts(외부 글 제외)·books: 영어로 쓴 글·리뷰면 true → lang 'en' (목록 EN 배지, html lang)
+  is_english: false,
   // books 전용
   author: '',
   publisher: '',
@@ -181,12 +183,12 @@ export default function DeskEdit() {
     const cols = isRecord
       ? 'title,slug,content,is_published'
       : isBook
-        ? 'title,subtitle,slug,content,author,publisher,publication_year,genre,thumbnail,is_reading,created_at'
+        ? 'title,subtitle,slug,content,author,publisher,publication_year,genre,thumbnail,is_reading,created_at,lang'
         : isShort
           ? 'content,is_published,related_post_id,related_book_id,created_at'
           : isSeries
             ? 'title:series_name,slug,description,theme_color,emoji,is_published'
-            : 'title,subtitle,slug,content,series_id,is_published,is_external,external_url,source_name,created_at'
+            : 'title,subtitle,slug,content,series_id,is_published,is_external,external_url,source_name,created_at,lang'
     supabase
       .from(table)
       .select(cols)
@@ -206,6 +208,7 @@ export default function DeskEdit() {
             content: (d.content as string) ?? '',
             series_id: (d.series_id as string) ?? '',
             is_published: !!d.is_published,
+            is_english: d.lang === 'en',
             author: (d.author as string) ?? '',
             publisher: (d.publisher as string) ?? '',
             publication_year: d.publication_year == null ? '' : String(d.publication_year),
@@ -345,6 +348,7 @@ export default function DeskEdit() {
         genre: form.genre.trim(),
         thumbnail: form.thumbnail.trim() || null,
         is_reading: form.is_reading,
+        lang: form.is_english ? 'en' : 'ko',
       }
     } else {
       // created_at/updated_at은 DB 기본값(now)·트리거(moddatetime)가 처리
@@ -356,7 +360,12 @@ export default function DeskEdit() {
       }
       payload = isRecord
         ? base
-        : { ...base, subtitle: form.subtitle.trim() || null, series_id: form.series_id || null }
+        : {
+            ...base,
+            subtitle: form.subtitle.trim() || null,
+            series_id: form.series_id || null,
+            lang: form.is_english ? 'en' : 'ko',
+          }
     }
 
     // 표기 규칙: 둥근 따옴표는 저장 전에 곧은 따옴표로 바꾼다
@@ -812,6 +821,19 @@ export default function DeskEdit() {
                     <span>읽는 중</span>
                   </label>
                 </>
+              )}
+              {((isPost && !isExternal) || isBook) && (
+                <label
+                  className="flex items-center gap-1.5 text-gray-500"
+                  title={isBook ? '리뷰를 영어로 썼으면 체크 (책 언어가 아님)' : '영어로 쓴 글이면 체크'}
+                >
+                  <input
+                    type="checkbox"
+                    checked={form.is_english}
+                    onChange={(e) => set('is_english', e.target.checked)}
+                  />
+                  <span>{isBook ? '영어 리뷰' : '영어 글'}</span>
+                </label>
               )}
               {hasCreatedAt && (
                 <label className="flex items-center gap-1.5">

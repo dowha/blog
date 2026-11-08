@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import LangBadge from '@/components/LangBadge'
 import { supabase } from '@/supabase'
 import type { GetStaticProps } from 'next'
 import { fetchPageIntro } from '@/lib/pageIntro'
 import Seo from '@/components/Seo'
 import LoadingSpinner from '@/components/LoadingSpinner' // ✅ 추가
 
-type LinkItem = { title: string; slug: string }
-type BookItem = { title: string; author: string; slug: string }
+type LinkItem = { title: string; slug: string; lang?: string }
+type BookItem = { title: string; author: string; slug: string; lang?: string }
 
 // 최근에 쓴 글(writings). 외부 글은 블로그 안에 페이지가 없어 제외
 async function fetchLatestPost(): Promise<LinkItem | null> {
   const { data, error } = await supabase
     .from('posts')
-    .select('title, slug')
+    .select('title, slug, lang')
     .eq('is_published', true)
     .eq('is_external', false)
     .order('created_at', { ascending: false })
@@ -21,14 +22,14 @@ async function fetchLatestPost(): Promise<LinkItem | null> {
     .maybeSingle()
 
   if (error) console.error('최신 글 fetch 오류:', error)
-  return data ? { title: data.title, slug: `/posts/${data.slug}` } : null
+  return data ? { title: data.title, slug: `/posts/${data.slug}`, lang: data.lang } : null
 }
 
 // 최근에 읽은 책: 감상이 있고(상세 페이지 존재) 지금 읽는 중이 아닌 책
 async function fetchLatestReadBook(): Promise<BookItem | null> {
   const { data, error } = await supabase
     .from('books')
-    .select('title, author, slug')
+    .select('title, author, slug, lang')
     .not('content', 'is', null)
     .not('is_reading', 'is', true) // null도 '읽는 중 아님'으로 취급
     .order('created_at', { ascending: false })
@@ -166,6 +167,7 @@ export default function Home({ intro }: Props) {
                   <li>
                     <Link href={latestPost.slug} className="block text-sm">
                       {latestPost.title}
+                      <LangBadge lang={latestPost.lang} />
                     </Link>
                   </li>
                 </ul>
@@ -181,6 +183,7 @@ export default function Home({ intro }: Props) {
                   <li>
                     <Link href={latestBook.slug} className="block text-sm">
                       《{latestBook.title}》, {latestBook.author}
+                      <LangBadge lang={latestBook.lang} />
                     </Link>
                   </li>
                 </ul>

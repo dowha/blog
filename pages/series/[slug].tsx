@@ -1,6 +1,7 @@
 import { supabase } from '@/supabase'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Link from 'next/link'
+import LangBadge from '@/components/LangBadge'
 import Seo from '@/components/Seo'
 import MarkdownContent from '@/components/MarkdownContent'
 import { toExcerpt } from '@/lib/excerpt'
@@ -17,6 +18,7 @@ type SeriesRecord = {
 
 type Post = {
   title: string
+  lang?: string
   subtitle: string
   slug: string
   created_at: string
@@ -68,6 +70,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
                         {post.subtitle}
                       </span>
                     )}
+                    <LangBadge lang={post.lang} />
                   </h2>
                 </Link>
                 <div className="pl-1 py-0.5 sm:py-0">
@@ -132,7 +135,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
   // 시리즈 id와 is_external이 false이며 공개된 게시물만 가져옵니다.
   const { data: postsData, error: postsError } = await supabase
     .from('posts')
-    .select('title, subtitle, slug, created_at')
+    .select('title, subtitle, slug, created_at, lang')
     .eq('series_id', seriesData.id)
     .eq('is_external', false)
     .eq('is_published', true)

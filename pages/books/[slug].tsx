@@ -18,6 +18,7 @@ interface Book {
   id: string
   title: string
   subtitle?: string | null
+  lang?: string
   author: string
   publisher: string
   publicationYear: number
@@ -50,7 +51,8 @@ export default function BookDetailPage({
           reviewBody: toExcerpt(book.content, 300),
           datePublished: new Date(book.created_at).toISOString(),
           url: `${SITE_URL}/books/${book.slug}`,
-          inLanguage: 'ko-KR',
+          // 리뷰를 쓴 언어 (책 언어가 아님)
+          inLanguage: book.lang === 'en' ? 'en' : 'ko-KR',
           author: AUTHOR,
           itemReviewed: {
             '@type': 'Book',
@@ -170,7 +172,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { data: book } = await supabase
     .from('books')
     .select(
-      'id, title, subtitle, author, publisher, publication_year, genre, slug, thumbnail, content, created_at'
+      'id, title, subtitle, author, publisher, publication_year, genre, slug, thumbnail, content, created_at, lang'
     )
     .eq('slug', params.slug)
     .single()
