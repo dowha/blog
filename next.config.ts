@@ -20,6 +20,12 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        // 표기 규칙은 /desk 밖 공개 페이지로 옮김
+        source: '/desk/style',
+        destination: '/style',
+        permanent: true,
+      },
+      {
         source: '/posts/fifty-people-2016',
         destination: '/books/fifty-people-2016',
         permanent: true, // ✅ 301 영구 리다이렉트

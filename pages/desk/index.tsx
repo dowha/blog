@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { toast } from 'sonner'
 import { supabase } from '@/supabase'
@@ -232,9 +231,6 @@ export default function DeskHome() {
                 </button>
               </h1>
               <div className="flex items-center gap-3">
-                <Link href="/desk/style" className="text-xs text-gray-400 hover:text-gray-700">
-                  표기 규칙
-                </Link>
                 <button onClick={() => router.push(editHref())} className="default-button !mt-0">
                   <span>✏️</span>
                   <span>{`새 ${noun}`}</span>

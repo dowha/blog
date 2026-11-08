@@ -16,7 +16,7 @@ export default function StyleHints({ fields }: { fields: Field[] }) {
         <span className={issues.length ? 'font-medium text-amber-600' : ''}>
           {issues.length ? `표기 확인 ${issues.length}건` : '표기 확인: 이상 없음'}
         </span>
-        <Link href="/desk/style" target="_blank" className="text-gray-400 hover:text-gray-700">
+        <Link href="/style" target="_blank" className="text-gray-400 hover:text-gray-700">
           표기 규칙 ↗
         </Link>
       </div>
