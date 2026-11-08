@@ -305,23 +305,25 @@ export default function ShortsPage({ intro }: Props) {
                                 </ReactMarkdown>
                               </div>
 
-                              {/* 하이라이트된 경우: 뾰족한 꼬리, 그 외: 동글동글한 꼬리 */}
-                              {isHighlighted ? (
-                                <div className="absolute -left-[8px] bottom-0 w-[20px] h-[20px] overflow-hidden">
-                                  <svg
-                                    viewBox="0 0 19 16"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="w-full h-full text-[#0086FF] group-hover/bubble:text-[#006FD6] transition-colors duration-500"
-                                  ><path d="M-1.33514e-05 14.7395C9.10226 16.3944 16.0324 11.6364 18.3597 9.05055L18.1011 1.29294C15.6014 1.81011 10.1883 2.27557 8.53337 0C8.79195 9.30914 1.8101 13.9637 -1.33514e-05 14.7395Z" fill="currentColor" />
-                                  </svg>
-                                </div>
-                              ) : (
-                                <>
-                                  <div className="absolute -left-2 bottom-3 w-4 h-4 rounded-full transition-colors duration-500 bg-inherit"></div>
-                                  <div className="absolute -left-4 bottom-1 w-2 h-2 rounded-full transition-colors duration-500 bg-inherit"></div>
-                                </>
-                              )}
+                              {/* 하이라이트된 경우: 뾰족한 꼬리, 그 외: 동글동글한 꼬리
+                                  두 꼬리를 늘 그려 두고 투명도만 바꾼다. 하이라이트될 때 새로 그리면
+                                  말풍선 바탕이 회색→파랑으로 바뀌는 동안 꼬리만 먼저 파랗게 보인다 */}
+                              <div
+                                aria-hidden
+                                className={`absolute -left-[8px] bottom-0 w-[20px] h-[20px] overflow-hidden transition-opacity duration-500 ${isHighlighted ? 'opacity-100' : 'opacity-0'}`}
+                              >
+                                <svg
+                                  viewBox="0 0 19 16"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="w-full h-full text-[#0086FF] group-hover/bubble:text-[#006FD6] transition-colors duration-500"
+                                ><path d="M-1.33514e-05 14.7395C9.10226 16.3944 16.0324 11.6364 18.3597 9.05055L18.1011 1.29294C15.6014 1.81011 10.1883 2.27557 8.53337 0C8.79195 9.30914 1.8101 13.9637 -1.33514e-05 14.7395Z" fill="currentColor" />
+                                </svg>
+                              </div>
+                              <div aria-hidden className={`bg-inherit transition-opacity duration-500 ${isHighlighted ? 'opacity-0' : 'opacity-100'}`}>
+                                <div className="absolute -left-2 bottom-3 w-4 h-4 rounded-full transition-colors duration-500 bg-inherit"></div>
+                                <div className="absolute -left-4 bottom-1 w-2 h-2 rounded-full transition-colors duration-500 bg-inherit"></div>
+                              </div>
 
                               {(item.related_post || item.related_book) && (
                                 <div className="mt-2 flex flex-wrap gap-2">
