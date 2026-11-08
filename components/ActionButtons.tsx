@@ -183,11 +183,11 @@ export const ClapButton = ({
     })
 
     if (error) {
-      toast.warning('과분한 응원 감사합니다. 잠시 쉬었다가 또 응원해 주세요.')
+      toast('과분한 응원 감사합니다. 잠시 쉬었다가 또 응원해 주세요.')
       setClaps((prev) => prev - 1)
     } else {
       if (typeof data === 'number') setClaps(data)
-      toast.info('응원 감사합니다!')
+      toast('응원 감사합니다!')
     }
   }
 

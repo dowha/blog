@@ -361,3 +361,16 @@
 .style-guide hr {
   @apply my-8 border-gray-200;
 }
+
+/* ✅ 토스트(sonner richColors) 색을 사이트 색에 맞춘다
+   성공=Shorts 파랑 #0086FF, 실패=N 배지 주황 #ee6033.
+   작은 글씨가 잘 읽히도록 글자는 한 단계 진한 색을 쓴다.
+   sonner가 런타임에 넣는 변수보다 우선하도록 html을 앞에 붙였다. */
+html [data-sonner-toaster][data-sonner-theme='light'] {
+  --success-bg: #eef6ff;
+  --success-border: #b3dbff;
+  --success-text: #006fd6;
+  --error-bg: #fef3ee;
+  --error-border: #f8c8b5;
+  --error-text: #c8481c;
+}
