@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import { supabase } from '@/supabase'
 import { useOwner, loginWithGoogle, logout } from '@/components/desk/useOwner'
 import ConfirmDialog from '@/components/desk/ConfirmDialog'
+import { SECTIONS, INTROS_LABEL, type Section } from '@/components/desk/sections'
 
 type Row = {
   id: string
@@ -20,15 +21,6 @@ type Row = {
   created_at?: string // series엔 없음
 }
 
-// 섹션 = 대상 테이블. label은 nav 메뉴 명칭에 맞춤.
-type Section = 'posts' | 'records' | 'books' | 'shorts' | 'series'
-const SECTIONS: { key: Section; label: string }[] = [
-  { key: 'posts', label: 'Writings' },
-  { key: 'series', label: 'Series' },
-  { key: 'books', label: 'Books' },
-  { key: 'records', label: 'Records' },
-  { key: 'shorts', label: 'Shorts' },
-]
 
 // books는 발행 개념 대신 읽기 상태(is_reading)를 쓴다.
 type Filter = 'all' | 'draft' | 'published' | 'external' | 'reading' | 'read'
@@ -240,10 +232,6 @@ export default function DeskHome() {
                 </button>
               </h1>
               <div className="flex items-center gap-3">
-                {/* 목록 페이지 상단 소개 문구 편집 */}
-                <Link href="/desk/intros" className="text-xs text-gray-400 hover:text-gray-700">
-                  소개 문구
-                </Link>
                 <Link href="/desk/style" className="text-xs text-gray-400 hover:text-gray-700">
                   표기 규칙
                 </Link>
@@ -257,7 +245,12 @@ export default function DeskHome() {
             <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
               <select
                 value={section}
-                onChange={(e) => changeSection(e.target.value as Section)}
+                onChange={(e) =>
+                  // 소개 문구는 별도 페이지라 이동한다
+                  e.target.value === 'intros'
+                    ? router.push('/desk/intros')
+                    : changeSection(e.target.value as Section)
+                }
                 className="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
                 aria-label="섹션 선택"
               >
@@ -266,6 +259,8 @@ export default function DeskHome() {
                     {s.label}
                   </option>
                 ))}
+                <option disabled>──────</option>
+                <option value="intros">{INTROS_LABEL}</option>
               </select>
               <span className="mx-1 h-4 w-px bg-gray-200" />
               {FILTERS[section].map(({ key, label }) => (

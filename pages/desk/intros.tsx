@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { toast } from 'sonner'
 import { supabase } from '@/supabase'
 import { useOwner, loginWithGoogle } from '@/components/desk/useOwner'
 import { INTRO_PAGES, introToText, type IntroPage } from '@/lib/pageIntro'
 import { notifyChanged } from '@/lib/indexnow'
+import { SECTIONS, INTROS_LABEL, deskViewHref, type DeskView } from '@/components/desk/sections'
 
 type Row = { page: IntroPage; body: string; updated_at: string }
 
@@ -14,6 +16,7 @@ const DESC_HINT = 120
 
 /** /desk 소개 문구 편집: 각 목록 페이지 상단 문구(HTML)와 검색 설명을 관리한다 */
 export default function DeskIntros() {
+  const router = useRouter()
   const { user, loading, isOwner } = useOwner()
   const [saved, setSaved] = useState<Record<IntroPage, Row> | null>(null)
 
@@ -48,11 +51,26 @@ export default function DeskIntros() {
         ) : (
           <>
             <div className="mb-6 flex items-center justify-between">
-              <h1 className="!mb-0 text-gray-800">소개 문구</h1>
+              <h1 className="!mb-0 text-gray-800">{INTROS_LABEL}</h1>
               <Link href="/desk" className="text-xs text-gray-400 hover:text-gray-700">
                 ← Desk
               </Link>
             </div>
+            {/* /desk와 같은 드롭다운으로 다른 섹션으로 바로 이동 */}
+            <select
+              value="intros"
+              onChange={(e) => router.push(deskViewHref(e.target.value as DeskView))}
+              className="mb-4 rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
+              aria-label="섹션 선택"
+            >
+              {SECTIONS.map((s) => (
+                <option key={s.key} value={s.key}>
+                  {s.label}
+                </option>
+              ))}
+              <option disabled>──────</option>
+              <option value="intros">{INTROS_LABEL}</option>
+            </select>
             {!saved ? (
               <p className="text-xs text-gray-400">불러오는 중…</p>
             ) : (
