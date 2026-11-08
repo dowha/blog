@@ -8,7 +8,10 @@ import Seo from '@/components/Seo'
 import LoadingSpinner from '@/components/LoadingSpinner' // ✅ 추가
 
 type LinkItem = { title: string; slug: string; lang?: string }
-type BookItem = { title: string; author: string; slug: string; lang?: string }
+type BookItem = { title: string; author: string; slug: string; lang?: string; volumes?: string | null }
+
+// 책 표기: 《제목》(권수), 저자 — 권수는 books.volumes
+const volumesText = (v?: string | null) => (v ? `(${v})` : '')
 
 // 최근에 쓴 글(writings). 외부 글은 블로그 안에 페이지가 없어 제외
 async function fetchLatestPost(): Promise<LinkItem | null> {
@@ -29,7 +32,7 @@ async function fetchLatestPost(): Promise<LinkItem | null> {
 async function fetchLatestReadBook(): Promise<BookItem | null> {
   const { data, error } = await supabase
     .from('books')
-    .select('title, author, slug, lang')
+    .select('title, author, slug, lang, volumes')
     .not('content', 'is', null)
     .not('is_reading', 'is', true) // null도 '읽는 중 아님'으로 취급
     .order('created_at', { ascending: false })
@@ -70,7 +73,7 @@ async function fetchLatestShort(): Promise<ShortItem | null> {
 async function fetchCurrentlyReadingBooks() {
   const { data, error } = await supabase
     .from('books')
-    .select('title, author')
+    .select('title, author, volumes')
     .eq('is_reading', true)
     .order('created_at', { ascending: false })
 
@@ -182,7 +185,7 @@ export default function Home({ intro }: Props) {
                 <ul>
                   <li>
                     <Link href={latestBook.slug} className="block text-sm">
-                      《{latestBook.title}》, {latestBook.author}
+                      《{latestBook.title}》{volumesText(latestBook.volumes)}, {latestBook.author}
                       <LangBadge lang={latestBook.lang} />
                     </Link>
                   </li>
@@ -216,7 +219,7 @@ export default function Home({ intro }: Props) {
                   {/* 읽는 중인 책은 상세 페이지가 없어 링크 없이 표시 */}
                   {currentlyReading.map((book) => (
                     <li key={`${book.title}-${book.author}`} className="text-sm">
-                      《{book.title}》, {book.author}
+                      《{book.title}》{volumesText(book.volumes)}, {book.author}
                     </li>
                   ))}
                 </ul>

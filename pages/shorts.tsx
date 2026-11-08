@@ -290,7 +290,7 @@ export default function ShortsPage({ intro }: Props) {
                                 relative px-5 py-3 leading-relaxed max-w-[85%] whitespace-pre-wrap
                                 transition-all duration-500 cursor-pointer group/bubble
                                 ${isHighlighted
-                                  ? 'bg-[#0A84FF] text-white hover:bg-[#006DFF] rounded-2xl'
+                                  ? 'bg-[#0086FF] text-white hover:bg-[#006FD6] rounded-2xl'
                                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-3xl'
                                 }
                               `}
@@ -312,7 +312,7 @@ export default function ShortsPage({ intro }: Props) {
                                     viewBox="0 0 19 16"
                                     fill="none"
                                     xmlns="http://www.w3.org/2000/svg"
-                                    className="w-full h-full text-[#1888FE] group-hover/bubble:text-[#006DFF] transition-colors duration-500"
+                                    className="w-full h-full text-[#0086FF] group-hover/bubble:text-[#006FD6] transition-colors duration-500"
                                   ><path d="M-1.33514e-05 14.7395C9.10226 16.3944 16.0324 11.6364 18.3597 9.05055L18.1011 1.29294C15.6014 1.81011 10.1883 2.27557 8.53337 0C8.79195 9.30914 1.8101 13.9637 -1.33514e-05 14.7395Z" fill="currentColor" />
                                   </svg>
                                 </div>

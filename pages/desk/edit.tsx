@@ -59,6 +59,7 @@ const empty = {
   genre: '',
   thumbnail: '',
   is_reading: true,
+  volumes: '', // 읽은 권수 범위 (예: 1~4권)
   // shorts 전용
   related_post_id: '',
   related_book_id: '',
@@ -183,7 +184,7 @@ export default function DeskEdit() {
     const cols = isRecord
       ? 'title,slug,content,is_published'
       : isBook
-        ? 'title,subtitle,slug,content,author,publisher,publication_year,genre,thumbnail,is_reading,created_at,lang'
+        ? 'title,subtitle,slug,content,author,publisher,publication_year,genre,thumbnail,is_reading,created_at,lang,volumes'
         : isShort
           ? 'content,is_published,related_post_id,related_book_id,created_at'
           : isSeries
@@ -215,6 +216,7 @@ export default function DeskEdit() {
             genre: (d.genre as string) ?? '',
             thumbnail: (d.thumbnail as string) ?? '',
             is_reading: d.is_reading == null ? true : !!d.is_reading,
+            volumes: (d.volumes as string) ?? '',
             created_at: created,
             related_post_id: (d.related_post_id as string) ?? '',
             related_book_id: (d.related_book_id as string) ?? '',
@@ -348,6 +350,7 @@ export default function DeskEdit() {
         genre: form.genre.trim(),
         thumbnail: form.thumbnail.trim() || null,
         is_reading: form.is_reading,
+        volumes: form.volumes.trim() || null,
         lang: form.is_english ? 'en' : 'ko',
       }
     } else {
@@ -570,6 +573,13 @@ export default function DeskEdit() {
                   maxLength={4}
                   placeholder="출판연도"
                   className="w-24 rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                />
+                <input
+                  value={form.volumes}
+                  onChange={(e) => set('volumes', e.target.value)}
+                  placeholder="권수 (예: 1~4권)"
+                  title="여러 권짜리를 읽었을 때만. 화면에 《제목》(1~4권)으로 붙습니다"
+                  className="w-28 rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
                 />
                 {/* genre는 자유 text 컬럼이라 기존 목록에서 고르거나 새로 만들 수 있어야 한다 */}
                 <select

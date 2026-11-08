@@ -27,7 +27,7 @@ export default async function handler(
   // 감상이 있는 책만
   const { data: books, error: booksError } = await supabase
     .from('books')
-    .select('title, slug, created_at, content')
+    .select('title, volumes, slug, created_at, content')
     .not('content', 'is', null)
     .order('created_at', { ascending: false })
     .limit(FEED_SIZE)
@@ -48,7 +48,12 @@ export default async function handler(
   // 글과 책을 합쳐 최신순으로 FEED_SIZE개
   const allItems = [
     ...(posts || []).map((p) => ({ ...p, path: 'posts' })),
-    ...(books || []).map((b) => ({ ...b, path: 'books' })),
+    // 책은 권수가 있으면 제목 뒤에 붙인다: 듄(1~6권)
+    ...(books || []).map(({ volumes, ...b }) => ({
+      ...b,
+      title: volumes ? `${b.title}(${volumes})` : b.title,
+      path: 'books',
+    })),
   ]
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
     .slice(0, FEED_SIZE)

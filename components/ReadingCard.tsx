@@ -12,6 +12,7 @@ interface Book {
   isReading?: boolean
   content?: string | null
   lang?: string
+  volumes?: string | null
 }
 
 interface BookCardProps {
@@ -54,6 +55,9 @@ export default function BookCard({ book, className }: BookCardProps) {
               }`}
             >
               <span className="truncate">{book.title}</span>
+              {book.volumes && (
+                <span className="ml-0.5 shrink-0 text-sm font-normal text-gray-400">({book.volumes})</span>
+              )}
               {/* 리뷰 언어 표시라 리뷰가 있는 책에만 */}
               {book.content && <LangBadge lang={book.lang} />}
             </h2>

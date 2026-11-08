@@ -19,6 +19,7 @@ interface Book {
   title: string
   subtitle?: string | null
   lang?: string
+  volumes?: string | null
   author: string
   publisher: string
   publicationYear: number
@@ -67,7 +68,10 @@ export default function BookDetailPage({
         }}
       />
       <article className="single-book page-container">
-        <h1 className="font-bold">{book.title}</h1>
+        <h1 className="font-bold">
+          {book.title}
+          {book.volumes && <span className="font-normal text-gray-400">({book.volumes})</span>}
+        </h1>
         {book.subtitle && <h2 className="subtitle mt-0">{book.subtitle}</h2>}
         <p className="text-sm text-gray-500 mb-4">
           {book.author}
@@ -172,7 +176,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { data: book } = await supabase
     .from('books')
     .select(
-      'id, title, subtitle, author, publisher, publication_year, genre, slug, thumbnail, content, created_at, lang'
+      'id, title, subtitle, author, publisher, publication_year, genre, slug, thumbnail, content, created_at, lang, volumes'
     )
     .eq('slug', params.slug)
     .single()
