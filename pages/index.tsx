@@ -180,9 +180,7 @@ export default function Home({ intro }: Props) {
                 <ul>
                   <li>
                     <Link href={latestBook.slug} className="block text-sm">
-                      {'"'}
-                      {latestBook.title}
-                      {'"'}, {latestBook.author}
+                      《{latestBook.title}》, {latestBook.author}
                     </Link>
                   </li>
                 </ul>
@@ -215,9 +213,7 @@ export default function Home({ intro }: Props) {
                   {/* 읽는 중인 책은 상세 페이지가 없어 링크 없이 표시 */}
                   {currentlyReading.map((book) => (
                     <li key={`${book.title}-${book.author}`} className="text-sm">
-                      {'"'}
-                      {book.title}
-                      {'"'}, {book.author}
+                      《{book.title}》, {book.author}
                     </li>
                   ))}
                 </ul>
