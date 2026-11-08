@@ -281,7 +281,7 @@ export default function DeskHome() {
 
             <ul className="border-t border-gray-100">
               {shown.map((p) => {
-                // books: 읽는 중(amber) / 읽음(green), 그 외: 초안(amber) / 발행됨(green)
+                // books: 읽는 중(amber) / 읽음(파랑), 그 외: 초안(amber) / 발행됨(파랑)
                 const active = isBooks ? !p.is_reading : !!p.is_published
                 const stateLabel = isBooks
                   ? p.is_reading
@@ -296,7 +296,7 @@ export default function DeskHome() {
                       <div className="flex items-center gap-1.5">
                         <span className="truncate text-sm text-gray-800">{rowTitle(p)}</span>
                         {p.is_external && (
-                          <span className="shrink-0 text-[11px] font-medium leading-none text-[#006fd6]">
+                          <span className="shrink-0 rounded bg-gray-100 px-1.5 py-0.5 text-[10px] leading-none text-gray-500">
                             외부
                           </span>
                         )}
@@ -308,7 +308,7 @@ export default function DeskHome() {
                     <button
                       onClick={() => setPending(p)}
                       className={`shrink-0 text-[11px] font-medium hover:underline ${
-                        active ? 'text-[#006fd6]' : 'text-gray-400'
+                        active ? 'text-[#006fd6]' : 'text-amber-600'
                       }`}
                       title={isBooks ? '클릭하여 읽는 중/읽음 전환' : '클릭하여 발행/초안 전환'}
                     >
@@ -316,7 +316,7 @@ export default function DeskHome() {
                     </button>
                     <button
                       onClick={() => router.push(editHref(p.id))}
-                      className="shrink-0 text-xs text-gray-400 hover:text-gray-700"
+                      className="shrink-0 rounded border border-gray-200 px-2 py-0.5 text-[11px] text-gray-500 transition-colors hover:border-gray-400 hover:text-gray-800"
                     >
                       수정
                     </button>
