@@ -345,8 +345,15 @@
 }
 
 /* /desk/style 표기 규칙 문서 */
+/* 제목·날짜·소제목은 일반 글(.single-post)과 같게: 제목 700, 날짜 줄 작은 회색, 소제목 기본 gray-600 */
+.style-guide h1 {
+  @apply mb-0 font-bold;
+}
+.style-guide h1 + p {
+  @apply mt-0 mb-4 text-sm text-gray-500 tabular-nums;
+}
 .style-guide h2 {
-  @apply mt-10 mb-3 text-gray-800;
+  @apply mt-10 mb-3;
 }
 .style-guide table {
   @apply my-4 w-full border-collapse text-sm;
