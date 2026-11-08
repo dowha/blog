@@ -13,6 +13,7 @@ import { notifyChanged } from '@/lib/indexnow'
 import remarkMark from '@/lib/remarkMark'
 import { normalizeQuotes } from '@/lib/styleCheck'
 import StyleHints from '@/components/desk/StyleHints'
+import ConfirmDialog from '@/components/desk/ConfirmDialog'
 
 // react-md-editor는 window 의존 → SSR 비활성화
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
@@ -115,6 +116,8 @@ export default function DeskEdit() {
   const [relBooks, setRelBooks] = useState<RelOption[]>([])
   const [busy, setBusy] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
+  const [deleting, setDeleting] = useState(false)
   const [emojiOpen, setEmojiOpen] = useState(false)
   const [customGenre, setCustomGenre] = useState(false)
   const [loadingPost, setLoadingPost] = useState(false)
@@ -464,6 +467,52 @@ export default function DeskEdit() {
               ? { pathname: '/desk', query: { tab: 'series' } }
               : '/desk'
     )
+
+  // 삭제는 저장된 상태 기준으로 초안(책은 리뷰 없음)만 허용한다. Shorts는 짧은 글이라 발행 후에도 허용.
+  // 공개 주소가 갑자기 404가 되거나 검색엔진·RSS에 깨진 링크가 남는 것을 막기 위함.
+  const canDelete = !!id && (isShort || !origPublic)
+  const deleteName = isShort ? '이 Shorts' : `'${form.title.trim() || '제목 없음'}'`
+
+  const remove = async () => {
+    if (!id || !canDelete) return
+    setDeleting(true)
+    // select로 지워진 행을 돌려받아 RLS로 막혀 0건이 된 경우도 잡는다
+    const { data, error } = await supabase
+      .from(table)
+      .delete()
+      .eq('id', id)
+      .select(isBook ? 'id,thumbnail' : 'id')
+    if (error || !data?.length) {
+      setDeleting(false)
+      if (error?.code === '23503')
+        return toast.error('이 시리즈에 속한 글이 있어 삭제할 수 없습니다. 글의 시리즈를 먼저 빼 주세요.')
+      return toast.error('삭제 실패: ' + (error?.message ?? '권한이 없거나 이미 삭제되었습니다.'))
+    }
+
+    // 책 표지: 업로드한 이미지면 버킷에서도 지운다 (실패해도 책 삭제는 끝난 상태)
+    const thumb = isBook ? ((data[0] as { thumbnail?: string | null }).thumbnail ?? '') : ''
+    if (thumb) {
+      try {
+        const { data: sessionData } = await supabase.auth.getSession()
+        const res = await fetch('/api/desk/delete-thumbnail', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${sessionData.session?.access_token ?? ''}`,
+          },
+          body: JSON.stringify({ url: thumb }),
+        })
+        if (!res.ok) throw new Error((await res.json()).error)
+      } catch (e) {
+        toast.error('책은 삭제했지만 표지 이미지는 지우지 못했습니다. ' + (e instanceof Error ? e.message : ''))
+      }
+    }
+
+    setDeleting(false)
+    setDeleteOpen(false)
+    toast.success('삭제했습니다.')
+    backToList()
+  }
 
   if (loading) return <p className="text-xs text-gray-400">확인 중…</p>
   if (!user || !isOwner)
@@ -930,6 +979,37 @@ export default function DeskEdit() {
                 ]}
               />
             )}
+
+            {id && (
+              <div className="mt-6 flex items-center justify-between border-t border-gray-100 pt-4 text-[11px]">
+                <span className="text-gray-400">
+                  {canDelete
+                    ? '삭제하면 되돌릴 수 없습니다.'
+                    : isBook
+                      ? '리뷰가 공개된 책은 리뷰를 비우고 저장한 뒤 삭제할 수 있습니다.'
+                      : '발행된 항목은 초안으로 저장한 뒤 삭제할 수 있습니다.'}
+                </span>
+                <button
+                  onClick={() => setDeleteOpen(true)}
+                  disabled={!canDelete}
+                  className="shrink-0 rounded border border-[#f8c8b5] px-2 py-0.5 text-[#c8481c] transition-colors hover:bg-[#fef3ee] disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-gray-300 disabled:hover:bg-transparent"
+                >
+                  삭제
+                </button>
+              </div>
+            )}
+
+            <ConfirmDialog
+              open={deleteOpen}
+              message={`${deleteName}을(를) 삭제합니다.\n되돌릴 수 없습니다.`}
+              confirmLabel="삭제"
+              busyLabel="삭제 중…"
+              busy={deleting}
+              requireText="삭제"
+              danger
+              onConfirm={remove}
+              onCancel={() => setDeleteOpen(false)}
+            />
           </div>
         )}
       </div>

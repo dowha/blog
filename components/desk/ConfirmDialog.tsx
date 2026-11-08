@@ -1,10 +1,15 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type Props = {
   open: boolean
   message: string
   confirmLabel?: string
+  busyLabel?: string
   busy?: boolean
+  /** 지정하면 이 글자를 그대로 입력해야 확인 버튼이 눌린다 (삭제 등 되돌릴 수 없는 작업) */
+  requireText?: string
+  /** 확인 버튼을 위험 색(주황)으로 */
+  danger?: boolean
   onConfirm: () => void
   onCancel: () => void
 }
@@ -17,15 +22,28 @@ export default function ConfirmDialog({
   open,
   message,
   confirmLabel = '확인',
+  busyLabel = '변경 중…',
   busy = false,
+  requireText,
+  danger = false,
   onConfirm,
   onCancel,
 }: Props) {
   const confirmRef = useRef<HTMLButtonElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [typed, setTyped] = useState('')
+  const locked = !!requireText && typed.trim() !== requireText
+
+  // 열릴 때만 입력을 비우고 포커스를 준다 (부모가 다시 그려져도 입력이 지워지지 않게 분리)
+  useEffect(() => {
+    if (!open) return
+    setTyped('')
+    if (requireText) inputRef.current?.focus()
+    else confirmRef.current?.focus()
+  }, [open, requireText])
 
   useEffect(() => {
     if (!open) return
-    confirmRef.current?.focus()
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && !busy) onCancel()
     }
@@ -46,7 +64,23 @@ export default function ConfirmDialog({
         className="w-full max-w-xs rounded-lg border border-gray-200 bg-white p-5 shadow-lg"
         onClick={(e) => e.stopPropagation()}
       >
-        <p className="text-sm leading-6 text-gray-700">{message}</p>
+        <p className="whitespace-pre-line text-sm leading-6 text-gray-700">{message}</p>
+        {requireText && (
+          <label className="mt-4 block text-[11px] text-gray-500">
+            확인을 위해 &lsquo;{requireText}&rsquo;를 입력하세요.
+            <input
+              ref={inputRef}
+              value={typed}
+              onChange={(e) => setTyped(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !locked && !busy) onConfirm()
+              }}
+              disabled={busy}
+              placeholder={requireText}
+              className="mt-1.5 w-full rounded border border-gray-200 px-2 py-1.5 text-sm text-gray-800 outline-none placeholder:text-gray-300 focus:border-gray-400"
+            />
+          </label>
+        )}
         <div className="mt-5 flex items-center justify-end gap-2">
           <button
             onClick={onCancel}
@@ -58,10 +92,12 @@ export default function ConfirmDialog({
           <button
             ref={confirmRef}
             onClick={onConfirm}
-            disabled={busy}
-            className="default-button !mt-0 !bg-gray-800 !text-white hover:!bg-gray-700 disabled:opacity-50"
+            disabled={busy || locked}
+            className={`default-button !mt-0 !text-white disabled:cursor-not-allowed disabled:opacity-40 ${
+              danger ? '!bg-[#c8481c] hover:!bg-[#a93c17]' : '!bg-gray-800 hover:!bg-gray-700'
+            }`}
           >
-            {busy ? '변경 중…' : confirmLabel}
+            {busy ? busyLabel : confirmLabel}
           </button>
         </div>
       </div>

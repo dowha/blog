@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { ALLOWED_IMAGE_TYPES, type SignedUpload } from '@/lib/upload'
 
@@ -78,4 +78,21 @@ export async function createThumbnailUpload({
     publicUrl: `${env('R2_PUBLIC_BASE').replace(/\/$/, '')}/${key}`,
     headers: { 'Content-Type': contentType, 'Cache-Control': 'public, max-age=3600' },
   }
+}
+
+/**
+ * 우리 버킷의 공개 URL이면 객체 키를, 아니면 null을 돌려준다.
+ * 외부 이미지 주소(다른 도메인)는 지우지 않도록 걸러내는 용도.
+ */
+export function thumbnailKeyFromUrl(url: string): string | null {
+  const base = env('R2_PUBLIC_BASE').replace(/\/$/, '') + '/'
+  if (!url.startsWith(base)) return null
+  const key = decodeURIComponent(url.slice(base.length).split(/[?#]/)[0])
+  // buildKey가 만드는 모양(루트의 파일명 하나)만 허용한다
+  return /^[a-z0-9._-]+$/.test(key) ? key : null
+}
+
+/** 책을 삭제할 때 업로드했던 표지를 버킷에서 지운다 */
+export async function deleteThumbnail(key: string): Promise<void> {
+  await client().send(new DeleteObjectCommand({ Bucket: env('R2_BUCKET'), Key: key }))
 }
