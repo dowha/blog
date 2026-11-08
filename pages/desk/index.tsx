@@ -296,7 +296,7 @@ export default function DeskHome() {
                       <div className="flex items-center gap-1.5">
                         <span className="truncate text-sm text-gray-800">{rowTitle(p)}</span>
                         {p.is_external && (
-                          <span className="shrink-0 text-[11px] font-medium leading-none text-sky-600">
+                          <span className="shrink-0 text-[11px] font-medium leading-none text-[#006fd6]">
                             외부
                           </span>
                         )}
@@ -308,7 +308,7 @@ export default function DeskHome() {
                     <button
                       onClick={() => setPending(p)}
                       className={`shrink-0 text-[11px] font-medium hover:underline ${
-                        active ? 'text-green-600' : 'text-amber-600'
+                        active ? 'text-[#006fd6]' : 'text-gray-400'
                       }`}
                       title={isBooks ? '클릭하여 읽는 중/읽음 전환' : '클릭하여 발행/초안 전환'}
                     >
