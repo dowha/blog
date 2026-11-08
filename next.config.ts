@@ -20,9 +20,14 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        // 표기 규칙은 /desk 밖 공개 페이지로 옮김
+        // 글쓰기 표기 지침: /desk/style → /style → /style-guide 순으로 옮김
         source: '/desk/style',
-        destination: '/style',
+        destination: '/style-guide',
+        permanent: true,
+      },
+      {
+        source: '/style',
+        destination: '/style-guide',
         permanent: true,
       },
       {

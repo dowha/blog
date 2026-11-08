@@ -232,7 +232,7 @@ export default function DeskHome() {
                 </button>
               </h1>
               <div className="flex items-center gap-3">
-                <Link href="/style" target="_blank" className="text-xs text-gray-400 hover:text-gray-700">
+                <Link href="/style-guide" target="_blank" className="text-xs text-gray-400 hover:text-gray-700">
                   표기 규칙 ↗
                 </Link>
                 <button onClick={() => router.push(editHref())} className="default-button !mt-0">
