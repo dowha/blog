@@ -245,9 +245,9 @@
     font-size: 1rem;
   }
 
-  /* ✅ 인용구 스타일 */
+  /* ✅ 인용구 스타일 (색은 Tailwind gray 계열로 통일: 세로선 300, 본문 500, 출처 600) */
   blockquote {
-    border-left: 4px solid #ccc;
+    border-left: 4px solid theme('colors.gray.300');
     margin: 1em 0 0 1em;
     padding: 0.5em 1em;
 
@@ -257,20 +257,20 @@
 
   blockquote p {
     margin: 0;
-    color: #666;
+    color: theme('colors.gray.500');
   }
 
   blockquote blockquote {
     border-left: 0;
     margin: 0 0 0 0.5em;
     padding-left: 1em;
-    color: #444;
+    color: theme('colors.gray.600');
     font-style: normal;
     position: relative;
   }
 
   blockquote blockquote p {
-    color: #444;
+    color: theme('colors.gray.600');
   }
 
   /* ✅ 중첩된 인용구 앞에 `—` 추가 */
@@ -278,7 +278,7 @@
     content: '—';
     position: absolute;
     left: -0.3em;
-    color: #444;
+    color: theme('colors.gray.600');
     font-size: 1em;
   }
 }
