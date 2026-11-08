@@ -239,7 +239,8 @@
     @apply mb-6;
   }
 
-  .single-post > .subtitle {
+  .single-post > .subtitle,
+  .single-book > .subtitle {
     @apply text-gray-800;
     font-size: 1rem;
   }

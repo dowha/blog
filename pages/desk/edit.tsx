@@ -179,7 +179,7 @@ export default function DeskEdit() {
     const cols = isRecord
       ? 'title,slug,content,is_published'
       : isBook
-        ? 'title,slug,content,author,publisher,publication_year,genre,thumbnail,is_reading,created_at'
+        ? 'title,subtitle,slug,content,author,publisher,publication_year,genre,thumbnail,is_reading,created_at'
         : isShort
           ? 'content,is_published,related_post_id,related_book_id,created_at'
           : isSeries
@@ -333,6 +333,7 @@ export default function DeskEdit() {
         return toast.error('출판연도를 4자리 숫자로 입력하세요.')
       payload = {
         title: form.title.trim(),
+        subtitle: form.subtitle.trim() || null,
         slug: form.slug.trim(),
         // 리뷰가 비면 null로 저장한다. books는 content가 null이면 상세/RSS에서 제외되는 규칙.
         content: form.content.trim() ? form.content : null,
@@ -515,7 +516,7 @@ export default function DeskEdit() {
                 className="w-full border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 outline-none placeholder:text-gray-300"
               />
             )}
-            {isPost && !isExternal && (
+            {((isPost && !isExternal) || isBook) && (
               <input
                 value={form.subtitle}
                 onChange={(e) => set('subtitle', e.target.value)}

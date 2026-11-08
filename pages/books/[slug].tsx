@@ -17,6 +17,7 @@ import JsonLd, { AUTHOR, SITE_URL } from '@/components/JsonLd'
 interface Book {
   id: string
   title: string
+  subtitle?: string | null
   author: string
   publisher: string
   publicationYear: number
@@ -54,6 +55,7 @@ export default function BookDetailPage({
           itemReviewed: {
             '@type': 'Book',
             name: book.title,
+            ...(book.subtitle ? { alternativeHeadline: book.subtitle } : {}),
             author: { '@type': 'Person', name: book.author },
             ...(book.publisher ? { publisher: { '@type': 'Organization', name: book.publisher } } : {}),
             ...(book.publicationYear ? { datePublished: String(book.publicationYear) } : {}),
@@ -64,6 +66,7 @@ export default function BookDetailPage({
       />
       <article className="single-book page-container">
         <h1 className="font-bold">{book.title}</h1>
+        {book.subtitle && <h2 className="subtitle mt-0">{book.subtitle}</h2>}
         <p className="text-sm text-gray-500 mb-4">
           {book.author}
           {book.publisher ? `, ${book.publisher}` : ''}
@@ -167,7 +170,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { data: book } = await supabase
     .from('books')
     .select(
-      'id, title, author, publisher, publication_year, genre, slug, thumbnail, content, created_at'
+      'id, title, subtitle, author, publisher, publication_year, genre, slug, thumbnail, content, created_at'
     )
     .eq('slug', params.slug)
     .single()
