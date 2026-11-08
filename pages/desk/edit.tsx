@@ -11,6 +11,8 @@ import { ALLOWED_IMAGE_TYPES, MAX_UPLOAD_BYTES, UPLOAD_ACCEPT } from '@/lib/uplo
 import { SHORTS_MAX_LENGTH, pureTextLength } from '@/lib/shorts'
 import { notifyChanged } from '@/lib/indexnow'
 import remarkMark from '@/lib/remarkMark'
+import { normalizeQuotes } from '@/lib/styleCheck'
+import StyleHints from '@/components/desk/StyleHints'
 
 // react-md-editor는 window 의존 → SSR 비활성화
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
@@ -356,6 +358,19 @@ export default function DeskEdit() {
         ? base
         : { ...base, subtitle: form.subtitle.trim() || null, series_id: form.series_id || null }
     }
+
+    // 표기 규칙: 둥근 따옴표는 저장 전에 곧은 따옴표로 바꾼다
+    for (const k of ['title', 'subtitle', 'series_name', 'description', 'content']) {
+      const v = payload[k]
+      if (typeof v === 'string') payload[k] = normalizeQuotes(v)
+    }
+    setForm((f) => ({
+      ...f,
+      title: normalizeQuotes(f.title),
+      subtitle: normalizeQuotes(f.subtitle),
+      description: normalizeQuotes(f.description),
+      content: normalizeQuotes(f.content),
+    }))
 
     // 작성 시각: 새 항목은 비우면 DB 기본값 now(), 기존 항목은 바뀌었을 때만 보낸다(비우면 기존 값 유지).
     if (hasCreatedAt) {
@@ -871,6 +886,17 @@ export default function DeskEdit() {
                   }}
                 />
               </div>
+            )}
+
+            {!isExternal && (
+              <StyleHints
+                fields={[
+                  { label: '제목', text: isShort ? '' : form.title, headline: !isBook },
+                  { label: '부제', text: isPost || isBook ? form.subtitle : '', headline: !isBook },
+                  { label: '설명', text: isSeries ? form.description : '' },
+                  { label: '본문', text: isSeries ? '' : form.content },
+                ]}
+              />
             )}
           </div>
         )}

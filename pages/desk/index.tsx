@@ -244,6 +244,9 @@ export default function DeskHome() {
                 <Link href="/desk/intros" className="text-xs text-gray-400 hover:text-gray-700">
                   소개 문구
                 </Link>
+                <Link href="/desk/style" className="text-xs text-gray-400 hover:text-gray-700">
+                  표기 규칙
+                </Link>
                 <button onClick={() => router.push(editHref())} className="default-button !mt-0">
                   <span>✏️</span>
                   <span>{`새 ${noun}`}</span>

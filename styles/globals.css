@@ -343,3 +343,21 @@
   font-size: 12px;
   line-height: 26px;
 }
+
+/* /desk/style 표기 규칙 문서 */
+.style-guide h2 {
+  @apply mt-10 mb-3 text-gray-800;
+}
+.style-guide table {
+  @apply my-4 w-full border-collapse text-sm;
+}
+.style-guide th,
+.style-guide td {
+  @apply border border-gray-200 px-2 py-1 text-left;
+}
+.style-guide code {
+  @apply rounded bg-gray-100 px-1 text-[0.9em];
+}
+.style-guide hr {
+  @apply my-8 border-gray-200;
+}
