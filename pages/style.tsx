@@ -10,7 +10,7 @@ export default function StyleGuide({ markdown }: { markdown: string }) {
   return (
     <>
       <Head>
-        <title>{"Style Guide | Dowha's Blog"}</title>
+        <title>{"글쓰기 표기 지침 | Dowha's Blog"}</title>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
       <div className="page-container style-guide">
