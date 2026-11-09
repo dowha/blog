@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { toast } from 'sonner'
 import { supabase } from '@/supabase'
 import { useOwner } from '@/components/desk/useOwner'
+import { useLeaveGuard } from '@/components/desk/useLeaveGuard'
 import type { EmojiClickData, EmojiStyle } from 'emoji-picker-react'
 import { ALLOWED_IMAGE_TYPES, MAX_UPLOAD_BYTES, UPLOAD_ACCEPT } from '@/lib/upload'
 import { SHORTS_MAX_LENGTH, pureTextLength } from '@/lib/shorts'
@@ -114,6 +115,8 @@ export default function DeskEdit() {
           : {}
 
   const [form, setForm] = useState({ ...empty })
+  // 마지막으로 불러오거나 저장한 입력값. 지금 입력값과 다르면 저장 안 한 변경이 있는 것
+  const [savedForm, setSavedForm] = useState({ ...empty })
   // 외부 글은 기존 항목을 불러왔을 때만 판별된다. (새 글은 항상 내부 글로 만든다)
   const isExternal = isPost && !!id && form.is_external
   // 저장·삭제 후 다시 만들 공개 페이지 종류 (lib/indexnow.ts pagesFor)
@@ -222,8 +225,8 @@ export default function DeskEdit() {
         setOrigCreatedAt(created)
         setOrigSlug((d?.slug as string) ?? '')
         setOrigPublic(isBook ? !!(d?.content as string | null)?.trim() : !!d?.is_published)
-        if (d)
-          setForm({
+        if (d) {
+          const loaded = {
             title: (d.title as string) ?? '',
             subtitle: (d.subtitle as string) ?? '',
             slug: (d.slug as string) ?? '',
@@ -247,7 +250,10 @@ export default function DeskEdit() {
             is_external: !!d.is_external,
             external_url: (d.external_url as string) ?? '',
             source_name: (d.source_name as string) ?? '',
-          })
+          }
+          setForm(loaded)
+          setSavedForm(loaded)
+        }
         setCustomGenre(false)
         setLoadingPost(false)
       })
@@ -397,12 +403,19 @@ export default function DeskEdit() {
       const v = payload[k]
       if (typeof v === 'string') payload[k] = normalizeQuotes(v)
     }
+    const normalized = {
+      ...form,
+      title: normalizeQuotes(form.title),
+      subtitle: normalizeQuotes(form.subtitle),
+      description: normalizeQuotes(form.description),
+      content: normalizeQuotes(form.content),
+    }
     setForm((f) => ({
       ...f,
-      title: normalizeQuotes(f.title),
-      subtitle: normalizeQuotes(f.subtitle),
-      description: normalizeQuotes(f.description),
-      content: normalizeQuotes(f.content),
+      title: normalized.title,
+      subtitle: normalized.subtitle,
+      description: normalized.description,
+      content: normalized.content,
     }))
 
     // 작성 시각: 새 항목은 비우면 DB 기본값 now(), 기존 항목은 바뀌었을 때만 보낸다(비우면 기존 값 유지).
@@ -448,6 +461,7 @@ export default function DeskEdit() {
       }
       setOrigSlug(form.slug.trim())
       setOrigPublic(isBook ? !!form.content.trim() : publish)
+      setSavedForm(isBook ? normalized : { ...normalized, is_published: publish })
     }
     if (error) {
       toast.error('저장 실패: ' + error.message)
@@ -458,6 +472,9 @@ export default function DeskEdit() {
       toast.success(publish ? '발행했습니다.' : '초안을 저장했습니다.')
     }
   }
+
+  const dirty = !loadingPost && JSON.stringify(form) !== JSON.stringify(savedForm)
+  const allowLeave = useLeaveGuard(dirty)
 
   const backToList = () =>
     router.push(
@@ -518,6 +535,8 @@ export default function DeskEdit() {
     toast.success('삭제했습니다.')
     // 공개 중이던 항목(공개 Shorts 등)을 지웠으면 목록·홈에서도 바로 빠지게 한다
     if (origPublic) notifyChanged(pagesFor(contentKind, [origSlug]))
+    // 지운 항목이라 남은 입력값을 묻지 않고 목록으로 간다
+    allowLeave()
     backToList()
   }
 

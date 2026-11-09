@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { toast } from 'sonner'
 import { supabase } from '@/supabase'
 import { useOwner, loginWithGoogle } from '@/components/desk/useOwner'
+import { useLeaveGuard } from '@/components/desk/useLeaveGuard'
 import { INTRO_PAGES, introToText, type IntroPage } from '@/lib/pageIntro'
 import { notifyChanged } from '@/lib/indexnow'
 import { BTN_PRIMARY, BTN_SECONDARY } from '@/components/desk/ui'
@@ -20,6 +21,16 @@ export default function DeskIntros() {
   const router = useRouter()
   const { user, loading, isOwner } = useOwner()
   const [saved, setSaved] = useState<Record<IntroPage, Row> | null>(null)
+  // 저장 안 한 문구가 있는 페이지들. 하나라도 있으면 떠나기 전에 묻는다
+  const [dirtyPages, setDirtyPages] = useState<IntroPage[]>([])
+  useLeaveGuard(dirtyPages.length > 0)
+  const markDirty = useCallback((page: IntroPage, dirty: boolean) => {
+    setDirtyPages((prev) => {
+      const has = prev.includes(page)
+      if (dirty === has) return prev
+      return dirty ? [...prev, page] : prev.filter((p) => p !== page)
+    })
+  }, [])
 
   useEffect(() => {
     if (!isOwner) return
@@ -82,6 +93,7 @@ export default function DeskIntros() {
                       meta={p}
                       row={saved[p.key]}
                       onSaved={(row) => setSaved((prev) => prev && { ...prev, [p.key]: row })}
+                      onDirty={markDirty}
                     />
                   ) : null
                 )}
@@ -98,14 +110,17 @@ function IntroItem({
   meta,
   row,
   onSaved,
+  onDirty,
 }: {
   meta: (typeof INTRO_PAGES)[number]
   row: Row
   onSaved: (row: Row) => void
+  onDirty: (page: IntroPage, dirty: boolean) => void
 }) {
   const [body, setBody] = useState(row.body)
   const [busy, setBusy] = useState(false)
   const dirty = body.trim() !== row.body
+  useEffect(() => onDirty(meta.key, dirty), [onDirty, meta.key, dirty])
   const text = introToText(body)
 
   const save = async () => {
