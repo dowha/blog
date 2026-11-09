@@ -619,13 +619,13 @@ export default function DeskEdit() {
                   value={form.author}
                   onChange={(e) => set('author', e.target.value)}
                   placeholder="저자"
-                  className="w-40 rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                  className="w-40 rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
                 />
                 <input
                   value={form.publisher}
                   onChange={(e) => set('publisher', e.target.value)}
                   placeholder="출판사 (선택)"
-                  className="w-40 rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                  className="w-40 rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
                 />
                 <input
                   value={form.publication_year}
@@ -633,14 +633,14 @@ export default function DeskEdit() {
                   inputMode="numeric"
                   maxLength={4}
                   placeholder="출판연도"
-                  className="w-24 rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                  className="w-24 rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
                 />
                 <input
                   value={form.volumes}
                   onChange={(e) => set('volumes', e.target.value)}
                   placeholder="권수 (예: 1~4권)"
                   title="여러 권짜리를 읽었을 때만. 화면에 《제목》(1~4권)으로 붙습니다"
-                  className="w-28 rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                  className="w-28 rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
                 />
                 {/* genre는 자유 text 컬럼이라 기존 목록에서 고르거나 새로 만들 수 있어야 한다 */}
                 <select
@@ -655,7 +655,7 @@ export default function DeskEdit() {
                       set('genre', v)
                     }
                   }}
-                  className="w-32 rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                  className="w-32 rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
                 >
                   <option value="">— 장르 —</option>
                   {genreOptions.map((g) => (
@@ -671,7 +671,7 @@ export default function DeskEdit() {
                     onChange={(e) => set('genre', e.target.value)}
                     placeholder="새 장르"
                     autoFocus
-                    className="w-28 rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                    className="w-28 rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
                   />
                 )}
               </div>
@@ -686,7 +686,7 @@ export default function DeskEdit() {
                       value={form.external_url}
                       onChange={(e) => set('external_url', e.target.value)}
                       placeholder="https://…"
-                      className="w-72 rounded-md border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                      className="w-72 rounded-md border border-gray-200 px-2 py-1 font-mono text-xs text-gray-700 outline-none focus:border-gray-400"
                     />
                   </label>
                   <label className="flex items-center gap-1.5">
@@ -695,7 +695,7 @@ export default function DeskEdit() {
                       value={form.source_name}
                       onChange={(e) => set('source_name', e.target.value)}
                       placeholder="매체·사이트 이름"
-                      className="w-40 rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                      className="w-40 rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
                     />
                   </label>
                   {HTTP_URL.test(form.external_url.trim()) && (
@@ -717,7 +717,7 @@ export default function DeskEdit() {
                     value={form.slug}
                     onChange={(e) => set('slug', e.target.value)}
                     placeholder="url-address"
-                    className="rounded-md border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                    className="rounded-md border border-gray-200 px-2 py-1 font-mono text-xs text-gray-700 outline-none focus:border-gray-400"
                   />
                 </label>
               )}
@@ -737,7 +737,7 @@ export default function DeskEdit() {
                       <button
                         type="button"
                         onClick={() => set('emoji', '')}
-                        className="text-[11px] text-gray-400 hover:text-gray-600"
+                        className="text-[11px] text-gray-400 hover:text-gray-700"
                       >
                         지우기
                       </button>
@@ -779,7 +779,7 @@ export default function DeskEdit() {
                       onChange={(e) => set('theme_color', normalizeHex(e.target.value))}
                       placeholder="#FFFFFF"
                       maxLength={7}
-                      className={`w-[5.5rem] rounded-md border px-2 py-1 font-mono text-[11px] outline-none focus:border-gray-400 ${
+                      className={`w-[5.5rem] rounded-md border px-2 py-1 font-mono text-xs outline-none focus:border-gray-400 ${
                         validColor ? 'border-gray-200 text-gray-700' : 'border-warn-border text-warn'
                       }`}
                     />
@@ -794,7 +794,7 @@ export default function DeskEdit() {
                     <select
                       value={form.related_post_id}
                       onChange={(e) => set('related_post_id', e.target.value)}
-                      className="max-w-[14rem] rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                      className="max-w-[14rem] rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
                     >
                       <option value="">— 없음 —</option>
                       {relPosts
@@ -811,7 +811,7 @@ export default function DeskEdit() {
                     <select
                       value={form.related_book_id}
                       onChange={(e) => set('related_book_id', e.target.value)}
-                      className="max-w-[14rem] rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                      className="max-w-[14rem] rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
                     >
                       <option value="">— 없음 —</option>
                       {relBooks
@@ -831,7 +831,7 @@ export default function DeskEdit() {
                   <select
                     value={form.series_id}
                     onChange={(e) => set('series_id', e.target.value)}
-                    className="rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                    className="rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
                   >
                     <option value="">— 없음 —</option>
                     {series.map((s) => (
@@ -851,7 +851,7 @@ export default function DeskEdit() {
                       onChange={(e) => set('thumbnail', e.target.value)}
                       placeholder={`https://${THUMB_DOMAINS[0]}/…`}
                       title={`이미지 허용 도메인: ${THUMB_DOMAINS.join(', ')}`}
-                      className="w-64 rounded-md border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                      className="w-64 rounded-md border border-gray-200 px-2 py-1 font-mono text-xs text-gray-700 outline-none focus:border-gray-400"
                     />
                   </label>
                   {/* URL 직접 입력과 파일 업로드 중 아무거나 쓸 수 있다. */}

@@ -20,7 +20,7 @@ const NAV_BTN = 'flex h-6 w-6 items-center justify-center rounded text-gray-400 
 const TEXT_BTN = 'rounded px-1.5 py-0.5 text-gray-500 hover:bg-gray-100 hover:text-gray-800'
 
 const DEFAULT_TRIGGER =
-  'inline-flex items-center gap-1.5 rounded-md border border-gray-200 bg-white px-2 py-1 text-[11px] text-gray-700 outline-none transition-colors hover:border-gray-400 focus-visible:border-gray-400'
+  'inline-flex items-center gap-1.5 rounded-md border border-gray-200 bg-white px-2 py-1 text-xs text-gray-700 outline-none transition-colors hover:border-gray-400 focus-visible:border-gray-400'
 
 type Parts = { y: number; m: number; d: number; hh: number; mm: number }
 
@@ -121,7 +121,8 @@ export function DateTimePicker({
   triggerClassName?: string
 }) {
   const parts = parseDateTime(value)
-  const label = parts ? `${parts.y}. ${parts.m}. ${parts.d}. ${pad(parts.hh)}:${pad(parts.mm)}` : ''
+  // 표시는 공개 사이트 날짜와 같은 'YYYY.MM.DD. HH:mm'
+  const label = parts ? `${parts.y}.${pad(parts.m)}.${pad(parts.d)}. ${pad(parts.hh)}:${pad(parts.mm)}` : ''
 
   return (
     <Popover label={label} placeholder={placeholder} title={title} triggerClassName={triggerClassName}>
@@ -281,7 +282,7 @@ export function MonthPicker({
 }) {
   const r = /^(\d{4})-(\d{2})/.exec(value)
   const sel = r ? { y: +r[1], m: +r[2] } : null
-  const label = sel ? `${sel.y}. ${pad(sel.m)}` : ''
+  const label = sel ? `${sel.y}.${pad(sel.m)}` : ''
 
   return (
     <Popover label={label} title={title} triggerClassName={triggerClassName}>

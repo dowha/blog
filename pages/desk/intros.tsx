@@ -134,7 +134,7 @@ function IntroItem({
           {meta.path}
         </a>
         {!meta.visible && (
-          <span className="text-[11px] font-medium text-brand-dark">화면 비노출 · 검색 설명 전용</span>
+          <span className="text-[11px] font-medium text-brand-dark">화면 비노출 (검색 설명 전용)</span>
         )}
       </div>
       <textarea

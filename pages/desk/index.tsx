@@ -7,6 +7,7 @@ import { supabase } from '@/supabase'
 import { useOwner, loginWithGoogle, logout } from '@/components/desk/useOwner'
 import ConfirmDialog from '@/components/desk/ConfirmDialog'
 import { BTN_SECONDARY, BTN_SMALL } from '@/components/desk/ui'
+import { formatKstDate } from '@/lib/date'
 import { SECTIONS, INTROS_LABEL, type Section } from '@/components/desk/sections'
 
 type Row = {
@@ -182,7 +183,8 @@ export default function DeskHome() {
     if (filter === 'draft') return !p.is_external && !p.is_published
     return !p.is_external && p.is_published // 발행(내부)
   })
-  const fmt = (s: string | null | undefined) => (s ? s.slice(0, 10) : '-')
+  // 날짜는 공개 사이트와 같은 'YYYY.MM.DD.' (한국 시간)
+  const fmt = (s: string | null | undefined) => (s ? formatKstDate(s) : '-')
 
   // shorts는 title·slug가 없어 본문 발췌와 #short_id로 대신한다.
   const rowTitle = (p: Row) =>
@@ -192,7 +194,7 @@ export default function DeskHome() {
   const rowMeta = (p: Row) => (isShorts ? `#${p.short_id ?? '-'}` : p.slug || '—')
   // series엔 날짜 컬럼이 없어 slug만 보여준다.
   const rowSub = (p: Row) =>
-    isSeries ? rowMeta(p) : `${rowMeta(p)} · ${fmt(p.updated_at || p.created_at)}`
+    isSeries ? rowMeta(p) : `${rowMeta(p)}, ${fmt(p.updated_at || p.created_at)}`
 
   const editHref = (id?: string) => ({
     pathname: '/desk/edit',
@@ -217,7 +219,7 @@ export default function DeskHome() {
         ) : !isOwner ? (
           <div className="flex flex-col items-start gap-2 py-16">
             <p className="text-sm text-gray-600">접근 권한이 없는 계정입니다. ({user.email})</p>
-            <button onClick={logout} className="text-xs text-gray-400 hover:text-gray-600">
+            <button onClick={logout} className="text-xs text-gray-400 hover:text-gray-700">
               로그아웃
             </button>
           </div>
@@ -231,7 +233,7 @@ export default function DeskHome() {
                   onClick={logout}
                   title="로그아웃"
                   aria-label="로그아웃"
-                  className="ml-1 align-super text-sm text-gray-300 hover:text-gray-600"
+                  className="ml-1 align-super text-sm text-gray-300 hover:text-gray-700"
                 >
                   *
                 </button>

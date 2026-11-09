@@ -227,15 +227,15 @@ export default function ShortsPage({ intro }: Props) {
       className="flex items-end gap-2 group cursor-pointer"
       onClick={() => window.location.href = '/shorts'}
     >
-      <div className="relative bg-gray-100 rounded-3xl px-5 py-3 text-gray-600 transition-colors duration-300 hover:bg-gray-200">
+      <div className="relative bg-gray-100 rounded-3xl px-5 py-3 text-gray-600 transition-colors hover:bg-gray-200">
         <div className="flex items-center gap-1 h-6">
           <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
           <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
           <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></div>
         </div>
 
-        <div className="absolute -left-2 bottom-3 w-4 h-4 rounded-full transition-colors duration-300 bg-inherit"></div>
-        <div className="absolute -left-4 bottom-1 w-2 h-2 rounded-full transition-colors duration-300 bg-inherit"></div>
+        <div className="absolute -left-2 bottom-3 w-4 h-4 rounded-full transition-colors bg-inherit"></div>
+        <div className="absolute -left-4 bottom-1 w-2 h-2 rounded-full transition-colors bg-inherit"></div>
       </div>
       <div className="flex flex-col text-[10px] text-gray-300 mb-1 whitespace-nowrap tabular-nums leading-tight opacity-0 transition-opacity duration-300 group-hover:opacity-100">
         <span>Thinking...</span>
