@@ -233,7 +233,11 @@ export default function DeskHome() {
           <>
             <div className="mb-6 flex items-center justify-between">
               <h1 className="!mb-0 text-gray-800">
-                Desk
+                {/* 제목을 누르면 /desk를 새로 불러온다 (Link는 화면 전환만 해서 일반 a 사용) */}
+                {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+                <a href="/desk" className="no-underline hover:text-inherit hover:opacity-80">
+                  Desk
+                </a>
                 {/* 로그아웃은 제목 옆 *로 숨긴다 */}
                 <button
                   onClick={logout}
