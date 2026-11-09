@@ -133,14 +133,18 @@ const CHECKS: Check[] = [
   },
 ]
 
+// 글에서 쓰는 HTML 태그 (대소문자 무관). 목록에 없는 <…>는 작품명 부호로 본다
+const HTML_TAG =
+  /<\/?(?:a|abbr|b|blockquote|br|cite|code|del|details|div|em|figcaption|figure|h[1-6]|hr|i|iframe|img|ins|kbd|li|mark|ol|p|pre|q|s|small|span|strong|sub|summary|sup|table|tbody|td|th|thead|tr|u|ul|video)(?:\s[^<>]*)?\/?>/gi
+
 // 링크 주소·HTML 태그·코드는 점검 대상이 아니다 (쿼리스트링의 & 등 오탐 방지)
 function stripNonText(line: string): string {
   return line
     .replace(/`[^`]*`/g, '')
     .replace(/\]\([^)]*\)/g, ']')
     .replace(/<!--.*?-->/g, '')
-    // HTML 태그는 소문자 태그명만 (<책제목>·<Title> 같은 잘못 쓴 작품명 부호는 남겨서 점검)
-    .replace(/<\/?[a-z][a-z0-9-]*(?:\s[^<>]*)?\/?>/g, '')
+    // 실제 HTML 태그명만 걷어낸다 (<책제목>·<Harry Potter> 같은 잘못 쓴 작품명 부호는 남겨서 점검)
+    .replace(HTML_TAG, '')
     .replace(/https?:\/\/\S+/g, '')
 }
 
