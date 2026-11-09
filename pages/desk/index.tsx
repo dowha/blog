@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import { supabase } from '@/supabase'
 import { useOwner, loginWithGoogle, logout } from '@/components/desk/useOwner'
 import ConfirmDialog from '@/components/desk/ConfirmDialog'
+import { BTN_SECONDARY, BTN_SMALL } from '@/components/desk/ui'
 import { SECTIONS, INTROS_LABEL, type Section } from '@/components/desk/sections'
 
 type Row = {
@@ -209,7 +210,7 @@ export default function DeskHome() {
           <p className="text-xs text-gray-400">확인 중…</p>
         ) : !user ? (
           <div className="flex justify-center py-24">
-            <button onClick={loginWithGoogle} className="default-button">
+            <button onClick={loginWithGoogle} className={BTN_SECONDARY}>
               🔐 관리자 로그인
             </button>
           </div>
@@ -239,9 +240,8 @@ export default function DeskHome() {
                 <Link href="/style-guide" target="_blank" className="text-xs text-gray-400 hover:text-gray-700">
                   표기 규칙 ↗
                 </Link>
-                <button onClick={() => router.push(editHref())} className="default-button !mt-0">
-                  <span>✏️</span>
-                  <span>{`새 ${noun}`}</span>
+                <button onClick={() => router.push(editHref())} className={BTN_SECONDARY}>
+                  + 새 {noun}
                 </button>
               </div>
             </div>
@@ -255,7 +255,7 @@ export default function DeskHome() {
                     ? router.push('/desk/intros')
                     : changeSection(e.target.value as Section)
                 }
-                className="rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
+                className="rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
                 aria-label="섹션 선택"
               >
                 {SECTIONS.map((s) => (
@@ -320,7 +320,7 @@ export default function DeskHome() {
                     </button>
                     <button
                       onClick={() => router.push(editHref(p.id))}
-                      className="shrink-0 rounded border border-gray-200 px-2 py-0.5 text-[11px] text-gray-500 transition-colors hover:border-gray-400 hover:text-gray-800"
+                      className={BTN_SMALL}
                     >
                       수정
                     </button>

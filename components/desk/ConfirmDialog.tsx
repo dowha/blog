@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { BTN_DANGER, BTN_GHOST, BTN_PRIMARY } from './ui'
 
 type Props = {
   open: boolean
@@ -17,6 +18,7 @@ type Props = {
 /**
  * /desk 전용 확인 다이얼로그.
  * 목록에서 클릭 한 번으로 발행/읽기 상태가 즉시 바뀌던 것을 한 단계 막는 용도.
+ * ⚠️ hello/components/wave/confirm-dialog.tsx와 같은 내용을 유지한다. 한쪽을 고치면 다른 쪽도 고칠 것.
  */
 export default function ConfirmDialog({
   open,
@@ -77,7 +79,7 @@ export default function ConfirmDialog({
               }}
               disabled={busy}
               placeholder={requireText}
-              className="mt-1.5 w-full rounded border border-gray-200 px-2 py-1.5 text-sm text-gray-800 outline-none placeholder:text-gray-300 focus:border-gray-400"
+              className="mt-1.5 w-full rounded-md border border-gray-200 px-2 py-1.5 text-sm text-gray-800 outline-none placeholder:text-gray-300 focus:border-gray-400"
             />
           </label>
         )}
@@ -85,7 +87,7 @@ export default function ConfirmDialog({
           <button
             onClick={onCancel}
             disabled={busy}
-            className="rounded-md px-3 py-2 text-xs text-gray-500 hover:bg-gray-100 disabled:opacity-50"
+            className={BTN_GHOST}
           >
             취소
           </button>
@@ -93,9 +95,7 @@ export default function ConfirmDialog({
             ref={confirmRef}
             onClick={onConfirm}
             disabled={busy || locked}
-            className={`default-button !mt-0 !text-white disabled:cursor-not-allowed disabled:opacity-40 ${
-              danger ? '!bg-[#c8481c] hover:!bg-[#a93c17]' : '!bg-gray-800 hover:!bg-gray-700'
-            }`}
+            className={danger ? BTN_DANGER : BTN_PRIMARY}
           >
             {busy ? busyLabel : confirmLabel}
           </button>

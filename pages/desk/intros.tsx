@@ -7,6 +7,7 @@ import { supabase } from '@/supabase'
 import { useOwner, loginWithGoogle } from '@/components/desk/useOwner'
 import { INTRO_PAGES, introToText, type IntroPage } from '@/lib/pageIntro'
 import { notifyChanged } from '@/lib/indexnow'
+import { BTN_PRIMARY, BTN_SECONDARY } from '@/components/desk/ui'
 import { SECTIONS, INTROS_LABEL, deskViewHref, type DeskView } from '@/components/desk/sections'
 
 type Row = { page: IntroPage; body: string; updated_at: string }
@@ -42,7 +43,7 @@ export default function DeskIntros() {
           <p className="text-xs text-gray-400">확인 중…</p>
         ) : !user ? (
           <div className="flex justify-center py-24">
-            <button onClick={loginWithGoogle} className="default-button">
+            <button onClick={loginWithGoogle} className={BTN_SECONDARY}>
               🔐 관리자 로그인
             </button>
           </div>
@@ -59,7 +60,7 @@ export default function DeskIntros() {
             <select
               value="intros"
               onChange={(e) => router.push(deskViewHref(e.target.value as DeskView))}
-              className="mb-4 rounded border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
+              className="mb-4 rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
               aria-label="섹션 선택"
             >
               {SECTIONS.map((s) => (
@@ -157,7 +158,7 @@ function IntroItem({
         <button
           onClick={save}
           disabled={!dirty || busy}
-          className="ml-auto rounded-md bg-[#0086FF] px-3 py-1.5 text-xs text-white transition-colors hover:bg-[#006FD6] disabled:opacity-30 disabled:hover:bg-[#0086FF]"
+          className={`ml-auto ${BTN_PRIMARY}`}
         >
           {busy ? '저장 중…' : '저장'}
         </button>

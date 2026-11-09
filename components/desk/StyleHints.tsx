@@ -11,7 +11,7 @@ export default function StyleHints({ fields }: { fields: Field[] }) {
   )
 
   return (
-    <div className="rounded border border-gray-100 bg-gray-50 px-3 py-2 text-[11px] text-gray-500">
+    <div className="rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-[11px] text-gray-500">
       <div className="flex items-center justify-between">
         <span className={issues.length ? 'font-medium text-[#c8481c]' : ''}>
           {issues.length ? `표기 확인 ${issues.length}건` : '표기 확인: 이상 없음'}

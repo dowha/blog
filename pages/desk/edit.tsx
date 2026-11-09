@@ -14,6 +14,8 @@ import remarkMark from '@/lib/remarkMark'
 import { normalizeQuotes } from '@/lib/styleCheck'
 import StyleHints from '@/components/desk/StyleHints'
 import SpellCheck from '@/components/desk/SpellCheck'
+import { DateTimePicker } from '@/components/desk/DatePicker'
+import { BTN_DANGER_SMALL, BTN_PRIMARY, BTN_SECONDARY, BTN_SMALL } from '@/components/desk/ui'
 import ConfirmDialog from '@/components/desk/ConfirmDialog'
 
 // react-md-editor는 window 의존 → SSR 비활성화
@@ -565,7 +567,7 @@ export default function DeskEdit() {
               <button
                 onClick={() => save(false)}
                 disabled={busy}
-                className="default-button !mt-0 !bg-[#0086FF] !text-white hover:!bg-[#006FD6] disabled:opacity-50"
+                className={BTN_PRIMARY}
               >
                 저장
               </button>
@@ -574,14 +576,14 @@ export default function DeskEdit() {
                 <button
                   onClick={() => save(false)}
                   disabled={busy || shortOver}
-                  className="default-button !mt-0 disabled:opacity-50"
+                  className={BTN_SECONDARY}
                 >
                   초안 저장
                 </button>
                 <button
                   onClick={() => save(true)}
                   disabled={busy || shortOver}
-                  className="default-button !mt-0 !bg-[#0086FF] !text-white hover:!bg-[#006FD6] disabled:opacity-50"
+                  className={BTN_PRIMARY}
                 >
                   발행
                 </button>
@@ -617,13 +619,13 @@ export default function DeskEdit() {
                   value={form.author}
                   onChange={(e) => set('author', e.target.value)}
                   placeholder="저자"
-                  className="w-40 rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                  className="w-40 rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
                 />
                 <input
                   value={form.publisher}
                   onChange={(e) => set('publisher', e.target.value)}
                   placeholder="출판사 (선택)"
-                  className="w-40 rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                  className="w-40 rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
                 />
                 <input
                   value={form.publication_year}
@@ -631,14 +633,14 @@ export default function DeskEdit() {
                   inputMode="numeric"
                   maxLength={4}
                   placeholder="출판연도"
-                  className="w-24 rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                  className="w-24 rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
                 />
                 <input
                   value={form.volumes}
                   onChange={(e) => set('volumes', e.target.value)}
                   placeholder="권수 (예: 1~4권)"
                   title="여러 권짜리를 읽었을 때만. 화면에 《제목》(1~4권)으로 붙습니다"
-                  className="w-28 rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                  className="w-28 rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
                 />
                 {/* genre는 자유 text 컬럼이라 기존 목록에서 고르거나 새로 만들 수 있어야 한다 */}
                 <select
@@ -653,7 +655,7 @@ export default function DeskEdit() {
                       set('genre', v)
                     }
                   }}
-                  className="w-32 rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                  className="w-32 rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
                 >
                   <option value="">— 장르 —</option>
                   {genreOptions.map((g) => (
@@ -669,7 +671,7 @@ export default function DeskEdit() {
                     onChange={(e) => set('genre', e.target.value)}
                     placeholder="새 장르"
                     autoFocus
-                    className="w-28 rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                    className="w-28 rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
                   />
                 )}
               </div>
@@ -684,7 +686,7 @@ export default function DeskEdit() {
                       value={form.external_url}
                       onChange={(e) => set('external_url', e.target.value)}
                       placeholder="https://…"
-                      className="w-72 rounded border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                      className="w-72 rounded-md border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
                     />
                   </label>
                   <label className="flex items-center gap-1.5">
@@ -693,7 +695,7 @@ export default function DeskEdit() {
                       value={form.source_name}
                       onChange={(e) => set('source_name', e.target.value)}
                       placeholder="매체·사이트 이름"
-                      className="w-40 rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                      className="w-40 rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
                     />
                   </label>
                   {HTTP_URL.test(form.external_url.trim()) && (
@@ -715,7 +717,7 @@ export default function DeskEdit() {
                     value={form.slug}
                     onChange={(e) => set('slug', e.target.value)}
                     placeholder="url-address"
-                    className="rounded border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                    className="rounded-md border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
                   />
                 </label>
               )}
@@ -726,7 +728,7 @@ export default function DeskEdit() {
                     <button
                       type="button"
                       onClick={() => setEmojiOpen((v) => !v)}
-                      className="flex h-6 w-9 items-center justify-center rounded border border-gray-200 text-sm hover:bg-gray-50"
+                      className="flex h-6 w-9 items-center justify-center rounded-md border border-gray-200 text-sm hover:bg-gray-50"
                       aria-label="이모지 선택"
                     >
                       {form.emoji || <span className="text-[11px] text-gray-300">선택</span>}
@@ -770,14 +772,14 @@ export default function DeskEdit() {
                       type="color"
                       value={validColor ? form.theme_color : '#FFFFFF'}
                       onChange={(e) => set('theme_color', e.target.value.toUpperCase())}
-                      className="h-6 w-10 cursor-pointer rounded border border-gray-200"
+                      className="h-6 w-10 cursor-pointer rounded-md border border-gray-200"
                     />
                     <input
                       value={form.theme_color}
                       onChange={(e) => set('theme_color', normalizeHex(e.target.value))}
                       placeholder="#FFFFFF"
                       maxLength={7}
-                      className={`w-[5.5rem] rounded border px-2 py-1 font-mono text-[11px] outline-none focus:border-gray-400 ${
+                      className={`w-[5.5rem] rounded-md border px-2 py-1 font-mono text-[11px] outline-none focus:border-gray-400 ${
                         validColor ? 'border-gray-200 text-gray-700' : 'border-[#f8c8b5] text-[#c8481c]'
                       }`}
                     />
@@ -792,7 +794,7 @@ export default function DeskEdit() {
                     <select
                       value={form.related_post_id}
                       onChange={(e) => set('related_post_id', e.target.value)}
-                      className="max-w-[14rem] rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                      className="max-w-[14rem] rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
                     >
                       <option value="">— 없음 —</option>
                       {relPosts
@@ -809,7 +811,7 @@ export default function DeskEdit() {
                     <select
                       value={form.related_book_id}
                       onChange={(e) => set('related_book_id', e.target.value)}
-                      className="max-w-[14rem] rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                      className="max-w-[14rem] rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
                     >
                       <option value="">— 없음 —</option>
                       {relBooks
@@ -829,7 +831,7 @@ export default function DeskEdit() {
                   <select
                     value={form.series_id}
                     onChange={(e) => set('series_id', e.target.value)}
-                    className="rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                    className="rounded-md border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
                   >
                     <option value="">— 없음 —</option>
                     {series.map((s) => (
@@ -849,14 +851,12 @@ export default function DeskEdit() {
                       onChange={(e) => set('thumbnail', e.target.value)}
                       placeholder={`https://${THUMB_DOMAINS[0]}/…`}
                       title={`이미지 허용 도메인: ${THUMB_DOMAINS.join(', ')}`}
-                      className="w-64 rounded border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
+                      className="w-64 rounded-md border border-gray-200 px-2 py-1 font-mono text-[11px] text-gray-700 outline-none focus:border-gray-400"
                     />
                   </label>
                   {/* URL 직접 입력과 파일 업로드 중 아무거나 쓸 수 있다. */}
                   <label
-                    className={`cursor-pointer rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-500 hover:bg-gray-50 ${
-                      uploading ? 'pointer-events-none opacity-50' : ''
-                    }`}
+                    className={`cursor-pointer ${BTN_SMALL} ${uploading ? 'pointer-events-none opacity-50' : ''}`}
                   >
                     {uploading ? '업로드 중…' : '업로드'}
                     <input
@@ -877,7 +877,7 @@ export default function DeskEdit() {
                       alt="표지 미리보기"
                       width={32}
                       height={48}
-                      className="h-12 w-8 rounded border border-gray-200 object-cover"
+                      className="h-12 w-8 rounded-md border border-gray-200 object-cover"
                       unoptimized
                     />
                   )}
@@ -907,12 +907,13 @@ export default function DeskEdit() {
               {hasCreatedAt && (
                 <label className="flex items-center gap-1.5">
                   <span className="text-gray-400">작성 시각</span>
-                  <input
-                    type="datetime-local"
+                  <DateTimePicker
                     value={form.created_at}
-                    onChange={(e) => set('created_at', e.target.value)}
+                    onChange={(v) => set('created_at', v)}
+                    allowEmpty
+                    // 새 항목은 비우면 저장 시각, 기존 항목은 비우면 원래 값 유지
+                    placeholder={id ? '기존 값 유지' : '저장할 때 시각'}
                     title={id ? '목록 정렬과 날짜 표시에 쓰입니다' : '비우면 저장하는 시각으로 기록됩니다'}
-                    className="rounded border border-gray-200 px-2 py-1 text-[11px] text-gray-700 outline-none focus:border-gray-400"
                   />
                 </label>
               )}
@@ -945,7 +946,7 @@ export default function DeskEdit() {
                   onChange={(e) => set('description', e.target.value)}
                   rows={5}
                   placeholder="설명 (마크다운, 시리즈 페이지 상단에 표시됩니다)"
-                  className="w-full resize-y rounded border border-gray-200 p-3 text-sm leading-6 text-gray-800 outline-none placeholder:text-gray-300 focus:border-gray-400"
+                  className="w-full resize-y rounded-md border border-gray-200 p-3 text-sm leading-6 text-gray-800 outline-none placeholder:text-gray-300 focus:border-gray-400"
                 />
               </div>
             ) : isShort ? (
@@ -955,7 +956,7 @@ export default function DeskEdit() {
                   onChange={(e) => set('content', e.target.value)}
                   rows={6}
                   placeholder="내용"
-                  className="w-full resize-y rounded border border-gray-200 p-3 text-sm leading-6 text-gray-800 outline-none placeholder:text-gray-300 focus:border-gray-400"
+                  className="w-full resize-y rounded-md border border-gray-200 p-3 text-sm leading-6 text-gray-800 outline-none placeholder:text-gray-300 focus:border-gray-400"
                 />
                 <div className="flex items-center justify-between text-[11px]">
                   <span className="text-gray-400">굵게(**), 기울임(*), 하이라이트(==)만 화면에 표시됩니다</span>
@@ -1014,7 +1015,7 @@ export default function DeskEdit() {
                 <button
                   onClick={() => setDeleteOpen(true)}
                   disabled={!canDelete}
-                  className="shrink-0 rounded border border-[#f8c8b5] px-2 py-0.5 text-[#c8481c] transition-colors hover:bg-[#fef3ee] disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-gray-300 disabled:hover:bg-transparent"
+                  className={BTN_DANGER_SMALL}
                 >
                   삭제
                 </button>

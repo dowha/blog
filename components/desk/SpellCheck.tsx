@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { supabase } from '@/supabase'
+import { BTN_SMALL } from './ui'
 import type { SpellField, SpellIssue, SpellResult } from '@/lib/spellcheck'
 
 type State =
@@ -49,7 +50,7 @@ export default function SpellCheck({ fields }: { fields: SpellField[] }) {
   const warn = state.status === 'error' || (state.status === 'done' && state.issues.length > 0)
 
   return (
-    <div className="mt-2 rounded border border-gray-100 bg-gray-50 px-3 py-2 text-[11px] text-gray-500">
+    <div className="mt-2 rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-[11px] text-gray-500">
       <div className="flex items-center justify-between">
         {/* 색은 /desk 공통 체계: 경고 주황 #c8481c, 제안 파랑 #006fd6 */}
         <span className={warn ? 'font-medium text-[#c8481c]' : ''}>{summary}</span>
@@ -57,8 +58,7 @@ export default function SpellCheck({ fields }: { fields: SpellField[] }) {
           type="button"
           onClick={run}
           disabled={state.status === 'loading' || targets.length === 0}
-          // 옆의 '표기 규칙 ↗' 링크와 같은 크기로, 테두리만 얇게 둘러 버튼임을 표시
-          className="rounded border border-gray-200 px-1.5 leading-[1.6] text-gray-500 transition-colors hover:border-gray-400 hover:text-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
+          className={BTN_SMALL}
         >
           {state.status === 'loading' ? '검사 중…' : state.status === 'done' ? '다시 검사' : '검사'}
         </button>
