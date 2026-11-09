@@ -7,20 +7,23 @@
 
 /* ✅ 글로벌 스타일 */
 @layer base {
-  /* 전체 페이지 기본 스타일 */
+  /* ===== 공통 블록 시작 =====
+     blog(styles/globals.css)와 hello(app/globals.css)에서 글자 하나까지 같게 유지한다.
+     한쪽을 고치면 다른 쪽도 고칠 것. 사이트 전용 규칙은 이 블록 아래에 둔다. */
+
+  /* 스크롤바 */
   * {
     scrollbar-width: thin;
-    scrollbar-color: #d1d5db transparent;
+    scrollbar-color: theme('colors.gray.300') transparent;
   }
 
-  /* Webkit 스크롤바 스타일 */
   *::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
 
   *::-webkit-scrollbar-thumb {
-    background-color: #d1d5db;
+    background-color: theme('colors.gray.300');
     border-radius: 3px;
   }
 
@@ -28,35 +31,76 @@
     background: transparent;
   }
 
+  /* 바탕 */
+  body {
+    @apply bg-page text-gray-600 antialiased;
+    font-family: 'Pretendard Variable', sans-serif;
+  }
+
+  ::selection {
+    background-color: theme('colors.brand.DEFAULT / 0.1');
+  }
+
   strong {
     @apply font-semibold;
   }
+
+  /* 제목 */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold;
+    word-break: keep-all;
+  }
+
+  h1 {
+    @apply text-gray-800 text-lg md:text-xl font-bold;
+  }
+
+  h2 {
+    @apply text-gray-600;
+  }
+
+  /* 링크: 모든 링크는 밑줄 색과 hover 파랑만, 본문(main) 안 링크에만 밑줄 */
+  a {
+    @apply break-words decoration-gray-200 hover:text-brand;
+  }
+
+  main a {
+    @apply break-words underline underline-offset-4 decoration-gray-200 hover:text-brand;
+  }
+
+  /* 하이라이트: blog ==문장==·<mark>, hello 자기소개 <em class="wave"> (DB에 저장된 클래스 이름) */
+  mark,
+  em.wave {
+    color: inherit;
+    font-style: normal;
+    padding: 0 1px;
+    background: linear-gradient(transparent 58%, theme('colors.brand.DEFAULT / 0.12') 58%);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  /* ===== 공통 블록 끝 ===== */
+
+  /* ===== blog 전용 ===== */
 
   /* 모바일 고정 nav에 앵커 이동 대상이 가려지지 않도록 */
   html {
     @apply scroll-pt-16 lg:scroll-pt-0;
   }
 
+  /* 본문 읽기용 레이아웃·글자 크기 (색·글꼴은 공통 블록) */
   body {
-    @apply lg:flex min-h-dvh w-full h-full md:p-10 lg:p-14 text-sm leading-6 sm:text-[15px] sm:leading-7 md:text-base md:leading-7 
-    text-gray-600 antialiased bg-[#FCFCFC];
-
-    font-family: 'Pretendard Variable', sans-serif;
+    @apply lg:flex min-h-dvh w-full h-full md:p-10 lg:p-14 text-sm leading-6 sm:text-[15px] sm:leading-7 md:text-base md:leading-7;
   }
 
   /* ✅ 메인 컨텐츠 스타일 */
   main {
     @apply mx-auto;
-  }
-
-  /* ✅ 텍스트 드래그 스타일 */
-  ::selection {
-    background-color: rgba(0, 134, 255, 0.1);
-  }
-
-  /* ✅ 링크 스타일 */
-  a {
-    @apply break-words decoration-gray-200 hover:text-[#0086FF];
   }
 
   nav a[target='_blank'] {
@@ -74,7 +118,7 @@
   .single-book a[target='_blank']:after,
   .series-list a[target='_blank']:after
    {
-    @apply text-gray-300 hover:text-[#0086FF];
+    @apply text-gray-300 group-hover:text-brand hover:text-brand;
 
     content: '↗';
     display: inline-block;
@@ -101,22 +145,13 @@
     }
   }
 
-  /* 하이라이트: ==문장== 또는 <mark>. dowha.kim 강조(em.wave)와 같은 은은한 브랜드 파랑 */
-  mark {
-    color: inherit;
-    padding: 0 1px;
-    background: linear-gradient(transparent 58%, rgb(0 134 255 / 0.12) 58%);
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
-  }
-
   /* 엔드마크: 글의 끝을 알리는 사이트 파랑 동그라미 (파비콘과 같은 원형). lib/rehypeEndmark.ts가 삽입 */
   .endmark-inline,
   .endmark-block {
     width: 0.5em;
     height: 0.5em;
     border-radius: 9999px;
-    background-color: #0086FF;
+    background-color: theme('colors.brand.DEFAULT');
   }
 
   .endmark-inline {
@@ -136,13 +171,9 @@
     @apply w-full pl-0 pt-6 pb-12 sm:pl-10 md:pl-14;
   }
 
-  main a {
-    @apply break-words underline underline-offset-4 decoration-gray-200 hover:text-[#0086FF];
-  }
-
     .post-list a h2, .series a h2 {
       @apply
-      hover:text-[#0086FF];
+      hover:text-brand;
   }
   
   a.no-underline {
@@ -151,31 +182,12 @@
 
   /* ✅ 제목 스타일 */
   h1 {
-    @apply text-gray-800 text-lg md:text-xl mb-7;
+    @apply mb-7;
   }
 
   .single-post h1,
   .single-book h1 {
     @apply mb-0;
-  }
-
-  h2 {
-    @apply text-gray-600;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-semibold;
-    word-break: keep-all;
-  }
-
-  /* 제목(h1)은 굵게 700 (dowha.kim과 동일) */
-  h1 {
-    @apply font-bold;
   }
 
   h2 a,
@@ -379,10 +391,10 @@
    작은 글씨가 잘 읽히도록 글자는 한 단계 진한 색을 쓴다.
    sonner가 런타임에 넣는 변수보다 우선하도록 html을 앞에 붙였다. */
 html [data-sonner-toaster][data-sonner-theme='light'] {
-  --success-bg: #eef6ff;
-  --success-border: #b3dbff;
-  --success-text: #006fd6;
-  --error-bg: #fef3ee;
-  --error-border: #f8c8b5;
-  --error-text: #c8481c;
+  --success-bg: theme('colors.brand.bg');
+  --success-border: theme('colors.brand.border');
+  --success-text: theme('colors.brand.dark');
+  --error-bg: theme('colors.warn.bg');
+  --error-border: theme('colors.warn.border');
+  --error-text: theme('colors.warn.DEFAULT');
 }

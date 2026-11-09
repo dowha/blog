@@ -18,6 +18,7 @@ export default function Document(props: DocumentProps) {
           content="width=device-width, initial-scale=1, viewport-fit=cover"
         />
         {/* Safari에서 상태 바 색상 설정 */}
+        {/* tailwind page 색과 같은 값 */}
         <meta name="theme-color" content="#FCFCFC" />
         {/* PWA 설정 (전체 화면 표시) */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
