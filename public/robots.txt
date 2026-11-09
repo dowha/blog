@@ -1,44 +1,7 @@
-# *
+# 모든 크롤러(검색·AI 포함) 허용, 관리자 페이지만 제외
 User-agent: *
 Allow: /
 Disallow: /desk
-Disallow: /series/[slug]
-Disallow: /posts/[slug]
-Disallow: /books/[slug]
 
-# Googlebot
-User-agent: Googlebot
-Allow: /
-Disallow: /desk
-
-# OpenAI-GPT
-User-agent: OpenAI-GPT
-Allow: /
-Disallow: /desk
-
-# bingbot
-User-agent: bingbot
-Allow: /
-Disallow: /desk
-
-# Anthropic-AI
-User-agent: Anthropic-AI
-Allow: /
-Disallow: /desk
-
-# Claude
-User-agent: Claude
-Allow: /
-Disallow: /desk
-
-# PerplexityBot
-User-agent: PerplexityBot
-Allow: /
-Disallow: /desk
-
-# Host
-Host: https://blog.dowha.kim
-
-# Sitemaps
 Sitemap: https://blog.dowha.kim/sitemap.xml
 Sitemap: https://blog.dowha.kim/api/rss
