@@ -47,7 +47,8 @@ async function correct(field: SpellField, apiKey: string): Promise<SpellIssue[]>
         origin: b.origin?.content ?? '',
         revised: top?.revised ?? b.revised ?? '',
         category: SPELL_CATEGORY_LABEL[category] ?? category,
-        comment: helpId ? data.helps?.[helpId]?.comment : undefined,
+        // 설명에 섞여 오는 바른 내부 표시(<IN>웬지</IN> 등)는 걷어낸다
+        comment: helpId ? data.helps?.[helpId]?.comment?.replace(/<\/?[A-Z]+>/g, '') : undefined,
       }
     })
     .filter((i) => i.origin && i.revised && i.origin !== i.revised)

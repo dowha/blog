@@ -13,7 +13,7 @@ export default function StyleHints({ fields }: { fields: Field[] }) {
   return (
     <div className="rounded border border-gray-100 bg-gray-50 px-3 py-2 text-[11px] text-gray-500">
       <div className="flex items-center justify-between">
-        <span className={issues.length ? 'font-medium text-amber-600' : ''}>
+        <span className={issues.length ? 'font-medium text-[#c8481c]' : ''}>
           {issues.length ? `표기 확인 ${issues.length}건` : '표기 확인: 이상 없음'}
         </span>
         <Link href="/style-guide" target="_blank" className="text-gray-400 hover:text-gray-700">
@@ -21,16 +21,15 @@ export default function StyleHints({ fields }: { fields: Field[] }) {
         </Link>
       </div>
       {issues.length > 0 && (
-        <ul className="mt-1.5 space-y-1 !pl-0">
+        <ul className="mt-2 space-y-2.5 !pl-0">
           {issues.map((i, idx) => (
             <li key={idx} className="!mb-0 list-none">
-              <span className="text-gray-700">{i.rule}</span>
-              {/* 대부분 본문이라 본문은 줄 번호만, 나머지 칸은 칸 이름을 붙인다 */}
-              <span className="ml-1.5 text-gray-400">
-                {i.field === '본문' ? `${i.line}줄` : i.field === '설명' ? `설명 ${i.line}줄` : i.field}
+              <span className="text-gray-800">{i.excerpt}</span>
+              {/* 대부분 본문이라 본문이 아닐 때만 칸 이름을 붙인다 (맞춤법 확인과 동일) */}
+              {i.field !== '본문' && <span className="ml-1.5 text-gray-400">{i.field}</span>}
+              <span className="block text-gray-400">
+                [{i.rule}] {i.message}
               </span>
-              <span className="block text-gray-800">{i.excerpt}</span>
-              <span className="block text-gray-400">{i.message}</span>
             </li>
           ))}
         </ul>

@@ -51,29 +51,30 @@ export default function SpellCheck({ fields }: { fields: SpellField[] }) {
   return (
     <div className="mt-2 rounded border border-gray-100 bg-gray-50 px-3 py-2 text-[11px] text-gray-500">
       <div className="flex items-center justify-between">
-        <span className={warn ? 'font-medium text-amber-600' : ''}>{summary}</span>
+        {/* 색은 /desk 공통 체계: 경고 주황 #c8481c, 제안 파랑 #006fd6 */}
+        <span className={warn ? 'font-medium text-[#c8481c]' : ''}>{summary}</span>
         <button
           type="button"
           onClick={run}
           disabled={state.status === 'loading' || targets.length === 0}
-          className="rounded border border-gray-200 bg-white px-2.5 py-1 text-gray-700 shadow-sm transition-colors hover:border-gray-400 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
+          // 옆의 '표기 규칙 ↗' 링크와 같은 크기로, 테두리만 얇게 둘러 버튼임을 표시
+          className="rounded border border-gray-200 px-1.5 leading-[1.6] text-gray-500 transition-colors hover:border-gray-400 hover:text-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          {state.status === 'loading' ? '검사 중…' : state.status === 'done' ? '다시 검사' : '맞춤법 검사'}
+          {state.status === 'loading' ? '검사 중…' : state.status === 'done' ? '다시 검사' : '검사'}
         </button>
       </div>
       {state.status === 'done' && state.issues.length > 0 && (
-        <ul className={`mt-1.5 space-y-1 !pl-0 ${stale ? 'opacity-50' : ''}`}>
+        <ul className={`mt-2 space-y-2.5 !pl-0 ${stale ? 'opacity-50' : ''}`}>
           {state.issues.map((i, idx) => (
             <li key={idx} className="!mb-0 list-none">
-              <span className="text-gray-700">{i.category}</span>
+              <span className="text-gray-800">{i.origin}</span>
+              {' → '}
+              <span className="font-medium text-[#006fd6]">{i.revised}</span>
               {/* 대부분 본문이라 본문이 아닐 때만 칸 이름을 붙인다 */}
               {i.field !== '본문' && <span className="ml-1.5 text-gray-400">{i.field}</span>}
-              <span className="block">
-                <span className="text-gray-500">{i.origin}</span>
-                {' → '}
-                <span className="font-medium text-gray-900">{i.revised}</span>
+              <span className="block text-gray-400">
+                [{i.category}]{i.comment ? ` ${i.comment}` : ''}
               </span>
-              {i.comment && <span className="block text-gray-400">{i.comment}</span>}
             </li>
           ))}
         </ul>
