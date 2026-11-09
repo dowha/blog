@@ -130,7 +130,7 @@ export default function Home({ intro, latestShort, latestPost, latestBook, mostL
         <>
             {latestShort && (
               <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
-                <h2 className="font-semibold mt-0">
+                <h2 className="mt-0 text-sm font-semibold">
                   <span className="mr-1">💭</span> 요즘 하는 생각
                 </h2>
                 <Link
@@ -146,7 +146,7 @@ export default function Home({ intro, latestShort, latestPost, latestBook, mostL
 
             {latestPost && (
               <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
-                <h2 className="font-semibold mt-0">
+                <h2 className="mt-0 text-sm font-semibold">
                   <span className="mr-1">🌱</span> 최근에 쓴 글
                 </h2>
                 <ul>
@@ -162,7 +162,7 @@ export default function Home({ intro, latestShort, latestPost, latestBook, mostL
 
             {latestBook && (
               <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
-                <h2 className="font-semibold mt-0">
+                <h2 className="mt-0 text-sm font-semibold">
                   <span className="mr-1">📖</span> 최근에 읽은 책
                 </h2>
                 <ul>
@@ -178,7 +178,7 @@ export default function Home({ intro, latestShort, latestPost, latestBook, mostL
 
             {mostLikedContent.length > 0 && (
               <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
-                <h2 className="font-semibold mt-0">
+                <h2 className="mt-0 text-sm font-semibold">
                   <span className="mr-1">👏</span> 가장 응원받은 콘텐츠
                 </h2>
                 <ul>
@@ -195,7 +195,7 @@ export default function Home({ intro, latestShort, latestPost, latestBook, mostL
 
             {currentlyReading.length > 0 && (
               <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
-                <h2 className="font-semibold mt-0">
+                <h2 className="mt-0 text-sm font-semibold">
                   <span className="mr-1">📚</span> 요즘 읽고 있는 책
                 </h2>
                 <ul>
