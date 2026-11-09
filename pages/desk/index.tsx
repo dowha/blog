@@ -8,6 +8,7 @@ import { useOwner, loginWithGoogle, logout } from '@/components/desk/useOwner'
 import ConfirmDialog from '@/components/desk/ConfirmDialog'
 import { BTN_SECONDARY, BTN_SMALL } from '@/components/desk/ui'
 import { formatKstDate } from '@/lib/date'
+import { notifyChanged, pagesFor, type ContentKind } from '@/lib/indexnow'
 import { SECTIONS, INTROS_LABEL, type Section } from '@/components/desk/sections'
 
 type Row = {
@@ -145,6 +146,9 @@ export default function DeskHome() {
     setPending(null) // 열려 있던 확인창이 다른 테이블에 적용되지 않도록
   }
 
+  const toggleKind = (p: Row): ContentKind =>
+    isPosts ? (p.is_external ? 'external' : 'post') : (({ records: 'record', books: 'book', shorts: 'short', series: 'series' }) as const)[section as Exclude<Section, 'posts'>]
+
   // posts/records는 발행 여부, books는 읽기 여부를 토글한다.
   const applyToggle = async () => {
     if (!pending) return
@@ -162,6 +166,8 @@ export default function DeskHome() {
       return
     }
     setRows((prev) => prev.map((x) => (x.id === pending.id ? { ...x, [col]: next } : x)))
+    // 발행 여부·읽는 중 표시가 바뀌면 목록·상세·홈을 바로 다시 만든다
+    notifyChanged(pagesFor(toggleKind(pending), [pending.slug]))
     setPending(null)
   }
 

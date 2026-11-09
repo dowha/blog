@@ -9,7 +9,7 @@ import { useOwner } from '@/components/desk/useOwner'
 import type { EmojiClickData, EmojiStyle } from 'emoji-picker-react'
 import { ALLOWED_IMAGE_TYPES, MAX_UPLOAD_BYTES, UPLOAD_ACCEPT } from '@/lib/upload'
 import { SHORTS_MAX_LENGTH, pureTextLength } from '@/lib/shorts'
-import { notifyChanged } from '@/lib/indexnow'
+import { notifyChanged, pagesFor, type ContentKind } from '@/lib/indexnow'
 import remarkMark from '@/lib/remarkMark'
 import { normalizeQuotes } from '@/lib/styleCheck'
 import StyleHints from '@/components/desk/StyleHints'
@@ -116,6 +116,18 @@ export default function DeskEdit() {
   const [form, setForm] = useState({ ...empty })
   // 외부 글은 기존 항목을 불러왔을 때만 판별된다. (새 글은 항상 내부 글로 만든다)
   const isExternal = isPost && !!id && form.is_external
+  // 저장·삭제 후 다시 만들 공개 페이지 종류 (lib/indexnow.ts pagesFor)
+  const contentKind: ContentKind = isExternal
+    ? 'external'
+    : isPost
+      ? 'post'
+      : isBook
+        ? 'book'
+        : isSeries
+          ? 'series'
+          : isShort
+            ? 'short'
+            : 'record'
   const [series, setSeries] = useState<SeriesRow[]>([])
   const [genres, setGenres] = useState<string[]>([])
   const [relPosts, setRelPosts] = useState<RelOption[]>([])
@@ -432,21 +444,7 @@ export default function DeskEdit() {
       // 공개 중이거나 방금 비공개로 내린 경우에만 페이지 재생성 + IndexNow 알림 (실패해도 저장에는 영향 없음)
       const nowPublic = isBook ? !!form.content.trim() : publish
       if (nowPublic || origPublic) {
-        const slug = form.slug.trim()
-        const detail = (base: string) =>
-          [slug, origSlug].filter(Boolean).map((s) => `/${base}/${encodeURIComponent(s)}`)
-        const paths = isExternal
-          ? ['/writings', '/']
-          : isPost
-            ? [...detail('posts'), '/writings', '/']
-            : isBook
-              ? [...detail('books'), '/books']
-              : isSeries
-                ? [...detail('series'), '/series']
-                : isShort
-                  ? ['/shorts']
-                  : ['/records']
-        notifyChanged(paths)
+        notifyChanged(pagesFor(contentKind, [form.slug.trim(), origSlug]))
       }
       setOrigSlug(form.slug.trim())
       setOrigPublic(isBook ? !!form.content.trim() : publish)
@@ -518,6 +516,8 @@ export default function DeskEdit() {
     setDeleting(false)
     setDeleteOpen(false)
     toast.success('삭제했습니다.')
+    // 공개 중이던 항목(공개 Shorts 등)을 지웠으면 목록·홈에서도 바로 빠지게 한다
+    if (origPublic) notifyChanged(pagesFor(contentKind, [origSlug]))
     backToList()
   }
 
