@@ -31,7 +31,12 @@ async function correct(field: SpellField, apiKey: string): Promise<SpellIssue[]>
   const res = await fetch(BAREUN_URL, {
     method: 'POST',
     headers: { 'api-key': apiKey, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ document: { content, language: 'ko-KR' }, encoding_type: 'UTF32' }),
+    body: JSON.stringify({
+      document: { content, language: 'ko-KR' },
+      encoding_type: 'UTF32',
+      // 보조 용언 붙여 쓰기(알려줘서·읽어봤다)는 허용 표기라 경고하지 않는다 (표기 규칙 §13)
+      config: { disable_vx_spacing: true, treat_as_title: field.title === true },
+    }),
   })
   if (!res.ok) throw new Error(`바른 API 오류 (${res.status})`)
 
@@ -71,6 +76,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   if (!Array.isArray(raw)) return res.status(400).json({ error: 'fields가 필요합니다.' })
   const fields: SpellField[] = raw
     .filter((f): f is SpellField => typeof f?.label === 'string' && typeof f?.text === 'string')
+    .map((f) => ({ label: f.label, text: f.text, title: f.title === true }))
     .filter((f) => f.text.trim())
 
   const total = fields.reduce((n, f) => n + f.text.length, 0)
@@ -80,7 +86,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   try {
     const results = await Promise.all(fields.map((f) => correct(f, apiKey)))
-    return res.status(200).json({ issues: results.flat() })
+    // 같은 칸의 같은 지적은 한 번만 보여 주고 횟수를 센다
+    const merged = new Map<string, SpellIssue>()
+    for (const i of results.flat()) {
+      const key = `${i.field}\u0000${i.origin}\u0000${i.revised}`
+      const prev = merged.get(key)
+      if (prev) prev.count = (prev.count ?? 1) + 1
+      else merged.set(key, { ...i })
+    }
+    return res.status(200).json({ issues: [...merged.values()] })
   } catch (e) {
     const message = e instanceof Error ? e.message : '맞춤법 검사에 실패했습니다.'
     console.error('spellcheck 오류:', message)

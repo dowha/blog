@@ -2,7 +2,8 @@
  * 맞춤법 확인(바른 API) 공용 타입·유틸. 서버 라우트와 /desk 화면이 같이 쓴다.
  */
 
-export type SpellField = { label: string; text: string }
+/** title=true면 제목·부제로 보고 검사한다 (끝 문장부호 등을 문장처럼 따지지 않음) */
+export type SpellField = { label: string; text: string; title?: boolean }
 
 export type SpellIssue = {
   field: string
@@ -10,6 +11,8 @@ export type SpellIssue = {
   revised: string
   category: string
   comment?: string
+  /** 같은 지적이 여러 곳에서 나온 횟수 (2 이상일 때만) */
+  count?: number
 }
 
 export type SpellResult = { issues: SpellIssue[] } | { error: string }

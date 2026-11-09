@@ -71,7 +71,11 @@ export default function SpellCheck({ fields }: { fields: SpellField[] }) {
               {' → '}
               <span className="font-medium text-[#006fd6]">{i.revised}</span>
               {/* 대부분 본문이라 본문이 아닐 때만 칸 이름을 붙인다 */}
-              {i.field !== '본문' && <span className="ml-1.5 text-gray-400">{i.field}</span>}
+              {(i.field !== '본문' || (i.count ?? 1) > 1) && (
+                <span className="ml-1.5 text-gray-400">
+                  {[i.field !== '본문' && i.field, (i.count ?? 1) > 1 && `${i.count}곳`].filter(Boolean).join(' ')}
+                </span>
+              )}
               <span className="block text-gray-400">
                 [{i.category}]{i.comment ? ` ${i.comment}` : ''}
               </span>

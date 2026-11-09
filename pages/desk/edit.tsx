@@ -984,8 +984,8 @@ export default function DeskEdit() {
             {!isExternal && (
               <SpellCheck
                 fields={[
-                  { label: '제목', text: isShort ? '' : form.title },
-                  { label: '부제', text: isPost || isBook ? form.subtitle : '' },
+                  { label: '제목', text: isShort ? '' : form.title, title: true },
+                  { label: '부제', text: isPost || isBook ? form.subtitle : '', title: true },
                   { label: '설명', text: isSeries ? form.description : '' },
                   { label: '본문', text: isSeries ? '' : form.content },
                 ]}
