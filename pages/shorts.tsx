@@ -85,8 +85,8 @@ async function fetchShorts(): Promise<Short[]> {
   }))
 }
 
-// 날짜 묶음은 방문자·서버 시간대와 상관없이 한국 시간 기준 ("2025.03.22. (Sat)")
-const KST_PARTS = new Intl.DateTimeFormat('en-US', {
+// 날짜 묶음은 방문자·서버 시간대와 상관없이 한국 시간 기준 ("2025.03.22. (토)")
+const KST_PARTS = new Intl.DateTimeFormat('ko-KR', {
   timeZone: 'Asia/Seoul',
   year: 'numeric',
   month: '2-digit',
@@ -99,8 +99,8 @@ function kstDateLabel(date: string | number) {
 }
 const DAY = 24 * 60 * 60 * 1000
 
-// 말풍선 옆 작성 시각 ("25.03.22.", "PM 3:05")
-const KST_TIME = new Intl.DateTimeFormat('en-US', {
+// 말풍선 옆 작성 시각 ("25.03.22.", "오후 3:05")
+const KST_TIME = new Intl.DateTimeFormat('ko-KR', {
   timeZone: 'Asia/Seoul',
   year: '2-digit',
   month: '2-digit',
@@ -213,17 +213,15 @@ export default function ShortsPage({ intro, shorts, builtAt }: Props) {
   const yesterdayLabel = kstDateLabel(now - DAY)
   const dayBeforeYesterdayLabel = kstDateLabel(now - 2 * DAY)
 
-  // ✅ [수정] 그저께 이전 날짜도 포맷팅하여 표시
+  // 날짜 구분선: 최근 사흘은 오늘·어제·그저께, 그 이전은 "( 2025.03.22. 토 )" (blog 화면 문구는 국문)
   const getDayLabel = (dateLabel: string) => {
-    if (dateLabel === todayLabel) return '( Today )'
-    if (dateLabel === yesterdayLabel) return '( Yesterday )'
-    if (dateLabel === dayBeforeYesterdayLabel) return '( 2 Days Ago )'
-
-    // "2025.03.22. (Wed)" -> "( 2025.03.22. Wed )" 변환
+    if (dateLabel === todayLabel) return '( 오늘 )'
+    if (dateLabel === yesterdayLabel) return '( 어제 )'
+    if (dateLabel === dayBeforeYesterdayLabel) return '( 그저께 )'
     return `( ${dateLabel.replace(/[()]/g, '')} )`
   }
 
-  const hasTodayPosts = groupedShorts.length > 0 && getDayLabel(groupedShorts[0].dateLabel) === '( Today )'
+  const hasTodayPosts = groupedShorts.length > 0 && groupedShorts[0].dateLabel === todayLabel
 
   const ThinkingBubble = () => (
     <div
@@ -241,7 +239,7 @@ export default function ShortsPage({ intro, shorts, builtAt }: Props) {
         <div className="absolute -left-4 bottom-1 w-2 h-2 rounded-full transition-colors bg-inherit"></div>
       </div>
       <div className="flex flex-col text-[10px] text-gray-300 mb-1 whitespace-nowrap tabular-nums leading-tight opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        <span>Thinking...</span>
+        <span>생각 중…</span>
       </div>
     </div>
   )
@@ -261,7 +259,7 @@ export default function ShortsPage({ intro, shorts, builtAt }: Props) {
 
               {groupedShorts.map((group) => {
                 const dayLabel = getDayLabel(group.dateLabel)
-                const isToday = dayLabel === '( Today )'
+                const isToday = group.dateLabel === todayLabel
 
                 return (
                   <div key={group.dateLabel} className="pt-8 border-t border-gray-100 relative">
