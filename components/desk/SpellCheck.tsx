@@ -56,21 +56,23 @@ export default function SpellCheck({ fields }: { fields: SpellField[] }) {
           type="button"
           onClick={run}
           disabled={state.status === 'loading' || targets.length === 0}
-          className="text-gray-400 hover:text-gray-700 disabled:opacity-40"
+          className="rounded border border-gray-200 bg-white px-2.5 py-1 text-gray-700 shadow-sm transition-colors hover:border-gray-400 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          {state.status === 'done' ? '다시 검사' : '검사'}
+          {state.status === 'loading' ? '검사 중…' : state.status === 'done' ? '다시 검사' : '맞춤법 검사'}
         </button>
       </div>
       {state.status === 'done' && state.issues.length > 0 && (
         <ul className={`mt-1.5 space-y-1 !pl-0 ${stale ? 'opacity-50' : ''}`}>
           {state.issues.map((i, idx) => (
             <li key={idx} className="!mb-0 list-none">
-              <span className="text-gray-700">
-                {i.field} · {i.category}
-              </span>{' '}
-              <code className="rounded bg-white px-1 text-gray-600">{i.origin}</code>
-              {' → '}
-              <code className="rounded bg-white px-1 text-gray-800">{i.revised}</code>
+              <span className="text-gray-700">{i.category}</span>
+              {/* 대부분 본문이라 본문이 아닐 때만 칸 이름을 붙인다 */}
+              {i.field !== '본문' && <span className="ml-1.5 text-gray-400">{i.field}</span>}
+              <span className="block">
+                <span className="text-gray-500">{i.origin}</span>
+                {' → '}
+                <span className="font-medium text-gray-900">{i.revised}</span>
+              </span>
               {i.comment && <span className="block text-gray-400">{i.comment}</span>}
             </li>
           ))}

@@ -24,11 +24,12 @@ export default function StyleHints({ fields }: { fields: Field[] }) {
         <ul className="mt-1.5 space-y-1 !pl-0">
           {issues.map((i, idx) => (
             <li key={idx} className="!mb-0 list-none">
-              <span className="text-gray-700">
-                {i.field}
-                {i.field === '본문' || i.field === '설명' ? ` ${i.line}줄` : ''} · {i.rule}
-              </span>{' '}
-              <code className="rounded bg-white px-1 text-gray-600">{i.excerpt}</code>
+              <span className="text-gray-700">{i.rule}</span>
+              {/* 대부분 본문이라 본문은 줄 번호만, 나머지 칸은 칸 이름을 붙인다 */}
+              <span className="ml-1.5 text-gray-400">
+                {i.field === '본문' ? `${i.line}줄` : i.field === '설명' ? `설명 ${i.line}줄` : i.field}
+              </span>
+              <span className="block text-gray-800">{i.excerpt}</span>
               <span className="block text-gray-400">{i.message}</span>
             </li>
           ))}
