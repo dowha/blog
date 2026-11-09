@@ -1,5 +1,5 @@
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
-@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+/* Pretendard는 pages/_document.tsx의 <link>로 불러온다 (CSS @import는 사이트 CSS를 다 받은 뒤에야 요청돼 화면 표시가 늦어짐) */
+/* 인용구 글꼴 Gowun Dodum은 인용구가 있는 페이지에서만 components/QuoteFont.tsx로 불러온다 */
 
 @tailwind base;
 @tailwind components;

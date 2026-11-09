@@ -7,6 +7,7 @@ import remarkMark from '@/lib/remarkMark'
 import rehypeEndmark from '@/lib/rehypeEndmark'
 import Image from 'next/image'
 import { ComponentProps } from 'react'
+import QuoteFont, { hasBlockquote } from '@/components/QuoteFont'
 
 // ① react-markdown이 사용하는 기본 Components를 확장
 interface ExtendedComponents extends Components {
@@ -143,15 +144,19 @@ const NO_STRIKE = ['del']
 // ⑤ MarkdownContent 컴포넌트에서 확장된 customComponents 사용
 // endmark: 글 끝에 엔드마크(파란 동그라미)를 붙인다. writings·books 본문에서만 사용
 const MarkdownContent = ({ content, endmark = false }: { content: string; endmark?: boolean }) => (
-  <ReactMarkdown
-    remarkPlugins={GFM_PLUGINS}
-    disallowedElements={NO_STRIKE}
-    unwrapDisallowed
-    rehypePlugins={endmark ? [rehypeRaw, rehypeEndmark] : [rehypeRaw]}
-    components={customComponents}
-  >
-    {content}
-  </ReactMarkdown>
+  <>
+    {/* 인용구가 있을 때만 인용구 글꼴을 불러온다 */}
+    {hasBlockquote(content) && <QuoteFont />}
+    <ReactMarkdown
+      remarkPlugins={GFM_PLUGINS}
+      disallowedElements={NO_STRIKE}
+      unwrapDisallowed
+      rehypePlugins={endmark ? [rehypeRaw, rehypeEndmark] : [rehypeRaw]}
+      components={customComponents}
+    >
+      {content}
+    </ReactMarkdown>
+  </>
 )
 
 export default MarkdownContent

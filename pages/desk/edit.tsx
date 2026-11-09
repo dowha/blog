@@ -17,7 +17,10 @@ import SpellCheck from '@/components/desk/SpellCheck'
 import { DateTimePicker } from '@/components/desk/DatePicker'
 import { BTN_DANGER_SMALL, BTN_PRIMARY, BTN_SECONDARY, BTN_SMALL } from '@/components/desk/ui'
 import ConfirmDialog from '@/components/desk/ConfirmDialog'
+import QuoteFont from '@/components/QuoteFont'
 
+// 마크다운 에디터 스타일은 이 화면에서만 필요해 여기서 불러온다 (공개 페이지 CSS에서 제외)
+import '@uiw/react-md-editor/markdown-editor.css'
 // react-md-editor는 window 의존 → SSR 비활성화
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false })
 // 이모지 피커는 시리즈 편집에서만 쓰므로 별도 청크로 분리한다.
@@ -553,6 +556,8 @@ export default function DeskEdit() {
 
   return (
     <>
+      {/* 미리보기 인용구용 글꼴 */}
+      <QuoteFont />
       <Head>
         <title>{`${id ? label + ' 수정' : '새 ' + label} | Dowha's Blog`}</title>
         <meta name="robots" content="noindex, nofollow" />

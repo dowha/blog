@@ -12,6 +12,9 @@ export default function Document(props: DocumentProps) {
   return (
     <Html lang={pageLang(props)}>
       <Head>
+        {/* 글꼴: CSS @import 대신 head에서 바로 요청하고, 글꼴 파일을 받을 CDN에 미리 연결한다 (dowha.kim과 동일) */}
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
         {/* Viewport 설정 (iPhone의 notch 대응) */}
         <meta
           name="viewport"
