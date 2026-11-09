@@ -50,12 +50,11 @@ export default function DeskIntros() {
           <p className="py-16 text-sm text-gray-600">접근 권한이 없는 계정입니다. ({user.email})</p>
         ) : (
           <>
-            <div className="mb-6 flex items-center justify-between">
-              <h1 className="!mb-0 text-gray-800">{INTROS_LABEL}</h1>
-              <Link href="/desk" className="text-xs text-gray-400 hover:text-gray-700">
-                ← Desk
-              </Link>
-            </div>
+            {/* 편집 화면의 '← 목록'과 같은 위치 */}
+            <Link href="/desk" className="mb-5 inline-block text-xs text-gray-400 hover:text-gray-700">
+              ← 목록
+            </Link>
+            <h1 className="!mb-6 text-gray-800">{INTROS_LABEL}</h1>
             {/* /desk와 같은 드롭다운으로 다른 섹션으로 바로 이동 */}
             <select
               value="intros"
@@ -121,7 +120,7 @@ function IntroItem({
     if (error) return toast.error('저장 실패: ' + error.message)
     onSaved(data as Row)
     setBody(data.body)
-    toast.success(`${meta.label} 저장됨`)
+    toast.success(`${meta.label} 문구를 저장했습니다.`)
     // 공개 페이지 즉시 재생성 + 검색엔진 알림
     notifyChanged([meta.path])
   }
@@ -151,14 +150,14 @@ function IntroItem({
         />
       )}
       <div className="flex items-center gap-3 text-[11px] text-gray-400">
-        <span className={text.length > DESC_HINT ? 'text-amber-600' : ''}>
+        <span className={text.length > DESC_HINT ? 'text-[#c8481c]' : ''}>
           검색 설명 {text.length}자{meta.key === 'home' ? ' (home 검색 설명은 별도 기본값 사용)' : ''}
         </span>
         <span>수정 {row.updated_at.slice(0, 16).replace('T', ' ')}</span>
         <button
           onClick={save}
           disabled={!dirty || busy}
-          className="ml-auto rounded-md bg-gray-800 px-3 py-1.5 text-xs text-white disabled:opacity-30"
+          className="ml-auto rounded-md bg-[#0086FF] px-3 py-1.5 text-xs text-white transition-colors hover:bg-[#006FD6] disabled:opacity-30 disabled:hover:bg-[#0086FF]"
         >
           {busy ? '저장 중…' : '저장'}
         </button>

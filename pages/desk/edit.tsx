@@ -472,7 +472,8 @@ export default function DeskEdit() {
   // 삭제는 저장된 상태 기준으로 초안(책은 리뷰 없음)만 허용한다. Shorts는 짧은 글이라 발행 후에도 허용.
   // 공개 주소가 갑자기 404가 되거나 검색엔진·RSS에 깨진 링크가 남는 것을 막기 위함.
   const canDelete = !!id && (isShort || !origPublic)
-  const deleteName = isShort ? '이 Shorts' : `'${form.title.trim() || '제목 없음'}'`
+  // 조사까지 붙인 이름 (Shorts는 '쇼츠'로 읽어 '를')
+  const deleteName = isShort ? '이 Shorts를' : `'${form.title.trim() || '제목 없음'}'을(를)`
 
   const remove = async () => {
     if (!id || !canDelete) return
@@ -515,14 +516,22 @@ export default function DeskEdit() {
     backToList()
   }
 
-  if (loading) return <p className="text-xs text-gray-400">확인 중…</p>
+  // 다른 /desk 화면과 같은 여백(page-container) 안에 보여준다
+  if (loading)
+    return (
+      <div className="page-container">
+        <p className="text-xs text-gray-400">확인 중…</p>
+      </div>
+    )
   if (!user || !isOwner)
     return (
-      <div className="py-16 text-sm text-gray-500">
-        접근 권한이 없습니다.{' '}
-        <button onClick={() => router.push('/desk')} className="text-gray-700 underline underline-offset-2">
-          로그인
-        </button>
+      <div className="page-container">
+        <p className="py-16 text-sm text-gray-500">
+          접근 권한이 없습니다.{' '}
+          <button onClick={() => router.push('/desk')} className="text-gray-700 underline underline-offset-2">
+            로그인
+          </button>
+        </p>
       </div>
     )
 
@@ -920,7 +929,7 @@ export default function DeskEdit() {
             </div>
 
             {brokenRel && (
-              <p className="-mt-2 text-[11px] text-amber-600">
+              <p className="-mt-2 text-[11px] text-[#c8481c]">
                 ⚠︎ 표시된 항목은 공개된 상세 페이지가 없어 링크가 404가 됩니다.
               </p>
             )}
@@ -981,7 +990,8 @@ export default function DeskEdit() {
               />
             )}
 
-            {!isExternal && (
+            {/* 바른은 한국어 전용이라 영어 글·리뷰에서는 숨긴다 */}
+            {!isExternal && !form.is_english && (
               <SpellCheck
                 fields={[
                   { label: '제목', text: isShort ? '' : form.title, title: true },
@@ -1013,7 +1023,7 @@ export default function DeskEdit() {
 
             <ConfirmDialog
               open={deleteOpen}
-              message={`${deleteName}을(를) 삭제합니다.\n되돌릴 수 없습니다.`}
+              message={`${deleteName} 삭제합니다.\n되돌릴 수 없습니다.`}
               confirmLabel="삭제"
               busyLabel="삭제 중…"
               busy={deleting}

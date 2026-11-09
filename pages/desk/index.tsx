@@ -122,12 +122,14 @@ export default function DeskHome() {
           : isSeries
             ? 'id,title:series_name,slug,is_published' // series엔 created_at이 없다
             : 'id,title,slug,is_published,updated_at,created_at'
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from(section)
       .select(cols)
       .order(isSeries ? 'series_name' : 'created_at', { ascending: isSeries })
-    setRows((data as unknown as Row[]) ?? [])
     setFetching(false)
+    // 실패를 '없습니다'로 오해하지 않도록 알린다
+    if (error) return toast.error('목록을 불러오지 못했습니다: ' + error.message)
+    setRows((data as unknown as Row[]) ?? [])
   }
 
   useEffect(() => {
@@ -163,7 +165,9 @@ export default function DeskHome() {
 
   // 확인 문구는 '바뀔 상태' 기준으로 만든다.
   const confirmMessage = (p: Row) => {
-    const title = rowTitle(p)
+    // Shorts는 본문 전체가 제목 자리에 오므로 앞부분만 보여준다
+    const full = rowTitle(p)
+    const title = full.length > 40 ? `${full.slice(0, 40)}…` : full
     if (isBooks) return `'${title}'을(를) ${p.is_reading ? '읽음' : '읽는 중'}으로 변경할까요?`
     return p.is_published
       ? `'${title}'을(를) 초안으로 되돌릴까요?`
@@ -281,7 +285,7 @@ export default function DeskHome() {
 
             <ul className="border-t border-gray-100">
               {shown.map((p) => {
-                // books: 읽는 중(amber) / 읽음(파랑), 그 외: 초안(amber) / 발행됨(파랑)
+                // books: 읽는 중(회색) / 읽음(파랑), 그 외: 초안(회색) / 발행됨(파랑) — 편집 화면 배지와 같은 색
                 const active = isBooks ? !p.is_reading : !!p.is_published
                 const stateLabel = isBooks
                   ? p.is_reading
@@ -308,7 +312,7 @@ export default function DeskHome() {
                     <button
                       onClick={() => setPending(p)}
                       className={`shrink-0 text-[11px] font-medium hover:underline ${
-                        active ? 'text-[#006fd6]' : 'text-amber-600'
+                        active ? 'text-[#006fd6]' : 'text-gray-500'
                       }`}
                       title={isBooks ? '클릭하여 읽는 중/읽음 전환' : '클릭하여 발행/초안 전환'}
                     >
