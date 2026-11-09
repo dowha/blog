@@ -42,7 +42,7 @@ export default function Document(props: DocumentProps) {
           sizes="512x512"
           href="/android-chrome-512x512.png"
         />
-        <link rel="alternate" type="application/rss+xml" title="Dowha's Blog RSS Feed" href="/api/rss" />
+        <link rel="alternate" type="application/rss+xml" title="Dowha's Blog" href="/api/rss" />
       </Head>
       <body>
         <noscript>

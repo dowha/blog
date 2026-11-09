@@ -38,9 +38,11 @@ export default async function handler(
   }
 
   const feed = new RSS({
-    title: "Dowha's Blog RSS Feed",
-    description: 'Latest blog posts and book reviews',
+    title: "Dowha's Blog",
+    description: '김도화의 블로그입니다. 이것저것 쓰고 싶은 글을 씁니다.',
     site_url: SITE,
+    // 아이콘을 명시하지 않으면 일부 리더가 상위 도메인(dowha.kim)의 파란 파비콘을 가져간다
+    image_url: `${SITE}/apple-touch-icon.png`,
     feed_url: `${SITE}/api/rss`,
     language: 'ko',
   })
