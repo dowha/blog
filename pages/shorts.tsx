@@ -99,19 +99,19 @@ function kstDateLabel(date: string | number) {
 }
 const DAY = 24 * 60 * 60 * 1000
 
-// 말풍선 옆 작성 시각 ("25.03.22.", "오후 3:05")
+// 말풍선 옆 작성 시각 ("25.03.22.", "15:05"). 24시간제: 날짜와 너비가 비슷하고 /desk 날짜 선택기(HH:mm)와 같은 표기
 const KST_TIME = new Intl.DateTimeFormat('ko-KR', {
   timeZone: 'Asia/Seoul',
   year: '2-digit',
   month: '2-digit',
   day: '2-digit',
-  hour: 'numeric',
+  hour: '2-digit',
   minute: '2-digit',
-  hour12: true,
+  hourCycle: 'h23',
 })
 function kstTime(date: string) {
   const p = Object.fromEntries(KST_TIME.formatToParts(new Date(date)).map((x) => [x.type, x.value]))
-  return { date: `${p.year}.${p.month}.${p.day}.`, time: `${p.dayPeriod} ${p.hour}:${p.minute}` }
+  return { date: `${p.year}.${p.month}.${p.day}.`, time: `${p.hour}:${p.minute}` }
 }
 
 // 목록 전체(공개 83개 기준 약 26kB)를 서버에서 넣어 60초마다 다시 만든다 (/desk 저장·삭제 시에는 즉시).
