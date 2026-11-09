@@ -19,8 +19,10 @@ interface Book {
 interface BookCardProps {
   book: Book
   className?: string
+  /** 첫 화면에 보이는 카드: 표지를 미뤄 받지 않고 바로 받는다 (LCP) */
+  priority?: boolean
 }
-export default function BookCard({ book, className }: BookCardProps) {
+export default function BookCard({ book, className, priority = false }: BookCardProps) {
   return (
     <div
       className={`relative border h-full p-3 rounded-lg w-full bg-card border-gray-200 group ${className || ''}`}
@@ -34,6 +36,7 @@ export default function BookCard({ book, className }: BookCardProps) {
               alt={`${book.title} 표지`}
               width={64}
               height={96}
+              priority={priority}
               className="h-full w-full object-cover"
             />
           ) : (

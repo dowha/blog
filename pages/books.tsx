@@ -180,19 +180,21 @@ export default function BooksPage({ intro, books, genres }: Props) {
 
         <>
             <div className="mt-8 grid grid-cols-1 gap-2 md:grid-cols-2">
-              {filteredBooks.slice(0, visibleCount).map((book) =>
+              {/* 모바일 한 줄·PC 두 줄 기준으로 첫 화면에 보이는 앞의 4권만 표지를 바로 받는다 */}
+              {filteredBooks.slice(0, visibleCount).map((book, i) =>
                 book.hasContent ? (
                   <Link
                     key={book.id}
                     href={`/books/${book.slug}`}
                     className="block no-underline"
                   >
-                    <BookCard book={book} className="hover:bg-gray-100" />
+                    <BookCard book={book} priority={i < 4} className="hover:bg-gray-100" />
                   </Link>
                 ) : (
                   <div key={book.id} className="block no-underline">
                     <BookCard
                       book={book}
+                      priority={i < 4}
                       className="cursor-wait bg-amber-50 no-group"
                     />
                   </div>

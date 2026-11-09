@@ -133,6 +133,8 @@ export default function BookDetailPage({
               width={128}
               height={192}
               quality={100}
+              // 페이지 맨 위 표지라 미뤄 받지 않는다 (LCP)
+              priority
               className="absolute w-32 h-48 sm:w-32 sm:h-48 object-cover"
             />
           </div>
