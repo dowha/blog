@@ -37,7 +37,7 @@ export default function SeriesDetailPage({ series, posts }: Props) {
         description={toExcerpt(series.description)}
       />
       <article className="series page-container">
-        <h1 className="font-bold">{series.series_name}</h1>
+        <h1>{series.series_name}</h1>
         {series.description && (
           <div
             className="flex items-center py-2 px-3 rounded-lg"

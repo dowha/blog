@@ -68,7 +68,7 @@ export default function BookDetailPage({
         }}
       />
       <article className="single-book page-container">
-        <h1 className="font-bold">
+        <h1>
           {book.title}
           {book.volumes && <span className="font-normal text-gray-400">({book.volumes})</span>}
         </h1>

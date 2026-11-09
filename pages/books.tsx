@@ -149,7 +149,7 @@ export default function BooksPage({ intro }: Props) {
     <>
       <Seo title="Books" description={descriptionText} />
       <article className="book-list page-container">
-        <h1 className="font-bold flex items-center">
+        <h1 className="flex items-center">
           <span {...deskShortcut}>Books</span>
           <a
             href="/api/rss"

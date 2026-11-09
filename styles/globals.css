@@ -173,6 +173,11 @@
     word-break: keep-all;
   }
 
+  /* 제목(h1)은 굵게 700 (dowha.kim과 동일) */
+  h1 {
+    @apply font-bold;
+  }
+
   h2 a,
   h3 a,
   h4 a,
@@ -347,7 +352,7 @@
 /* /desk/style 표기 규칙 문서 */
 /* 제목·날짜·소제목은 일반 글(.single-post)과 같게: 제목 700, 날짜 줄 작은 회색, 소제목 기본 gray-600 */
 .style-guide h1 {
-  @apply mb-0 font-bold;
+  @apply mb-0;
 }
 .style-guide h1 + p {
   @apply mt-0 mb-4 text-sm text-gray-500 tabular-nums;
