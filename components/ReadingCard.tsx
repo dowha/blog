@@ -10,7 +10,8 @@ interface Book {
   genre: string
   thumbnail?: string | null
   isReading?: boolean
-  content?: string | null
+  /** 감상(상세 페이지)이 있는지. 목록에는 감상문 전문 대신 이 값만 넘긴다 */
+  hasContent: boolean
   lang?: string
   volumes?: string | null
 }
@@ -59,7 +60,7 @@ export default function BookCard({ book, className }: BookCardProps) {
                 <span className="ml-0.5 shrink-0 text-sm font-normal text-gray-400">({book.volumes})</span>
               )}
               {/* 리뷰 언어 표시라 리뷰가 있는 책에만 */}
-              {book.content && <LangBadge lang={book.lang} />}
+              {book.hasContent && <LangBadge lang={book.lang} />}
             </h2>
             <span className="mt-1 text-sm text-gray-500 block">
               {book.author}

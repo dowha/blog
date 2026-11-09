@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import LangBadge from '@/components/LangBadge'
 import { supabase } from '@/supabase'
 import type { GetStaticProps } from 'next'
 import { fetchPageIntro } from '@/lib/pageIntro'
 import Seo from '@/components/Seo'
-import LoadingSpinner from '@/components/LoadingSpinner' // ✅ 추가
 
 type LinkItem = { title: string; slug: string; lang?: string }
 type BookItem = { title: string; author: string; slug: string; lang?: string; volumes?: string | null }
@@ -93,45 +91,33 @@ async function fetchMostLikedContent(): Promise<LikedContent[]> {
   return (data ?? []) as LikedContent[]
 }
 
-type Props = { intro: string }
+type Props = {
+  intro: string
+  latestShort: ShortItem | null
+  latestPost: LinkItem | null
+  latestBook: BookItem | null
+  mostLikedContent: LikedContent[]
+  currentlyReading: Omit<BookItem, 'slug'>[]
+}
 
-// 소개 문구만 서버에서 넣는다 (/desk 저장 시 즉시 재생성). 검색 설명은 Seo 기본값 유지
-export const getStaticProps: GetStaticProps<Props> = async () => ({
-  props: { intro: await fetchPageIntro('home') },
-  revalidate: 60,
-})
+// 모든 내용을 서버에서 넣어 60초마다 다시 만든다 (/desk 저장·삭제 시에는 즉시). 검색 설명은 Seo 기본값 유지
+// 많이 응원받은 글은 박수로만 바뀌고 자주 바뀌지 않아 60초 갱신에 맡긴다
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const [intro, latestShort, latestPost, latestBook, mostLikedContent, currentlyReading] = await Promise.all([
+    fetchPageIntro('home'),
+    fetchLatestShort(),
+    fetchLatestPost(),
+    fetchLatestReadBook(),
+    fetchMostLikedContent(),
+    fetchCurrentlyReadingBooks(),
+  ])
+  return {
+    props: { intro, latestShort, latestPost, latestBook, mostLikedContent, currentlyReading },
+    revalidate: 60,
+  }
+}
 
-export default function Home({ intro }: Props) {
-  const [latestShort, setLatestShort] = useState<ShortItem | null>(null)
-  const [latestPost, setLatestPost] = useState<LinkItem | null>(null)
-  const [latestBook, setLatestBook] = useState<BookItem | null>(null)
-  const [mostLikedContent, setMostLikedContent] = useState<LikedContent[]>([])
-  const [currentlyReading, setCurrentlyReading] = useState<Omit<BookItem, 'slug'>[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true)
-
-      const [short, post, book, mostLiked, reading] = await Promise.all([
-        fetchLatestShort(),
-        fetchLatestPost(),
-        fetchLatestReadBook(),
-        fetchMostLikedContent(),
-        fetchCurrentlyReadingBooks(),
-      ])
-
-      setLatestShort(short)
-      setLatestPost(post)
-      setLatestBook(book)
-      setMostLikedContent(mostLiked)
-      setCurrentlyReading(reading)
-      setIsLoading(false)
-    }
-
-    fetchData()
-  }, [])
-
+export default function Home({ intro, latestShort, latestPost, latestBook, mostLikedContent, currentlyReading }: Props) {
   return (
     <>
       <Seo />
@@ -141,10 +127,7 @@ export default function Home({ intro }: Props) {
           className="mt-4 index-contents text-keepall"
           dangerouslySetInnerHTML={{ __html: intro }}
         />
-        {isLoading ? (
-          <LoadingSpinner /> // ✅ 로딩 중일 때
-        ) : (
-          <>
+        <>
             {latestShort && (
               <div className="mt-6 bg-gray-100 py-2 px-3 rounded-lg">
                 <h2 className="font-semibold mt-0">
@@ -225,8 +208,7 @@ export default function Home({ intro }: Props) {
                 </ul>
               </div>
             )}
-          </>
-        )}
+        </>
       </article>
     </>
   )

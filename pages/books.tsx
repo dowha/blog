@@ -10,7 +10,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { LoadMoreButton } from '@/components/ActionButtons'
-import LoadingSpinner from '@/components/LoadingSpinner' // ✅ 추가
 
 interface Book {
   id: string
@@ -22,70 +21,68 @@ interface Book {
   thumbnail?: string
   isReading?: boolean
   slug: string
-  content?: string | null
+  /** 감상(상세 페이지)이 있는지 */
+  hasContent: boolean
   lang?: string
   volumes?: string | null
 }
 
-type Props = { intro: string }
+type Props = { intro: string; books: Book[]; genres: string[] }
 
-// 검색 설명이 첫 HTML에 들어가도록 소개 문구만 서버에서 넣는다 (/desk 저장 시 즉시 재생성)
-export const getStaticProps: GetStaticProps<Props> = async () => ({
-  props: { intro: await fetchPageIntro('books') },
-  revalidate: 60,
-})
+// 읽는 중인 책 먼저, 그다음 최근 등록순
+async function fetchBooks(): Promise<{ books: Book[]; genres: string[] }> {
+  const { data, error } = await supabase
+    .from('books')
+    .select('id, title, author, publisher, publication_year, genre, slug, thumbnail, content, is_reading, created_at, lang, volumes')
+  if (error || !data) {
+    console.error('books fetch 오류:', error)
+    return { books: [], genres: [] }
+  }
+  // 장르 버튼 순서는 예전처럼 DB에서 읽은 순서대로
+  const genres = Array.from(new Set(data.map((b) => b.genre).filter(Boolean)))
+  const books = [...data]
+    .sort((a, b) =>
+      !!a.is_reading === !!b.is_reading
+        ? new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        : a.is_reading ? -1 : 1
+    )
+    // 감상문 전문은 상세 페이지에서만 쓰므로 목록에는 있는지만 넘긴다
+    .map((b) => ({
+      id: b.id,
+      title: b.title,
+      author: b.author,
+      publisher: b.publisher,
+      publicationYear: b.publication_year,
+      genre: b.genre,
+      thumbnail: b.thumbnail,
+      isReading: !!b.is_reading,
+      slug: b.slug,
+      hasContent: !!b.content?.trim(),
+      lang: b.lang,
+      volumes: b.volumes,
+    }))
+  return { books, genres }
+}
 
-export default function BooksPage({ intro }: Props) {
+// 책 목록까지 서버에서 넣어 60초마다 다시 만든다 (/desk 저장·삭제 시에는 즉시)
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const [intro, { books, genres }] = await Promise.all([fetchPageIntro('books'), fetchBooks()])
+  return { props: { intro, books, genres }, revalidate: 60 }
+}
+
+export default function BooksPage({ intro, books, genres }: Props) {
   // 소유자 로그인 시 제목 더블클릭으로 /desk 진입
   const deskShortcut = useDeskShortcut('books')
   const router = useRouter()
-  const [books, setBooks] = useState<Book[]>([])
-  const [filteredBooks, setFilteredBooks] = useState<Book[]>([])
+  // 장르 필터는 주소의 #장르를 따른다. 첫 HTML에는 전체 목록을 그린다
+  const [filteredBooks, setFilteredBooks] = useState<Book[]>(books)
   const [selectedGenre, setSelectedGenre] = useState('전체')
-  const [isLoading, setIsLoading] = useState(true) // ✅ 로딩 상태 추가
 
-  const [visibleCount, setVisibleCount] = useState(8) // ✅ 추가
-  const LOAD_COUNT = 8 // ✅ 추가
+  const [visibleCount, setVisibleCount] = useState(8)
+  const LOAD_COUNT = 8
 
+  // 주소의 #장르로 필터 (첫 진입·뒤로가기)
   useEffect(() => {
-    async function fetchBooks() {
-      setIsLoading(true) // ✅ 로딩 시작
-      const { data, error } = await supabase
-        .from('books')
-        .select(
-          'id, title, author, publisher, publication_year, genre, slug, thumbnail, content, is_reading, created_at, lang, volumes'
-        )
-
-      if (error) {
-        console.error('books fetch 오류:', error)
-      } else {
-        const formattedData = data.map((book) => ({
-          ...book,
-          publicationYear: book.publication_year,
-          isReading: book.is_reading,
-        }))
-
-        const sortedData = formattedData.sort((a, b) => {
-          if (a.isReading === b.isReading) {
-            return (
-              new Date(b.created_at).getTime() -
-              new Date(a.created_at).getTime()
-            )
-          }
-          return a.isReading ? -1 : 1
-        })
-
-        setBooks(sortedData)
-      }
-      setIsLoading(false) // ✅ 로딩 종료
-    }
-
-    fetchBooks()
-  }, [])
-
-  // ✅ books 데이터가 로드된 후 URL hash 리스너 설정
-  useEffect(() => {
-    if (books.length === 0) return
 
     // URL 해시값을 읽어 필터 상태 업데이트 함수
     const handleHashChange = () => {
@@ -127,7 +124,7 @@ export default function BooksPage({ intro }: Props) {
 
   const handleFilterChange = useCallback((genre: string) => {
     setSelectedGenre(genre)
-    setVisibleCount(LOAD_COUNT) // ✅ 필터 변경 시 초기화
+    setVisibleCount(LOAD_COUNT) // 필터 변경 시 초기화
     if (genre === '전체') {
       // '전체'일 때는 해시 제거 (replace 사용하여 URL 깔끔하게 유지)
       router.replace('/books', undefined, { shallow: true })
@@ -140,7 +137,7 @@ export default function BooksPage({ intro }: Props) {
   }, [books, router])
 
   const handleLoadMore = () => {
-    setVisibleCount((prev) => prev + LOAD_COUNT) // ✅ "더 보기" 버튼 기능
+    setVisibleCount((prev) => prev + LOAD_COUNT)
   }
 
   const descriptionText = introToText(intro)
@@ -176,17 +173,15 @@ export default function BooksPage({ intro }: Props) {
         <p className="mt-4 text-keepall" dangerouslySetInnerHTML={{ __html: intro }} />
 
         <GenreFilter
+          genres={genres}
           selectedGenre={selectedGenre}
           onChange={handleFilterChange}
         />
 
-        {isLoading ? (
-          <LoadingSpinner /> // ✅ 로딩 중일 때
-        ) : (
-          <>
+        <>
             <div className="mt-8 grid grid-cols-1 gap-2 md:grid-cols-2">
               {filteredBooks.slice(0, visibleCount).map((book) =>
-                book.content ? (
+                book.hasContent ? (
                   <Link
                     key={book.id}
                     href={`/books/${book.slug}`}
@@ -209,8 +204,7 @@ export default function BooksPage({ intro }: Props) {
               loadMore={handleLoadMore}
               hasMore={visibleCount < filteredBooks.length}
             />
-          </>
-        )}
+        </>
       </article>
     </>
   )

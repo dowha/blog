@@ -5,8 +5,6 @@ import { fetchPageIntro, introToText } from '@/lib/pageIntro'
 import Seo from '@/components/Seo'
 import { useDeskShortcut } from '@/components/desk/useDeskShortcut'
 import { LoadMoreButton } from '@/components/ActionButtons'
-import LoadingSpinner from '@/components/LoadingSpinner'
-import { format, subDays } from 'date-fns'
 import { toast } from 'sonner'
 import ReactMarkdown from 'react-markdown'
 import remarkMark from '@/lib/remarkMark'
@@ -50,83 +48,89 @@ type GroupedShorts = {
   shorts: Short[]
 }
 
-type Props = { intro: string }
+type Props = { intro: string; shorts: Short[]; builtAt: number }
 
-// 검색 설명이 첫 HTML에 들어가도록 소개 문구만 서버에서 넣는다 (/desk 저장 시 즉시 재생성)
-export const getStaticProps: GetStaticProps<Props> = async () => ({
-  props: { intro: await fetchPageIntro('shorts') },
-  revalidate: 60,
+async function fetchShorts(): Promise<Short[]> {
+  const { data, error } = await supabase
+    .from('shorts')
+    .select(`
+      id,
+      short_id,
+      content,
+      created_at,
+      related_post_id,
+      related_post:posts!related_post_id (
+        title,
+        slug
+      ),
+      related_book_id,
+      related_book:books!related_book_id (
+        title,
+        slug
+      )
+    `)
+    .eq('is_published', true)
+    .order('created_at', { ascending: false })
+
+  if (!data || error) {
+    console.error('shorts fetch 오류:', error)
+    return []
+  }
+
+  // DB 응답(배열 형태의 relation)을 단일 객체 형태로 변환
+  return (data as ShortResponse[]).map((item) => ({
+    ...item,
+    related_post: (Array.isArray(item.related_post) ? item.related_post[0] : item.related_post) || null,
+    related_book: (Array.isArray(item.related_book) ? item.related_book[0] : item.related_book) || null,
+  }))
+}
+
+// 날짜 묶음은 방문자·서버 시간대와 상관없이 한국 시간 기준 ("2025.03.22. (Sat)")
+const KST_PARTS = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'Asia/Seoul',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  weekday: 'short',
 })
+function kstDateLabel(date: string | number) {
+  const p = Object.fromEntries(KST_PARTS.formatToParts(new Date(date)).map((x) => [x.type, x.value]))
+  return `${p.year}.${p.month}.${p.day}. (${p.weekday})`
+}
+const DAY = 24 * 60 * 60 * 1000
 
-export default function ShortsPage({ intro }: Props) {
+// 말풍선 옆 작성 시각 ("25.03.22.", "PM 3:05")
+const KST_TIME = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'Asia/Seoul',
+  year: '2-digit',
+  month: '2-digit',
+  day: '2-digit',
+  hour: 'numeric',
+  minute: '2-digit',
+  hour12: true,
+})
+function kstTime(date: string) {
+  const p = Object.fromEntries(KST_TIME.formatToParts(new Date(date)).map((x) => [x.type, x.value]))
+  return { date: `${p.year}.${p.month}.${p.day}.`, time: `${p.dayPeriod} ${p.hour}:${p.minute}` }
+}
+
+// 목록 전체(공개 83개 기준 약 26kB)를 서버에서 넣어 60초마다 다시 만든다 (/desk 저장·삭제 시에는 즉시).
+// 공유 링크(#번호)로 오래된 Shorts에 바로 갈 수 있도록 일부만 넣지 않는다
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const [intro, shorts] = await Promise.all([fetchPageIntro('shorts'), fetchShorts()])
+  return { props: { intro, shorts, builtAt: Date.now() }, revalidate: 60 }
+}
+
+export default function ShortsPage({ intro, shorts, builtAt }: Props) {
   // 소유자 로그인 시 제목 더블클릭으로 /desk 진입
   const deskShortcut = useDeskShortcut('shorts')
-  const [shorts, setShorts] = useState<Short[]>([])
   const [visibleCount, setVisibleCount] = useState(10)
   const [highlightedId, setHighlightedId] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  // '오늘' 판단 기준 시각: 첫 화면은 페이지를 만든 시각으로 그려 서버 HTML과 맞추고, 화면이 뜬 뒤 현재 시각으로 바꾼다
+  const [now, setNow] = useState(builtAt)
+  useEffect(() => setNow(Date.now()), [])
 
   const LOAD_COUNT = 10
-
-  // 1. 데이터 페칭 (마운트 시 1회 실행)
-  useEffect(() => {
-    async function fetchShorts() {
-      setIsLoading(true)
-
-      const { data: shortsData, error: shortsError } = await supabase
-        .from('shorts')
-        .select(`
-          id, 
-          short_id, 
-          content, 
-          created_at, 
-          related_post_id,
-          related_post:posts!related_post_id (
-            title,
-            slug
-          ),
-          related_book_id,
-          related_book:books!related_book_id (
-            title,
-            slug
-          )
-        `)
-        .eq('is_published', true)
-        .order('created_at', { ascending: false })
-
-      if (!shortsData || shortsError) {
-        console.error('shorts fetch 오류:', shortsError)
-        setIsLoading(false)
-        return
-      }
-
-      // DB 응답(배열 형태의 relation)을 프론트엔드 타입(단일 객체 형태)으로 변환
-      const formattedShorts: Short[] = (shortsData as ShortResponse[]).map((item) => {
-        const relatedPostData = Array.isArray(item.related_post)
-          ? item.related_post[0]
-          : item.related_post
-
-        const relatedBookData = Array.isArray(item.related_book)
-          ? item.related_book[0]
-          : item.related_book
-
-        return {
-          ...item,
-          related_post: relatedPostData || null,
-          related_book: relatedBookData || null,
-        }
-      })
-
-      setShorts(formattedShorts)
-      setIsLoading(false)
-    }
-
-    fetchShorts()
-  }, [])
-
-  // ... (skip lines 68-259)
-
-
 
   // 2. 해시 변경 감지 및 스크롤/하이라이팅 처리
   useEffect(() => {
@@ -195,7 +199,7 @@ export default function ShortsPage({ intro }: Props) {
 
   const groupedShorts: GroupedShorts[] = []
   visibleItems.forEach((item) => {
-    const dateLabel = format(new Date(item.created_at), 'yyyy.MM.dd. (E)')
+    const dateLabel = kstDateLabel(item.created_at)
     const lastGroup = groupedShorts[groupedShorts.length - 1]
 
     if (lastGroup && lastGroup.dateLabel === dateLabel) {
@@ -205,10 +209,9 @@ export default function ShortsPage({ intro }: Props) {
     }
   })
 
-  const today = new Date()
-  const todayLabel = format(today, 'yyyy.MM.dd. (E)')
-  const yesterdayLabel = format(subDays(today, 1), 'yyyy.MM.dd. (E)')
-  const dayBeforeYesterdayLabel = format(subDays(today, 2), 'yyyy.MM.dd. (E)')
+  const todayLabel = kstDateLabel(now)
+  const yesterdayLabel = kstDateLabel(now - DAY)
+  const dayBeforeYesterdayLabel = kstDateLabel(now - 2 * DAY)
 
   // ✅ [수정] 그저께 이전 날짜도 포맷팅하여 표시
   const getDayLabel = (dateLabel: string) => {
@@ -252,10 +255,7 @@ export default function ShortsPage({ intro }: Props) {
         </h1>
         <p className="mt-4 text-keepall text-gray-600" dangerouslySetInnerHTML={{ __html: intro }} />
 
-        {isLoading ? (
-          <LoadingSpinner />
-        ) : (
-          <>
+        <>
             <div className="mt-8 space-y-8">
               {!hasTodayPosts && <ThinkingBubble />}
 
@@ -367,10 +367,10 @@ export default function ShortsPage({ intro }: Props) {
 
                             <div className="flex flex-col text-[10px] text-gray-300 mb-1 whitespace-nowrap tabular-nums leading-tight opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                               <span>
-                                {format(new Date(item.created_at), 'yy.MM.dd.')}
+                                {kstTime(item.created_at).date}
                               </span>
                               <span>
-                                {format(new Date(item.created_at), 'a h:mm')}
+                                {kstTime(item.created_at).time}
                               </span>
                             </div>
                           </div>
@@ -390,8 +390,7 @@ export default function ShortsPage({ intro }: Props) {
                 />
               </div>
             )}
-          </>
-        )}
+        </>
       </article>
     </>
   )

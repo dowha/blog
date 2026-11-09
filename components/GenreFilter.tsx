@@ -1,30 +1,14 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-import { supabase } from '@/supabase'
-
+/** 장르 목록은 책 목록과 함께 서버(pages/books.tsx getStaticProps)에서 받는다 */
 export default function GenreFilter({
+  genres: bookGenres,
   selectedGenre,
   onChange,
 }: {
+  genres: string[]
   selectedGenre: string
   onChange: (genre: string) => void
 }) {
-  const [genres, setGenres] = useState<string[]>(['전체'])
-  useEffect(() => {
-    async function fetchGenres() {
-      const { data, error } = await supabase.from('books').select('genre')
-
-      if (error) {
-        console.error('Error fetching genres:', error)
-      } else {
-        // 중복 제거 후 배열로 저장
-        const uniqueGenres = Array.from(new Set(data.map((book) => book.genre)))
-        setGenres(['전체', ...uniqueGenres])
-      }
-    }
-    fetchGenres()
-  }, [])
+  const genres = ['전체', ...bookGenres]
 
   // ✅ 버튼 클릭 시 onChange만 호출 (URL 변경은 부모 컴포넌트에서 처리)
   const handleGenreChange = (genre: string) => {
