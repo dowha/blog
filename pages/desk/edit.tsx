@@ -13,6 +13,7 @@ import { notifyChanged } from '@/lib/indexnow'
 import remarkMark from '@/lib/remarkMark'
 import { normalizeQuotes } from '@/lib/styleCheck'
 import StyleHints from '@/components/desk/StyleHints'
+import SpellCheck from '@/components/desk/SpellCheck'
 import ConfirmDialog from '@/components/desk/ConfirmDialog'
 
 // react-md-editor는 window 의존 → SSR 비활성화
@@ -974,6 +975,17 @@ export default function DeskEdit() {
                 fields={[
                   { label: '제목', text: isShort ? '' : form.title, headline: !isBook },
                   { label: '부제', text: isPost || isBook ? form.subtitle : '', headline: !isBook },
+                  { label: '설명', text: isSeries ? form.description : '' },
+                  { label: '본문', text: isSeries ? '' : form.content },
+                ]}
+              />
+            )}
+
+            {!isExternal && (
+              <SpellCheck
+                fields={[
+                  { label: '제목', text: isShort ? '' : form.title },
+                  { label: '부제', text: isPost || isBook ? form.subtitle : '' },
                   { label: '설명', text: isSeries ? form.description : '' },
                   { label: '본문', text: isSeries ? '' : form.content },
                 ]}
