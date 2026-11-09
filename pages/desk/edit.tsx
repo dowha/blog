@@ -949,7 +949,7 @@ export default function DeskEdit() {
                   className="w-full resize-y rounded border border-gray-200 p-3 text-sm leading-6 text-gray-800 outline-none placeholder:text-gray-300 focus:border-gray-400"
                 />
                 <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-gray-400">굵게(**), 기울임(*)만 화면에 표시됩니다</span>
+                  <span className="text-gray-400">굵게(**), 기울임(*), 하이라이트(==)만 화면에 표시됩니다</span>
                   <span className={shortOver ? 'font-medium text-[#c8481c]' : 'text-gray-400'}>
                     {shortLength} / {SHORTS_MAX_LENGTH}
                   </span>
