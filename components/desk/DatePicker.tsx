@@ -4,7 +4,7 @@
  * 날짜 선택기 (라이브러리 없이 만든 작은 팝오버 달력)
  * - DateTimePicker: 날짜 + 시각. 값은 datetime-local 형식 'YYYY-MM-DDTHH:mm' 또는 ''
  * - MonthPicker: 연월. 값은 'YYYY-MM'
- * ⚠️ hello/components/ui/date-picker.tsx와 같은 내용을 유지한다. 한쪽을 고치면 다른 쪽도 고칠 것.
+ * ⚠️ hello/components/ui/date-picker.tsx와 같은 내용을 유지한다. 한쪽을 고치면 다른 쪽도 고치고 blog에서 pnpm check:family로 확인할 것.
  */
 
 import { useEffect, useRef, useState, type ReactNode } from 'react'

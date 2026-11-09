@@ -16,9 +16,9 @@ type Props = {
 }
 
 /**
- * /desk 전용 확인 다이얼로그.
- * 목록에서 클릭 한 번으로 발행/읽기 상태가 즉시 바뀌던 것을 한 단계 막는 용도.
- * ⚠️ hello/components/wave/confirm-dialog.tsx와 같은 내용을 유지한다. 한쪽을 고치면 다른 쪽도 고칠 것.
+ * 관리자 화면(blog /desk, hello /wave) 확인 다이얼로그.
+ * 되돌릴 수 없는 작업이나 상태 변경 전에 한 번 묻는다.
+ * ⚠️ hello/components/wave/confirm-dialog.tsx와 같은 내용을 유지한다. 한쪽을 고치면 다른 쪽도 고치고 blog에서 pnpm check:family로 확인할 것.
  */
 export default function ConfirmDialog({
   open,

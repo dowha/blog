@@ -2,7 +2,7 @@
  * 관리자 화면(blog /desk · hello /wave) 공통 버튼·입력칸 스타일
  * 줄 높이(leading)를 직접 지정해 감싸는 목록·문단의 줄 높이에 영향받지 않게 한다
  * 색 체계: 주 동작 brand(hover brand-dark), 위험 warn, 나머지 회색 (tailwind.config.ts 색 이름)
- * ⚠️ hello/components/wave/ui.ts와 같은 내용을 유지한다. 한쪽을 고치면 다른 쪽도 고칠 것.
+ * ⚠️ hello/components/wave/ui.ts와 같은 내용을 유지한다. 한쪽을 고치면 다른 쪽도 고치고 blog에서 pnpm check:family로 확인할 것.
  */
 
 // 큰 버튼은 모두 높이 28px (테두리 2 + 위아래 여백 8 + 줄 높이 18). 테두리가 없는 버튼도 투명 테두리로 높이를 맞춘다

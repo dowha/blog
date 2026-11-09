@@ -3,7 +3,7 @@
  *
  * 기계가 정확히 잡을 수 있는 것만 경고한다. 예외(창작자 원제 등)가 있는 규칙이라
  * 저장을 막지 않고, 둥근 따옴표만 저장할 때 자동으로 고친다.
- * ⚠️ hello/lib/styleCheck.ts와 같은 내용을 유지한다. 한쪽을 고치면 다른 쪽도 고칠 것.
+ * ⚠️ hello/lib/styleCheck.ts와 같은 내용을 유지한다. 한쪽을 고치면 다른 쪽도 고치고 blog에서 pnpm check:family로 확인할 것.
  */
 
 export type StyleIssue = {
