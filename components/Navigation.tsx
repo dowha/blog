@@ -41,7 +41,7 @@ export function Navigation() {
   return (
     <nav
       // 모바일·태블릿에서는 상단 고정, PC(lg)에서는 기존 사이드 메뉴 그대로
-      className="sticky top-0 z-30 w-full border-b border-gray-100 bg-[#FCFCFC]/90 px-6 py-4 text-gray-500 backdrop-blur lg:static lg:z-auto lg:w-64 lg:mr-6 lg:mb-0 lg:border-0 lg:bg-transparent lg:p-6 lg:backdrop-blur-none"
+      className="sticky top-0 z-30 w-full border-b border-gray-100 bg-page/90 px-6 py-4 text-gray-500 backdrop-blur lg:static lg:z-auto lg:w-64 lg:mr-6 lg:mb-0 lg:border-0 lg:bg-transparent lg:p-6 lg:backdrop-blur-none"
       aria-label="메뉴"
     >
       <div className="space-y-2">
@@ -54,7 +54,7 @@ export function Navigation() {
               <li key={item.path}>
                 <Link
                   href={item.path}
-                  className={`relative hover:text-[#0086FF] ${isActive ? 'font-semibold text-gray-800' : ''
+                  className={`relative hover:text-brand ${isActive ? 'font-semibold text-gray-800' : ''
                     }`}
                   aria-current={isActive ? 'page' : undefined}
                 >
@@ -69,7 +69,7 @@ export function Navigation() {
                   {/* 새 게시물(records는 최신 수정)이 가장 최근인 섹션 표시. absolute라 오른쪽 정렬된 글자 위치를 밀지 않는다 */}
                   {latestPath === item.path && (
                     <span
-                      className="absolute left-full top-1/2 ml-1 hidden h-3 w-3 translate-y-[calc(-50%+1px)] items-center justify-center rounded-[3px] bg-[#ee6033] text-[8px] font-bold normal-case leading-none text-white lg:inline-flex"
+                      className="absolute left-full top-1/2 ml-1 hidden h-3 w-3 translate-y-[calc(-50%+1px)] items-center justify-center rounded-[3px] bg-warn-light text-[8px] font-bold normal-case leading-none text-white lg:inline-flex"
                       title="최근 업데이트"
                       aria-hidden="true"
                     >
@@ -86,7 +86,7 @@ export function Navigation() {
           <li>
             <a
               href="https://dowha.kim"
-              className="group inline-flex items-center hover:text-[#0086FF]"
+              className="group inline-flex items-center hover:text-brand"
               target="_blank"
               rel="noopener"
               aria-label="about"

@@ -15,7 +15,7 @@ const HOURS = Array.from({ length: 24 }, (_, i) => i)
 const MINUTES = Array.from({ length: 60 }, (_, i) => i)
 
 // 사이트 색 체계: 선택은 파랑, 나머지는 회색
-const SELECTED = 'bg-[#006fd6] text-white hover:bg-[#006fd6]'
+const SELECTED = 'bg-brand-dark text-white hover:bg-brand-dark'
 const NAV_BTN = 'flex h-6 w-6 items-center justify-center rounded text-gray-400 hover:bg-gray-100 hover:text-gray-700'
 const TEXT_BTN = 'rounded px-1.5 py-0.5 text-gray-500 hover:bg-gray-100 hover:text-gray-800'
 
@@ -195,7 +195,7 @@ function DateTimePanel({
               aria-pressed={selected}
               aria-label={`${view.y}년 ${view.m}월 ${d}일`}
               className={`h-7 rounded tabular-nums ${
-                selected ? SELECTED : isToday ? 'font-semibold text-[#006fd6] hover:bg-gray-100' : 'hover:bg-gray-100'
+                selected ? SELECTED : isToday ? 'font-semibold text-brand-dark hover:bg-gray-100' : 'hover:bg-gray-100'
               }`}
             >
               {d}
@@ -327,7 +327,7 @@ function MonthPanel({
               }}
               aria-pressed={selected}
               className={`rounded py-1.5 ${
-                selected ? SELECTED : isNow ? 'font-semibold text-[#006fd6] hover:bg-gray-100' : 'hover:bg-gray-100'
+                selected ? SELECTED : isNow ? 'font-semibold text-brand-dark hover:bg-gray-100' : 'hover:bg-gray-100'
               }`}
             >
               {m}월

@@ -52,8 +52,8 @@ export default function SpellCheck({ fields }: { fields: SpellField[] }) {
   return (
     <div className="mt-2 rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-[11px] text-gray-500">
       <div className="flex items-center justify-between">
-        {/* 색은 /desk 공통 체계: 경고 주황 #c8481c, 제안 파랑 #006fd6 */}
-        <span className={warn ? 'font-medium text-[#c8481c]' : ''}>{summary}</span>
+        {/* 색은 /desk 공통 체계: 경고 warn, 제안 brand-dark */}
+        <span className={warn ? 'font-medium text-warn' : ''}>{summary}</span>
         <button
           type="button"
           onClick={run}
@@ -69,7 +69,7 @@ export default function SpellCheck({ fields }: { fields: SpellField[] }) {
             <li key={idx} className="!mb-0 list-none">
               <span className="text-gray-800">{i.origin}</span>
               {' → '}
-              <span className="font-medium text-[#006fd6]">{i.revised}</span>
+              <span className="font-medium text-brand-dark">{i.revised}</span>
               {/* 대부분 본문이라 본문이 아닐 때만 칸 이름을 붙인다 */}
               {(i.field !== '본문' || (i.count ?? 1) > 1) && (
                 <span className="ml-1.5 text-gray-400">

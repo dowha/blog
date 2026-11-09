@@ -780,7 +780,7 @@ export default function DeskEdit() {
                       placeholder="#FFFFFF"
                       maxLength={7}
                       className={`w-[5.5rem] rounded-md border px-2 py-1 font-mono text-[11px] outline-none focus:border-gray-400 ${
-                        validColor ? 'border-gray-200 text-gray-700' : 'border-[#f8c8b5] text-[#c8481c]'
+                        validColor ? 'border-gray-200 text-gray-700' : 'border-warn-border text-warn'
                       }`}
                     />
                   </label>
@@ -920,7 +920,7 @@ export default function DeskEdit() {
               <span
                 className={`ml-auto rounded-full px-2.5 py-1 text-[11px] ${
                   (isBook ? bookPublic : form.is_published)
-                    ? 'bg-[#eef6ff] text-[#006fd6]'
+                    ? 'bg-brand-bg text-brand-dark'
                     : 'bg-gray-100 text-gray-500'
                 }`}
                 title={isBook ? '리뷰(본문)가 있어야 상세 페이지가 공개됩니다.' : undefined}
@@ -930,7 +930,7 @@ export default function DeskEdit() {
             </div>
 
             {brokenRel && (
-              <p className="-mt-2 text-[11px] text-[#c8481c]">
+              <p className="-mt-2 text-[11px] text-warn">
                 ⚠︎ 표시된 항목은 공개된 상세 페이지가 없어 링크가 404가 됩니다.
               </p>
             )}
@@ -960,7 +960,7 @@ export default function DeskEdit() {
                 />
                 <div className="flex items-center justify-between text-[11px]">
                   <span className="text-gray-400">굵게(**), 기울임(*), 하이라이트(==)만 화면에 표시됩니다</span>
-                  <span className={shortOver ? 'font-medium text-[#c8481c]' : 'text-gray-400'}>
+                  <span className={shortOver ? 'font-medium text-warn' : 'text-gray-400'}>
                     {shortLength} / {SHORTS_MAX_LENGTH}
                   </span>
                 </div>

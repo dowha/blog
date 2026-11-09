@@ -134,7 +134,7 @@ function IntroItem({
           {meta.path}
         </a>
         {!meta.visible && (
-          <span className="text-[11px] font-medium text-[#006fd6]">화면 비노출 · 검색 설명 전용</span>
+          <span className="text-[11px] font-medium text-brand-dark">화면 비노출 · 검색 설명 전용</span>
         )}
       </div>
       <textarea
@@ -151,7 +151,7 @@ function IntroItem({
         />
       )}
       <div className="flex items-center gap-3 text-[11px] text-gray-400">
-        <span className={text.length > DESC_HINT ? 'text-[#c8481c]' : ''}>
+        <span className={text.length > DESC_HINT ? 'text-warn' : ''}>
           검색 설명 {text.length}자{meta.key === 'home' ? ' (home 검색 설명은 별도 기본값 사용)' : ''}
         </span>
         <span>수정 {row.updated_at.slice(0, 16).replace('T', ' ')}</span>

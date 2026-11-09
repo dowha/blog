@@ -312,7 +312,7 @@ export default function DeskHome() {
                     <button
                       onClick={() => setPending(p)}
                       className={`shrink-0 text-[11px] font-medium hover:underline ${
-                        active ? 'text-[#006fd6]' : 'text-gray-500'
+                        active ? 'text-brand-dark' : 'text-gray-500'
                       }`}
                       title={isBooks ? '클릭하여 읽는 중/읽음 전환' : '클릭하여 발행/초안 전환'}
                     >
