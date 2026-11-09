@@ -257,7 +257,7 @@ export default function DeskHome() {
                     ? router.push('/desk/intros')
                     : changeSection(e.target.value as Section)
                 }
-                className="rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
+                className="rounded-md border border-gray-200 px-2.5 py-[5px] text-xs text-gray-700 outline-none focus:border-gray-400"
                 aria-label="섹션 선택"
               >
                 {SECTIONS.map((s) => (

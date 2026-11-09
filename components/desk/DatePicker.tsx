@@ -20,7 +20,7 @@ const NAV_BTN = 'flex h-6 w-6 items-center justify-center rounded text-gray-400 
 const TEXT_BTN = 'rounded px-1.5 py-0.5 text-gray-500 hover:bg-gray-100 hover:text-gray-800'
 
 const DEFAULT_TRIGGER =
-  'inline-flex items-center gap-1.5 rounded-md border border-gray-200 bg-white px-2 py-1 text-xs text-gray-700 outline-none transition-colors hover:border-gray-400 focus-visible:border-gray-400'
+  'inline-flex items-center gap-1.5 rounded-md border border-gray-200 bg-white px-2.5 py-[5px] text-xs text-gray-700 outline-none transition-colors hover:border-gray-400 focus-visible:border-gray-400'
 
 type Parts = { y: number; m: number; d: number; hh: number; mm: number }
 

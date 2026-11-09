@@ -79,7 +79,7 @@ export default function ConfirmDialog({
               }}
               disabled={busy}
               placeholder={requireText}
-              className="mt-1.5 w-full rounded-md border border-gray-200 px-2 py-1.5 text-xs text-gray-800 outline-none placeholder:text-gray-300 focus:border-gray-400"
+              className="mt-1.5 w-full rounded-md border border-gray-200 px-2.5 py-[5px] text-xs text-gray-800 outline-none placeholder:text-gray-300 focus:border-gray-400"
             />
           </label>
         )}

@@ -60,7 +60,7 @@ export default function DeskIntros() {
             <select
               value="intros"
               onChange={(e) => router.push(deskViewHref(e.target.value as DeskView))}
-              className="mb-4 rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-700 outline-none focus:border-gray-400"
+              className="mb-4 rounded-md border border-gray-200 px-2.5 py-[5px] text-xs text-gray-700 outline-none focus:border-gray-400"
               aria-label="섹션 선택"
             >
               {SECTIONS.map((s) => (
