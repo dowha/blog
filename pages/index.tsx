@@ -53,18 +53,18 @@ function renderEmphasis(text: string) {
 
 type ShortItem = { short_id: number; content: string }
 
-// 요즘 생각: 공개된 최신 short 1개
+// 요즘 생각: 공개된 최근 5개 중 랜덤 1개 (서버에서 선택 → revalidate 주기로 로테이션)
 async function fetchLatestShort(): Promise<ShortItem | null> {
   const { data, error } = await supabase
     .from('shorts')
     .select('short_id, content')
     .eq('is_published', true)
     .order('created_at', { ascending: false })
-    .limit(1)
-    .maybeSingle()
+    .limit(5)
 
   if (error) console.error('최신 short fetch 오류:', error)
-  return data ?? null
+  if (!data || data.length === 0) return null
+  return data[Math.floor(Math.random() * data.length)]
 }
 
 // 현재 읽고 있는 책 가져오기
