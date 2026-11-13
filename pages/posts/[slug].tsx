@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkMark from '@/lib/remarkMark'
 import Copyright from '@/components/Copyright'
+import LangBadge from '@/components/LangBadge'
 import Seo from '@/components/Seo'
 import {
   ScrollToTopButton,
@@ -166,7 +167,10 @@ export default function PostPage({
         }}
       />
       <article className="single-post page-container">
-        <h1>{post.title}</h1>
+        <h1>
+          {post.title}
+          <LangBadge lang={post.lang} size="md" />
+        </h1>
         {post.subtitle && <h2 className="subtitle mt-0">{post.subtitle}</h2>}
         <p className="text-sm text-gray-500 tabular-nums mb-4">
           {formatKstDate(post.created_at)}{' '}

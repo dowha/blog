@@ -1,6 +1,7 @@
 import { supabase } from '@/supabase'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import MarkdownContent from '@/components/MarkdownContent'
+import LangBadge from '@/components/LangBadge'
 import Seo from '@/components/Seo'
 import Copyright from '@/components/Copyright'
 import {
@@ -71,6 +72,7 @@ export default function BookDetailPage({
         <h1>
           {book.title}
           {book.volumes && <span className="font-normal text-gray-400">({book.volumes})</span>}
+          <LangBadge lang={book.lang} size="md" />
         </h1>
         {book.subtitle && <h2 className="subtitle mt-0">{book.subtitle}</h2>}
         <p className="text-sm text-gray-500 mb-4">
