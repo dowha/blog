@@ -117,9 +117,9 @@ export default function DeskHome() {
   const load = async () => {
     setFetching(true)
     const cols = isPosts
-      ? 'id,title,slug,is_published,is_external,updated_at,created_at'
+      ? 'id,title,slug,is_published,is_external,updated_at,created_at,content'
       : isBooks
-        ? 'id,title,slug,is_reading,created_at'
+        ? 'id,title,slug,is_reading,created_at,content'
         : isShorts
           ? 'id,short_id,content,is_published,created_at'
           : isSeries
@@ -198,10 +198,16 @@ export default function DeskHome() {
       ? (p.content ?? '').replace(/\s+/g, ' ').trim() || '(내용 없음)'
       : p.title || '(제목 없음)'
   const rowMeta = (p: Row) => (isShorts ? `#${p.short_id ?? '-'}` : p.slug || '—')
+  // 본문 글자수(코드포인트 기준, 이모지도 1자). content가 있는 섹션만 표시
+  const charCount = (p: Row) => (typeof p.content === 'string' ? [...p.content].length : null)
   // series엔 날짜 컬럼이 없어 slug만 보여준다.
   // 목록 정렬 기준(created_at)과 맞춰 생성일을 표시한다(없으면 수정일로 대체)
-  const rowSub = (p: Row) =>
-    isSeries ? rowMeta(p) : `${rowMeta(p)}, ${fmt(p.created_at || p.updated_at)}`
+  const rowSub = (p: Row) => {
+    if (isSeries) return rowMeta(p)
+    const base = `${rowMeta(p)}, ${fmt(p.created_at || p.updated_at)}`
+    const n = charCount(p)
+    return n != null ? `${base} · ${n.toLocaleString()}자` : base
+  }
 
   const editHref = (id?: string) => ({
     pathname: '/desk/edit',
