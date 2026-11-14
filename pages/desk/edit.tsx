@@ -566,6 +566,8 @@ export default function DeskEdit() {
   // shorts 길이는 DB CHECK와 같은 규칙으로 센다(마크다운 문법 제외).
   const shortLength = pureTextLength(form.content)
   const shortOver = isShort && shortLength > SHORTS_MAX_LENGTH
+  // 글·책 본문 글자수(코드포인트 기준, 이모지도 1자). Shorts와 달리 상한은 없다.
+  const bodyLength = [...form.content].length
   const genreOptions =
     form.genre && !customGenre && !genres.includes(form.genre) ? [form.genre, ...genres] : genres
   const validColor = HEX_COLOR.test(form.theme_color)
@@ -990,7 +992,7 @@ export default function DeskEdit() {
                 </div>
               </div>
             ) : (
-              <div data-color-mode="light">
+              <div className="flex flex-col gap-1.5" data-color-mode="light">
                 <MDEditor
                   value={form.content}
                   onChange={(v) => set('content', v ?? '')}
@@ -1001,6 +1003,10 @@ export default function DeskEdit() {
                     placeholder: isBook ? '리뷰 (마크다운, 비우면 비공개)' : '본문 (마크다운)',
                   }}
                 />
+                {/* 본문 글자수(코드포인트 기준, 이모지도 1자). 마크다운 문법 포함 원문 길이 */}
+                <div className="text-right text-[11px] text-gray-400">
+                  {bodyLength.toLocaleString()}자
+                </div>
               </div>
             )}
 
