@@ -199,8 +199,9 @@ export default function DeskHome() {
       : p.title || '(제목 없음)'
   const rowMeta = (p: Row) => (isShorts ? `#${p.short_id ?? '-'}` : p.slug || '—')
   // series엔 날짜 컬럼이 없어 slug만 보여준다.
+  // 목록 정렬 기준(created_at)과 맞춰 생성일을 표시한다(없으면 수정일로 대체)
   const rowSub = (p: Row) =>
-    isSeries ? rowMeta(p) : `${rowMeta(p)}, ${fmt(p.updated_at || p.created_at)}`
+    isSeries ? rowMeta(p) : `${rowMeta(p)}, ${fmt(p.created_at || p.updated_at)}`
 
   const editHref = (id?: string) => ({
     pathname: '/desk/edit',
