@@ -542,7 +542,7 @@ export default function DeskEdit() {
     backToList()
   }
 
-  // 글을 Shorts로 옮긴다. 원본은 지우지 않고 초안으로 내려 되돌릴 여지를 남긴다.
+  // 글을 Shorts로 옮긴다. 본문은 Shorts로 남으므로 원본 글은 삭제한다.
   const convertToShort = async () => {
     if (!canConvert || !id) return
     if (convertOver) return toast.error(`Shorts는 순수 텍스트 ${SHORTS_MAX_LENGTH}자를 넘을 수 없습니다.`)
@@ -562,10 +562,17 @@ export default function DeskEdit() {
       setConverting(false)
       return toast.error('변환 실패: ' + (error?.message ?? '알 수 없는 오류'))
     }
-    // 2) 원본 글을 초안으로 내린다 (공개 중이었으면 상세·목록에서 바로 빠지도록 IndexNow 알림)
-    const { error: upErr } = await supabase.from('posts').update({ is_published: false }).eq('id', id)
-    if (upErr) {
-      toast.error('Shorts는 만들었지만 원본 글을 초안으로 내리지 못했습니다: ' + upErr.message)
+    // 2) 원본 글 삭제 (본문은 Shorts로 옮겨졌다. 공개 중이었으면 상세·목록에서 바로 빠지도록 IndexNow 알림)
+    const { data: del, error: delErr } = await supabase
+      .from('posts')
+      .delete()
+      .eq('id', id)
+      .select('id')
+    if (delErr || !del?.length) {
+      toast.error(
+        'Shorts는 만들었지만 원본 글을 삭제하지 못했습니다: ' +
+          (delErr?.message ?? '권한이 없거나 이미 삭제되었습니다.')
+      )
     } else if (origPublic) {
       notifyChanged(pagesFor('post', [origSlug]))
     }
@@ -1113,14 +1120,11 @@ export default function DeskEdit() {
 
             <ConfirmDialog
               open={convertOpen}
-              message={`이 글을 Shorts로 옮깁니다.\n제목은 본문 맨 앞에 굵게 붙습니다.\n${
-                origPublic
-                  ? '발행 중인 글이라 원본은 초안(비공개)으로 내려갑니다.'
-                  : '원본 글은 초안으로 남습니다.'
-              }\n새 Shorts는 초안으로 만들어집니다.`}
+              message={`이 글을 Shorts로 옮깁니다.\n제목은 본문 맨 앞에 굵게 붙습니다.\n원본 글은 삭제됩니다(본문은 Shorts로 남습니다).\n새 Shorts는 초안으로 만들어집니다.`}
               confirmLabel="변환"
               busyLabel="변환 중…"
               busy={converting}
+              danger
               onConfirm={convertToShort}
               onCancel={() => setConvertOpen(false)}
             />
