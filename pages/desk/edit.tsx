@@ -139,6 +139,8 @@ export default function DeskEdit() {
   const [uploading, setUploading] = useState(false)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [convertOpen, setConvertOpen] = useState(false)
+  const [converting, setConverting] = useState(false)
   const [emojiOpen, setEmojiOpen] = useState(false)
   const [customGenre, setCustomGenre] = useState(false)
   const [loadingPost, setLoadingPost] = useState(false)
@@ -540,6 +542,42 @@ export default function DeskEdit() {
     backToList()
   }
 
+  // 글을 Shorts로 옮긴다. 원본은 지우지 않고 초안으로 내려 되돌릴 여지를 남긴다.
+  const convertToShort = async () => {
+    if (!canConvert || !id) return
+    if (convertOver) return toast.error(`Shorts는 순수 텍스트 ${SHORTS_MAX_LENGTH}자를 넘을 수 없습니다.`)
+    setConverting(true)
+    // 편집 폼의 작성 시각은 분 단위라 초가 잘린다. 원본 timestamptz를 그대로 승계한다.
+    const { data: orig } = await supabase.from('posts').select('created_at').eq('id', id).single()
+    const payload: Record<string, unknown> = {
+      content: normalizeQuotes(convertBody),
+      is_published: false, // 새 Shorts는 초안으로 만들어 내용을 확인한 뒤 발행하게 한다
+    }
+    const createdAt = (orig as { created_at?: string } | null)?.created_at
+    if (createdAt) payload.created_at = createdAt
+
+    // 1) Shorts 생성 (short_id는 트리거가 채번)
+    const { data, error } = await supabase.from('shorts').insert(payload).select('id').single()
+    if (error || !data) {
+      setConverting(false)
+      return toast.error('변환 실패: ' + (error?.message ?? '알 수 없는 오류'))
+    }
+    // 2) 원본 글을 초안으로 내린다 (공개 중이었으면 상세·목록에서 바로 빠지도록 IndexNow 알림)
+    const { error: upErr } = await supabase.from('posts').update({ is_published: false }).eq('id', id)
+    if (upErr) {
+      toast.error('Shorts는 만들었지만 원본 글을 초안으로 내리지 못했습니다: ' + upErr.message)
+    } else if (origPublic) {
+      notifyChanged(pagesFor('post', [origSlug]))
+    }
+
+    setConverting(false)
+    setConvertOpen(false)
+    toast.success('Shorts로 옮겼습니다. 내용을 확인하고 발행하세요.')
+    // 폼이 바뀐 상태로 떠나도 경고하지 않고 새 Shorts 편집 화면으로 이동
+    allowLeave()
+    router.push({ pathname: '/desk/edit', query: { type: 'short', id: data.id } })
+  }
+
   // 다른 /desk 화면과 같은 여백(page-container) 안에 보여준다
   if (loading)
     return (
@@ -568,6 +606,11 @@ export default function DeskEdit() {
   const shortOver = isShort && shortLength > SHORTS_MAX_LENGTH
   // 글·책 본문 글자수(코드포인트 기준, 이모지도 1자). Shorts와 달리 상한은 없다.
   const bodyLength = [...form.content].length
+  // 글 → Shorts 변환: 제목을 본문 맨 앞에 굵게 붙인다. 외부 글은 본문이 없어 제외.
+  const canConvert = isPost && !isExternal && !!id
+  const convertBody = form.title.trim() ? `**${form.title.trim()}**\n\n${form.content}` : form.content
+  // Shorts 길이 제한은 DB CHECK와 같은 규칙(마크다운 문법 제외)으로 센다.
+  const convertOver = canConvert && pureTextLength(convertBody) > SHORTS_MAX_LENGTH
   const genreOptions =
     form.genre && !customGenre && !genres.includes(form.genre) ? [form.genre, ...genres] : genres
   const validColor = HEX_COLOR.test(form.theme_color)
@@ -1042,15 +1085,45 @@ export default function DeskEdit() {
                       ? '리뷰가 공개된 책은 리뷰를 비우고 저장한 뒤 삭제할 수 있습니다.'
                       : '발행된 항목은 초안으로 저장한 뒤 삭제할 수 있습니다.'}
                 </span>
-                <button
-                  onClick={() => setDeleteOpen(true)}
-                  disabled={!canDelete}
-                  className={BTN_DANGER_SMALL}
-                >
-                  삭제
-                </button>
+                <div className="flex items-center gap-2">
+                  {canConvert && (
+                    <button
+                      onClick={() => setConvertOpen(true)}
+                      disabled={converting || convertOver}
+                      className={BTN_SMALL}
+                      title={
+                        convertOver
+                          ? `순수 텍스트 ${SHORTS_MAX_LENGTH}자 이하만 Shorts로 옮길 수 있습니다`
+                          : '이 글을 Shorts로 옮깁니다 (제목은 본문 맨 앞에 붙습니다)'
+                      }
+                    >
+                      Shorts로 변환
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setDeleteOpen(true)}
+                    disabled={!canDelete}
+                    className={BTN_DANGER_SMALL}
+                  >
+                    삭제
+                  </button>
+                </div>
               </div>
             )}
+
+            <ConfirmDialog
+              open={convertOpen}
+              message={`이 글을 Shorts로 옮깁니다.\n제목은 본문 맨 앞에 굵게 붙습니다.\n${
+                origPublic
+                  ? '발행 중인 글이라 원본은 초안(비공개)으로 내려갑니다.'
+                  : '원본 글은 초안으로 남습니다.'
+              }\n새 Shorts는 초안으로 만들어집니다.`}
+              confirmLabel="변환"
+              busyLabel="변환 중…"
+              busy={converting}
+              onConfirm={convertToShort}
+              onCancel={() => setConvertOpen(false)}
+            />
 
             <ConfirmDialog
               open={deleteOpen}
