@@ -253,7 +253,7 @@ export default function DeskHome() {
               </h1>
               <div className="flex items-center gap-3">
                 <Link href="/style-guide" target="_blank" className="text-xs text-gray-400 hover:text-gray-700">
-                  표기 지침 ↗
+                  표기 지침
                 </Link>
                 <button onClick={() => router.push(editHref())} className={BTN_SECONDARY}>
                   + 새 {noun}

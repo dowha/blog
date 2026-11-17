@@ -17,7 +17,7 @@ export default function StyleHints({ fields }: { fields: Field[] }) {
           {issues.length ? `표기 확인 ${issues.length}건` : '표기 확인: 이상 없음'}
         </span>
         <Link href="/style-guide" target="_blank" className="text-gray-400 hover:text-gray-700">
-          표기 지침 ↗
+          표기 지침
         </Link>
       </div>
       {issues.length > 0 && (
