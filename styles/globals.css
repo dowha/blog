@@ -166,6 +166,33 @@
     margin-top: 0.75em;
   }
 
+  /* 각주 (DO-5): 본문에 [^1], 아래에 [^1]: 내용 으로 쓴다. 하단 '각주' 제목은 sr-only로 숨김 */
+  sup:has(> a[data-footnote-ref]) {
+    line-height: 0;
+  }
+
+  sup > a[data-footnote-ref] {
+    @apply text-brand no-underline hover:text-brand-dark tabular-nums;
+    font-size: 0.75em;
+    padding: 0 0.1em;
+  }
+
+  section.footnotes {
+    @apply mt-10 pt-4 border-t border-gray-200 text-xs leading-[1.6] sm:text-sm text-gray-500;
+  }
+
+  section.footnotes ol {
+    @apply list-decimal pl-5 space-y-0 marker:text-gray-400;
+  }
+
+  section.footnotes li p {
+    @apply m-0;
+  }
+
+  section.footnotes a.data-footnote-backref {
+    @apply ml-1 no-underline text-gray-300 hover:text-brand;
+  }
+
   /* ✅ 페이지 컨테이너 스타일 */
   .page-container {
     @apply w-full pl-0 pt-6 pb-12 sm:pl-10 md:pl-14;

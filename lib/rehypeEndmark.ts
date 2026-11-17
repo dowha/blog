@@ -2,6 +2,7 @@
  * 글 끝에 엔드마크를 붙이는 rehype 플러그인.
  * - 마지막 블록이 문단·목록·인용문이면, 가장 마지막 단어(중첩 목록·인용 포함) 뒤에 인라인 점을 붙인다
  * - 이미지·영상 등으로 끝나면 다음 줄 왼쪽(본문 정렬선)에 블록 점을 둔다
+ * - 각주 목록(section.footnotes)은 건너뛰고 그 앞의 본문 끝에 붙인다
  */
 type HastNode = {
   type: string
@@ -15,8 +16,10 @@ const DESCEND = new Set(['ul', 'ol', 'li', 'blockquote'])
 
 const isBlank = (n: HastNode) => n.type === 'text' && !(n.value ?? '').trim()
 
+const isFootnotes = (n: HastNode) => n.tagName === 'section' && n.properties?.dataFootnotes !== undefined
+
 const lastChild = (n: HastNode) => {
-  const kids = (n.children ?? []).filter((c) => !isBlank(c))
+  const kids = (n.children ?? []).filter((c) => !isBlank(c) && !isFootnotes(c))
   return kids[kids.length - 1]
 }
 
@@ -45,7 +48,10 @@ export default function rehypeEndmark() {
     if (node.tagName === 'p' || node.tagName === 'li') {
       node.children = [...(node.children ?? []), mark('endmark-inline')]
     } else {
-      tree.children = [...(tree.children ?? []), mark('endmark-block')]
+      // 각주 목록이 있으면 그 앞에 둔다
+      const kids = tree.children ?? []
+      const fn = kids.findIndex(isFootnotes)
+      tree.children = fn === -1 ? [...kids, mark('endmark-block')] : [...kids.slice(0, fn), mark('endmark-block'), ...kids.slice(fn)]
     }
   }
 }

@@ -3,6 +3,7 @@ import ReactMarkdown, { Components } from 'react-markdown'
 import type { Options } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize'
 import remarkMark from '@/lib/remarkMark'
 import rehypeEndmark from '@/lib/rehypeEndmark'
 import Image from 'next/image'
@@ -27,7 +28,8 @@ const filterProps = <T extends Record<string, unknown>>(
 // ③ 커스텀 렌더러(ExtendedComponents 타입 사용)
 const customComponents: ExtendedComponents = {
   a: ({ href = '', children, ...props }) => {
-    const isInternalLink = href.startsWith('/')
+    // 사이트 안 경로(/)와 같은 문서 안 이동(#, 각주)은 같은 탭에서 연다
+    const isInternalLink = href.startsWith('/') || href.startsWith('#')
     const filteredProps = filterProps(props)
     return (
       <a
@@ -79,6 +81,8 @@ const customComponents: ExtendedComponents = {
   },
 
   iframe: ({ style, ...props }: ComponentProps<'iframe'>) => {
+    // 허용한 서비스(유튜브·애플 뮤직)의 임베드만 그린다
+    if (!isAllowedEmbed(props.src)) return null
     const filteredProps = filterProps(props)
     return (
       <div className="mt-6 w-full mx-auto">
@@ -135,6 +139,38 @@ const customComponents: ExtendedComponents = {
   },
 }
 
+// 본문 iframe으로 허용하는 주소(https만)
+const EMBED_HOSTS = new Set(['www.youtube.com', 'www.youtube-nocookie.com', 'embed.music.apple.com'])
+const isAllowedEmbed = (src: unknown) => {
+  if (typeof src !== 'string') return false
+  try {
+    const url = new URL(src)
+    return url.protocol === 'https:' && EMBED_HOSTS.has(url.hostname)
+  } catch {
+    return false
+  }
+}
+
+// 본문 HTML 허용 목록 (DO-74). GitHub 기준 기본값에 이 블로그가 쓰는 태그만 더한다
+// - date: records 날짜 표기, mark: ==형광펜==, iframe: 유튜브·애플 뮤직 임베드
+// - script·이벤트 속성(onclick 등)·style·javascript: 링크는 모두 제거된다
+// - 각주 id는 remark가 이미 'user-content-'를 붙이므로 여기서는 접두어를 다시 붙이지 않는다
+const SANITIZE_SCHEMA = {
+  ...defaultSchema,
+  clobberPrefix: '',
+  tagNames: [...(defaultSchema.tagNames ?? []), 'date', 'mark', 'iframe'],
+  attributes: {
+    ...defaultSchema.attributes,
+    iframe: ['src', 'width', 'height', 'title', 'allow', 'allowFullScreen', 'frameBorder', 'referrerPolicy', 'sandbox', 'loading'],
+  },
+}
+
+// 각주: 하단 제목은 화면에서 숨기고(sr-only) 읽기 프로그램용 문구만 한국어로
+const REMARK_REHYPE_OPTIONS: Options['remarkRehypeOptions'] = {
+  footnoteLabel: '각주',
+  footnoteBackLabel: (i: number) => `본문 ${i + 1}번 각주 위치로 돌아가기`,
+}
+
 // 취소선은 쓰지 않는다. remark-gfm은 기본으로 ~하나~도 취소선으로 읽어서
 // '1~4권, 2015~16년'처럼 한 줄에 물결표가 두 번 나오면 사이가 지워진 것처럼 보인다.
 // singleTilde를 끄고, ~~두 개~~로 쓴 것도 취소선 없이 글자만 남긴다.
@@ -151,7 +187,12 @@ const MarkdownContent = ({ content, endmark = false }: { content: string; endmar
       remarkPlugins={GFM_PLUGINS}
       disallowedElements={NO_STRIKE}
       unwrapDisallowed
-      rehypePlugins={endmark ? [rehypeRaw, rehypeEndmark] : [rehypeRaw]}
+      remarkRehypeOptions={REMARK_REHYPE_OPTIONS}
+      rehypePlugins={
+        endmark
+          ? [rehypeRaw, [rehypeSanitize, SANITIZE_SCHEMA], rehypeEndmark]
+          : [rehypeRaw, [rehypeSanitize, SANITIZE_SCHEMA]]
+      }
       components={customComponents}
     >
       {content}
