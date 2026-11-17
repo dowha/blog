@@ -84,32 +84,42 @@ export default function WritingPage({
     <>
       <Seo title="Writings" description={descriptionText} />
       <article className="post-list page-container">
-        <h1 className="flex items-center">
-          <span {...deskShortcut}>Writings</span>
-          <a
-            href="/api/rss"
-            target="_blank"
-            rel="noopener"
-            className="relative ml-1 w-4 h-4 inline-block"
+        {/* 제목 줄: 왼쪽 Writings·RSS, 오른쪽 작은 글씨로 표기 지침 링크
+            h1 아래 여백은 바깥 div로 옮겨야 다음 섹션 여백과 겹쳐(collapse) 원래 간격이 유지된다 */}
+        <div className="flex items-baseline justify-between mb-7">
+          <h1 className="flex items-center !mb-0">
+            <span {...deskShortcut}>Writings</span>
+            <a
+              href="/api/rss"
+              target="_blank"
+              rel="noopener"
+              className="relative ml-1 w-4 h-4 inline-block"
+            >
+              {/* 기본 아이콘 */}
+              <Image
+                src="/rss.svg"
+                alt="RSS"
+                width={16}
+                height={16}
+                className="absolute inset-0 transition-opacity duration-300 hover:opacity-0"
+              />
+              {/* Hover 시 나타날 주황색 아이콘 */}
+              <Image
+                src="/rss-hover.svg" // ✅ 주황색 버전의 아이콘을 별도로 저장
+                alt="RSS"
+                width={16}
+                height={16}
+                className="absolute inset-0 opacity-0 transition-opacity duration-300 hover:opacity-100"
+              />
+            </a>
+          </h1>
+          <Link
+            href="/style-guide"
+            className="text-xs text-gray-400 hover:text-brand transition-colors"
           >
-            {/* 기본 아이콘 */}
-            <Image
-              src="/rss.svg"
-              alt="RSS"
-              width={16}
-              height={16}
-              className="absolute inset-0 transition-opacity duration-300 hover:opacity-0"
-            />
-            {/* Hover 시 나타날 주황색 아이콘 */}
-            <Image
-              src="/rss-hover.svg" // ✅ 주황색 버전의 아이콘을 별도로 저장
-              alt="RSS"
-              width={16}
-              height={16}
-              className="absolute inset-0 opacity-0 transition-opacity duration-300 hover:opacity-100"
-            />
-          </a>
-        </h1>
+            표기 지침
+          </Link>
+        </div>
 
         {Object.entries(groupedPosts)
           .sort(([a], [b]) => parseInt(b) - parseInt(a))
