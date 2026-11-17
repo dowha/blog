@@ -49,14 +49,16 @@ export default function Document(props: DocumentProps) {
         <link rel="alternate" type="application/rss+xml" title="Dowha's Blog" href="/api/rss" />
       </Head>
       <body>
-        <noscript>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          />
-        </noscript>
+        {GTM_ID && (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+              height="0"
+              width="0"
+              style={{ display: 'none', visibility: 'hidden' }}
+            />
+          </noscript>
+        )}
         <Main />
         <NextScript />
       </body>
