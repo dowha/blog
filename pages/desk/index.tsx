@@ -155,7 +155,7 @@ export default function DeskHome() {
     const col = isBooks ? 'is_reading' : 'is_published'
     const next = !(isBooks ? pending.is_reading : pending.is_published)
     setApplying(true)
-    // updated_at은 DB 트리거(moddatetime)가 자동 갱신
+    // updated_at은 DB 트리거가 처리 (posts는 발행·발행 취소로는 바뀌지 않음)
     const { error } = await supabase
       .from(section)
       .update({ [col]: next })

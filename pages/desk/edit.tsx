@@ -383,7 +383,8 @@ export default function DeskEdit() {
         lang: form.is_english ? 'en' : 'ko',
       }
     } else {
-      // created_at/updated_at은 DB 기본값(now)·트리거(moddatetime)가 처리
+      // created_at은 DB 기본값(now). updated_at은 트리거가 처리:
+      // posts는 발행된 글의 제목·부제·본문이 바뀔 때만(posts_set_updated_at), 그 외 테이블은 저장할 때마다(moddatetime)
       const base = {
         title: form.title.trim(),
         slug: form.slug.trim(),
