@@ -19,7 +19,7 @@ export const INTRO_PAGES: { key: IntroPage; label: string; path: string; visible
 // DB를 못 읽을 때 쓰는 기본 문구 (이전에 코드에 있던 문구)
 const FALLBACK: Record<IntroPage, string> = {
   home:
-    '이것저것 쓰고 싶은 글을 씁니다. 부담감을 줄이고 <strong>꾸준하게</strong> 쓰는 것이 목표입니다. <br class="hidden md:block" />질문이나 피드백, 협업 제안 등은 <a href="https://letterbird.co/hello-dowha" target="_blank" rel="noopener">메일 폼</a>을 통해서 연락 주세요.',
+    '이것저것 쓰고 싶은 글을 씁니다. 부담감을 줄이고 <strong>꾸준하게</strong> 쓰는 것이 목표입니다. <br class="hidden md:block" />질문이나 피드백, 협업 제안 등은 <a href="https://dowha.kim/contact" target="_blank" rel="noopener">메일 폼</a>을 통해서 연락 주세요.',
   writings: '글 목록입니다.',
   series:
     '특별히 엮어둔 글 목록입니다. 의도적으로 한 주제 아래 쓴 글들도, 쓰고 보니 우연히 묶인 글들도 있습니다. 부디 재밌게 읽어주세요.',
