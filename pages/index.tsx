@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import LangBadge from '@/components/LangBadge'
 import { supabase } from '@/supabase'
+import { throwOnError } from '@/lib/staticFetch'
 import type { GetStaticProps } from 'next'
 import { fetchPageIntro } from '@/lib/pageIntro'
 import Seo from '@/components/Seo'
@@ -22,7 +23,7 @@ async function fetchLatestPost(): Promise<LinkItem | null> {
     .limit(1)
     .maybeSingle()
 
-  if (error) console.error('최신 글 fetch 오류:', error)
+  throwOnError(error, '홈 최신 글')
   return data ? { title: data.title, slug: `/posts/${data.slug}`, lang: data.lang } : null
 }
 
@@ -37,7 +38,7 @@ async function fetchLatestReadBook(): Promise<BookItem | null> {
     .limit(1)
     .maybeSingle()
 
-  if (error) console.error('최근 읽은 책 fetch 오류:', error)
+  throwOnError(error, '홈 최근 읽은 책')
   return data ? { ...data, slug: `/books/${data.slug}` } : null
 }
 
@@ -62,7 +63,7 @@ async function fetchLatestShort(): Promise<ShortItem | null> {
     .order('created_at', { ascending: false })
     .limit(5)
 
-  if (error) console.error('최신 short fetch 오류:', error)
+  throwOnError(error, '홈 최신 short')
   if (!data || data.length === 0) return null
   return data[Math.floor(Math.random() * data.length)]
 }
@@ -75,8 +76,8 @@ async function fetchCurrentlyReadingBooks() {
     .eq('is_reading', true)
     .order('created_at', { ascending: false })
 
-  if (error) console.error('현재 읽는 책 fetch 오류:', error)
-  return error ? [] : data || []
+  throwOnError(error, '홈 읽는 중인 책')
+  return data || []
 }
 
 // 가장 많이 응원받은 콘텐츠(공동 1위 포함). 집계는 DB 함수 most_liked_content에서 처리
@@ -84,10 +85,7 @@ type LikedContent = { title: string; slug: string; type: 'post' | 'book' }
 
 async function fetchMostLikedContent(): Promise<LikedContent[]> {
   const { data, error } = await supabase.rpc('most_liked_content')
-  if (error) {
-    console.error('인기 콘텐츠 fetch 오류:', error)
-    return []
-  }
+  throwOnError(error, '홈 인기 콘텐츠')
   return (data ?? []) as LikedContent[]
 }
 

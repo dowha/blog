@@ -1,4 +1,5 @@
 import { supabase } from '@/supabase'
+import { foundOrThrow } from '@/lib/staticFetch'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import MarkdownContent from '@/components/MarkdownContent'
 import LangBadge from '@/components/LangBadge'
@@ -177,7 +178,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return { notFound: true }
   }
 
-  const { data: book } = await supabase
+  const { data: book, error } = await supabase
     .from('books')
     .select(
       'id, title, subtitle, author, publisher, publication_year, genre, slug, thumbnail, content, created_at, lang, volumes'
@@ -185,7 +186,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     .eq('slug', params.slug)
     .single()
 
-  if (!book || !book.content) {
+  // 책이 없을 때만 404 (조회 오류는 던져서 기존 페이지 유지)
+  if (!foundOrThrow(error, `책(${params.slug})`) || !book || !book.content) {
     return { notFound: true }
   }
 

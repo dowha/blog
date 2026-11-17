@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { supabase } from '@/supabase'
+import { foundOrThrow } from '@/lib/staticFetch'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import MarkdownContent from '@/components/MarkdownContent'
 import ReactMarkdown from 'react-markdown'
@@ -255,7 +256,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return { notFound: true }
   }
 
-  const { data: post } = await supabase
+  const { data: post, error } = await supabase
     .from('posts')
     .select('*, series:series_id (series_name, slug, description, theme_color)')
     .eq('slug', params.slug)
@@ -263,7 +264,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     .eq('is_external', false)
     .single()
 
-  if (!post) {
+  // 글이 없을 때만 404. 조회 오류로 404를 내면 장애 중 재생성 때 멀쩡한 글이 404로 덮인다
+  if (!foundOrThrow(error, `글(${params.slug})`) || !post) {
     return { notFound: true }
   }
 

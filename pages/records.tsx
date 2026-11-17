@@ -1,4 +1,5 @@
 import { supabase } from '@/supabase'
+import { throwOnError } from '@/lib/staticFetch'
 import { fetchPageIntro, introToText } from '@/lib/pageIntro'
 import { GetStaticProps } from 'next'
 import { useState, useEffect } from 'react'
@@ -166,7 +167,8 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     .eq('is_published', true)
     .order('updated_at', { ascending: false })
 
-  if (error || !records) {
+  throwOnError(error, 'records 목록')
+  if (!records) {
     return { props: { records: [], intro }, revalidate: 60 }
   }
 

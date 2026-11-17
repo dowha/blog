@@ -1,4 +1,5 @@
 import { supabase } from '@/supabase'
+import { throwOnError } from '@/lib/staticFetch'
 import { fetchPageIntro, introToText } from '@/lib/pageIntro'
 import { GetStaticProps } from 'next'
 import Link from 'next/link'
@@ -71,12 +72,10 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     // series엔 created_at이 없어 이름순으로 고정한다(정렬이 없으면 순서가 보장되지 않음)
     .order('series_name', { ascending: true })
 
-  if (error || !series) {
-    return { props: { series: [], intro }, revalidate: 60 }
-  }
+  throwOnError(error, 'series 목록')
 
   return {
-    props: { series, intro },
+    props: { series: series ?? [], intro },
     revalidate: 60,
   }
 }

@@ -1,4 +1,5 @@
 import { supabase } from '@/supabase'
+import { throwOnError, foundOrThrow } from '@/lib/staticFetch'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Link from 'next/link'
 import LangBadge from '@/components/LangBadge'
@@ -128,7 +129,8 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
     .eq('is_published', true)
     .single()
 
-  if (seriesError || !seriesData) {
+  // 시리즈가 없을 때만 404 (조회 오류는 던져서 기존 페이지 유지)
+  if (!foundOrThrow(seriesError, `시리즈(${slug})`) || !seriesData) {
     return { notFound: true }
   }
 
@@ -141,9 +143,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
     .eq('is_published', true)
     .order('created_at', { ascending: true })
 
-  if (postsError) {
-    console.error('시리즈 게시물을 가져오는 중 오류 발생:', postsError)
-  }
+  throwOnError(postsError, `시리즈(${slug}) 글 목록`)
 
   return {
     props: {

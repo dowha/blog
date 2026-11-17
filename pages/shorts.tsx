@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/supabase'
+import { throwOnError } from '@/lib/staticFetch'
 import type { GetStaticProps } from 'next'
 import { fetchPageIntro, introToText } from '@/lib/pageIntro'
 import Seo from '@/components/Seo'
@@ -72,10 +73,8 @@ async function fetchShorts(): Promise<Short[]> {
     .eq('is_published', true)
     .order('created_at', { ascending: false })
 
-  if (!data || error) {
-    console.error('shorts fetch 오류:', error)
-    return []
-  }
+  throwOnError(error, 'shorts 목록')
+  if (!data) return []
 
   // DB 응답(배열 형태의 relation)을 단일 객체 형태로 변환
   return (data as ShortResponse[]).map((item) => ({

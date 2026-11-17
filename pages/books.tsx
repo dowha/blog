@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/supabase'
+import { throwOnError } from '@/lib/staticFetch'
 import type { GetStaticProps } from 'next'
 import { fetchPageIntro, introToText } from '@/lib/pageIntro'
 import BookCard from '@/components/ReadingCard'
@@ -34,10 +35,8 @@ async function fetchBooks(): Promise<{ books: Book[]; genres: string[] }> {
   const { data, error } = await supabase
     .from('books')
     .select('id, title, author, publisher, publication_year, genre, slug, thumbnail, content, is_reading, created_at, lang, volumes')
-  if (error || !data) {
-    console.error('books fetch 오류:', error)
-    return { books: [], genres: [] }
-  }
+  throwOnError(error, 'books 목록')
+  if (!data) return { books: [], genres: [] }
   // 장르 버튼 순서는 예전처럼 DB에서 읽은 순서대로
   const genres = Array.from(new Set(data.map((b) => b.genre).filter(Boolean)))
   const books = [...data]

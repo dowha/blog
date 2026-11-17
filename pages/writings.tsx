@@ -1,4 +1,5 @@
 import { supabase } from '@/supabase'
+import { throwOnError } from '@/lib/staticFetch'
 import { fetchPageIntro, introToText } from '@/lib/pageIntro'
 import { useState } from 'react'
 import Link from 'next/link'
@@ -32,10 +33,7 @@ export async function getStaticProps() {
     .eq('is_published', true)
     .order('created_at', { ascending: false })
 
-  if (error) {
-    console.error('Error fetching posts:', error)
-    return { props: { initialPosts: [], allPosts: [], intro }, revalidate: 60 }
-  }
+  throwOnError(error, 'writings 글 목록')
 
   const safePosts = posts || []
 
