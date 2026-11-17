@@ -57,7 +57,7 @@ pair "확인창" components/desk/ConfirmDialog.tsx components/wave/confirm-dialo
 pair "표기 점검 규칙" lib/styleCheck.ts lib/styleCheck.ts
 
 # 사이트 색은 색 이름(brand, warn, page 등)으로만 쓴다
-hex=$(grep -rniE '\[#(0088FF|006fd6|c8481c|ee6033|fcfcfc|fef3ee|f8c8b5|eef6ff|b3dbff|a93c17)\]' \
+hex=$(grep -rniE '\[#(0088FF|0072d6|c8481c|ee6033|fcfcfc|fef3ee|f8c8b5|eef6ff|b3dbff|a93c17)\]' \
   "$BLOG/pages" "$BLOG/components" "$BLOG/lib" "$HELLO/app" "$HELLO/components" "$HELLO/lib" 2>/dev/null)
 if [ -z "$hex" ]; then
   echo "  같음  사이트 색을 직접 적은 곳 없음"
