@@ -471,8 +471,10 @@ export default function DeskEdit() {
     } else if (isBook) {
       toast.success('저장했습니다.')
     } else {
+      // 이미 발행된 글을 다시 저장하면 '저장', 초안을 발행하면 '발행'
+      const wasPublished = form.is_published
       set('is_published', publish)
-      toast.success(publish ? '발행했습니다.' : '초안을 저장했습니다.')
+      toast.success(publish ? (wasPublished ? '저장했습니다.' : '발행했습니다.') : '초안을 저장했습니다.')
     }
   }
 
@@ -662,7 +664,8 @@ export default function DeskEdit() {
                   disabled={busy || shortOver}
                   className={BTN_PRIMARY}
                 >
-                  발행
+                  {/* 이미 발행된 글은 '저장'으로 표시 (같은 두 글자라 버튼 너비 유지) */}
+                  {form.is_published ? '저장' : '발행'}
                 </button>
               </>
             )}
