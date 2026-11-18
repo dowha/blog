@@ -63,13 +63,13 @@ export default function ConfirmDialog({
       <div
         role="dialog"
         aria-modal="true"
-        className="w-full max-w-xs rounded-lg border border-gray-200 bg-white p-5 shadow-lg"
+        className="w-full max-w-xs rounded-lg border border-gray-200 bg-white px-4 pb-3 pt-4 shadow-lg"
         onClick={(e) => e.stopPropagation()}
       >
         {/* blog 전역 p { mt-6 }이 위 여백을 키우므로 mt-0으로 끈다 */}
-        <p className="mt-0 whitespace-pre-line text-sm leading-6 text-gray-700">{message}</p>
+        <p className="mt-0 whitespace-pre-line text-[13px] leading-[22px] text-gray-700">{message}</p>
         {requireText && (
-          <label className="mt-4 block text-[11px] text-gray-500">
+          <label className="mt-3 block text-[11px] text-gray-500">
             확인을 위해 &lsquo;{requireText}&rsquo;를 입력하세요.
             <input
               ref={inputRef}
@@ -84,7 +84,7 @@ export default function ConfirmDialog({
             />
           </label>
         )}
-        <div className="mt-4 flex items-center justify-end gap-2">
+        <div className="mt-3 flex items-center justify-end gap-1">
           <button
             onClick={onCancel}
             disabled={busy}
