@@ -11,7 +11,12 @@ type DiscordInteraction = {
     name?: string;
     options?: Array<{ name: string; value: string }>;
   };
+  member?: { user?: { id: string } }; // 서버 채널에서 보낸 경우
+  user?: { id: string }; // DM에서 보낸 경우
 };
+
+// /draft를 쓸 수 있는 사람 (blog 주인의 Discord 사용자 ID, 비밀값 아님)
+const OWNER_ID = "903841582971756544";
 
 function codepointLen(str: string) {
   return Array.from(str).length;
@@ -59,9 +64,8 @@ Deno.serve(async (req) => {
   if (req.method === "GET") return new Response("ok", { status: 200 });
   if (req.method !== "POST") return new Response("Method Not Allowed", { status: 405 });
 
+  // 요청 원문에는 초안 내용·사용자 정보·interaction 토큰이 있어 로그에 남기지 않는다
   const rawBody = await req.text();
-  console.log("hit", req.method, new Date().toISOString());
-  console.log("raw", rawBody);
 
   // ✅ 1) Discord 서명 검증 (Endpoint 저장 단계에서도 이게 필요할 수 있음)
   const ok = await verifyDiscord(req, rawBody);
@@ -78,14 +82,23 @@ Deno.serve(async (req) => {
     return new Response("Bad Request", { status: 400 });
   }
 
+  console.log("interaction", payload.type, payload.data?.name ?? "");
+
   // ✅ 3) PING -> PONG
   if (payload.type === 1) {
-    console.log("pong", '{"type":1}');
     return pong();
   }
 
   // ✅ 4) Slash Command: /draft (option: text)
   if (payload.type === 2 && payload.data?.name === "draft") {
+    // 서명은 Discord에서 온 요청임만 보장하므로, 보낸 사람이 주인인지 따로 확인한다
+    const invokerId = payload.member?.user?.id ?? payload.user?.id;
+    if (invokerId !== OWNER_ID) {
+      console.log("forbidden invoker");
+      // flags 64 = 보낸 사람에게만 보이는 응답
+      return json200({ type: 4, data: { content: "권한이 없습니다.", flags: 64 } });
+    }
+
     const text =
       (payload.data?.options?.find((o) => o.name === "text")?.value ?? "").trim();
 
