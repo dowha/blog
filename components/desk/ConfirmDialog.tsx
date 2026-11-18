@@ -66,7 +66,8 @@ export default function ConfirmDialog({
         className="w-full max-w-xs rounded-lg border border-gray-200 bg-white p-5 shadow-lg"
         onClick={(e) => e.stopPropagation()}
       >
-        <p className="whitespace-pre-line text-sm leading-6 text-gray-700">{message}</p>
+        {/* blog 전역 p { mt-6 }이 위 여백을 키우므로 mt-0으로 끈다 */}
+        <p className="mt-0 whitespace-pre-line text-sm leading-6 text-gray-700">{message}</p>
         {requireText && (
           <label className="mt-4 block text-[11px] text-gray-500">
             확인을 위해 &lsquo;{requireText}&rsquo;를 입력하세요.
@@ -83,7 +84,7 @@ export default function ConfirmDialog({
             />
           </label>
         )}
-        <div className="mt-5 flex items-center justify-end gap-2">
+        <div className="mt-4 flex items-center justify-end gap-2">
           <button
             onClick={onCancel}
             disabled={busy}
