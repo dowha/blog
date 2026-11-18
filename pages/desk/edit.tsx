@@ -1139,7 +1139,7 @@ export default function DeskEdit() {
 
             <ConfirmDialog
               open={publishOpen}
-              message={`${itemName} 발행할까요?\n공개 사이트에 바로 게시됩니다.`}
+              message={`${itemName} 발행할까요?\n바로 공개됩니다.`}
               confirmLabel="발행"
               onConfirm={() => {
                 setPublishOpen(false)
@@ -1150,7 +1150,7 @@ export default function DeskEdit() {
 
             <ConfirmDialog
               open={convertOpen}
-              message={`이 글을 Shorts로 옮깁니다.\n제목은 본문 맨 앞에 굵게 붙습니다.\n원본 글은 삭제됩니다(본문은 Shorts로 남습니다).\n새 Shorts는 초안으로 만들어집니다.`}
+              message={`이 글을 Shorts로 변환합니다.\n원본 글은 삭제됩니다.`}
               confirmLabel="변환"
               busyLabel="변환 중…"
               busy={converting}
