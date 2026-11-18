@@ -12,7 +12,8 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   // next lint가 검사하지 않던 빌드 결과물·자동 생성 파일은 제외
-  { ignores: ['.next/**', 'out/**', 'public/**', 'next-env.d.ts'] },
+  // supabase/functions는 Deno 런타임 코드라 Next 린트 대상이 아님
+  { ignores: ['.next/**', 'out/**', 'public/**', 'next-env.d.ts', 'supabase/functions/**'] },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     settings: {
