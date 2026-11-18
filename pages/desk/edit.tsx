@@ -140,6 +140,7 @@ export default function DeskEdit() {
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [convertOpen, setConvertOpen] = useState(false)
+  const [publishOpen, setPublishOpen] = useState(false)
   const [converting, setConverting] = useState(false)
   const [emojiOpen, setEmojiOpen] = useState(false)
   const [customGenre, setCustomGenre] = useState(false)
@@ -312,28 +313,35 @@ export default function DeskEdit() {
     }
   }
 
-  const save = async (publish: boolean) => {
+  // 입력 검증. 문제가 있으면 안내 문구를, 없으면 null을 돌려준다.
+  const validationError = (): string | null => {
     if (isShort) {
-      if (!form.content.trim()) return toast.error('내용을 입력하세요.')
+      if (!form.content.trim()) return '내용을 입력하세요.'
       if (pureTextLength(form.content) > SHORTS_MAX_LENGTH)
-        return toast.error(`${SHORTS_MAX_LENGTH}자를 넘을 수 없습니다.`)
+        return `${SHORTS_MAX_LENGTH}자를 넘을 수 없습니다.`
     } else if (isExternal) {
-      if (!form.title.trim()) return toast.error('제목을 입력하세요.')
+      if (!form.title.trim()) return '제목을 입력하세요.'
       if (!HTTP_URL.test(form.external_url.trim()))
-        return toast.error('원문 링크는 http:// 또는 https://로 시작해야 합니다.')
-      if (!form.source_name.trim()) return toast.error('출처를 입력하세요.')
+        return '원문 링크는 http:// 또는 https://로 시작해야 합니다.'
+      if (!form.source_name.trim()) return '출처를 입력하세요.'
     } else {
       if (!form.title.trim())
-        return toast.error(isSeries ? '시리즈 이름을 입력하세요.' : '제목을 입력하세요.')
-      if (!form.slug.trim()) return toast.error('slug(주소)를 입력하세요.')
+        return isSeries ? '시리즈 이름을 입력하세요.' : '제목을 입력하세요.'
+      if (!form.slug.trim()) return 'slug(주소)를 입력하세요.'
       // description은 NOT NULL이고, theme_color는 상세 페이지에서 '4D'를 이어붙여
       // 알파값을 만들기 때문에 반드시 #RRGGBB 7자리여야 한다.
       if (isSeries) {
-        if (!form.description.trim()) return toast.error('설명을 입력하세요.')
+        if (!form.description.trim()) return '설명을 입력하세요.'
         if (!HEX_COLOR.test(form.theme_color))
-          return toast.error('테마 색상은 #RRGGBB 형식이어야 합니다.')
+          return '테마 색상은 #RRGGBB 형식이어야 합니다.'
       }
     }
+    return null
+  }
+
+  const save = async (publish: boolean) => {
+    const invalid = validationError()
+    if (invalid) return toast.error(invalid)
 
     let payload: Record<string, unknown>
     if (isExternal) {
@@ -497,8 +505,8 @@ export default function DeskEdit() {
   // 삭제는 저장된 상태 기준으로 초안(책은 리뷰 없음)만 허용한다. Shorts는 짧은 글이라 발행 후에도 허용.
   // 공개 주소가 갑자기 404가 되거나 검색엔진·RSS에 깨진 링크가 남는 것을 막기 위함.
   const canDelete = !!id && (isShort || !origPublic)
-  // 조사까지 붙인 이름 (Shorts는 '쇼츠'로 읽어 '를')
-  const deleteName = isShort ? '이 Shorts를' : `'${form.title.trim() || '제목 없음'}'을(를)`
+  // 발행·삭제 확인 문구에 쓰는, 조사까지 붙인 이름 (Shorts는 '쇼츠'로 읽어 '를')
+  const itemName = isShort ? '이 Shorts를' : `'${form.title.trim() || '제목 없음'}'을(를)`
 
   const remove = async () => {
     if (!id || !canDelete) return
@@ -660,7 +668,14 @@ export default function DeskEdit() {
                   초안 저장
                 </button>
                 <button
-                  onClick={() => save(true)}
+                  onClick={() => {
+                    // 초안 → 발행 전환은 공개 사이트·RSS·IndexNow로 바로 나가므로 한 번 확인한다 (DO-86).
+                    // 검증을 먼저 해서 모달을 띄운 뒤에 오류가 나는 일을 막는다.
+                    if (form.is_published) return save(true)
+                    const invalid = validationError()
+                    if (invalid) return toast.error(invalid)
+                    setPublishOpen(true)
+                  }}
                   disabled={busy || shortOver}
                   className={BTN_PRIMARY}
                 >
@@ -1123,6 +1138,17 @@ export default function DeskEdit() {
             )}
 
             <ConfirmDialog
+              open={publishOpen}
+              message={`${itemName} 발행할까요?\n공개 사이트에 바로 게시됩니다.`}
+              confirmLabel="발행"
+              onConfirm={() => {
+                setPublishOpen(false)
+                save(true)
+              }}
+              onCancel={() => setPublishOpen(false)}
+            />
+
+            <ConfirmDialog
               open={convertOpen}
               message={`이 글을 Shorts로 옮깁니다.\n제목은 본문 맨 앞에 굵게 붙습니다.\n원본 글은 삭제됩니다(본문은 Shorts로 남습니다).\n새 Shorts는 초안으로 만들어집니다.`}
               confirmLabel="변환"
@@ -1135,7 +1161,7 @@ export default function DeskEdit() {
 
             <ConfirmDialog
               open={deleteOpen}
-              message={`${deleteName} 삭제합니다.\n되돌릴 수 없습니다.`}
+              message={`${itemName} 삭제합니다.\n되돌릴 수 없습니다.`}
               confirmLabel="삭제"
               busyLabel="삭제 중…"
               busy={deleting}
