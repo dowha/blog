@@ -1,6 +1,5 @@
 // Discord 슬래시 명령 → blog 초안 저장 (DO-94).
 //   /short [text]  → shorts 초안. text를 비우면 여러 줄 입력 창(모달)을 띄운다.
-//   /draft text    → /short와 같다 (예전 명령, 호환용)
 //   /post          → 입력 창(모달)에서 제목·본문을 받아 posts 초안
 // Discord 개발자 포털의 Interactions Endpoint URL이 이 함수 주소라 함수 이름은 그대로 둔다.
 // verify_jwt=false로 배포한다 (Discord는 JWT를 보내지 않고, 대신 Ed25519 서명을 검증한다).
@@ -211,7 +210,7 @@ Deno.serve(async (req) => {
   if (payload.type === 2) {
     const text = payload.data?.options?.find((o) => o.name === "text")?.value ?? "";
 
-    if (name === "short" || name === "draft") {
+    if (name === "short") {
       if (text.trim()) return saveShort(text);
       return modal(MODAL_SHORT, "Shorts 초안", [
         textInput("text", "내용", 2, SHORT_MAX, true),
