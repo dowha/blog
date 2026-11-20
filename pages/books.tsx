@@ -36,14 +36,16 @@ const READING_TAB = '읽는 중'
 function filterBooks(books: Book[], tab: string) {
   if (tab === '전체') return books
   if (tab === READING_TAB) return books.filter((b) => b.isReading)
-  // 장르 탭에는 읽는 중인 책을 넣지 않는다
-  return books.filter((b) => b.genre === tab && !b.isReading)
+  return books.filter((b) => b.genre === tab)
 }
 
-// [전체] 탭 위쪽의 읽는 중인 책: 표지 없이 한 줄(제목 · 작가)로 낮게
+// [전체]·장르 탭 위쪽의 읽는 중인 책: 표지 없이 한 줄([읽는 중] 제목 · 작가)로 낮게
 function ReadingChip({ book }: { book: Book }) {
   return (
-    <div className="flex min-w-0 items-baseline gap-2 rounded-lg border border-gray-200 bg-amber-50 px-3 py-2 cursor-wait">
+    <div className="flex min-w-0 items-center gap-2 rounded-lg border border-gray-200 bg-amber-50 px-3 py-2 cursor-wait">
+      <span className="shrink-0 rounded bg-gray-900/70 px-1.5 py-px text-[11px] font-medium leading-4 text-white">
+        읽는 중
+      </span>
       <span className="truncate text-sm font-semibold leading-tight text-foreground">
         {book.title}
         {book.volumes && <span className="ml-0.5 font-normal text-gray-400">({book.volumes})</span>}
@@ -158,9 +160,9 @@ export default function BooksPage({ intro, books, genres }: Props) {
 
   const descriptionText = introToText(intro)
 
-  // [전체]에서는 읽는 중인 책을 위에 낮은 카드로 모으고, 아래 카드 목록은 다 읽은 책만
+  // [읽는 중] 탭이 아니면 읽는 중인 책을 위에 낮은 카드로 모으고, 아래 카드 목록은 다 읽은 책만
   const onReadingTab = selectedGenre === READING_TAB
-  const readingChips = selectedGenre === '전체' ? filteredBooks.filter((b) => b.isReading) : []
+  const readingChips = onReadingTab ? [] : filteredBooks.filter((b) => b.isReading)
   const cardBooks = onReadingTab ? filteredBooks : filteredBooks.filter((b) => !b.isReading)
   const hasReading = books.some((b) => b.isReading)
 
@@ -223,10 +225,12 @@ export default function BooksPage({ intro, books, genres }: Props) {
                   </Link>
                 ) : (
                   <div key={book.id} className="block no-underline">
+                    {/* [읽는 중] 탭은 전부 읽는 중이라 노란 배경·표지 라벨을 빼고 그대로 보인다 */}
                     <BookCard
                       book={book}
                       priority={i < 4}
-                      className="cursor-wait bg-amber-50 no-group"
+                      showReadingBadge={!onReadingTab}
+                      className={onReadingTab ? 'no-group' : 'cursor-wait bg-amber-50 no-group'}
                     />
                   </div>
                 )

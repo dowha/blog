@@ -21,8 +21,10 @@ interface BookCardProps {
   className?: string
   /** 첫 화면에 보이는 카드: 표지를 미뤄 받지 않고 바로 받는다 (LCP) */
   priority?: boolean
+  /** 표지 가운데 '읽는 중' 표시 (전부 읽는 중인 목록에서는 끈다) */
+  showReadingBadge?: boolean
 }
-export default function BookCard({ book, className, priority = false }: BookCardProps) {
+export default function BookCard({ book, className, priority = false, showReadingBadge = true }: BookCardProps) {
   return (
     <div
       className={`relative border h-full p-3 rounded-lg w-full bg-card border-gray-200 group ${className || ''}`}
@@ -43,7 +45,7 @@ export default function BookCard({ book, className, priority = false }: BookCard
             <span className="text-xs text-gray-500"></span>
           )}
           {/* 읽는 중 표시: 표지 정중앙 */}
-          {book.isReading && (
+          {book.isReading && showReadingBadge && (
             <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-gray-900/70 px-1.5 py-px text-[11px] font-medium leading-4 text-white backdrop-blur-sm">
               읽는 중
             </span>
