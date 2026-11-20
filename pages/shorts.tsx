@@ -150,9 +150,8 @@ export default function ShortsPage({ intro, shorts, builtAt }: Props) {
         const targetIndex = shorts.findIndex((item: Short) => String(item.short_id) === targetId)
 
         if (targetIndex !== -1) {
-          if (targetIndex >= visibleCount) {
-            setVisibleCount(targetIndex + 5)
-          }
+          // 대상이 아직 안 펼쳐졌으면 거기까지 펼친다 (이미 더 펼쳐져 있으면 줄이지 않는다)
+          setVisibleCount((prev) => Math.max(prev, targetIndex + 5))
 
           setHighlightedId(targetId)
 
@@ -175,7 +174,8 @@ export default function ShortsPage({ intro, shorts, builtAt }: Props) {
     return () => {
       window.removeEventListener('hashchange', handleHashChange)
     }
-  }, [shorts, visibleCount])
+    // visibleCount를 의존성에 넣으면 '더 보기'를 누를 때마다 이 처리가 다시 돌아 강조된 글로 화면이 되돌아간다 (DO-101)
+  }, [shorts])
 
   const handleLoadMore = () => {
     setVisibleCount((prev) => prev + LOAD_COUNT)
@@ -246,6 +246,9 @@ export default function ShortsPage({ intro, shorts, builtAt }: Props) {
 
         <div className="absolute -left-2 bottom-3 w-4 h-4 rounded-full transition-colors bg-inherit"></div>
         <div className="absolute -left-4 bottom-1 w-2 h-2 rounded-full transition-colors bg-inherit"></div>
+      </div>
+      <div className="flex flex-col text-[10px] text-gray-300 mb-1 whitespace-nowrap tabular-nums leading-tight opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <span>생각 중…</span>
       </div>
     </div>
   )
