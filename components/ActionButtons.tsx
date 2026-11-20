@@ -11,11 +11,40 @@ export const HomeButton = () => {
   return <Button onClick={() => router.push('/')} icon="🏠" label="처음으로" />
 }
 
+// 페이지가 화면 높이의 1.5배 이상인지 (DO-99).
+// 모바일은 주소창이 접히고 펴질 때 innerHeight가 바뀌므로 clientHeight를 기준으로 삼는다.
+// 첫 렌더(SSR)에서는 false로 두고, 높이를 확인한 뒤 바꾼다.
+function useIsLongPage(ratio = 1.5) {
+  const [isLong, setIsLong] = useState(false)
+  useEffect(() => {
+    const el = document.documentElement
+    const check = () => setIsLong(el.scrollHeight >= el.clientHeight * ratio)
+    check()
+    // 더 보기·탭 변경·이미지 로딩으로 길이가 바뀌면 다시 확인
+    const observer = new ResizeObserver(check)
+    observer.observe(document.body)
+    window.addEventListener('resize', check)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', check)
+    }
+  }, [ratio])
+  return isLong
+}
+
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+// 글·책 상세의 버튼 줄: 버튼 4개를 늘 같은 자리에 두려고 길이와 상관없이 보인다
 export const ScrollToTopButton = () => {
-  const handleScrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-  return <Button onClick={handleScrollToTop} icon="⬆️" label="처음으로" />
+  return <Button onClick={scrollToTop} icon="⬆️" label="맨 위로" />
+}
+
+// 목록 끝: 스크롤할 만큼 길 때만 보인다
+const ListEndScrollToTop = () => {
+  const isLong = useIsLongPage()
+  return isLong ? <ScrollToTopButton /> : null
 }
 
 export const LoadMoreButton = ({
@@ -28,7 +57,7 @@ export const LoadMoreButton = ({
   return hasMore ? (
     <Button onClick={loadMore} icon="➕" label="더 보기" />
   ) : (
-    <ScrollToTopButton />
+    <ListEndScrollToTop />
   )
 }
 
