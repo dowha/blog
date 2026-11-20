@@ -222,10 +222,21 @@ export default function ShortsPage({ intro, shorts, builtAt }: Props) {
 
   const hasTodayPosts = groupedShorts.length > 0 && groupedShorts[0].dateLabel === todayLabel
 
+  // 생각 중 말풍선을 누르면 Shorts 하나로 무작위 이동 (#번호 → 위 해시 처리가 펼치기·강조·스크롤을 맡는다).
+  // 지금 보고 있는 것과 같은 번호가 나오면 hashchange가 안 생기므로 빼고 고른다
+  const goToRandomShort = () => {
+    const current = window.location.hash.replace('#', '').split('?')[0]
+    const pool = shorts.filter((item) => String(item.short_id) !== current)
+    if (pool.length === 0) return
+    const pick = pool[Math.floor(Math.random() * pool.length)]
+    window.location.hash = String(pick.short_id)
+  }
+
   const ThinkingBubble = () => (
     <div
       className="flex items-end gap-2 group cursor-pointer"
-      onClick={() => window.location.href = '/shorts'}
+      onClick={goToRandomShort}
+      title="아무 Shorts나 보기"
     >
       <div className="relative bg-gray-100 rounded-3xl px-5 py-3 text-gray-600 transition-colors hover:bg-gray-200">
         <div className="flex items-center gap-1 h-6">
