@@ -41,7 +41,7 @@ export const ScrollToTopButton = () => {
   return <Button onClick={scrollToTop} icon="⬆️" label="맨 위로" />
 }
 
-// 목록 끝: 스크롤할 만큼 길 때만 보인다
+// 목록 끝: 스크롤할 만큼 길 때만 보인다 (더 보기가 있어도 함께)
 const ListEndScrollToTop = () => {
   const isLong = useIsLongPage()
   return isLong ? <ScrollToTopButton /> : null
@@ -54,10 +54,12 @@ export const LoadMoreButton = ({
   loadMore: () => void
   hasMore: boolean
 }) => {
-  return hasMore ? (
-    <Button onClick={loadMore} icon="➕" label="더 보기" />
-  ) : (
-    <ListEndScrollToTop />
+  // 페이지가 길면 더 보기 옆에도 맨 위로를 둔다. 더 보기를 앞에 둬서 맨 위로가 나중에 나타나도 더 보기 자리가 밀리지 않게 한다
+  return (
+    <div className="flex items-center gap-2">
+      {hasMore && <Button onClick={loadMore} icon="➕" label="더 보기" />}
+      <ListEndScrollToTop />
+    </div>
   )
 }
 

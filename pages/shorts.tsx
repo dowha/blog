@@ -236,7 +236,6 @@ export default function ShortsPage({ intro, shorts, builtAt }: Props) {
     <div
       className="flex items-end gap-2 group cursor-pointer"
       onClick={goToRandomShort}
-      title="아무 Shorts나 보기"
     >
       <div className="relative bg-gray-100 rounded-3xl px-5 py-3 text-gray-600 transition-colors hover:bg-gray-200">
         <div className="flex items-center gap-1 h-6">
@@ -390,14 +389,13 @@ export default function ShortsPage({ intro, shorts, builtAt }: Props) {
               })}
             </div>
 
-            {shorts.length > visibleCount && (
-              <div className="mt-8">
-                <LoadMoreButton
-                  loadMore={handleLoadMore}
-                  hasMore={shorts.length > visibleCount}
-                />
-              </div>
-            )}
+            {/* 끝까지 펼쳐도 길면 맨 위로가 남도록 항상 둔다 */}
+            <div className="mt-8">
+              <LoadMoreButton
+                loadMore={handleLoadMore}
+                hasMore={shorts.length > visibleCount}
+              />
+            </div>
         </>
       </article>
     </>
