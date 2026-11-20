@@ -133,7 +133,7 @@ export default function Home({ intro, latestShort, latestPost, latestBook, mostL
                 </h2>
                 <Link
                   href={`/shorts#${latestShort.short_id}`}
-                  className="group/bubble relative mt-2 mb-2 ml-4 inline-block max-w-[85%] rounded-3xl bg-white px-4 py-2 text-sm leading-relaxed text-gray-600 no-underline whitespace-pre-wrap transition-colors hover:bg-gray-200 hover:text-gray-600"
+                  className="group/bubble relative mt-2 mb-2 ml-4 inline-block max-w-[85%] rounded-3xl bg-white px-4 py-2 text-sm leading-relaxed text-gray-600 no-underline whitespace-pre-wrap transition-colors hover:bg-gray-50 hover:text-gray-600"
                 >
                   {renderEmphasis(latestShort.content)}
                   <span className="absolute -left-2 bottom-3 h-4 w-4 rounded-full bg-inherit" />
