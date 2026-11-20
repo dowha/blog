@@ -36,18 +36,19 @@ const READING_TAB = '읽는 중'
 function filterBooks(books: Book[], tab: string) {
   if (tab === '전체') return books
   if (tab === READING_TAB) return books.filter((b) => b.isReading)
-  return books.filter((b) => b.genre === tab)
+  // 장르 탭에는 읽는 중인 책을 넣지 않는다
+  return books.filter((b) => b.genre === tab && !b.isReading)
 }
 
-// 전체·장르 탭에서 읽는 중인 책: 표지 없이 제목·작가만
+// [전체] 탭 위쪽의 읽는 중인 책: 표지 없이 한 줄(제목 · 작가)로 낮게
 function ReadingChip({ book }: { book: Book }) {
   return (
-    <div className="min-w-0 rounded-md border border-gray-200 bg-amber-50 px-3 py-2 cursor-wait">
-      <p className="truncate text-sm font-semibold leading-tight text-foreground">
+    <div className="flex min-w-0 items-baseline gap-2 rounded-lg border border-gray-200 bg-amber-50 px-3 py-2 cursor-wait">
+      <span className="truncate text-sm font-semibold leading-tight text-foreground">
         {book.title}
         {book.volumes && <span className="ml-0.5 font-normal text-gray-400">({book.volumes})</span>}
-      </p>
-      <p className="mt-0.5 truncate text-xs text-gray-500">{book.author}</p>
+      </span>
+      <span className="shrink-0 text-xs text-gray-500">{book.author}</span>
     </div>
   )
 }
@@ -157,9 +158,9 @@ export default function BooksPage({ intro, books, genres }: Props) {
 
   const descriptionText = introToText(intro)
 
-  // 읽는 중 탭이 아니면 읽는 중인 책은 위에 작게 모으고, 아래 카드 목록은 다 읽은 책만
+  // [전체]에서는 읽는 중인 책을 위에 낮은 카드로 모으고, 아래 카드 목록은 다 읽은 책만
   const onReadingTab = selectedGenre === READING_TAB
-  const readingChips = onReadingTab ? [] : filteredBooks.filter((b) => b.isReading)
+  const readingChips = selectedGenre === '전체' ? filteredBooks.filter((b) => b.isReading) : []
   const cardBooks = onReadingTab ? filteredBooks : filteredBooks.filter((b) => !b.isReading)
   const hasReading = books.some((b) => b.isReading)
 
@@ -202,19 +203,14 @@ export default function BooksPage({ intro, books, genres }: Props) {
 
         <>
             {readingChips.length > 0 && (
-              <section className="mt-8" aria-label="읽는 중인 책">
-                <h2 className="mb-2 text-xs font-medium text-gray-500">
-                  읽는 중 <span className="tabular-nums">{readingChips.length}</span>
-                </h2>
-                <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
-                  {readingChips.map((book) => (
-                    <ReadingChip key={book.id} book={book} />
-                  ))}
-                </div>
-              </section>
+              <div className="mt-8 grid grid-cols-1 gap-2 md:grid-cols-2" aria-label="읽는 중인 책">
+                {readingChips.map((book) => (
+                  <ReadingChip key={book.id} book={book} />
+                ))}
+              </div>
             )}
 
-            <div className={`${readingChips.length > 0 ? 'mt-6' : 'mt-8'} grid grid-cols-1 gap-2 md:grid-cols-2`}>
+            <div className={`${readingChips.length > 0 ? 'mt-4' : 'mt-8'} grid grid-cols-1 gap-2 md:grid-cols-2`}>
               {/* 모바일 한 줄·PC 두 줄 기준으로 첫 화면에 보이는 앞의 4권만 표지를 바로 받는다 */}
               {cardBooks.slice(0, visibleCount).map((book, i) =>
                 book.hasContent ? (
