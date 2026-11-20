@@ -175,6 +175,17 @@ export default function BooksPage({ intro, books, genres }: Props) {
   const onReadingTab = selectedGenre === READING_TAB
   const readingChips = onReadingTab ? [] : filteredBooks.filter((b) => b.isReading)
   const cardBooks = onReadingTab ? filteredBooks : filteredBooks.filter((b) => !b.isReading)
+
+  // 첫 화면은 책 카드 8칸 분량. 위쪽 한 줄 카드 3줄 높이 ≈ 책 카드 1칸 높이로 보고 그만큼 책 카드를 뒤로 미룬다.
+  // 모바일(1열)과 PC(2열)는 한 줄 카드 줄 수가 달라 따로 센다: 6권이면 모바일 6줄→2칸, PC 3줄→1줄(2칸)
+  const mobileSkip = Math.ceil(readingChips.length / 3)
+  const pcSkip = Math.ceil(Math.ceil(readingChips.length / 2) / 3) * 2
+  const mobileShown = visibleCount - mobileSkip
+  const pcShown = visibleCount - pcSkip
+  const renderCount = Math.max(mobileShown, pcShown)
+  // 한쪽 화면에서만 보일 카드는 다른 쪽에서 숨긴다
+  const cardHideCls = (i: number) =>
+    `${i >= mobileShown ? 'max-md:hidden' : ''} ${i >= pcShown ? 'md:hidden' : ''}`
   const hasReading = books.some((b) => b.isReading)
 
   return (
@@ -225,17 +236,17 @@ export default function BooksPage({ intro, books, genres }: Props) {
 
             <div className={`${readingChips.length > 0 ? 'mt-4' : 'mt-8'} grid grid-cols-1 gap-2 md:grid-cols-2`}>
               {/* 모바일 한 줄·PC 두 줄 기준으로 첫 화면에 보이는 앞의 4권만 표지를 바로 받는다 */}
-              {cardBooks.slice(0, visibleCount).map((book, i) =>
+              {cardBooks.slice(0, renderCount).map((book, i) =>
                 book.hasContent ? (
                   <Link
                     key={book.id}
                     href={`/books/${book.slug}`}
-                    className="block no-underline"
+                    className={`block no-underline ${cardHideCls(i)}`}
                   >
                     <BookCard book={book} priority={i < 4} className="hover:bg-gray-100" />
                   </Link>
                 ) : (
-                  <div key={book.id} className="block no-underline">
+                  <div key={book.id} className={`block no-underline ${cardHideCls(i)}`}>
                     {/* [읽는 중] 탭은 전부 읽는 중이라 노란 배경·표지 라벨을 빼고 그대로 보인다 */}
                     <BookCard
                       book={book}
@@ -250,7 +261,7 @@ export default function BooksPage({ intro, books, genres }: Props) {
 
             <LoadMoreButton
               loadMore={handleLoadMore}
-              hasMore={visibleCount < cardBooks.length}
+              hasMore={Math.min(mobileShown, pcShown) < cardBooks.length}
             />
         </>
       </article>
