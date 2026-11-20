@@ -247,9 +247,6 @@ export default function ShortsPage({ intro, shorts, builtAt }: Props) {
         <div className="absolute -left-2 bottom-3 w-4 h-4 rounded-full transition-colors bg-inherit"></div>
         <div className="absolute -left-4 bottom-1 w-2 h-2 rounded-full transition-colors bg-inherit"></div>
       </div>
-      <div className="flex flex-col text-[10px] text-gray-300 mb-1 whitespace-nowrap tabular-nums leading-tight opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        <span>생각 중…</span>
-      </div>
     </div>
   )
 
