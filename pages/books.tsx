@@ -43,15 +43,15 @@ function filterBooks(books: Book[], tab: string) {
 function ReadingChip({ book }: { book: Book }) {
   return (
     <div className="flex min-w-0 items-center gap-2 rounded-lg border border-gray-200 bg-amber-50 px-3 py-2 cursor-wait">
-      <span className="shrink-0 rounded bg-gray-900/10 px-1.5 py-px text-[11px] font-medium leading-4 text-gray-600">
+      <span className="shrink-0 rounded bg-gray-900/20 px-1.5 py-px text-[11px] font-medium leading-4 text-gray-800">
         읽는 중
       </span>
-      {/* 글자 크기는 아래 책 카드(제목 16px·작가 14px)와 맞춘다. 긴 제목은 말줄임 */}
-      <span className="truncate text-base font-semibold leading-tight text-foreground">
+      {/* 긴 제목은 말줄임 (라벨·작가는 줄이지 않는다) */}
+      <span className="truncate text-sm font-semibold leading-tight text-foreground">
         {book.title}
-        {book.volumes && <span className="ml-0.5 text-sm font-normal text-gray-400">({book.volumes})</span>}
+        {book.volumes && <span className="ml-0.5 font-normal text-gray-400">({book.volumes})</span>}
       </span>
-      <span className="shrink-0 text-sm text-gray-500">{book.author}</span>
+      <span className="shrink-0 text-xs text-gray-500">{book.author}</span>
     </div>
   )
 }
