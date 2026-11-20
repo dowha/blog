@@ -1,14 +1,17 @@
 /** 장르 목록은 책 목록과 함께 서버(pages/books.tsx getStaticProps)에서 받는다 */
 export default function GenreFilter({
   genres: bookGenres,
+  extraTabs = [],
   selectedGenre,
   onChange,
 }: {
   genres: string[]
+  /** '전체' 바로 뒤에 붙는 장르 아닌 탭 (예: '읽는 중') */
+  extraTabs?: string[]
   selectedGenre: string
   onChange: (genre: string) => void
 }) {
-  const genres = ['전체', ...bookGenres]
+  const genres = ['전체', ...extraTabs, ...bookGenres]
 
   // ✅ 버튼 클릭 시 onChange만 호출 (URL 변경은 부모 컴포넌트에서 처리)
   const handleGenreChange = (genre: string) => {

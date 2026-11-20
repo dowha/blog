@@ -30,6 +30,28 @@ interface Book {
 
 type Props = { intro: string; books: Book[]; genres: string[] }
 
+// 장르가 아닌 탭. 여기서만 읽는 중인 책을 표지 카드로 펼쳐 보인다
+const READING_TAB = '읽는 중'
+
+function filterBooks(books: Book[], tab: string) {
+  if (tab === '전체') return books
+  if (tab === READING_TAB) return books.filter((b) => b.isReading)
+  return books.filter((b) => b.genre === tab)
+}
+
+// 전체·장르 탭에서 읽는 중인 책: 표지 없이 제목·작가만
+function ReadingChip({ book }: { book: Book }) {
+  return (
+    <div className="min-w-0 rounded-md border border-gray-200 bg-amber-50 px-3 py-2 cursor-wait">
+      <p className="truncate text-sm font-semibold leading-tight text-foreground">
+        {book.title}
+        {book.volumes && <span className="ml-0.5 font-normal text-gray-400">({book.volumes})</span>}
+      </p>
+      <p className="mt-0.5 truncate text-xs text-gray-500">{book.author}</p>
+    </div>
+  )
+}
+
 // 읽는 중인 책 먼저, 그다음 최근 등록순
 async function fetchBooks(): Promise<{ books: Book[]; genres: string[] }> {
   const { data, error } = await supabase
@@ -98,12 +120,7 @@ export default function BooksPage({ intro, books, genres }: Props) {
       }
 
       setSelectedGenre(initialGenre)
-
-      if (initialGenre === '전체') {
-        setFilteredBooks(books)
-      } else {
-        setFilteredBooks(books.filter((book) => book.genre === initialGenre))
-      }
+      setFilteredBooks(filterBooks(books, initialGenre))
     }
 
     // 초기 실행
@@ -127,12 +144,11 @@ export default function BooksPage({ intro, books, genres }: Props) {
     if (genre === '전체') {
       // '전체'일 때는 해시 제거 (replace 사용하여 URL 깔끔하게 유지)
       router.replace('/books', undefined, { shallow: true })
-      setFilteredBooks(books)
     } else {
-      // 장르 선택 시 URL에 해시 추가 (예: #소설)
+      // 탭 선택 시 URL에 해시 추가 (예: #소설, #읽는 중)
       router.push(`/books#${genre}`, undefined, { shallow: true })
-      setFilteredBooks(books.filter((book) => book.genre === genre))
     }
+    setFilteredBooks(filterBooks(books, genre))
   }, [books, router])
 
   const handleLoadMore = () => {
@@ -140,6 +156,12 @@ export default function BooksPage({ intro, books, genres }: Props) {
   }
 
   const descriptionText = introToText(intro)
+
+  // 읽는 중 탭이 아니면 읽는 중인 책은 위에 작게 모으고, 아래 카드 목록은 다 읽은 책만
+  const onReadingTab = selectedGenre === READING_TAB
+  const readingChips = onReadingTab ? [] : filteredBooks.filter((b) => b.isReading)
+  const cardBooks = onReadingTab ? filteredBooks : filteredBooks.filter((b) => !b.isReading)
+  const hasReading = books.some((b) => b.isReading)
 
   return (
     <>
@@ -173,14 +195,28 @@ export default function BooksPage({ intro, books, genres }: Props) {
 
         <GenreFilter
           genres={genres}
+          extraTabs={hasReading ? [READING_TAB] : []}
           selectedGenre={selectedGenre}
           onChange={handleFilterChange}
         />
 
         <>
-            <div className="mt-8 grid grid-cols-1 gap-2 md:grid-cols-2">
+            {readingChips.length > 0 && (
+              <section className="mt-8" aria-label="읽는 중인 책">
+                <h2 className="mb-2 text-xs font-medium text-gray-500">
+                  읽는 중 <span className="tabular-nums">{readingChips.length}</span>
+                </h2>
+                <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
+                  {readingChips.map((book) => (
+                    <ReadingChip key={book.id} book={book} />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            <div className={`${readingChips.length > 0 ? 'mt-6' : 'mt-8'} grid grid-cols-1 gap-2 md:grid-cols-2`}>
               {/* 모바일 한 줄·PC 두 줄 기준으로 첫 화면에 보이는 앞의 4권만 표지를 바로 받는다 */}
-              {filteredBooks.slice(0, visibleCount).map((book, i) =>
+              {cardBooks.slice(0, visibleCount).map((book, i) =>
                 book.hasContent ? (
                   <Link
                     key={book.id}
@@ -203,7 +239,7 @@ export default function BooksPage({ intro, books, genres }: Props) {
 
             <LoadMoreButton
               loadMore={handleLoadMore}
-              hasMore={visibleCount < filteredBooks.length}
+              hasMore={visibleCount < cardBooks.length}
             />
         </>
       </article>
