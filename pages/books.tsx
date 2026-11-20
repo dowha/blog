@@ -32,6 +32,10 @@ type Props = { intro: string; books: Book[]; genres: string[] }
 
 // 장르가 아닌 탭. 여기서만 읽는 중인 책을 표지 카드로 펼쳐 보인다
 const READING_TAB = '읽는 중'
+// 주소에는 띄어쓰기 없이 (#읽는%20중 대신 #읽는중)
+const READING_HASH = '읽는중'
+const tabToHash = (tab: string) => (tab === READING_TAB ? READING_HASH : tab)
+const hashToTab = (hash: string) => (hash === READING_HASH || hash === READING_TAB ? READING_TAB : hash)
 
 function filterBooks(books: Book[], tab: string) {
   if (tab === '전체') return books
@@ -39,10 +43,15 @@ function filterBooks(books: Book[], tab: string) {
   return books.filter((b) => b.genre === tab)
 }
 
-// [전체]·장르 탭 위쪽의 읽는 중인 책: 표지 없이 한 줄([읽는 중] 제목 · 작가)로 낮게
-function ReadingChip({ book }: { book: Book }) {
+// [전체]·장르 탭 위쪽의 읽는 중인 책: 표지 없이 한 줄([읽는 중] 제목 · 작가)로 낮게.
+// 누르면 [읽는 중] 탭으로 간다
+function ReadingChip({ book, onClick }: { book: Book; onClick: () => void }) {
   return (
-    <div className="flex min-w-0 items-center gap-2 rounded-lg border border-gray-200 bg-amber-50 px-3 py-2 cursor-wait">
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex min-w-0 items-center gap-2 rounded-lg border border-gray-200 bg-amber-50 px-3 py-2 text-left cursor-pointer hover:bg-amber-100"
+    >
       <span className="shrink-0 rounded bg-gray-900/20 px-1.5 py-px text-[11px] font-medium leading-4 text-gray-800">
         읽는 중
       </span>
@@ -52,7 +61,7 @@ function ReadingChip({ book }: { book: Book }) {
         {book.volumes && <span className="ml-0.5 font-normal text-gray-400">({book.volumes})</span>}
       </span>
       <span className="shrink-0 text-xs text-gray-500">{book.author}</span>
-    </div>
+    </button>
   )
 }
 
@@ -117,7 +126,7 @@ export default function BooksPage({ intro, books, genres }: Props) {
       if (hash) {
         try {
           // 한글 해시 깨짐 방지를 위한 디코딩 (# 제거 후 디코딩)
-          initialGenre = decodeURIComponent(hash.replace('#', ''))
+          initialGenre = hashToTab(decodeURIComponent(hash.replace('#', '')))
         } catch (e) {
           console.error('Hash decoding failed:', e)
         }
@@ -150,7 +159,7 @@ export default function BooksPage({ intro, books, genres }: Props) {
       router.replace('/books', undefined, { shallow: true })
     } else {
       // 탭 선택 시 URL에 해시 추가 (예: #소설, #읽는 중)
-      router.push(`/books#${genre}`, undefined, { shallow: true })
+      router.push(`/books#${tabToHash(genre)}`, undefined, { shallow: true })
     }
     setFilteredBooks(filterBooks(books, genre))
   }, [books, router])
@@ -208,7 +217,7 @@ export default function BooksPage({ intro, books, genres }: Props) {
             {readingChips.length > 0 && (
               <div className="mt-8 grid grid-cols-1 gap-2 md:grid-cols-2" aria-label="읽는 중인 책">
                 {readingChips.map((book) => (
-                  <ReadingChip key={book.id} book={book} />
+                  <ReadingChip key={book.id} book={book} onClick={() => handleFilterChange(READING_TAB)} />
                 ))}
               </div>
             )}
@@ -231,7 +240,7 @@ export default function BooksPage({ intro, books, genres }: Props) {
                       book={book}
                       priority={i < 4}
                       showReadingBadge={!onReadingTab}
-                      className={onReadingTab ? 'no-group' : 'cursor-wait bg-amber-50 no-group'}
+                      className={onReadingTab ? 'cursor-wait no-group' : 'cursor-wait bg-amber-50 no-group'}
                     />
                   </div>
                 )
