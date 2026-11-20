@@ -52,7 +52,8 @@ function ReadingChip({ book, onClick }: { book: Book; onClick: () => void }) {
       onClick={onClick}
       className="flex min-w-0 items-center gap-2 rounded-lg border border-gray-200 bg-amber-50 px-3 py-2 text-left cursor-pointer hover:bg-amber-100"
     >
-      <span className="shrink-0 rounded bg-gray-900/20 px-1.5 py-px text-[11px] font-medium leading-4 text-gray-800">
+      {/* EN 표시(LangBadge)와 같은 테두리 배지 모양, 색은 읽는 중 카드의 노란 계열에 맞춘다 */}
+      <span className="shrink-0 rounded-[3px] border border-amber-300 px-[4px] text-[11px] font-medium leading-[16px] text-amber-700">
         읽는 중
       </span>
       {/* 긴 제목은 말줄임 (라벨·작가는 줄이지 않는다) */}

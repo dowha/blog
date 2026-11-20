@@ -197,10 +197,12 @@ export default function Home({ intro, latestShort, latestPost, latestBook, mostL
                   <span className="mr-1">📚</span> 요즘 읽고 있는 책
                 </h2>
                 <ul>
-                  {/* 읽는 중인 책은 상세 페이지가 없어 링크 없이 표시 */}
+                  {/* 읽는 중인 책은 상세 페이지가 없어 /books의 [읽는 중] 탭으로 보낸다 */}
                   {currentlyReading.map((book) => (
-                    <li key={`${book.title}-${book.author}`} className="text-sm">
-                      《{book.title}》{volumesText(book.volumes)}, {book.author}
+                    <li key={`${book.title}-${book.author}`}>
+                      <Link href="/books#읽는중" className="block text-sm">
+                        《{book.title}》{volumesText(book.volumes)}, {book.author}
+                      </Link>
                     </li>
                   ))}
                 </ul>
