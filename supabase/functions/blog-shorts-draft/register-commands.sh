@@ -30,13 +30,28 @@ register() {
 register '{"name":"short","type":1,"description":"Shorts 초안 저장 (비우면 여러 줄 입력 창)","options":[{"type":3,"name":"text","description":"내용 (280자 이내)","required":false,"max_length":280}]}'
 register '{"name":"post","type":1,"description":"글(posts) 초안 저장 — 제목·본문 입력 창"}'
 
-# 예전 /draft 삭제 (/short로 대체)
-DRAFT_ID=$(curl -sS "https://discord.com/api/v10/applications/${APP_ID}/commands" \
-  -H "Authorization: Bot ${BOT_TOKEN}" | python3 -c 'import json,sys;print(next((c["id"] for c in json.load(sys.stdin) if c["name"]=="draft"),""))')
-if [ -n "$DRAFT_ID" ]; then
-  curl -sS -o /dev/null -w "/draft 삭제 HTTP %{http_code}\n" -X DELETE \
-    "https://discord.com/api/v10/applications/${APP_ID}/commands/${DRAFT_ID}" \
-    -H "Authorization: Bot ${BOT_TOKEN}"
-else
-  echo "/draft 없음 (전역 명령 기준)"
-fi
+# 예전 /draft 삭제 (/short로 대체). 전역 명령과, 봇이 들어간 각 서버(길드) 명령을 모두 확인한다.
+API="https://discord.com/api/v10"
+DRAFT_ID_PY='import json,sys
+d=json.load(sys.stdin)
+print(next((c["id"] for c in d if isinstance(c,dict) and c.get("name")=="draft"),"") if isinstance(d,list) else "")'
+
+delete_draft() {
+  local cmds="$1" where="$2" id
+  id=$(curl -sS "${API}/${cmds}" -H "Authorization: Bot ${BOT_TOKEN}" | python3 -c "$DRAFT_ID_PY")
+  if [ -n "$id" ]; then
+    curl -sS -o /dev/null -w "${where} /draft 삭제 HTTP %{http_code}\n" -X DELETE \
+      "${API}/${cmds}/${id}" -H "Authorization: Bot ${BOT_TOKEN}"
+  else
+    echo "${where} /draft 없음"
+  fi
+}
+
+delete_draft "applications/${APP_ID}/commands" "전역"
+GUILDS=$(curl -sS "${API}/users/@me/guilds" -H "Authorization: Bot ${BOT_TOKEN}" \
+  | python3 -c 'import json,sys
+d=json.load(sys.stdin)
+print(" ".join(g["id"] for g in d) if isinstance(d,list) else "")')
+for gid in ${=GUILDS}; do
+  delete_draft "applications/${APP_ID}/guilds/${gid}/commands" "서버 ${gid}"
+done
